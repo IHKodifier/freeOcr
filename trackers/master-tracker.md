@@ -44,4 +44,4 @@
 | **UC-012** | Password-in-Place Encrypted PDF Decryption | Sprint 2 | P1 | Not Started | Pending |
 | **UC-009** | 35-Second AdSense Display Ad Banner Rotation Timer | Sprint 3 | P0 | Not Started | Pending |
 | **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal | Sprint 3 | P0 | Not Started | Pending |
-| **UC-011** | Rewarded Ad Callback & 60-Min Session Boost Pass | Sprint 3 | P0 | Not Started | Pending |
+| **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | Sprint 3 | P0 | Not Started | Pending |
