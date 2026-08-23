@@ -62,12 +62,13 @@
 | Ticket | Use Case Name | Owner | Estimate | Depends On | Status |
 |--------|--------------|-------|----------|------------|--------|
 | **UC-005** | Interactive Side-by-Side Split Preview Viewer | FE | M | UC-002, UC-004 | Not Started |
+| **UC-005b**| Premium Apple-Grade UI Generation & All-Screen Visual Polish | FE/Des | M | UC-005 | Not Started |
 | **UC-006** | 1-Click Multi-Format Direct Downloads (`.pdf`, `.txt`, `.md`) | FE/BE | S | UC-004, UC-005 | Not Started |
 | **UC-007** | Email Link Delivery & Immediate Input File Purging | BE | M | UC-006 | Not Started |
 | **UC-008** | 24-Hour Expiration TTL & Local Time Expired Link Page | BE/FE | S | UC-007 | Not Started |
 | **UC-012** | Password-in-Place Encrypted PDF Decryption | FE/BE | S | UC-001, UC-003 | Not Started |
 
-**Sprint 2 Goal:** Users can inspect OCR text in a side-by-side viewer, download 3 output formats, or email 24h download links which trigger instant input file purging.
+**Sprint 2 Goal:** Users inspect OCR text in a premium side-by-side viewer; all project screens (Landing, Preview, Modals, Expired Link) feature Apple-grade glassmorphic UI polish and fluid spring physics.
 
 ---
 

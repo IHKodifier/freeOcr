@@ -21,6 +21,10 @@
 - **Merging Protocol:** Only propose or execute a PR/merge from `sprint/sprint-XX` into `dev` when **100% of automated tests pass locally**.
 - **Commit Format:** `feat(UC-XXX): brief description` or `fix(UC-XXX): brief description`.
 
+### 2.1 Strict Commit & Push Authorization Protocol
+- **NO Unprompted Local Commits:** The agent MUST NEVER run `git commit` locally without explicit user instruction. The user selects which files are committed and instructs when to execute local commits.
+- **NO Unprompted Remote Pushes:** The agent MUST NEVER execute `git push` to any remote repository without explicit user instructions to publish code to remote.
+
 ---
 
 ## 3. Local-First & Zero-Cloud Execution
@@ -63,10 +67,11 @@
 ### Governance Boundaries
 | Always | Ask First | Never |
 |:---|:---|:---|
-| Write failing tests before implementation (TDD) | Spinning up paid cloud APIs/resources | Commit or push directly to `main` |
-| Work one ticket (`UC-XXX`) at a time | Adding new core dependencies | Commit `.env` secrets or credentials |
-| Purge temp files from RAM disk after conversion | Changing database or API schemas | Delete or weaken failing tests |
-| Update Graphify MCP knowledge graph | Adding external cloud integrations | Leave input files in persistent storage |
+| Write failing tests before implementation (TDD) | Spinning up paid cloud APIs/resources | Commit code locally without explicit user instruction |
+| Work one ticket (`UC-XXX`) at a time | Adding new core dependencies | Push code to remote without explicit user instruction |
+| Purge temp files from RAM disk after conversion | Changing database or API schemas | Commit or push directly to `main` |
+| Update Graphify MCP knowledge graph | Adding external cloud integrations | Commit `.env` secrets or credentials |
+| | | Delete or weaken failing tests |
 
 ---
 

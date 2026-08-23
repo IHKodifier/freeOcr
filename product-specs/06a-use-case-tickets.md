@@ -232,6 +232,30 @@
 
 ---
 
+### UC-005b: Premium Apple-Grade UI Generation & All-Screen Visual Polish
+
+**Linked Story:** US-201 / Modern Web Design Mandate  
+**Actor:** Lead UI/UX Engineer & Flutter Web Client  
+**Trigger:** UI component construction during Sprint 2.  
+
+**Main Flow**
+1. Engineer generates premium UI mockups and design token assets using AI design tools (`generate_image`, Stitch, modern Web guidance).
+2. Implement Apple-inspired glassmorphism, translucent backdrop blurs (`backdrop-filter blur 20px`), Electric Indigo (`#4F46E5` / `#818CF8`) gradients, and Inter & JetBrains Mono typography across all project screens.
+3. Add fluid spring micro-animations (`CurvedAnimation` with damping `1.0` / response `0.4s`) for button presses (`transform: scale(0.97)` on pointer-down), hero dropzone hover states, and modal transitions.
+4. Apply consistent visual polish to:
+   - **Hero Landing Page & Interactive Dropzone** (`/`)
+   - **Real-Time SSE Progress Bar Component**
+   - **Interactive Side-by-Side Split Preview Viewer** (`/result/{job_id}`)
+   - **Frosted Glass Rewarded Video Ad Modal**
+   - **Password-in-Place Encrypted PDF Decryption Modal**
+   - **Local Time Expired Download Link Page** (`/expired`)
+
+**Acceptance Criteria (Testable)**
+- WHEN any page or modal renders THE SYSTEM SHALL apply Material 3 design system tokens and glassmorphism styling without plain default browser controls.
+- WHEN an interactive element is pressed THE SYSTEM SHALL execute an instant pointer-down spring physics scale response within 100ms.
+
+---
+
 ### UC-006: 1-Click Multi-Format Direct Download (`.pdf`, `.txt`, `.md`)
 
 **Linked Story:** US-202  

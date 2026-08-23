@@ -106,6 +106,7 @@ Display ad slots on Landing and Download pages automatically rotate every **35 s
 - **`UC-003`:** Baidu PaddleOCR-VL 1.6 Worker Execution & `tmpfs` RAM Disk Management
 - **`UC-004`:** Searchable PDF Composition Engine (Invisible Layer Overlay)
 - **`UC-005`:** Interactive Side-by-Side Split Preview Viewer
+- **`UC-005b`:** Premium Apple-Grade UI Generation & All-Screen Visual Polish
 - **`UC-006`:** 1-Click Multi-Format Direct Downloads (`.pdf`, `.txt`, `.md`)
 - **`UC-007`:** Email Download Link Delivery & Immediate Input File Purging
 - **`UC-008`:** 24-Hour Expiration TTL & Local Time Expired Link Handler
