@@ -1,0 +1,26 @@
+{
+  "project_name": "freeOCR.me",
+  "version": "1.0.0",
+  "roots": [
+    {
+      "path": "src/backend",
+      "type": "python",
+      "description": "FastAPI OCR Gateway, Database Models, Redis Client, and PaddleOCR Workers"
+    },
+    {
+      "path": "src/frontend",
+      "type": "dart",
+      "description": "Flutter Web UI Client & Theme Engine"
+    },
+    {
+      "path": "src/tests",
+      "type": "python_test",
+      "description": "Pytest Backend Test Suite"
+    }
+  ],
+  "graph_settings": {
+    "auto_extract_symbols": true,
+    "track_dependencies": true,
+    "relationship_depth": 3
+  }
+}
