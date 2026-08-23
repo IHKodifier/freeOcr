@@ -143,6 +143,38 @@ To guarantee that the output PDF looks **100% identical** to the original scanne
 
 ---
 
+## Unified Runtime Configuration Architecture (Zero-Redeploy)
+
+To ensure that changing basic limits, per-ad boost increments, or ad rotation timers **never requires redeploying the website or rebuilding frontend/backend binaries**, all runtime parameters are consolidated into a single configuration file (`src/backend/app/config.json`) served dynamically via `GET /api/v1/config`.
+
+### 1. Single Configuration Source (`src/backend/app/config.json`)
+```json
+{
+  "limits": {
+    "base_max_pages": 10,
+    "base_max_file_mb": 10,
+    "boost_per_ad_pages": 15,
+    "boost_per_ad_mb": 20,
+    "session_boost_ttl_seconds": 3600,
+    "max_stack_pages": 500,
+    "max_stack_file_mb": 500
+  },
+  "monetization": {
+    "ad_rotation_interval_seconds": 35,
+    "rewarded_ad_duration_seconds": 15,
+    "display_ads_enabled": true,
+    "rewarded_ads_enabled": true
+  }
+}
+```
+
+### 2. Runtime Flow (Zero Redeploy)
+1. **Frontend Bootstrapping:** When Flutter Web initializes, it calls `GET /api/v1/config` to fetch active limits, ad rotation timers, and stackable boost rules.
+2. **Backend Enforcement:** FastAPI loads `config.json` at runtime (overridable via `.env` or hot-reloaded on file modification). Both file validation endpoints and ad callbacks consume this single configuration object.
+3. **Instant Hot Updates:** Updating `config.json` immediately alters dropzone validation rules, ad rotation timers, and backend limits for all connected users without code compilation or server redeployment.
+
+---
+
 ## Auth & Access Control
 
 ### MVP Phase (DB-Light / Unauthenticated)

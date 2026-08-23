@@ -198,4 +198,5 @@ erDiagram
 | **Send Email Links**| `POST` | `/api/v1/ocr/email-links` | No (MVP) | Yes | Emails 24h download links & triggers instant input file purge |
 | **Rewarded Ad Callback**| `POST` | `/api/v1/ads/rewarded-callback`| No (MVP) | Yes | Validates ad completion token & atomically increments stackable session limit boost (+15 pages / +20MB, runtime configurable) |
 | **Decrypt PDF** | `POST` | `/api/v1/ocr/decrypt` | No (MVP) | Yes | Accepts password for encrypted PDFs & resumes OCR |
+| **Get App Config** | `GET` | `/api/v1/config` | No | No | Returns unified JSON config (base limits, boost step sizes, ad rotation intervals) for zero-redeploy runtime execution |
 | **Health Check** | `GET` | `/healthz` | No | No | GCP Cloud Run load balancer health check probe |
