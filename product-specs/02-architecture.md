@@ -89,7 +89,7 @@ Reference: [`01b-tech-stack.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/free
 |----------------|---------------|------|
 | **Flutter Web Client** | Drag-and-drop file upload UI, rewarded ad trigger, SSE progress bar, output PDF/text preview & download | Client state, Ad SDK integration, SSE event listener |
 | **FastAPI Gateway** | Request validation, rate-limit enforcement, Redis task dispatching, SSE progress streaming, output delivery | API routes, input sanitization, SSE connection pool |
-| **Redis Memory Store** | Job state management, IP rate-limit counters, 60-minute rewarded ad session passes, SSE message broker | Transient job status, rate-limit keys, ad tokens |
+| **Redis Memory Store** | Job state management, IP rate-limit counters, stackable rewarded ad limit tokens, SSE message broker | Transient job status, rate-limit keys, ad boost tokens |
 | **Celery OCR Worker** | Background job execution, reading PDF pages, invoking PaddleOCR-VL 1.6 inference engine | OCR pipeline, PDF page rendering, searchable PDF generation |
 | **Baidu PaddleOCR-VL 1.6**| High-accuracy vision-language OCR execution, layout analysis, font/table position mapping | Text recognition, layout bounding box calculation |
 | **Linux `tmpfs` RAM Disk** | Ultra-fast in-memory temporary storage for incoming PDF and generated output | Ephemeral file bytes in RAM (`/tmp`) |
@@ -106,7 +106,7 @@ Reference: [`01b-tech-stack.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/free
 1. Client POST /api/v1/ocr/convert (PDF Bytes + Optional Ad Session Token)
        │
        ▼
-2. Gateway Rate-Limit & Config Validation (Check limits in Redis & config.py)
+2. Gateway Rate-Limit & Config Validation (Check active limits in Redis & runtime settings)
        │
        ▼
 3. Job Created in Redis Queue ──► Client Initiates SSE Stream GET /api/v1/jobs/{job_id}/events
@@ -148,7 +148,7 @@ To guarantee that the output PDF looks **100% identical** to the original scanne
 ### MVP Phase (DB-Light / Unauthenticated)
 - **Zero Login Barrier:** Users convert files without account registration.
 - **IP & Fingerprint Rate Limiting:** Enforced via Redis sliding window counter (e.g., 5 free conversions / 24 hours).
-- **60-Minute Rewarded Ad Session Pass:** Watching a rewarded ad writes a temporary session boost token to Redis (`ad_pass:{client_id}` with 3600s TTL), unlocking higher page and file size caps.
+- **Stackable Rewarded Ad Limit Boost Pass:** Watching rewarded video ads atomically increments session limit counters in Redis (`ad_pass:{client_id}` with runtime configurable TTL), stacking allowed file size (+20MB per ad) and page count (+15 pages per ad) limits indefinitely up to 500+ MB / 500+ pages. All base limits and boost step sizes are loaded dynamically at runtime.
 
 ### Post-MVP Phase (Multi-Tenant SaaS)
 - **Firebase Auth:** Email/Password, Google OAuth, and SAML SSO integration.
@@ -161,7 +161,7 @@ To guarantee that the output PDF looks **100% identical** to the original scanne
 
 | Service | Purpose | Method | Notes |
 |---------|---------|--------|-------|
-| **Google Mobile Ads SDK (Web/Flutter)** | Banner display ads & Rewarded Video Ads | Flutter Plugin / JS SDK | Rewarded video callback grants 60-minute limit pass |
+| **Google Mobile Ads SDK (Web/Flutter)** | Banner display ads & Rewarded Video Ads | Flutter Plugin / JS SDK | Rewarded video callback grants stackable session limit boosts (+15 pages / +20MB per ad) |
 | **Baidu PaddleOCR-VL 1.6 (0.9B)** | Core AI Vision-Language OCR model | Native Python PyTorch/Paddle C-extensions | Self-hosted on GCP GPU worker nodes |
 | **Sentry** | Error tracking & exception monitoring | Python & Flutter Sentry SDKs | Captures backend/frontend crashes without PII |
 | **Cloudflare** | DNS, SSL termination, DDoS protection | Cloudflare Proxy | Edge caching for static web assets |

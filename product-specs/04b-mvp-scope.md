@@ -10,7 +10,7 @@
 
 ## Core Hypothesis Being Tested
 
-Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for temporary 60-minute session limit boosts) rather than hitting aggressive paywalls or sacrificing privacy.
+Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for stackable session limit boosts) rather than hitting aggressive paywalls or sacrificing privacy.
 
 ---
 
@@ -37,8 +37,8 @@ Users actively seek a fast, highly accurate, layout-preserving AI OCR web utilit
 | **US-203** | Email Link Delivery & Input Purge | User convenience + instant zero-retention compliance | Medium |
 | **US-204** | 24-Hour Expiration & Expired Link Page | Manages output TTL & local time expiration notice | Low |
 | **US-301** | 35-Second Display Ad Rotation | Core revenue monetization for free traffic | Low |
-| **US-302** | Rewarded Ad Limit Exceeded Modal | Monetizes high-volume users via rewarded video ads | Medium |
-| **US-303** | 60-Minute Redis Session Boost | Grants 1-hour session limit pass after rewarded ad | Medium |
+| **US-302** | Rewarded Ad Limit Exceeded Modal | Offers stackable video ad limit boosts (+15 pages / +20MB per ad watched) | Medium |
+| **US-303** | Stackable Redis Session Boost Pass | Atomically stacks limit boosts in Redis (runtime configurable settings) | Medium |
 | **US-401** | Password-in-Place PDF Decryption | Recovers encrypted scanned PDFs smoothly | Low |
 | **US-402** | Automated Corrupted PDF Repair | Fallback repair pipeline (`pdfcpu` / `qpdf` / `ghostscript`) | Medium |
 | **US-403** | 60-Second Ephemeral Watchdog Cleaner | Failsafe zero-retention RAM disk hygiene | Low |

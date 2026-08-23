@@ -18,7 +18,7 @@
 **freeOCR.me** is a fast, privacy-first web utility platform that transforms scanned PDFs and images into searchable PDFs and clean selectable text. Powered by **Baidu PaddleOCR-VL 1.6 (0.9B)** on GCP backend GPU workers, it guarantees 100% original visual layout preservation via an invisible text layer overlay and operates under a strict **zero-retention privacy policy** using Linux `tmpfs` RAM disks with instant file unlinking.
 
 ### 1.2 Core Hypothesis
-Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for temporary 60-minute session limit boosts) rather than hitting aggressive paywalls or sacrificing privacy.
+Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for stackable limit boosts that increment file size and page caps per watched ad) rather than hitting aggressive paywalls or sacrificing privacy.
 
 ### 1.3 Success Definition
 | Time Horizon | Success Looks Like | Key Metric |
@@ -44,7 +44,8 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 - **Superior AI Accuracy:** Baidu PaddleOCR-VL 1.6 (0.9B) vision-language inference engine.
 - **100% Visual Layout Fidelity:** Invisible text layer overlay over original high-res scan background.
 - **Zero-Retention Ephemeral Privacy:** Files processed in Linux `tmpfs` RAM disk; input files purged immediately upon download or "Send Email" click.
-- **Rewarded Ad Session Passes:** 60-minute limit expansion tokens unlocked by watching a 15-second rewarded video ad.
+- **Stackable Rewarded Ad Limit Boosts:** Watching 15-second video ads incrementally increases file size (+20MB) and page count (+15 pages) caps indefinitely per ad watched.
+- **Runtime Configurable Parameters:** Base limits, boost increments per ad, and session TTLs are fully runtime configurable via environment settings without code changes.
 
 ---
 
@@ -81,9 +82,9 @@ graph TD
 
 ### 4.1 Key Journeys
 1. **Journey 1 (The 10-Second Aha Moment):** Zero-clutter hero dropzone → SSE live progress (`Page 3 of 8... 37%`) → Side-by-side split preview (Original Scan vs Selectable OCR Text) → 1-click downloads (`.pdf`, `.txt`, `.md`).
-2. **Journey 2 (Rewarded Ad Session Pass):** Over-limit file upload -> Rewarded Ad Modal -> Watch 15s ad -> 60-minute Redis session pass activated (`ad_pass:{client_ip}`).
+2. **Journey 2 (Stackable Rewarded Ad Limit Boosts):** Over-limit file upload -> Rewarded Ad Modal -> Watch 15s ad -> Indefinitely stackable limit increments (+20MB / +15 pages per ad, runtime configurable) stored in Redis session pass (`ad_pass:{client_ip}`).
 3. **Journey 3 (Email Link Delivery & Instant Purge):** Optional email input field for receiving 24h download links -> Input file unlinked from RAM disk *immediately* when "Send Email" is clicked. Expiration link renders friendly page: *"Link expired at HH:MM local time"*.
-4. **Journey 4 (Encrypted & Corrupted PDF Recovery):** Password-in-place decryption prompt for encrypted PDFs; automated repair fallback (`qpdf` / `pdfcpu` / `ghostscript`) for corrupted files.
+4. **Journey 4 (Encrypted & Corrupted PDF Recovery):** Password-in-Place decryption prompt for encrypted PDFs; automated repair fallback (`qpdf` / `pdfcpu` / `ghostscript`) for corrupted files.
 
 ### 4.2 Ad Rotation Policy
 Display ad slots on Landing and Download pages automatically rotate every **35 seconds** while the page tab remains active.
@@ -110,7 +111,7 @@ Display ad slots on Landing and Download pages automatically rotate every **35 s
 - **`UC-008`:** 24-Hour Expiration TTL & Local Time Expired Link Handler
 - **`UC-009`:** 35-Second AdSense Display Ad Banner Rotation Timer
 - **`UC-010`:** Limit Exceeded Detection & Rewarded Video Ad Modal Trigger
-- **`UC-011`:** Rewarded Ad Completion Callback & 60-Minute Redis Session Boost Pass
+- **`UC-011`:** Rewarded Ad Callback & Stackable Session Limit Boost Pass (Runtime Configurable)
 - **`UC-012`:** Password-in-Place Encrypted PDF Decryption
 - **`UC-013`:** Corrupted PDF Auto-Repair & 60s Watchdog RAM Disk Cleaner
 

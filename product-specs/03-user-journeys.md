@@ -49,27 +49,29 @@
 
 ---
 
-## Journey 2: Rewarded Ad Limit Pass (High-Volume / Large File Conversion)
+## Journey 2: Stackable Rewarded Ad Limit Boosts (High-Volume / Large File Conversion)
 
-**Actor:** Free user uploading a file exceeding default caps (e.g., 25-page PDF when cap is 10 pages)  
+**Actor:** Free user uploading a file exceeding active session caps (e.g., 25-page PDF when active cap is 10 pages)  
 **Entry Point:** Drag-and-drop validation check  
-**Goal:** Unlock higher file size & page limits (up to 50 pages & 30MB) without paying  
+**Goal:** Stack limit boosts indefinitely (+15 pages & +20MB per watched video ad, up to 500+ MB / 500+ pages) without paywalls  
 
 ### Flow Diagram
 
 ```
-[User Drops Large PDF (e.g. 25 Pages)]
+[User Drops Large PDF (e.g. 25 Pages or 40MB)]
         │
         ▼
-[Limit Detection: Exceeds Default Free Cap]
+[Limit Detection: Exceeds Base/Current Active Session Cap]
         │
         ▼
-[Clean Modal: "Unlock 60-Minute Session Pass (Up to 50 Pages & 30MB)"]
+[Clean Modal: "Unlock Limit Boost (+15 Pages & +20MB per ad watched)"]
         │
-        ├──► [Click 'Watch 15s Rewarded Ad'] ──► [Ad Video Plays] ──► [Ad Completed Callback] ──► [Session Boost Activated in Redis] ──► [Conversion Starts]
+        ├──► [Click 'Watch 15s Rewarded Ad'] ──► [Ad Video Plays] ──► [Ad Completed Callback] ──► [Atomic Limit Boost (+15 Pages, +20MB) in Redis] ──► [Choose: Watch Another Ad to Stack Further OR Start Conversion]
         │
         └──► [Click 'Cancel'] ──► [Return to Dropzone with Helpful Tip]
 ```
+
+*Note: All base limits, per-ad boost increments, session TTLs, and max stack caps are runtime configurable via environment settings.*
 
 ### Edge Cases & Recovery
 

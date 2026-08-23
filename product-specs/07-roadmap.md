@@ -77,9 +77,9 @@
 |--------|--------------|-------|----------|------------|--------|
 | **UC-009** | 35-Second AdSense Display Ad Banner Auto-Rotation Timer | FE | S | None | Not Started |
 | **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal Trigger | FE | M | UC-001 | Not Started |
-| **UC-011** | Rewarded Ad Callback & 60-Minute Redis Session Boost Pass | BE/FE | M | UC-010 | Not Started |
+| **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | BE/FE | M | UC-010 | Not Started |
 
-**Sprint 3 Goal:** 35-second rotating ad banners active; users uploading over-limit files can watch a rewarded ad to activate a 60-minute session boost pass.
+**Sprint 3 Goal:** 35-second rotating ad banners active; users uploading over-limit files can watch rewarded video ads to stack limit boosts (+15 pages & +20MB per ad, runtime configurable) indefinitely up to 500MB/500+ pages.
 
 **Phase 1 Gate — MVP Definition of Done:**
 - [ ] All 13 Use Case Tickets (`UC-001`–`UC-013`) pass 100% of automated unit and integration tests.

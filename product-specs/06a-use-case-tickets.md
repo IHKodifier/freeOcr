@@ -320,37 +320,43 @@
 
 **Linked Story:** US-302  
 **Actor:** Flutter Web UI Validation Engine  
-**Trigger:** User drops file exceeding `FREE_TIER_PAGE_LIMIT` or `FREE_TIER_MAX_FILE_MB`.  
+**Trigger:** User drops file exceeding current session limits (`BASE_MAX_PAGES` or `BASE_MAX_FILE_MB`).  
 
 **Main Flow**
-1. Client-side PDF parser counts pages (e.g. 22 pages).
-2. Page count exceeds `FREE_TIER_PAGE_LIMIT` (10 pages).
-3. System checks Redis for active `ad_pass:{client_ip}` token.
-4. If no pass active, UI displays Rewarded Ad Modal: *"Unlock 60-Minute Session Pass (Up to 50 Pages & 30MB)"* with **[Watch 15s Ad]** button.
+1. Client-side PDF parser counts pages (e.g. 22 pages) and evaluates file size.
+2. Page count or file size exceeds current active limit (e.g. `BASE_MAX_PAGES = 10`, `BASE_MAX_FILE_MB = 10MB`).
+3. System checks Redis for active `ad_pass:{client_ip}` boost counters.
+4. UI displays Rewarded Ad Modal: *"Unlock Stackable Limit Boost (+15 Pages & +20MB per ad watched)"* with **[Watch 15s Ad to Stack Boost]** button.
+5. Modal informs user that watching additional ads will continuously stack limits indefinitely (e.g. up to 500 MB / 500 pages).
 
 **Acceptance Criteria (Testable)**
-- WHEN uploaded PDF exceeds free cap and no ad pass is active THE SYSTEM SHALL display Rewarded Ad Modal.
+- WHEN uploaded PDF exceeds active session cap THE SYSTEM SHALL display Rewarded Ad Modal with stackable limit options.
+- THE SYSTEM SHALL load base limits (`BASE_MAX_PAGES`, `BASE_MAX_FILE_MB`) dynamically from runtime environment configuration.
 
 **Estimate:** M | **Depends on:** UC-001
 
 ---
 
-### UC-011: Rewarded Ad Completion Callback & 60-Minute Redis Session Pass
+### UC-011: Rewarded Ad Callback & Stackable Session Limit Boost Pass
 
 **Linked Story:** US-303  
 **Actor:** Google Mobile Ads SDK / FastAPI Gateway  
-**Trigger:** User finishes watching 15-second rewarded video ad.  
+**Trigger:** User finishes watching a 15-second rewarded video ad.  
 
 **Main Flow**
-1. User watches rewarded video ad to completion.
+1. User watches a 15-second rewarded video ad to completion.
 2. Google Ads SDK triggers `onUserEarnedReward` callback with signed reward token.
 3. Flutter client calls `POST /api/v1/ads/rewarded-callback` with token.
-4. FastAPI Gateway validates reward token and sets Redis key `ad_pass:{client_ip}` with 3600-second TTL.
-5. Modal closes; conversion job automatically initiates with elevated limit caps (`REWARDED_AD_PAGE_LIMIT = 50`).
+4. FastAPI Gateway validates reward token and increments Redis session key `ad_pass:{client_ip}`:
+   - Increments allowed page limit by `BOOST_PER_AD_PAGES` (default +15 pages, runtime configurable).
+   - Increments allowed file size limit by `BOOST_PER_AD_MB` (default +20 MB, runtime configurable).
+   - Extends Redis session TTL (default 3600s, runtime configurable).
+5. User can choose to watch another ad to stack limits further, or initiate conversion immediately if file requirements are satisfied.
 
 **Acceptance Criteria (Testable)**
-- WHEN rewarded ad completes THE SYSTEM SHALL write `ad_pass:{client_ip}` to Redis with 3600s TTL within 200ms.
-- WHEN session pass is active THE SYSTEM SHALL accept conversion jobs up to 50 pages.
+- WHEN rewarded ad completes THE SYSTEM SHALL atomically increment `ad_pass:{client_ip}` page cap by `BOOST_PER_AD_PAGES` and file cap by `BOOST_PER_AD_MB` in Redis within 200ms.
+- WHEN multiple ads are watched back-to-back THE SYSTEM SHALL stack limit boosts indefinitely without hardcoded ceilings.
+- ALL limit thresholds and boost step sizes SHALL be loaded from runtime configuration (never hardcoded in application logic).
 
 **Estimate:** M | **Depends on:** UC-010
 

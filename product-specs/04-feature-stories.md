@@ -14,7 +14,7 @@
 |---|-----------|----------------------|------|-----------|---------|
 | **E1** | **Zero-Friction Conversion Engine** | Instant drag-and-drop file upload, SSE progress streaming, PaddleOCR-VL 1.6 execution | ✅ | High | P0 |
 | **E2** | **Preview & Multi-Format Export** | Interactive split viewer, 3-format downloads (`.pdf`, `.txt`, `.md`), email link delivery & purge | ✅ | Medium | P0 |
-| **E3** | **Ad Monetization & Rewarded Boosts** | 35-second ad rotation timer, limit detection, rewarded ad 60-minute session pass | ✅ | Medium | P0 |
+| **E3** | **Ad Monetization & Rewarded Boosts** | 35-second ad rotation timer, limit detection, stackable rewarded ad limit boosts (runtime configurable) | ✅ | Medium | P0 |
 | **E4** | **PDF Error Handling & Auto-Repair** | Password-in-place decryption, corrupted scan repair, 60s `tmpfs` watchdog cleaner | ✅ | Medium | P1 |
 | **E5** | **Firebase Auth & Paid Subscriptions** | User accounts, Stripe billing, ad-free experience, opt-in GCS user vault | ❌ | High | P2 (Post-MVP) |
 | **E6** | **Developer API & Native App Compilations** | API keys, usage metered rate-limits, native iOS/Android/Desktop Flutter builds | ❌ | High | P3 (At Scale) |
@@ -55,7 +55,7 @@
 
 ## Epic 3: Ad Monetization & Rewarded Boosts
 
-**Goal:** Monetize free traffic with 35-second rotating ad banners and offer a 60-minute rewarded ad session pass for high-volume files.  
+**Goal:** Monetize free traffic with 35-second rotating ad banners and offer stackable rewarded ad limit boosts (+15 pages & +20MB per ad, runtime configurable) for high-volume files.  
 **Traces to:** `01-product-brief.md` — Ad-supported freemium monetization strategy.
 
 ### User Stories
@@ -63,8 +63,8 @@
 | ID | Story | Acceptance Criteria | MVP? | Priority |
 |----|-------|---------------------|------|---------|
 | **US-301** | As the website publisher, I want display ads to refresh every 35 seconds so that ad revenue is maximized while users stay on the page. | - [ ] Top leaderboard banner rendered above fold on Landing & Download pages.<br>- [ ] Automated 35-second timer script (`setInterval(refreshAds, 35000)`) refreshes ad slot when page tab is active. | ✅ | P0 |
-| **US-302** | As a user uploading a file exceeding default limits, I want a clear modal offering a rewarded ad pass so I can process large files for free. | - [ ] Triggers when uploaded file exceeds `FREE_TIER_PAGE_LIMIT` or `FREE_TIER_MAX_FILE_MB`.<br>- [ ] Displays clean modal: *"Unlock 60-Minute Session Pass (Up to 50 Pages & 30MB)"* with **[Watch 15s Ad]** CTA. | ✅ | P0 |
-| **US-303** | As a user who watched a rewarded ad, I want my temporary limit boost activated automatically so my conversion starts without delay. | - [ ] Rewarded ad completion callback fires from Google Mobile Ads SDK.<br>- [ ] Sets Redis key `ad_pass:{client_id}` with 3600-second TTL.<br>- [ ] Automatically initiates conversion job with elevated limit settings. | ✅ | P0 |
+| **US-302** | As a user uploading a file exceeding default limits, I want a clear modal offering stackable rewarded ad limit boosts so I can process large files for free. | - [ ] Triggers when uploaded file exceeds runtime configurable limits (`BASE_MAX_PAGES` or `BASE_MAX_FILE_MB`).<br>- [ ] Displays clean modal offering stackable limit boosts: *"Unlock Limit Boost (+15 Pages & +20MB per ad watched)"* with **[Watch 15s Ad]** CTA.<br>- [ ] Informs user that limits stack indefinitely by watching additional ads. | ✅ | P0 |
+| **US-303** | As a user who watched a rewarded ad, I want my limit boost stacked automatically so I can process files up to 500MB/500+ pages. | - [ ] Rewarded ad completion callback fires from Google Mobile Ads SDK.<br>- [ ] Atomically increments page limit (+`BOOST_PER_AD_PAGES`) and file cap (+`BOOST_PER_AD_MB`) in Redis key `ad_pass:{client_id}`.<br>- [ ] Extends Redis TTL (runtime configurable) and allows watching more ads to stack limits indefinitely.<br>- [ ] All limit thresholds and boost increments are loaded dynamically from environment settings. | ✅ | P0 |
 
 ---
 

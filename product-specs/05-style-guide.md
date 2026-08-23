@@ -102,8 +102,8 @@ All UI transitions use **critically damped springs** (no distraction, smooth set
 
 ### 3. Rewarded Ad Modal
 - **Container:** Centered frosted glass overlay modal (`surface-translucent`, `radius-xl` 16px).
-- **Header:** Icon + Title *"Unlock 60-Minute Session Pass"* + Subtitle *"Watch a 15-second ad to process up to 50 pages & 30MB"*.
-- **Actions:** Primary CTA **[Watch Ad & Convert]** (Electric Indigo) + Secondary **[Cancel]** (Ghost button).
+- **Header:** Icon + Title *"Unlock Stackable Limit Boost"* + Subtitle *"Watch a 15-second ad to add +15 pages & +20MB to your session limit (watch multiple ads to stack limits indefinitely up to 500MB/500+ pages)"*.
+- **Actions:** Primary CTA **[Watch Ad to Stack Boost]** (Electric Indigo) + Secondary **[Cancel]** (Ghost button).
 
 ### 4. 35-Second Rotating Ad Slot Component
 - **Container:** Secondary card container (`surface-card`) placed above the fold on Landing & Download pages.

@@ -100,13 +100,16 @@ erDiagram
 
 *TTL Policy:* Redis key expires automatically in **86,400 seconds (24 hours)**.
 
-#### `ad_pass:{client_ip}` (Redis String Token)
+#### `ad_pass:{client_ip}` (Redis Hash / JSON Token)
 | Field | Type | Description |
 |-------|------|-------------|
-| `pass_token` | string | Active rewarded ad session pass token |
-| `granted_at` | timestamp | Timestamp when 15-second rewarded ad completed |
+| `ads_watched_count` | integer | Total rewarded video ads watched in current session |
+| `boosted_max_pages` | integer | Active allowed page count limit (`BASE_MAX_PAGES + (ads_watched_count * BOOST_PER_AD_PAGES)`) |
+| `boosted_max_file_mb` | integer | Active allowed file size limit in MB (`BASE_MAX_FILE_MB + (ads_watched_count * BOOST_PER_AD_MB)`) |
+| `last_ad_watched_at` | timestamp | Timestamp when most recent 15-second rewarded ad was completed |
 
-*TTL Policy:* Redis key expires automatically in **3,600 seconds (60 minutes)**.
+*TTL Policy:* Redis key expires automatically in **`SESSION_BOOST_TTL_SECONDS` (default 3,600s, runtime configurable)**.  
+*Runtime Configuration:* All limit caps (`BASE_MAX_PAGES`, `BASE_MAX_FILE_MB`), per-ad boost increments (`BOOST_PER_AD_PAGES`, `BOOST_PER_AD_MB`), and TTL durations are dynamically loaded from environment settings at runtime.
 
 ---
 
@@ -193,6 +196,6 @@ erDiagram
 | **Download Text** | `GET` | `/api/v1/jobs/{job_id}/download/txt` | No (MVP) | Yes | Downloads plain `.txt` file |
 | **Download Markdown**| `GET` | `/api/v1/jobs/{job_id}/download/md` | No (MVP) | Yes | Downloads formatted `.md` file |
 | **Send Email Links**| `POST` | `/api/v1/ocr/email-links` | No (MVP) | Yes | Emails 24h download links & triggers instant input file purge |
-| **Rewarded Ad Callback**| `POST` | `/api/v1/ads/rewarded-callback`| No (MVP) | Yes | Validates ad completion token & sets 60-min Redis session pass |
+| **Rewarded Ad Callback**| `POST` | `/api/v1/ads/rewarded-callback`| No (MVP) | Yes | Validates ad completion token & atomically increments stackable session limit boost (+15 pages / +20MB, runtime configurable) |
 | **Decrypt PDF** | `POST` | `/api/v1/ocr/decrypt` | No (MVP) | Yes | Accepts password for encrypted PDFs & resumes OCR |
 | **Health Check** | `GET` | `/healthz` | No | No | GCP Cloud Run load balancer health check probe |
