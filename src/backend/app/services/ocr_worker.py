@@ -5,6 +5,7 @@ import tempfile
 import datetime
 import pymupdf
 from app.redis_client import get_redis_client, DEV_JOB_STORE
+from app.services.pdf_composer import compose_searchable_pdf
 
 
 def _publish_event(job_id: str, payload: dict) -> None:
@@ -81,8 +82,13 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
 
         doc.close()
 
+        # Compose searchable PDF output with invisible text layer
+        is_image = not filename.lower().endswith(".pdf")
+        _, output_pdf_token = compose_searchable_pdf(
+            job_id, pages_data, file_bytes, is_image=is_image
+        )
+
         # Emit COMPLETED status and store final payload
-        output_pdf_token = f"pdf_token_{uuid.uuid4().hex[:12]}"
         completed_payload = {
             "job_id": job_id,
             "filename": filename,
