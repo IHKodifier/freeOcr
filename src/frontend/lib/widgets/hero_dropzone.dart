@@ -1,15 +1,18 @@
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import '../services/api_service.dart';
 
 class HeroDropzone extends StatefulWidget {
-  final Function(String jobId, String filename)? onUploadSuccess;
+  final Function(String jobId, String filename, int sizeInBytes)? onUploadSuccess;
+  final Function(List<BatchFileItem> batchItems)? onBatchUploadSuccess;
 
   const HeroDropzone({
     super.key,
     this.onUploadSuccess,
+    this.onBatchUploadSuccess,
   });
 
   @override
@@ -20,74 +23,181 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   bool _isDragging = false;
   bool _isHovered = false;
   bool _isUploading = false;
-  String? _uploadingFileName;
+  
+  List<BatchFileItem> _batchItems = [];
+  int _currentProcessingIndex = -1;
 
   Future<void> _pickFileWithDialog() async {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+        allowMultiple: true,
         withData: true,
       );
 
       if (result != null && result.files.isNotEmpty) {
-        final file = result.files.first;
-        final bytes = file.bytes;
-        if (bytes != null) {
-          await _processAndUploadFile(file.name, file.size, bytes);
+        final List<Map<String, dynamic>> rawFiles = [];
+        for (final file in result.files) {
+          if (file.bytes != null) {
+            rawFiles.add({
+              'filename': file.name,
+              'size': file.size,
+              'bytes': file.bytes!,
+            });
+          }
         }
+        await _processMultipleFiles(rawFiles);
       }
     } catch (e) {
+      debugPrint('[HeroDropzone] FilePicker Error: $e');
       _showToast('Error opening file picker: $e', isError: true);
     }
   }
 
-  Future<void> _processAndUploadFile(
+  Future<void> _processMultipleFiles(List<Map<String, dynamic>> rawFiles) async {
+    final List<BatchFileItem> validItems = [];
+    final allowedExts = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const maxBytes = 10 * 1024 * 1024; // 10MB
+
+    for (int i = 0; i < rawFiles.length; i++) {
+      final String filename = rawFiles[i]['filename'] as String;
+      final int size = rawFiles[i]['size'] as int;
+      final Uint8List bytes = rawFiles[i]['bytes'] as Uint8List;
+
+      final lowerName = filename.toLowerCase();
+      final hasValidExt = allowedExts.any((ext) => lowerName.endsWith(ext));
+
+      if (!hasValidExt) {
+        _showToast('Skipped $filename: Unsupported format.', isError: true);
+        continue;
+      }
+
+      if (size == 0) {
+        _showToast('Skipped $filename: Empty 0-byte file.', isError: true);
+        continue;
+      }
+
+      if (size > maxBytes) {
+        _showToast('Skipped $filename: Exceeds 10MB limit.', isError: true);
+        continue;
+      }
+
+      validItems.add(
+        BatchFileItem(
+          id: 'file_${DateTime.now().millisecondsSinceEpoch}_$i',
+          filename: filename,
+          sizeInBytes: size,
+          bytes: bytes,
+        ),
+      );
+    }
+
+    if (validItems.isEmpty) return;
+
+    if (validItems.length == 1) {
+      // Single file upload path
+      final item = validItems.first;
+      await _processSingleUpload(item.filename, item.sizeInBytes, item.bytes);
+      return;
+    }
+
+    // Multi-file batch queue upload path
+    setState(() {
+      _isUploading = true;
+      _batchItems = validItems;
+      _currentProcessingIndex = 0;
+    });
+
+    for (int i = 0; i < _batchItems.length; i++) {
+      setState(() {
+        _currentProcessingIndex = i;
+        _batchItems[i].status = 'UPLOADING';
+      });
+
+      final item = _batchItems[i];
+      final result = await ApiService.uploadDocument(
+        filename: item.filename,
+        bytes: item.bytes,
+        onProgress: (sent, total) {
+          if (mounted) {
+            setState(() {
+              item.sentBytes = sent;
+              item.totalBytes = total > 0 ? total : item.sizeInBytes;
+            });
+          }
+        },
+      );
+
+      if (mounted) {
+        setState(() {
+          if (result.isSuccess && result.jobId != null) {
+            item.jobId = result.jobId;
+            item.status = 'QUEUED';
+          } else {
+            item.status = 'FAILED';
+            item.errorMessage = result.errorMessage ?? 'Upload failed.';
+          }
+        });
+      }
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _isUploading = false;
+    });
+
+    _showToast('Batch upload completed (${_batchItems.length} files queued)!');
+
+    if (widget.onBatchUploadSuccess != null) {
+      widget.onBatchUploadSuccess!(_batchItems);
+    }
+  }
+
+  Future<void> _processSingleUpload(
     String filename,
     int sizeInBytes,
     Uint8List bytes,
   ) async {
-    final lowerName = filename.toLowerCase();
-    final allowedExts = ['.pdf', '.jpg', '.jpeg', '.png'];
-
-    final hasValidExt = allowedExts.any((ext) => lowerName.endsWith(ext));
-    if (!hasValidExt) {
-      _showToast('Unsupported file format.', isError: true);
-      return;
-    }
-
-    if (sizeInBytes == 0) {
-      _showToast('File is empty. Please select a valid document.', isError: true);
-      return;
-    }
-
-    const maxBytes = 10 * 1024 * 1024; // 10MB
-    if (sizeInBytes > maxBytes) {
-      _showToast('File size exceeds free tier limit of 10MB.', isError: true);
-      return;
-    }
-
     setState(() {
       _isUploading = true;
-      _uploadingFileName = filename;
+      _batchItems = [
+        BatchFileItem(
+          id: 'single_${DateTime.now().millisecondsSinceEpoch}',
+          filename: filename,
+          sizeInBytes: sizeInBytes,
+          bytes: bytes,
+          status: 'UPLOADING',
+        )
+      ];
+      _currentProcessingIndex = 0;
     });
 
+    final item = _batchItems.first;
     final result = await ApiService.uploadDocument(
       filename: filename,
       bytes: bytes,
+      onProgress: (sent, total) {
+        if (mounted) {
+          setState(() {
+            item.sentBytes = sent;
+            item.totalBytes = total > 0 ? total : sizeInBytes;
+          });
+        }
+      },
     );
 
     if (!mounted) return;
 
     setState(() {
       _isUploading = false;
-      _uploadingFileName = null;
     });
 
     if (result.isSuccess && result.jobId != null) {
-      _showToast('Document uploaded successfully! Job ID: ${result.jobId}');
+      _showToast('Uploaded $filename (${formatBytes(sizeInBytes)}) • Job ID: ${result.jobId}');
       if (widget.onUploadSuccess != null) {
-        widget.onUploadSuccess!(result.jobId!, filename);
+        widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
       }
     } else {
       _showToast(result.errorMessage ?? 'Upload failed.', isError: true);
@@ -115,16 +225,26 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     final colorScheme = theme.colorScheme;
     final isActive = _isDragging || _isHovered;
 
+    int totalBatchBytes = _batchItems.fold(0, (sum, item) => sum + item.sizeInBytes);
+
     return DropTarget(
       onDragEntered: (_) => setState(() => _isDragging = true),
       onDragExited: (_) => setState(() => _isDragging = false),
       onDragDone: (details) async {
         setState(() => _isDragging = false);
         if (details.files.isNotEmpty) {
-          final file = details.files.first;
-          final bytes = await file.readAsBytes();
-          final length = await file.length();
-          await _processAndUploadFile(file.name, length, bytes);
+          final List<Map<String, dynamic>> rawFiles = [];
+          for (final file in details.files) {
+            final bytes = await file.readAsBytes();
+            final length = await file.length();
+            rawFiles.add({
+              'filename': file.name,
+              'size': length,
+              'bytes': bytes,
+            });
+          }
+          debugPrint('[HeroDropzone] Dropped ${rawFiles.length} file(s)');
+          await _processMultipleFiles(rawFiles);
         }
       },
       child: MouseRegion(
@@ -134,7 +254,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           width: double.infinity,
-          constraints: const BoxConstraints(maxWidth: 680, minHeight: 280),
+          constraints: const BoxConstraints(maxWidth: 680, minHeight: 300),
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
@@ -161,14 +281,170 @@ class _HeroDropzoneState extends State<HeroDropzone> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (_isUploading) ...[
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text(
-                  'Uploading ${_uploadingFileName ?? "file"}...',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: colorScheme.primary,
+                if (_batchItems.length > 1) ...[
+                  // Multi-File Batch Progress Header
+                  Text(
+                    'Batch Upload Queue (${_batchItems.length} Files • ${formatBytes(totalBatchBytes)})',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _batchItems.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 10),
+
+                    itemBuilder: (context, index) {
+                      final item = _batchItems[index];
+                      final isCurrent = index == _currentProcessingIndex;
+
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: isCurrent
+                              ? colorScheme.primaryContainer.withValues(alpha: 0.3)
+                              : colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isCurrent ? colorScheme.primary : colorScheme.outlineVariant,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              item.filename.toLowerCase().endsWith('.pdf')
+                                  ? Icons.picture_as_pdf
+                                  : Icons.image,
+                              color: colorScheme.primary,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.filename,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    '${getFileTypeDescription(item.filename)} • ${formatBytes(item.sizeInBytes)}',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            if (item.status == 'UPLOADING') ...[
+                              Text(
+                                '${(item.uploadProgress * 100).round()}%',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ] else if (item.status == 'QUEUED' || item.status == 'COMPLETED') ...[
+                              Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
+                            ] else if (item.status == 'FAILED') ...[
+                              Icon(Icons.error, color: colorScheme.error, size: 20),
+                            ] else ...[
+                              Text(
+                                'Queued',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ] else ...[
+                  // Single File Upload Badge & Progress Bar
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: colorScheme.outlineVariant),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _batchItems.first.filename.toLowerCase().endsWith('.pdf')
+                              ? Icons.picture_as_pdf
+                              : Icons.image,
+                          color: colorScheme.primary,
+                          size: 32,
+                        ),
+                        const SizedBox(width: 14),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _batchItems.first.filename,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${getFileTypeDescription(_batchItems.first.filename)} • ${formatBytes(_batchItems.first.sizeInBytes)}',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Uploading to OCR Engine... ${(_batchItems.first.uploadProgress * 100).round()}%',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: colorScheme.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${formatBytes(_batchItems.first.sentBytes)} / ${formatBytes(_batchItems.first.totalBytes)}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: 320,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: LinearProgressIndicator(
+                        value: _batchItems.first.uploadProgress,
+                        minHeight: 10,
+                        backgroundColor: colorScheme.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                      ),
+                    ),
+                  ),
+                ],
               ] else ...[
                 AnimatedScale(
                   scale: isActive ? 1.1 : 1.0,
@@ -188,7 +464,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Drag & Drop PDF or Image',
+                  'Drag & Drop PDFs or Images',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.onSurface,
@@ -197,7 +473,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Supports PDF, JPG, PNG up to 10MB • 100% Free & Ephemeral',
+                  'Supports Single or Multiple PDF, JPG, PNG files up to 10MB each',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -207,7 +483,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                 FilledButton.icon(
                   onPressed: _pickFileWithDialog,
                   icon: const Icon(Icons.file_open_outlined),
-                  label: const Text('Select File'),
+                  label: const Text('Select Files'),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                     shape: RoundedRectangleBorder(
