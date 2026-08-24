@@ -5,7 +5,7 @@ import datetime
 from fastapi import APIRouter, UploadFile, File, Request, HTTPException, status
 from fastapi.responses import JSONResponse
 from app.config import settings
-from app.redis_client import get_redis_client
+from app.redis_client import get_redis_client, DEV_JOB_STORE
 
 router = APIRouter()
 
@@ -61,12 +61,101 @@ async def convert_document(
             "status": "QUEUED",
             "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         }
-        redis_client.set(f"job:{job_id}", json.dumps(job_payload))
+        json_str = json.dumps(job_payload)
+        redis_client.set(f"job:{job_id}", json_str)
+        DEV_JOB_STORE[job_id] = json_str
     except Exception:
-        # Fallback in case Redis fails locally in test/dev
-        pass
+        job_payload = {
+            "job_id": job_id,
+            "filename": filename,
+            "file_size": file_size,
+            "status": "QUEUED",
+            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        }
+        DEV_JOB_STORE[job_id] = json.dumps(job_payload)
 
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
         content={"job_id": job_id, "status": "QUEUED"}
     )
+
+
+@router.get("/jobs/{job_id}/events")
+async def job_events_stream(job_id: str, request: Request):
+    """
+    Server-Sent Events (SSE) stream for real-time progress updates on a job.
+    Subscribes to Redis Pub/Sub channel 'job_events:{job_id}' and streams updates.
+    """
+    import asyncio
+    from fastapi.responses import StreamingResponse
+
+    async def event_generator():
+        redis_client = get_redis_client()
+        pubsub = redis_client.pubsub()
+        channel_name = f"job_events:{job_id}"
+        pubsub.subscribe(channel_name)
+
+        try:
+            # Check for initial job state in Redis
+            try:
+                job_key = f"job:{job_id}"
+                initial_data = redis_client.get(job_key)
+                if initial_data:
+                    if isinstance(initial_data, bytes):
+                        initial_data = initial_data.decode("utf-8")
+                    yield f"data: {initial_data}\n\n"
+                    parsed = json.loads(initial_data)
+                    if parsed.get("status") in ["COMPLETED", "FAILED"]:
+                        return
+            except Exception:
+                pass
+
+            # Listen for pubsub messages
+            messages = pubsub.listen()
+            if isinstance(messages, (list, tuple)):
+                for message in messages:
+                    if message and message.get("type") == "message":
+                        raw_data = message.get("data")
+                        if isinstance(raw_data, bytes):
+                            raw_data = raw_data.decode("utf-8")
+                        yield f"data: {raw_data}\n\n"
+                        try:
+                            parsed = json.loads(raw_data)
+                            if parsed.get("status") in ["COMPLETED", "FAILED"]:
+                                break
+                        except Exception:
+                            pass
+            else:
+                while True:
+                    if await request.is_disconnected():
+                        break
+                    message = pubsub.get_message(ignore_subscribe_messages=True, timeout=0.1)
+                    if message and message.get("type") == "message":
+                        raw_data = message.get("data")
+                        if isinstance(raw_data, bytes):
+                            raw_data = raw_data.decode("utf-8")
+                        yield f"data: {raw_data}\n\n"
+                        try:
+                            parsed = json.loads(raw_data)
+                            if parsed.get("status") in ["COMPLETED", "FAILED"]:
+                                break
+                        except Exception:
+                            pass
+                    await asyncio.sleep(0.05)
+        finally:
+            try:
+                pubsub.unsubscribe(channel_name)
+                pubsub.close()
+            except Exception:
+                pass
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
