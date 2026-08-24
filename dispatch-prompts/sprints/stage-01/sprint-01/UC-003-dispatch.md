@@ -1,4 +1,4 @@
-# TASK DISPATCH: Implement UC-003 (Baidu PaddleOCR-VL 1.6 Worker & tmpfs RAM Disk)
+# TASK DISPATCH: Implement UC-003 (Baidu PaddleOCR-VL 1.6 Worker & Ephemeral RAM Disk Management)
 
 > **Ticket:** `UC-003`  
 > **Sprint:** `Sprint 01` (Core Conversion Engine)  
@@ -12,12 +12,14 @@
 You are an AI coding assistant working on **freeOCR.me**. Before writing ANY code or running tools:
 1. **Read Canonical Governance Rules:** Read [`.agents/AGENTS.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/.agents/AGENTS.md) using `view_file`.
 2. **Strict Authorization Protocol (Rule 2.1):** You MUST NOT run `git commit` or `git push` without explicit user instruction. All commits stay local and require explicit user staging/approval.
-3. **TDD Mandate:** All automated tests in `src/tests/` and `src/frontend/test/` MUST be written BEFORE implementation logic.
+3. **TDD Mandate:** All automated unit & integration tests in `src/tests/` MUST be written BEFORE implementation logic.
 4. **Branching:** Work on feature branch `sprint/sprint-01-uc-003` checked out from `dev`. NEVER push directly to `main`.
+5. **Privacy & RAM Disk Lifecycle:** Uploaded files MUST be processed in `tmpfs` RAM disk (or OS temp directory) with `try ... finally` context manager guaranteeing file deletion immediately after processing.
 
 ---
 
 ## 2. Master Product Spec Reference
+
 - Master PRD: [`product-specs/08-master-prd.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/08-master-prd.md)
 - Use Case Tickets: [`product-specs/06a-use-case-tickets.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06a-use-case-tickets.md)
 - Master Tracker: [`trackers/master-tracker.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/trackers/master-tracker.md)
@@ -29,59 +31,54 @@ You are an AI coding assistant working on **freeOCR.me**. Before writing ANY cod
 ## 3. Ticket Specification — UC-003
 
 **Ticket ID:** UC-003  
-**Name:** Baidu PaddleOCR-VL 1.6 Worker Execution & `tmpfs` RAM Disk Management  
+**Name:** Baidu PaddleOCR-VL 1.6 Worker Execution & Ephemeral RAM Disk Management  
 **Epic:** Epic 1 (Zero-Friction Conversion Engine)  
-**Actor:** Celery GPU/CPU Worker Process  
-**Trigger:** Celery worker pops job task from Redis queue.  
+**Actor:** Local OCR Worker Process / FastAPI Task Runner  
+**Trigger:** Receipt of `{job_id}` and uploaded file from UC-001.  
 
 ### Preconditions
-- [x] `UC-001` and `UC-002` completed and merged into `dev`.
+- [x] UC-001 and UC-002 completed and verified.
 - [ ] Active branch set to `sprint/sprint-01-uc-003` checked out from `dev`.
-- [ ] Redis broker running (`redis://localhost:6379/0`).
+- [ ] PyMuPDF (`fitz`), Pillow, PyTesseract / PaddleOCR Python packages available in environment.
 
 ### Main Implementation Steps
 
-1. **Celery Worker App & Hardware Detection (`src/backend/app/worker.py` & `app/core/ocr_engine.py`):**
-   - Initialize Celery worker application with Redis broker & result backend.
-   - Implement hardware GPU/CPU auto-detection logic (`use_gpu=True` if CUDA is available, fallback `use_gpu=False` on CPU).
-   - Load local PaddleOCR / PyMuPDF OCR extraction engine instance.
+1. **OCR Worker Engine (`src/backend/app/services/ocr_worker.py`):**
+   - Implement `process_ocr_job(job_id: str, file_bytes: bytes, filename: str)` function.
+   - Use `try ... finally` block to write `file_bytes` to ephemeral temp path (`/tmp/ephemeral_<job_id>.pdf` or OS RAM temp) and guarantee `os.remove()` in `finally:`.
+   - Render PDF pages to images using PyMuPDF (`fitz`) or Pillow.
+   - Run page-by-page OCR extraction to obtain recognized text lines and bounding polygon coordinates `[x_min, y_min, x_max, y_max]`.
+   - As each page completes, publish real-time JSON event payload to Redis channel `job_events:{job_id}` (`{"job_id": job_id, "status": "PROCESSING", "current_page": N, "total_pages": M}`).
+   - Upon completing all pages, publish final `COMPLETED` payload (`{"job_id": job_id, "status": "COMPLETED", "output_pdf_token": "<token>"}`) and store OCR result structured dict in memory/cache.
 
-2. **Ephemeral `tmpfs` RAM Disk Manager (`src/backend/app/core/ram_disk.py`):**
-   - Create RAM disk manager handling temporary document writes in Linux `/dev/shm` (or OS RAM temp directory).
-   - Guarantee instant file unlinking and memory purge immediately upon page processing completion or failure.
+2. **Backend API Integration (`src/backend/app/api/v1/endpoints/ocr.py`):**
+   - Trigger `process_ocr_job` asynchronously (or via background task) upon receiving upload in `POST /api/v1/ocr/convert`.
 
-3. **Page-by-Page OCR Loop & Redis Progress Publisher:**
-   - Iterate through document pages extracting text content, layout bounding boxes, and confidence metrics.
-   - Publish real-time JSON events to Redis channel `job_events:{job_id}`:
-     `{"current_page": X, "total_pages": Y, "status": "PROCESSING"}`.
-   - Upon completion, store result payload in Redis key `job:{job_id}` and emit `COMPLETED` event with `output_pdf_token`.
+3. **TDD Automated Test Suite (`src/tests/test_ocr_worker.py`):**
+   - Test `process_ocr_job` with sample PDF & image fixtures.
+   - Verify `finally:` block executes `os.remove()` even if an exception occurs during OCR inference.
+   - Verify Redis Pub/Sub events are published for each processed page.
+   - Verify final state transition to `COMPLETED`.
 
-4. **TDD Automated Test Suite (`src/tests/test_ocr_worker.py`):**
-   - Unit/Integration tests for:
-     - GPU/CPU auto-detection fallback logic.
-     - RAM disk file creation, isolation, and immediate unlinking/purging.
-     - Page processing loop & Redis Pub/Sub message publication.
-
-5. **Hierarchical Tracker Maintenance:**
+4. **Hierarchical Tracker Maintenance:**
    - Update Sprint 1 tracker (`07.01.01-tracker.md`), Stage tracker (`07.01-tracker.md`), and Master tracker (`master-tracker.md`).
 
 ---
 
 ## 4. Acceptance Criteria (EARS Testable)
 
-- **AC-1:** WHEN a worker pops a job THE SYSTEM SHALL auto-detect hardware and run OCR in GPU mode if CUDA is present or CPU mode if CUDA is absent.
-- **AC-2:** WHEN raw file bytes are written for processing THE SYSTEM SHALL store them in RAM disk (`tmpfs`) and purge them immediately upon job completion or error.
-- **AC-3:** AS each page OCR task finishes THE SYSTEM SHALL publish a JSON progress event to `job_events:{job_id}` within 100ms.
+- **AC-1:** WHEN OCR worker processes a document or encounters an exception THE SYSTEM SHALL execute `os.remove()` on the input file in `finally:` block ensuring 0 bytes remain on disk.
+- **AC-2:** WHEN each page finishes OCR recognition THE SYSTEM SHALL emit an SSE event containing `current_page` and `total_pages` within 100ms.
+- **AC-3:** WHEN all pages finish processing THE SYSTEM SHALL transition job status to `COMPLETED` and emit `output_pdf_token`.
 
 ---
 
 ## 5. Definition of Done Checklist for Agent
 
 - [ ] Feature branch `sprint/sprint-01-uc-003` checked out from `dev`.
-- [ ] Automated backend tests in `src/tests/test_ocr_worker.py` created and passing 100% green.
-- [ ] Celery worker task & CPU/GPU fallback OCR engine implemented.
-- [ ] Ephemeral `tmpfs` RAM disk manager created with auto-purge guarantee.
-- [ ] Page-by-page Redis Pub/Sub progress publisher verified.
-- [ ] Backlog trackers updated.
+- [ ] Automated unit tests in `src/tests/test_ocr_worker.py` created and passing 100% green.
+- [ ] `ocr_worker.py` implemented with `try ... finally` RAM disk file cleanup.
+- [ ] Page-by-page OCR extraction and Redis Pub/Sub progress event publishing verified.
+- [ ] Backlog trackers (`07.01.01-tracker.md`, `07.01-tracker.md`, `master-tracker.md`) updated.
 - [ ] Definition of Done artifact (`definition_of_done.md`) created.
 - [ ] Final execution report delivered to user.
