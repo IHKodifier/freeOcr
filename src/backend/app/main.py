@@ -2,6 +2,7 @@ from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from .database import check_database_connection
 from .redis_client import check_redis_connection
+from .api.v1.router import api_router
 
 app = FastAPI(
     title="freeOCR.me Backend API",
@@ -16,6 +17,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(api_router, prefix="/api/v1")
+
 
 
 @app.get("/api/v1/health", status_code=status.HTTP_200_OK)

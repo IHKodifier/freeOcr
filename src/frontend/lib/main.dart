@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
+import 'widgets/hero_dropzone.dart';
 
 void main() {
   runApp(const FreeOcrApp());
@@ -33,32 +34,43 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('freeOCR.me'),
         backgroundColor: colorScheme.surfaceContainer,
+        centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.document_scanner,
-              size: 64,
-              color: colorScheme.primary,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.document_scanner,
+                  size: 56,
+                  color: colorScheme.primary,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Scanned PDF to Searchable PDF/Text',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '100% Free & Privacy Ephemeral • Zero Registration',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: colorScheme.tertiary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const HeroDropzone(),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Scanned PDF to Searchable PDF/Text',
-              style: theme.textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '100% Free & Privacy Ephemeral',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.tertiary,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
+

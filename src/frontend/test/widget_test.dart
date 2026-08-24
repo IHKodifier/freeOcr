@@ -8,7 +8,7 @@ void main() {
 
     expect(find.text('freeOCR.me'), findsOneWidget);
     expect(find.text('Scanned PDF to Searchable PDF/Text'), findsOneWidget);
-    expect(find.text('100% Free & Privacy Ephemeral'), findsOneWidget);
+    expect(find.textContaining('100% Free & Privacy Ephemeral'), findsOneWidget);
 
     final MaterialApp app = tester.widget(find.byType(MaterialApp));
     expect(app.theme?.useMaterial3, isTrue);
