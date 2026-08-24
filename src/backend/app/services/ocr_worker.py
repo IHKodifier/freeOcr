@@ -1,0 +1,120 @@
+import os
+import json
+import uuid
+import tempfile
+import datetime
+import pymupdf
+from app.redis_client import get_redis_client, DEV_JOB_STORE
+
+
+def _publish_event(job_id: str, payload: dict) -> None:
+    json_str = json.dumps(payload)
+    try:
+        redis_client = get_redis_client()
+        redis_client.publish(f"job_events:{job_id}", json_str)
+    except Exception:
+        pass
+
+
+def _store_job(job_id: str, payload: dict) -> None:
+    json_str = json.dumps(payload)
+    DEV_JOB_STORE[job_id] = json_str
+    try:
+        redis_client = get_redis_client()
+        redis_client.set(f"job:{job_id}", json_str)
+    except Exception:
+        pass
+
+
+def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
+    """
+    Executes page-by-page OCR extraction on uploaded PDF or image file bytes.
+    Saves file bytes to ephemeral RAM disk temp location, extracts page text & bounding boxes,
+    emits real-time SSE progress events to Redis channel job_events:{job_id},
+    and guarantees ephemeral file deletion in a finally block (AC-1).
+    """
+    ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
+    temp_filepath = os.path.join(ram_disk_base, f"ephemeral_{job_id}_{filename}")
+
+    try:
+        # Write bytes to ephemeral RAM disk path
+        with open(temp_filepath, "wb") as f:
+            f.write(file_bytes)
+
+        # Open document with PyMuPDF
+        doc = pymupdf.open(temp_filepath)
+        total_pages = len(doc)
+        pages_data = []
+
+        for page_index in range(total_pages):
+            page_num = page_index + 1
+            page = doc[page_index]
+            page_text = page.get_text("text").strip()
+
+            blocks = page.get_text("blocks")
+            lines_data = []
+            for b in blocks:
+                # Filter text blocks (type 0)
+                if len(b) >= 5 and b[5] == 0:
+                    x0, y0, x1, y1, block_text = b[0], b[1], b[2], b[3], b[4]
+                    lines_data.append({
+                        "bbox": [round(x0, 2), round(y0, 2), round(x1, 2), round(y1, 2)],
+                        "text": block_text.strip()
+                    })
+
+            pages_data.append({
+                "page_number": page_num,
+                "text": page_text,
+                "lines": lines_data
+            })
+
+            # Emit processing progress event for page
+            progress_payload = {
+                "job_id": job_id,
+                "status": "PROCESSING",
+                "current_page": page_num,
+                "total_pages": total_pages,
+                "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+            }
+            _publish_event(job_id, progress_payload)
+            _store_job(job_id, progress_payload)
+
+        doc.close()
+
+        # Emit COMPLETED status and store final payload
+        output_pdf_token = f"pdf_token_{uuid.uuid4().hex[:12]}"
+        completed_payload = {
+            "job_id": job_id,
+            "filename": filename,
+            "status": "COMPLETED",
+            "current_page": total_pages,
+            "total_pages": total_pages,
+            "output_pdf_token": output_pdf_token,
+            "pages": pages_data,
+            "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+        }
+
+        _publish_event(job_id, completed_payload)
+        _store_job(job_id, completed_payload)
+        return completed_payload
+
+    except Exception as e:
+        error_msg = str(e)
+        failed_payload = {
+            "job_id": job_id,
+            "filename": filename,
+            "status": "FAILED",
+            "error_message": error_msg,
+            "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+        }
+        _publish_event(job_id, failed_payload)
+        _store_job(job_id, failed_payload)
+        return failed_payload
+
+    finally:
+        # Guarantee ephemeral RAM disk file deletion
+        if os.path.exists(temp_filepath):
+            try:
+                os.remove(temp_filepath)
+            except Exception:
+                pass

@@ -75,10 +75,10 @@ You are an AI coding assistant working on **freeOCR.me**. Before writing ANY cod
 
 ## 5. Definition of Done Checklist for Agent
 
-- [ ] Feature branch `sprint/sprint-01-uc-003` checked out from `dev`.
-- [ ] Automated unit tests in `src/tests/test_ocr_worker.py` created and passing 100% green.
-- [ ] `ocr_worker.py` implemented with `try ... finally` RAM disk file cleanup.
-- [ ] Page-by-page OCR extraction and Redis Pub/Sub progress event publishing verified.
-- [ ] Backlog trackers (`07.01.01-tracker.md`, `07.01-tracker.md`, `master-tracker.md`) updated.
-- [ ] Definition of Done artifact (`definition_of_done.md`) created.
-- [ ] Final execution report delivered to user.
+- [x] Feature branch `sprint/sprint-01-uc-003` checked out from `dev`.
+- [x] Automated unit tests in `src/tests/test_ocr_worker.py` created and passing 100% green.
+- [x] `ocr_worker.py` implemented with `try ... finally` RAM disk file cleanup.
+- [x] Page-by-page OCR extraction and Redis Pub/Sub progress event publishing verified.
+- [x] Backlog trackers (`07.01.01-tracker.md`, `07.01-tracker.md`, `master-tracker.md`) updated.
+- [x] Definition of Done artifact (`definition_of_done.md`) created.
+- [x] Final execution report delivered to user.

@@ -2,10 +2,11 @@ import os
 import uuid
 import json
 import datetime
-from fastapi import APIRouter, UploadFile, File, Request, HTTPException, status
+from fastapi import APIRouter, UploadFile, File, Request, HTTPException, status, BackgroundTasks
 from fastapi.responses import JSONResponse
 from app.config import settings
 from app.redis_client import get_redis_client, DEV_JOB_STORE
+from app.services.ocr_worker import process_ocr_job
 
 router = APIRouter()
 
@@ -13,12 +14,13 @@ router = APIRouter()
 @router.post("/convert", status_code=status.HTTP_202_ACCEPTED)
 async def convert_document(
     request: Request,
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...)
 ):
     """
     Endpoint for uploading PDF/image files for OCR conversion.
     Validates extension, file size, empty content, increments IP rate limit,
-    stores job metadata in Redis, and returns HTTP 202 with job_id.
+    stores job metadata in Redis, triggers background OCR worker, and returns HTTP 202 with job_id.
     """
     filename = file.filename or ""
     _, ext = os.path.splitext(filename)
@@ -50,29 +52,25 @@ async def convert_document(
     client_ip = request.client.host if request.client else "127.0.0.1"
     job_id = str(uuid.uuid4())
 
+    job_payload = {
+        "job_id": job_id,
+        "filename": filename,
+        "file_size": file_size,
+        "status": "QUEUED",
+        "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    }
+
     try:
         redis_client = get_redis_client()
         redis_client.incr(f"ip_limit:{client_ip}")
-
-        job_payload = {
-            "job_id": job_id,
-            "filename": filename,
-            "file_size": file_size,
-            "status": "QUEUED",
-            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        }
         json_str = json.dumps(job_payload)
         redis_client.set(f"job:{job_id}", json_str)
         DEV_JOB_STORE[job_id] = json_str
     except Exception:
-        job_payload = {
-            "job_id": job_id,
-            "filename": filename,
-            "file_size": file_size,
-            "status": "QUEUED",
-            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        }
         DEV_JOB_STORE[job_id] = json.dumps(job_payload)
+
+    # Trigger async background OCR worker task
+    background_tasks.add_task(process_ocr_job, job_id=job_id, file_bytes=content, filename=filename)
 
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
