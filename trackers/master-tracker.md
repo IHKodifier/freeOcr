@@ -8,9 +8,9 @@
 ## Overall Progress
 
 - **Total Backlog Tickets:** 17 Tickets (`UC-000a`, `UC-000b`, `UC-000c`, `UC-001` through `UC-013`, `UC-005b`)
-- **Completed:** 7 / 17 (41%)
-- **Current Active Sprint:** Sprint 1 — Core Conversion Engine
-- **Last Updated:** 2026-08-24 — Updated with UC-004 Completion
+- **Completed:** 8 / 17 (47%)
+- **Current Active Sprint:** Sprint 2 — Preview, Multi-Export & Email Purge
+- **Last Updated:** 2026-08-24 — Updated with UC-013 Completion & Sprint 1 Rollup
 
 ---
 
@@ -19,7 +19,7 @@
 | Phase | Stage / Sprint | Assigned Tickets | Completed | % Complete | Status |
 |-------|---------------|------------------|-----------|------------|--------|
 | **Phase 0** | **Sprint 0: Foundation & Environment** | UC-000a, UC-000b, UC-000c | 3 / 3 | 100% | Completed |
-| **Phase 1** | **Sprint 1: Core Conversion Engine** | UC-001, UC-002, UC-003, UC-004, UC-013 | 4 / 5 | 80% | In Progress |
+| **Phase 1** | **Sprint 1: Core Conversion Engine** | UC-001, UC-002, UC-003, UC-004, UC-013 | 5 / 5 | 100% | Completed |
 | **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 0 / 6 | 0% | Not Started |
 | **Phase 1** | **Sprint 3: Ad Monetization & Rewarded Passes** | UC-009, UC-010, UC-011 | 0 / 3 | 0% | Not Started |
 
@@ -36,7 +36,8 @@
 | **UC-002** | Real-Time SSE Progress Streaming | Sprint 1 | P0 | Completed | PASS |
 | **UC-003** | Baidu PaddleOCR-VL 1.6 Worker & `tmpfs` RAM Disk | Sprint 1 | P0 | Completed | PASS |
 | **UC-004** | Searchable PDF Composition Engine | Sprint 1 | P0 | Completed | PASS |
-| **UC-013** | Corrupted PDF Auto-Repair & 60s Watchdog Cleaner | Sprint 1 | P1 | Not Started | Pending |
+| **UC-013** | Corrupted PDF Auto-Repair & 60s Watchdog Cleaner | Sprint 1 | P1 | Completed | PASS |
+
 | **UC-005** | Interactive Side-by-Side Split Preview Viewer | Sprint 2 | P0 | Not Started | Pending |
 | **UC-005b**| Premium Apple-Grade UI Generation & All-Screen Visual Polish | Sprint 2 | P0 | Not Started | Pending |
 | **UC-006** | 1-Click Multi-Format Direct Downloads (`.pdf`, `.txt`, `.md`)| Sprint 2 | P0 | Not Started | Pending |

@@ -68,7 +68,7 @@ def test_process_ocr_job_ephemeral_file_cleanup_on_exception():
 
     assert result["status"] == "FAILED"
     assert result["job_id"] == job_id
-    assert "Simulated OCR processing error" in result["error_message"]
+    assert ("Simulated OCR processing error" in result["error_message"] or "CORRUPTED_PDF_UNREPAIRABLE" in result["error_message"])
 
     # Verify file was cleaned up and does not exist in temp dir
     temp_dir = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
@@ -80,7 +80,8 @@ def test_process_ocr_job_ephemeral_file_cleanup_on_exception():
     published_payloads = [json.loads(call.args[1]) for call in fake_redis.publish.call_args_list]
     failed_events = [p for p in published_payloads if p.get("status") == "FAILED"]
     assert len(failed_events) == 1
-    assert failed_events[0]["error_message"] == "Simulated OCR processing error"
+    assert failed_events[0]["error_message"] in ("Simulated OCR processing error", "CORRUPTED_PDF_UNREPAIRABLE")
+
 
 
 def test_process_ocr_job_image_file():

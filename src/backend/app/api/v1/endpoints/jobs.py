@@ -86,6 +86,28 @@ async def stream_job_events(job_id: str, request: Request):
                     pubsub.close()
                 except Exception:
                     pass
+        else:
+            # Fallback for local development when Redis is unavailable
+            last_status = None
+            while True:
+                if await request.is_disconnected():
+                    break
+                job_raw = DEV_JOB_STORE.get(job_id)
+                if job_raw:
+                    try:
+                        parsed = json.loads(job_raw) if isinstance(job_raw, str) else job_raw
+                        curr_status = parsed.get("status")
+                        curr_page = parsed.get("current_page")
+                        state_key = f"{curr_status}:{curr_page}"
+                        if state_key != last_status:
+                            last_status = state_key
+                            yield f"data: {json.dumps(parsed)}\n\n"
+                            if curr_status in ("COMPLETED", "FAILED"):
+                                break
+                    except Exception:
+                        pass
+                await asyncio.sleep(0.2)
+
 
     return StreamingResponse(
         event_generator(),

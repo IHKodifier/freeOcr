@@ -6,6 +6,7 @@ import datetime
 import pymupdf
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.pdf_composer import compose_searchable_pdf
+from app.services.pdf_repair import repair_pdf
 
 
 def _publish_event(job_id: str, payload: dict) -> None:
@@ -42,8 +43,32 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
         with open(temp_filepath, "wb") as f:
             f.write(file_bytes)
 
-        # Open document with PyMuPDF
-        doc = pymupdf.open(temp_filepath)
+        # Open document with PyMuPDF (with repair fallback)
+        try:
+            doc = pymupdf.open(temp_filepath)
+        except Exception as open_err:
+            if filename.lower().endswith(".pdf"):
+                repair_payload = {
+                    "job_id": job_id,
+                    "filename": filename,
+                    "status": "REPAIRING",
+                    "message": "Attempting PDF repair...",
+                    "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+                }
+                _publish_event(job_id, repair_payload)
+                _store_job(job_id, repair_payload)
+
+                success, repaired_bytes, error_code = repair_pdf(file_bytes)
+                if success:
+                    file_bytes = repaired_bytes
+                    with open(temp_filepath, "wb") as f:
+                        f.write(file_bytes)
+                    doc = pymupdf.open(temp_filepath)
+                else:
+                    raise ValueError(error_code or "CORRUPTED_PDF_UNREPAIRABLE")
+            else:
+                raise open_err
+
         total_pages = len(doc)
         pages_data = []
 
