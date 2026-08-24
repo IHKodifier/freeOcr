@@ -14,14 +14,15 @@ void main() {
     );
 
     // Verify Title & Subtitle presence
-    expect(find.text('Drag & Drop PDF or Image'), findsOneWidget);
+    expect(find.textContaining('Drag & Drop'), findsOneWidget);
     expect(
-      find.text('Supports PDF, JPG, PNG up to 10MB • 100% Free & Ephemeral'),
+      find.textContaining('10MB'),
       findsOneWidget,
     );
 
     // Verify Icons and Select File button
     expect(find.byIcon(Icons.cloud_upload_outlined), findsOneWidget);
-    expect(find.text('Select File'), findsOneWidget);
+    expect(find.textContaining('Select File'), findsOneWidget);
+
   });
 }

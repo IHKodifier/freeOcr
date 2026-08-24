@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
+import 'services/api_service.dart';
 import 'widgets/hero_dropzone.dart';
+import 'widgets/ocr_progress_view.dart';
 
 void main() {
   runApp(const FreeOcrApp());
@@ -22,13 +24,51 @@ class FreeOcrApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? _activeJobId;
+  String? _activeFilename;
+  int? _activeFileSize;
+  List<BatchFileItem> _batchItems = [];
+
+  void _onUploadSuccess(String jobId, String filename, int sizeInBytes) {
+    setState(() {
+      _activeJobId = jobId;
+      _activeFilename = filename;
+      _activeFileSize = sizeInBytes;
+      _batchItems = [];
+    });
+  }
+
+  void _onBatchUploadSuccess(List<BatchFileItem> items) {
+    setState(() {
+      _batchItems = items;
+      _activeJobId = null;
+      _activeFilename = null;
+      _activeFileSize = null;
+    });
+  }
+
+  void _resetConversion() {
+    setState(() {
+      _activeJobId = null;
+      _activeFilename = null;
+      _activeFileSize = null;
+      _batchItems = [];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final bool hasActiveItems = _activeJobId != null || _batchItems.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +104,19 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const HeroDropzone(),
+                if (!hasActiveItems)
+                  HeroDropzone(
+                    onUploadSuccess: _onUploadSuccess,
+                    onBatchUploadSuccess: _onBatchUploadSuccess,
+                  )
+                else
+                  OcrProgressView(
+                    jobId: _activeJobId,
+                    filename: _activeFilename,
+                    fileSize: _activeFileSize,
+                    batchItems: _batchItems.isNotEmpty ? _batchItems : null,
+                    onReset: _resetConversion,
+                  ),
               ],
             ),
           ),
@@ -73,4 +125,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
