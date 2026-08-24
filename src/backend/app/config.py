@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./dev.db"
     REDIS_URL: str = "redis://localhost:6379/0"
     ENVIRONMENT: str = "development"
+    FREE_TIER_MAX_FILE_MB: int = 10
+    ALLOWED_EXTENSIONS: set = {".pdf", ".jpg", ".jpeg", ".png"}
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -15,3 +17,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
