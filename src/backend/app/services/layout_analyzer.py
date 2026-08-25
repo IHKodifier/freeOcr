@@ -11,10 +11,12 @@ from typing import Dict, Any
 
 class LayoutAnalyzer:
     @staticmethod
-    def analyze_pdf_bytes(pdf_bytes: bytes) -> Dict[str, Any]:
+    def analyze_pdf_bytes(pdf_bytes: bytes, password: str = None) -> Dict[str, Any]:
         """Inspects PDF layout structure and returns complexity classification."""
         try:
             doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+            if doc.is_encrypted and password:
+                doc.authenticate(password)
             total_pages = len(doc)
             is_complex = False
             reasons = []

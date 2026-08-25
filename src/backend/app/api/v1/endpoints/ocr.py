@@ -4,8 +4,10 @@ import json
 import datetime
 import glob
 import tempfile
+from typing import Optional
+import fitz
 from pydantic import BaseModel
-from fastapi import APIRouter, UploadFile, File, Request, HTTPException, status, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, Form, Request, HTTPException, status, BackgroundTasks
 from fastapi.responses import JSONResponse
 from app.config import settings, load_canonical_config
 from app.redis_client import get_redis_client, DEV_JOB_STORE
@@ -117,7 +119,8 @@ async def email_download_links(req: EmailDeliveryRequest, request: Request):
 async def convert_document(
     request: Request,
     background_tasks: BackgroundTasks,
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
+    password: Optional[str] = Form(None)
 ):
     """
     Endpoint for uploading PDF/image files for OCR conversion.
@@ -143,6 +146,29 @@ async def convert_document(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="File is empty. Please select a valid document."
         )
+
+    if ext == ".pdf":
+        try:
+            doc = fitz.open(stream=content, filetype="pdf")
+            if doc.is_encrypted:
+                auth_success = False
+                if password:
+                    res = doc.authenticate(password)
+                    if res > 0:
+                        auth_success = True
+                doc.close()
+                if not auth_success:
+                    return JSONResponse(
+                        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                        content={
+                            "error": "PASSWORD_REQUIRED",
+                            "message": "Password Protected PDF. Please provide password to unlock."
+                        }
+                    )
+            else:
+                doc.close()
+        except Exception:
+            pass
 
     # Load single canonical global config
     cfg = load_canonical_config()
@@ -175,7 +201,7 @@ async def convert_document(
         )
 
     # Perform Document Layout & Complexity Analysis
-    analysis = LayoutAnalyzer.analyze_pdf_bytes(content)
+    analysis = LayoutAnalyzer.analyze_pdf_bytes(content, password=password)
     complexity = analysis["complexity"]
     target_engine = analysis["target_engine"]
     target_queue = analysis["target_queue"]
@@ -233,7 +259,8 @@ async def convert_document(
         file_bytes=content,
         filename=filename,
         target_engine=target_engine,
-        queue_name=target_queue
+        queue_name=target_queue,
+        password=password
     )
 
     return JSONResponse(

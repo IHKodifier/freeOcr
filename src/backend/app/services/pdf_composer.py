@@ -10,7 +10,8 @@ def compose_searchable_pdf(
     job_id: str,
     pages_data: list[dict],
     original_file_bytes: bytes,
-    is_image: bool = False
+    is_image: bool = False,
+    password: str = None
 ) -> tuple[bytes, str]:
     """
     Overlays invisible text (render_mode=3) onto PDF or image pages using bounding box metadata from OCR.
@@ -30,6 +31,8 @@ def compose_searchable_pdf(
             img_doc.close()
         else:
             doc = pymupdf.open(stream=original_file_bytes, filetype="pdf")
+            if doc.is_encrypted and password:
+                doc.authenticate(password)
 
         for page_idx, page_info in enumerate(pages_data):
             if page_idx < len(doc):

@@ -23,9 +23,23 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   bool _isDragging = false;
   bool _isHovered = false;
   bool _isUploading = false;
-  
+
+  bool _isPasswordRequired = false;
+  bool _isUnlocking = false;
+  String? _passwordError;
+  final TextEditingController _passwordController = TextEditingController();
+  Uint8List? _lockedFileBytes;
+  String? _lockedFilename;
+  int? _lockedFileSize;
+
   List<BatchFileItem> _batchItems = [];
   int _currentProcessingIndex = -1;
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   Future<void> _pickFileWithDialog() async {
     try {
@@ -158,8 +172,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   Future<void> _processSingleUpload(
     String filename,
     int sizeInBytes,
-    Uint8List bytes,
-  ) async {
+    Uint8List bytes, {
+    String? password,
+  }) async {
     setState(() {
       _isUploading = true;
       _batchItems = [
@@ -178,6 +193,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     final result = await ApiService.uploadDocument(
       filename: filename,
       bytes: bytes,
+      password: password,
       onProgress: (sent, total) {
         if (mounted) {
           setState(() {
@@ -195,12 +211,57 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     });
 
     if (result.isSuccess && result.jobId != null) {
+      setState(() {
+        _isPasswordRequired = false;
+        _passwordError = null;
+        _lockedFileBytes = null;
+        _lockedFilename = null;
+        _lockedFileSize = null;
+      });
       _showToast('Uploaded $filename (${formatBytes(sizeInBytes)}) • Job ID: ${result.jobId}');
       if (widget.onUploadSuccess != null) {
         widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
       }
+    } else if (result.isPasswordRequired) {
+      setState(() {
+        _isPasswordRequired = true;
+        _lockedFileBytes = bytes;
+        _lockedFilename = filename;
+        _lockedFileSize = sizeInBytes;
+        if (password != null && password.isNotEmpty) {
+          _passwordError = 'Incorrect password. Please try again.';
+        } else {
+          _passwordError = null;
+        }
+      });
     } else {
       _showToast(result.errorMessage ?? 'Upload failed.', isError: true);
+    }
+  }
+
+  Future<void> _submitPasswordUnlock() async {
+    if (_lockedFileBytes == null || _lockedFilename == null || _lockedFileSize == null) return;
+    final password = _passwordController.text.trim();
+    if (password.isEmpty) {
+      setState(() {
+        _passwordError = 'Please enter password to unlock.';
+      });
+      return;
+    }
+    setState(() {
+      _isUnlocking = true;
+      _passwordError = null;
+    });
+    await _processSingleUpload(
+      _lockedFilename!,
+      _lockedFileSize!,
+      _lockedFileBytes!,
+      password: password,
+    );
+    if (mounted) {
+      setState(() {
+        _isUnlocking = false;
+      });
     }
   }
 
@@ -280,7 +341,102 @@ class _HeroDropzoneState extends State<HeroDropzone> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (_isUploading) ...[
+              if (_isPasswordRequired) ...[
+                Container(
+                  constraints: const BoxConstraints(maxWidth: 480),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _passwordError != null ? colorScheme.error : colorScheme.primary.withValues(alpha: 0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.lock_person_outlined,
+                        size: 44,
+                        color: _passwordError != null ? colorScheme.error : colorScheme.primary,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Password Protected PDF',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${_lockedFilename ?? "This PDF"} is password-protected. Enter password to unlock:',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          hintText: 'Enter PDF Password',
+                          prefixIcon: const Icon(Icons.key_outlined),
+                          errorText: _passwordError,
+                          filled: true,
+                          fillColor: colorScheme.surface,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onSubmitted: (_) => _submitPasswordUnlock(),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordRequired = false;
+                                _passwordError = null;
+                                _lockedFileBytes = null;
+                                _lockedFilename = null;
+                                _lockedFileSize = null;
+                                _passwordController.clear();
+                              });
+                            },
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                            child: const Text('Cancel'),
+                          ),
+                          const SizedBox(width: 12),
+                          FilledButton.icon(
+                            onPressed: _isUnlocking ? null : _submitPasswordUnlock,
+                            icon: _isUnlocking
+                                ? const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  )
+                                : const Icon(Icons.lock_open_outlined, size: 18),
+                            label: Text(_isUnlocking ? 'Unlocking...' : 'Unlock & Process'),
+                            style: FilledButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ] else if (_isUploading) ...[
                 if (_batchItems.length > 1) ...[
                   // Multi-File Batch Progress Header
                   Text(

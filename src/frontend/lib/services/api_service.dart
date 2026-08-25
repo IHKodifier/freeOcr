@@ -9,12 +9,14 @@ class UploadResult {
   final String? jobId;
   final String? status;
   final String? errorMessage;
+  final bool isPasswordRequired;
 
   UploadResult({
     required this.isSuccess,
     this.jobId,
     this.status,
     this.errorMessage,
+    this.isPasswordRequired = false,
   });
 }
 
@@ -113,6 +115,7 @@ class ApiService {
   static Future<UploadResult> uploadDocument({
     required String filename,
     required Uint8List bytes,
+    String? password,
     Function(int sentBytes, int totalBytes)? onProgress,
   }) async {
     try {
@@ -132,6 +135,10 @@ class ApiService {
           }
         },
       );
+
+      if (password != null && password.isNotEmpty) {
+        request.fields['password'] = password;
+      }
 
       request.files.add(
         http.MultipartFile.fromBytes(
@@ -156,9 +163,13 @@ class ApiService {
         );
       } else {
         String detail = 'Upload failed with status code ${response.statusCode}';
+        bool isPasswordReq = false;
         try {
           final data = jsonDecode(response.body) as Map<String, dynamic>;
-          if (data.containsKey('detail')) {
+          if (data.containsKey('error') && data['error'] == 'PASSWORD_REQUIRED') {
+            isPasswordReq = true;
+            detail = data['message'] as String? ?? 'Password Protected PDF. Please provide password to unlock.';
+          } else if (data.containsKey('detail')) {
             detail = data['detail'] as String;
           }
         } catch (_) {}
@@ -166,6 +177,7 @@ class ApiService {
         debugPrint('[API Upload Error] $detail');
         return UploadResult(
           isSuccess: false,
+          isPasswordRequired: isPasswordReq,
           errorMessage: detail,
         );
       }

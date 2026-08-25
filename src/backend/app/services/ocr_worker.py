@@ -48,7 +48,8 @@ def process_ocr_job(
     file_bytes: bytes,
     filename: str,
     target_engine: str = "OCRmyPDF",
-    queue_name: str = "ocr:queue:cpu"
+    queue_name: str = "ocr:queue:cpu",
+    password: str = None
 ) -> dict:
     """
     Executes page-by-page OCR extraction on uploaded PDF or image file bytes.
@@ -68,6 +69,13 @@ def process_ocr_job(
         # Open document with PyMuPDF (with repair fallback)
         try:
             doc = pymupdf.open(temp_filepath)
+            if doc.is_encrypted:
+                if password:
+                    res = doc.authenticate(password)
+                    if not res:
+                        raise ValueError("PASSWORD_REQUIRED: Password Protected PDF.")
+                else:
+                    raise ValueError("PASSWORD_REQUIRED: Password Protected PDF.")
         except Exception as open_err:
             if filename.lower().endswith(".pdf"):
                 repair_payload = {
@@ -193,7 +201,7 @@ def process_ocr_job(
         # Compose searchable PDF output with invisible text layer
         is_image = not filename.lower().endswith(".pdf")
         _, output_pdf_token = compose_searchable_pdf(
-            job_id, pages_data, file_bytes, is_image=is_image
+            job_id, pages_data, file_bytes, is_image=is_image, password=password
         )
 
         # Emit COMPLETED status and store final payload
