@@ -96,6 +96,15 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     }
   }
 
+  Future<void> _refreshPreviewData(String jobId) async {
+    final data = await ApiService.fetchJobPreview(jobId);
+    if (mounted && data != null && data.containsKey('pages')) {
+      setState(() {
+        _previewData = data;
+      });
+    }
+  }
+
   void _subscribeToSingleSse(String jobId) {
     _subscriptions[jobId]?.cancel();
     _subscriptions[jobId] = SseService.listenToJobEvents(jobId).listen(
@@ -112,8 +121,12 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               _errorMessage = event.errorMessage;
             }
           });
+          if (event.status == 'COMPLETED') {
+            _refreshPreviewData(jobId);
+          }
         }
       },
+
       onError: (error) {
         if (mounted) {
           setState(() {

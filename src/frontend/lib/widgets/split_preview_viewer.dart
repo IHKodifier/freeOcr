@@ -1,6 +1,10 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../services/api_service.dart';
+
+
 
 class SplitPreviewViewer extends StatefulWidget {
   final String jobId;
@@ -26,31 +30,93 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   bool _isMarkdownMode = false;
   late TextEditingController _textEditingController;
   bool _copiedToClipboard = false;
+  late List<dynamic> _pages;
+  bool _isReloading = false;
+  Timer? _pollTimer;
 
   @override
   void initState() {
     super.initState();
+    _pages = List.from(widget.pages);
     _textEditingController = TextEditingController();
     _updateTextForCurrentPage();
+
+    // Auto-reload preview data if lines are empty (e.g. backend OCR worker was still processing)
+    if (_hasEmptyLines()) {
+      _reloadPreviewData();
+      _startPollingForLines();
+    }
+  }
+
+  void _startPollingForLines() {
+    _pollTimer?.cancel();
+    _pollTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      await _reloadPreviewData();
+      if (!_hasEmptyLines() || timer.tick >= 30) {
+        timer.cancel();
+      }
+    });
+  }
+
+  bool _hasEmptyLines() {
+    if (_pages.isEmpty) return true;
+    for (final page in _pages) {
+      final lines = page['lines'] as List<dynamic>? ?? [];
+      if (lines.isEmpty) return true;
+    }
+    return false;
+  }
+
+  Future<void> _reloadPreviewData() async {
+    if (_isReloading) return;
+    setState(() {
+      _isReloading = true;
+    });
+
+    final data = await ApiService.fetchJobPreview(widget.jobId);
+    if (mounted) {
+      setState(() {
+        _isReloading = false;
+        if (data != null && data.containsKey('pages')) {
+          _pages = data['pages'] as List<dynamic>? ?? [];
+          _updateTextForCurrentPage();
+          if (!_hasEmptyLines()) {
+            _pollTimer?.cancel();
+          }
+        }
+      });
+    }
   }
 
   @override
   void didUpdateWidget(covariant SplitPreviewViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.pages != widget.pages) {
-      _updateTextForCurrentPage();
+      setState(() {
+        _pages = List.from(widget.pages);
+        _updateTextForCurrentPage();
+      });
+      if (_hasEmptyLines()) {
+        _reloadPreviewData();
+        _startPollingForLines();
+      }
     }
   }
 
   void _updateTextForCurrentPage() {
-    if (widget.pages.isNotEmpty && _currentPageIndex < widget.pages.length) {
-      final pageData = widget.pages[_currentPageIndex];
+    if (_pages.isNotEmpty && _currentPageIndex < _pages.length) {
+      final pageData = _pages[_currentPageIndex];
       final rawText = pageData['text'] as String? ?? '';
       _textEditingController.text = rawText;
     } else {
       _textEditingController.text = '';
     }
   }
+
 
   void _goToPreviousPage() {
     if (_currentPageIndex > 0) {
@@ -93,6 +159,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
 
   @override
   void dispose() {
+    _pollTimer?.cancel();
     _textEditingController.dispose();
     super.dispose();
   }
@@ -101,10 +168,10 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final totalPages = widget.pages.length;
+    final totalPages = _pages.length;
     final currentPageNum = totalPages > 0 ? _currentPageIndex + 1 : 0;
-    final currentLines = widget.pages.isNotEmpty && _currentPageIndex < widget.pages.length
-        ? (widget.pages[_currentPageIndex]['lines'] as List<dynamic>? ?? [])
+    final currentLines = _pages.isNotEmpty && _currentPageIndex < _pages.length
+        ? (_pages[_currentPageIndex]['lines'] as List<dynamic>? ?? [])
         : [];
 
     return Container(
@@ -180,6 +247,20 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           ),
           const SizedBox(width: 12),
 
+          // Reload Bounding Blocks Button
+          IconButton(
+            icon: _isReloading
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.refresh, size: 20),
+            onPressed: _isReloading ? null : _reloadPreviewData,
+            tooltip: 'Reload Bounding Blocks & Extracted Text',
+          ),
+          const SizedBox(width: 8),
+
           // Page Navigation Controls
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -229,6 +310,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
       ),
     );
   }
+
 
   Widget _buildSplitView(ThemeData theme, ColorScheme colorScheme, double totalWidth, List<dynamic> currentLines) {
     const minPaneWidth = 250.0;
@@ -360,18 +442,43 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
               ),
               child: currentLines.isEmpty
                   ? Center(
-                      child: Text(
-                        'No layout blocks detected on page.',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey.shade600,
-                          fontStyle: FontStyle.italic,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: CircularProgressIndicator(strokeWidth: 3),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'OCRmyPDF Layout Processing in Progress...',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Text(
+                              'Extracting text blocks... Bounding blocks will update automatically.',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.grey.shade600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
                       ),
                     )
+
+
                   : ListView.separated(
                       itemCount: currentLines.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      separatorBuilder: (_, _) => const SizedBox(height: 8),
                       itemBuilder: (context, index) {
+
                         final block = currentLines[index];
                         final bbox = block['bbox'] as List<dynamic>? ?? [];
                         final blockText = block['text'] as String? ?? '';

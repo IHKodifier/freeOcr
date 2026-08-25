@@ -126,21 +126,25 @@ async def get_job_preview(job_id: str):
     Returns extracted text blocks and page layout metadata for an OCR job.
     Returns 404 if job_id is expired or invalid.
     """
-    redis_client = get_redis_client()
     job_data_bytes = None
-    try:
-        job_data_bytes = redis_client.get(f"job:{job_id}")
-    except Exception:
-        job_data_bytes = None
 
-    if not job_data_bytes and job_id in DEV_JOB_STORE:
+    # Check in-memory DEV_JOB_STORE first for immediate dev updates
+    if job_id in DEV_JOB_STORE:
         job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes: 
+        try:
+            redis_client = get_redis_client()
+            job_data_bytes = redis_client.get(f"job:{job_id}")
+        except Exception:
+            job_data_bytes = None
 
     if not job_data_bytes:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Job not found or expired."
         )
+
 
     try:
         data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
