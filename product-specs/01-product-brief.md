@@ -15,7 +15,7 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 
 ## The Insight
 
-High-accuracy AI OCR engine capabilities (such as Baidu PaddleOCR-VL 1.6 - 0.9B) can deliver near-perfect text extraction and layout preservation. By combining backend AI processing with an aggressive zero-retention privacy policy (purging uploaded files immediately post-processing, even before download begins) and a rewarded-ad tier system, **freeOCR.me** can deliver superior OCR quality for free while establishing an infrastructure ready for subscription and developer API monetisation.
+High-accuracy AI OCR engine capabilities (such as Baidu's Unlimited OCR AI Model) can deliver near-perfect text extraction and layout preservation for complex documents, while standard OCR (OCRmyPDF) handles simple single-column documents efficiently on CPU. By combining backend layout pre-processing, dual CPU/GPU scale-to-zero engine routing, an aggressive zero-retention privacy policy, and a rewarded-ad tier system, **freeOCR.me** can deliver superior OCR quality for free while keeping GCP infrastructure costs at absolute zero during idle periods.
 
 ---
 
@@ -61,9 +61,9 @@ High-accuracy AI OCR engine capabilities (such as Baidu PaddleOCR-VL 1.6 - 0.9B)
 
 | Differentiator | Why It Matters | Why Competitors Can't Just Copy It |
 |---------------|---------------|-------------------------------------|
-| **Superior AI Accuracy & Layout Preservation** | Retains original text positions, tables, and document structures without garbling fonts | Powered by backend AI OCR integration (Baidu PaddleOCR-VL 1.6 - 0.9B) rather than basic client-side WASM |
+| **Superior AI Accuracy & Layout Preservation** | Retains original text positions, tables, and document structures without garbling fonts | Powered by dual-engine architecture: OCRmyPDF on CPU for simple layouts; Baidu's Unlimited OCR AI Model on GPU for complex layouts |
 | **Zero-Retention Ephemeral Privacy** | Guarantees user data is deleted immediately upon OCR completion (before download starts) and never trained on | Core architectural mandate built into backend pipeline, eliminating compliance risk |
-| **Rewarded Ad Limit Expansion** | Gives non-paying users a way to convert larger documents without forcing an immediate paywall | Integrated rewarded ad mechanics tailored specifically for high-utility productivity workflows |
+| **Rewarded Ad Limit Expansion** | Gives non-paying users a way to convert larger documents without forcing an immediate paywall | Integrated stackable rewarded ad mechanics with sliding 60-minute expiration resetting on each ad view |
 | **Day-1 API & Multi-Tenant Readiness** | Allows seamless transition from web utility to scalable SaaS platform without architectural rewrite | Designed from inception with decoupled API authentication, rate-limiting, and credit schemas |
 
 ---
@@ -71,12 +71,12 @@ High-accuracy AI OCR engine capabilities (such as Baidu PaddleOCR-VL 1.6 - 0.9B)
 ## Constraints & Flagged Assumptions
 
 ### Constraints
-- **Backend Dependency:** OCR cannot run purely client-side in browser WASM; backend server must handle Baidu PaddleOCR-VL 1.6 (0.9B) inference execution/API communication securely.
+- **Backend Dependency:** OCR cannot run purely client-side in browser WASM; backend server must handle Baidu's Unlimited OCR AI Model (~6 GB download size) inference execution and CPU OCRmyPDF routing.
 - **Ephemeral Storage Lifecycle:** Input files must be purged immediately post-conversion to honour zero-retention guarantee.
 - **Ad Compliance:** Web ad networks must support rewarded video/interstitial ad mechanics cleanly across desktop and mobile web.
 
 ### Flagged Assumptions
-- **Cost Margin:** Baidu PaddleOCR-VL 1.6 (0.9B) conversion cost / compute overhead per page is sufficiently low to remain profitable under an ad-supported revenue model.
+- **Cost Margin & Scale-to-Zero:** Baidu's Unlimited OCR AI Model single-pass efficiency combined with CPU routing for simple layouts and scale-to-zero GCP policy ensures compute overhead per page is low and profitable under an ad-supported model.
 - **User Trust:** Clear, transparent privacy badges and instant deletion guarantees will drive organic user adoption over legacy tools.
 
 ---

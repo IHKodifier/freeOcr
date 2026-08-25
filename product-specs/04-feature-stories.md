@@ -12,9 +12,9 @@
 
 | # | Epic Name | Business & User Goal | MVP? | Complexity | Priority |
 |---|-----------|----------------------|------|-----------|---------|
-| **E1** | **Zero-Friction Conversion Engine** | Instant drag-and-drop file upload, SSE progress streaming, PaddleOCR-VL 1.6 execution | ✅ | High | P0 |
+| **E1** | **Zero-Friction Conversion Engine** | Instant file upload, post-upload layout analysis, dual CPU/GPU routing, SSE progress, Baidu Unlimited OCR | ✅ | High | P0 |
 | **E2** | **Preview & Multi-Format Export** | Interactive split viewer, 3-format downloads (`.pdf`, `.txt`, `.md`), email link delivery & purge | ✅ | Medium | P0 |
-| **E3** | **Ad Monetization & Rewarded Boosts** | 35-second ad rotation timer, limit detection, stackable rewarded ad limit boosts (runtime configurable) | ✅ | Medium | P0 |
+| **E3** | **Ad Monetization & Rewarded Boosts** | 35-second ad rotation timer, limit detection, stackable rewarded ad limit boosts with sliding 60m TTL resets | ✅ | Medium | P0 |
 | **E4** | **PDF Error Handling & Auto-Repair** | Password-in-place decryption, corrupted scan repair, 60s `tmpfs` watchdog cleaner | ✅ | Medium | P1 |
 | **E5** | **Firebase Auth & Paid Subscriptions** | User accounts, Stripe billing, ad-free experience, opt-in GCS user vault | ❌ | High | P2 (Post-MVP) |
 | **E6** | **Developer API & Native App Compilations** | API keys, usage metered rate-limits, native iOS/Android/Desktop Flutter builds | ❌ | High | P3 (At Scale) |
@@ -23,17 +23,19 @@
 
 ## Epic 1: Zero-Friction Conversion Engine
 
-**Goal:** Allow users to upload scanned PDFs/images on the landing hero and convert them using Baidu PaddleOCR-VL 1.6 (0.9B) without account registration.  
+**Goal:** Allow users to upload scanned PDFs/images on the landing hero, analyze layout complexity, and convert them using OCRmyPDF (CPU) or Baidu Unlimited OCR AI Model (~6 GB) without account registration.  
 **Traces to:** `01-product-brief.md` — Core problem (inaccurate OCR, paywalls, untrusted servers).
 
 ### User Stories
 
 | ID | Story | Acceptance Criteria | MVP? | Priority |
 |----|-------|---------------------|------|---------|
-| **US-101** | As an anonymous user, I want to drag & drop a PDF/image onto the hero zone so that my file is validated instantly. | - [ ] Dropzone highlights on file drag hover.<br>- [ ] Validates format (`.pdf`, `.png`, `.jpg`, `.jpeg`).<br>- [ ] Checks page cap & file size against `config.py` defaults.<br>- [ ] Displays instant error toast if format invalid. | ✅ | P0 |
-| **US-102** | As an uploading user, I want real-time conversion progress so that I know the system is actively processing my pages. | - [ ] Initiates Server-Sent Events (SSE) stream (`GET /api/v1/jobs/{job_id}/events`).<br>- [ ] Displays progress bar with page indicator (`Page 3 of 8 converted... 37%`).<br>- [ ] Displays subtle micro-animation during processing. | ✅ | P0 |
-| **US-103** | As the backend OCR engine, I want to process files in a Linux `tmpfs` RAM disk so that zero customer data touches persistent disk storage. | - [ ] Incoming PDF written to RAM disk (`/tmp/ephemeral_<job_id>.pdf`).<br>- [ ] PaddleOCR-VL 1.6 executes PyTorch/Paddle vision-language inference.<br>- [ ] Input file unlinked from RAM disk instantly upon job completion via Python context manager. | ✅ | P0 |
+| **US-101** | As an anonymous user, I want to drag & drop a PDF/image onto the hero zone so that my file is validated instantly. | - [ ] Dropzone highlights on file drag hover.<br>- [ ] Validates format (`.pdf`, `.png`, `.jpg`, `.jpeg`).<br>- [ ] Checks page cap & file size against single canonical `app_limits_config.json`.<br>- [ ] Displays instant error toast if format invalid. | ✅ | P0 |
+| **US-101a**| As the system, I want to analyze uploaded PDF layout complexity so that simple files route to CPU (OCRmyPDF) and complex files route to GPU (Baidu Unlimited OCR). | - [ ] Runs PyMuPDF structural analyzer on uploaded PDF.<br>- [ ] Identifies multi-column text, complex tables, and math formulas.<br>- [ ] Sets job complexity to `SIMPLE` or `COMPLEX` and dispatches to `ocr:queue:cpu` or `ocr:queue:gpu`. | ✅ | P0 |
+| **US-102** | As an uploading user, I want real-time conversion progress so that I know the system is actively processing my pages. | - [ ] Initiates Server-Sent Events (SSE) stream (`GET /api/v1/jobs/{job_id}/events`).<br>- [ ] Displays progress bar with page indicator & target engine badge (`CPU - OCRmyPDF` vs `GPU - Baidu Unlimited OCR`).<br>- [ ] Displays cold-start spin-up status toast if worker was idle. | ✅ | P0 |
+| **US-103** | As the backend OCR engine, I want to process files in a Linux `tmpfs` RAM disk so that zero customer data touches persistent disk storage. | - [ ] Incoming PDF written to RAM disk (`/tmp/ephemeral_<job_id>.pdf`).<br>- [ ] Baidu Unlimited OCR executes vision-language inference on GPU worker (or OCRmyPDF on CPU worker).<br>- [ ] Input file unlinked from RAM disk instantly upon job completion via Python context manager. | ✅ | P0 |
 | **US-104** | As a user downloading a searchable PDF, I want 100% original visual layout preservation so that the output matches my scan perfectly. | - [ ] Original scan embedded as high-res 300 DPI background.<br>- [ ] Bounding polygon coordinates `[x_min, y_min, x_max, y_max]` map text precisely.<br>- [ ] Transparent (invisible) text layer overlaid over matching coordinates via PyMuPDF/fitz.<br>- [ ] `Ctrl+F` search & text copy-paste functional across entire PDF. | ✅ | P0 |
+
 
 ---
 

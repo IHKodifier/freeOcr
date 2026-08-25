@@ -23,7 +23,7 @@ The complete specification suite for **freeOCR.me** has been systematically audi
 ## Audit Verification Checklist
 
 ### 1. Consistency Checks
-- [x] **Tech Stack ↔ Architecture:** FastAPI (Python 3.13.5), Baidu PaddleOCR-VL 1.6 (0.9B), Flutter Web, Redis, and Linux `tmpfs` RAM disk align 100% across `01b-tech-stack.md` and `02-architecture.md`.
+- [x] **Tech Stack ↔ Architecture:** FastAPI (Python 3.13.5), Baidu Unlimited OCR AI Model (~6 GB), OCRmyPDF, Flutter Web, Redis (dual queues), `app_limits_config.json`, and Linux `tmpfs` RAM disk align 100% across `01b-tech-stack.md` and `02-architecture.md`.
 - [x] **Story IDs ↔ Backlog:** Story IDs `US-101` through `US-602` map cleanly across `04-feature-stories.md`, `04b-mvp-scope.md`, `06a-use-case-tickets.md`, and `07-roadmap.md`.
 - [x] **MVP Scope ↔ Roadmap:** All 13 P0/P1 MVP-scoped tickets (`UC-001` to `UC-013`) are assigned to Phase 1 Sprints 1–3 in `07-roadmap.md` with no missing or duplicated tickets.
 - [x] **User Journeys ↔ Screen Inventory:** Every screen path in `03-user-journeys.md` (`/`, `/result/{job_id}`, Rewarded Ad Modal, Password Prompt) maps 1:1 to the Screen Inventory.

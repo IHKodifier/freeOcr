@@ -94,24 +94,25 @@
 
 **Main Flow**
 1. User drags `.pdf`, `.jpg`, `.png`, or `.jpeg` file onto hero dropzone.
-2. Flutter UI validates file extension and size.
-3. System checks Redis rate-limit counter (`ip_limit:{client_ip}`) and active session token (`ad_pass:{client_ip}`).
-4. If file is within `FREE_TIER_PAGE_LIMIT` and `FREE_TIER_MAX_FILE_MB`, HTTP `POST /api/v1/ocr/convert` payload is sent to FastAPI Gateway.
-5. FastAPI Gateway creates Redis job key `job:{job_id}` in `QUEUED` state.
+2. Flutter UI validates file extension and size against limits fetched from `GET /api/v1/config` (backed by `src/backend/app/app_limits_config.json`).
+3. System checks Redis 5-hour quota counters (`rate_limit:simple:{client_ip}` / `rate_limit:complex:{client_ip}`) and active session token (`ad_pass:{client_ip}`).
+4. If file is within limits, HTTP `POST /api/v1/ocr/convert` payload is sent to FastAPI Gateway.
+5. FastAPI Gateway invokes **UC-001a Layout Analyzer**, creates Redis job key `job:{job_id}`, and enqueues to `ocr:queue:cpu` (for simple) or `ocr:queue:gpu` (for complex).
 
 **Alternate Flows**
 - **A1 — Over Limit:** File exceeds free cap → Triggers **UC-010 (Rewarded Ad Modal)**.
-- **A2 — Rate Limited:** Daily IP limit reached → Displays toast: *"Daily limit reached. Watch an ad or return tomorrow."*
+- **A2 — Quota Exhausted:** 5-hour simple or complex quota reached → Displays toast: *"Quota reached for this 5-hour window. Watch a video ad or return later."*
 
 **Edge Cases & Error Handling**
 - [ ] Unsupported file format (e.g. `.exe`, `.docx`) → System shall display instant validation error toast and reject upload.
 - [ ] 0-byte file dropped → System shall display: *"File is empty. Please select a valid document."*
 
 **Postconditions**
-- Job metadata created in Redis in `QUEUED` state; client receives `{job_id}`.
+- Job metadata created in Redis in `QUEUED` state; target queue (`ocr:queue:cpu` / `ocr:queue:gpu`) receives task; client receives `{job_id}`.
 
 **Data & API Touchpoints**
-- Redis Model: `job:{job_id}`, `ip_limit:{client_ip}`
+- Config File: `src/backend/app/app_limits_config.json`
+- Redis Model: `job:{job_id}`, `rate_limit:simple:{client_ip}`, `rate_limit:complex:{client_ip}`, `ad_pass:{client_ip}`
 - Endpoint: `POST /api/v1/ocr/convert`
 
 **Acceptance Criteria (Testable)**
@@ -119,6 +120,30 @@
 - WHEN a user drops an invalid file extension THE SYSTEM SHALL reject the file client-side before sending HTTP request.
 
 **Estimate:** S | **Depends on:** None
+
+---
+
+### UC-001a: Document Layout & Complexity Pre-Processing Analyzer
+
+**Linked Story:** US-101a  
+**Actor:** FastAPI Backend Services  
+**Trigger:** Receipt of uploaded PDF in `POST /api/v1/ocr/convert`.  
+
+**Preconditions**
+- [ ] Valid PDF file bytes received by FastAPI handler.
+
+**Main Flow**
+1. FastAPI handler passes PDF stream to `LayoutAnalyzer` service.
+2. `LayoutAnalyzer` inspects page structure using PyMuPDF (`fitz`) to detect text block density, column alignment, tabular line grids, and math formula symbols.
+3. If layout is single-column without complex tables or formulas, classify as `SIMPLE`.
+4. If layout contains multi-column text, complex tables, or math formulas, classify as `COMPLEX`.
+5. Return complexity classification (`SIMPLE` / `COMPLEX`) to conversion router.
+
+**Acceptance Criteria (Testable)**
+- WHEN a single-column text PDF is analyzed THE SYSTEM SHALL classify it as `SIMPLE` and target `OCRmyPDF` on `ocr:queue:cpu`.
+- WHEN a multi-column or table-heavy PDF is analyzed THE SYSTEM SHALL classify it as `COMPLEX` and target `Baidu_Unlimited_OCR` on `ocr:queue:gpu`.
+
+**Estimate:** M | **Depends on:** UC-001
 
 ---
 
@@ -134,9 +159,9 @@
 **Main Flow**
 1. Flutter Web UI opens SSE connection `GET /api/v1/jobs/{job_id}/events`.
 2. FastAPI SSE handler subscribes to Redis pub/sub channel `job_events:{job_id}`.
-3. As Celery worker converts each page, worker emits JSON event: `{"current_page": 3, "total_pages": 8, "status": "PROCESSING"}`.
+3. As worker converts each page, worker emits JSON event: `{"current_page": 3, "total_pages": 8, "status": "PROCESSING", "target_engine": "CPU - OCRmyPDF"}`.
 4. SSE stream pushes payload to Flutter client.
-5. Flutter progress bar updates smoothly with progress percentage (`(3/8) * 100 = 37.5%`).
+5. Flutter progress bar updates smoothly with progress percentage and engine badge.
 
 **Edge Cases & Error Handling**
 - [ ] Network disconnect mid-stream → Flutter EventSource client automatically retries connection with `Last-Event-ID`.
@@ -149,28 +174,29 @@
 - Endpoint: `GET /api/v1/jobs/{job_id}/events`
 
 **Acceptance Criteria (Testable)**
-- WHEN a page OCR task finishes THE SYSTEM SHALL emit an SSE event containing `current_page` and `total_pages` within 100ms.
+- WHEN a page OCR task finishes THE SYSTEM SHALL emit an SSE event containing `current_page`, `total_pages`, and `target_engine` within 100ms.
 - WHEN job state transitions to `COMPLETED` THE SYSTEM SHALL emit final SSE event with `output_pdf_token`.
 
 **Estimate:** M | **Depends on:** UC-001
 
 ---
 
-### UC-003: Baidu PaddleOCR-VL 1.6 Worker Execution & `tmpfs` RAM Disk Management
+### UC-003: Baidu Unlimited OCR & OCRmyPDF Worker Execution & Scale-to-Zero `tmpfs` RAM Disk Management
 
 **Linked Story:** US-103  
-**Actor:** Celery GPU Worker Process  
-**Trigger:** Celery worker pops job task from Redis queue.  
+**Actor:** Celery CPU / GPU Worker Processes  
+**Trigger:** Worker pops job task from `ocr:queue:cpu` or `ocr:queue:gpu`.  
 
 **Preconditions**
-- [ ] Celery worker running Python 3.13.5 with PyTorch/PaddlePaddle dependencies on GCP.
+- [ ] CPU worker running OCRmyPDF (or GPU worker running Baidu Unlimited OCR ~6 GB AI Model).
+- [ ] Cold-start trigger automatically executed if worker instance was scaled to 0.
 
 **Main Flow**
-1. Celery worker reads PDF stream from Redis task payload.
+1. Worker reads PDF stream from Redis task payload.
 2. Worker writes PDF payload to Linux `tmpfs` RAM disk (`/tmp/ephemeral_<job_id>.pdf`).
 3. Python `try ... finally` context manager initialized.
-4. Worker invokes Baidu PaddleOCR-VL 1.6 (0.9B) model inference page-by-page.
-5. Output recognized text and 2D bounding polygon coordinates `[x_min, y_min, x_max, y_max]` returned in memory.
+4. If `ocr:queue:cpu`, execute `OCRmyPDF` subprocess. If `ocr:queue:gpu`, invoke Baidu Unlimited OCR AI Model (~6 GB) inference page-by-page.
+5. Output recognized text and 2D bounding polygon coordinates returned in memory.
 
 **Postconditions & Cleanup**
 - Python context manager `finally:` block executes `os.remove('/tmp/ephemeral_<job_id>.pdf')` immediately. 0 bytes remain on disk.
@@ -179,10 +205,10 @@
 - Storage: Linux `tmpfs` RAM disk (`/tmp`)
 
 **Acceptance Criteria (Testable)**
-- WHEN PaddleOCR-VL 1.6 inference finishes or raises an exception THE SYSTEM SHALL execute `os.remove()` on the input file in `finally:` block.
+- WHEN OCR inference finishes or raises an exception THE SYSTEM SHALL execute `os.remove()` on the input file in `finally:` block.
 - WHEN worker processes a page THE SYSTEM SHALL execute zero-disk persistence in RAM.
 
-**Estimate:** L | **Depends on:** UC-001
+**Estimate:** L | **Depends on:** UC-001, UC-001a
 
 ---
 
@@ -190,7 +216,7 @@
 
 **Linked Story:** US-104  
 **Actor:** Python PDF Builder (`PyMuPDF` / `fitz`)  
-**Trigger:** Completion of PaddleOCR-VL 1.6 bounding box extraction in UC-003.  
+**Trigger:** Completion of bounding box extraction in UC-003.  
 
 **Preconditions**
 - [ ] Original high-res page image raster available in RAM.
@@ -207,6 +233,7 @@
 - WHEN a user performs `Ctrl+F` text search in PDF reader THE SYSTEM SHALL match and highlight searched text.
 
 **Estimate:** H | **Depends on:** UC-003
+
 
 ---
 

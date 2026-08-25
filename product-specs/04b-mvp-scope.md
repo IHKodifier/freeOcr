@@ -17,7 +17,7 @@ Users actively seek a fast, highly accurate, layout-preserving AI OCR web utilit
 ## The Minimum Value Loop
 
 ```
-[Drop PDF on Hero] ──► [Live SSE Progress Stream] ──► [PaddleOCR-VL 1.6 Inference] ──► [Side-by-Side Interactive Preview] ──► [Direct Download (.pdf, .txt, .md) OR Email Links] ──► [Input File Purged]
+[Drop PDF on Hero] ──► [Layout Pre-Processing Analyzer] ──► [Live SSE Progress Stream] ──► [OCRmyPDF (CPU) or Baidu Unlimited OCR (GPU)] ──► [Side-by-Side Interactive Preview] ──► [Direct Download (.pdf, .txt, .md) OR Email Links] ──► [Input File Purged]
 ```
 
 ---
@@ -30,7 +30,7 @@ Users actively seek a fast, highly accurate, layout-preserving AI OCR web utilit
 |----------|---------|------------------|-----------|
 | **US-101** | Hero Drag & Drop File Upload | Core entry point; zero signup friction | Low |
 | **US-102** | Real-Time SSE Progress Streaming | Prevents user drop-off during multi-page OCR jobs | Medium |
-| **US-103** | Baidu PaddleOCR-VL 1.6 Worker | Core AI OCR vision-language inference engine | High |
+| **US-103** | Baidu Unlimited OCR & OCRmyPDF Workers | Dual-engine OCR processing (Baidu Unlimited OCR ~6 GB on GPU, OCRmyPDF on CPU) | High |
 | **US-104** | Invisible Text Overlay PDF Engine | 100% original visual scan layout preservation | High |
 | **US-201** | Side-by-Side Interactive Preview | Delivers the "10-second Aha moment" visual proof | Medium |
 | **US-202** | 3-Format 1-Click Downloads | Flexible output formats (`.pdf`, `.txt`, `.md`) | Low |

@@ -15,10 +15,11 @@
 ## 1. Executive Summary
 
 ### 1.1 Product Vision
-**freeOCR.me** is a fast, privacy-first web utility platform that transforms scanned PDFs and images into searchable PDFs and clean selectable text. Powered by **Baidu PaddleOCR-VL 1.6 (0.9B)** on GCP backend GPU workers, it guarantees 100% original visual layout preservation via an invisible text layer overlay and operates under a strict **zero-retention privacy policy** using Linux `tmpfs` RAM disks with instant file unlinking.
+### 1.1 Product Vision
+**freeOCR.me** is a fast, privacy-first web utility platform that transforms scanned PDFs and images into searchable PDFs and clean selectable text. Powered by **Baidu's Unlimited OCR AI Model (~6 GB)** on GCP backend GPU workers (for complex layouts) and **OCRmyPDF** on CPU workers (for simple layouts), it guarantees 100% original visual layout preservation via an invisible text layer overlay, operating under a strict **zero-retention privacy policy** using Linux `tmpfs` RAM disks with instant file unlinking, and scaling both CPU & GPU workers to 0 during idle periods.
 
 ### 1.2 Core Hypothesis
-Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for stackable limit boosts that increment file size and page caps per watched ad) rather than hitting aggressive paywalls or sacrificing privacy.
+Users actively seek a fast, highly accurate, layout-preserving AI OCR web utility that guarantees zero data retention, and will happily engage with an ad-supported model (including watching 15-second rewarded ads for stackable limit boosts with sliding 60-minute expiration resetting on each ad view) rather than hitting aggressive paywalls or sacrificing privacy.
 
 ### 1.3 Success Definition
 | Time Horizon | Success Looks Like | Key Metric |
@@ -41,11 +42,12 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 - **General Web Users:** One-off document conversions without registration barriers.
 
 ### 2.3 Key Differentiators
-- **Superior AI Accuracy:** Baidu PaddleOCR-VL 1.6 (0.9B) vision-language inference engine.
+- **Superior AI Accuracy & Dual-Engine Routing:** Post-upload layout analyzer routes simple PDFs to CPU (OCRmyPDF) and complex PDFs to GPU (Baidu Unlimited OCR ~6 GB).
 - **100% Visual Layout Fidelity:** Invisible text layer overlay over original high-res scan background.
 - **Zero-Retention Ephemeral Privacy:** Files processed in Linux `tmpfs` RAM disk; input files purged immediately upon download or "Send Email" click.
-- **Stackable Rewarded Ad Limit Boosts:** Watching 15-second video ads incrementally increases file size (+20MB) and page count (+15 pages) caps indefinitely per ad watched.
-- **Runtime Configurable Parameters:** Base limits, boost increments per ad, and session TTLs are fully runtime configurable via environment settings without code changes.
+- **Scale-to-Zero GCP Cost Discipline:** Both CPU and GPU GCP worker nodes scale down to 0 (powered off) when queues are empty.
+- **Stackable Rewarded Ad Limit Boosts:** Watching 15-second video ads incrementally increases file size (+20MB) and page count (+15 pages) caps indefinitely per ad watched, with a sliding 60-minute TTL resetting on each ad.
+- **Single Canonical Config (`app_limits_config.json`):** Base limits, 5-hour quotas (Simple vs Complex), boost increments per ad, and session TTLs are defined globally in `src/backend/app/app_limits_config.json`.
 
 ---
 
@@ -54,8 +56,10 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 ### 3.1 Tech Stack Summary
 - **Frontend UI:** Flutter 3.x (Flutter Web Desktop-first MVP → Mobile post-MVP → Desktop/CLI at scale).
 - **Backend API:** Python 3.13.5 + FastAPI (ASGI).
-- **AI OCR Core:** Baidu PaddleOCR-VL 1.6 (0.9B) on GCP GPU workers.
-- **Queue & Messaging:** Redis 7 (Job queue, IP rate limiting, 60-min ad passes, SSE stream broker).
+- **Single Canonical Config:** `src/backend/app/app_limits_config.json`.
+- **Layout Pre-Processor:** `PyMuPDF` (`fitz`) structural analyzer detecting columns, tables, and math formulas.
+- **Dual OCR Engines:** Baidu Unlimited OCR AI Model (~6 GB) on GPU workers + OCRmyPDF on CPU workers (both scale to zero).
+- **Queue & Messaging:** Redis 7 (Dual queues `ocr:queue:cpu` & `ocr:queue:gpu`, 5h quotas, sliding 60m ad passes, SSE broker).
 - **Storage:** Linux `tmpfs` RAM disk (`/tmp`) for free users; opt-in GCP Cloud Storage (GCS) for post-MVP paid users.
 - **Post-MVP Database & Auth:** Firebase Auth + SafePay Subscriptions + GCP Cloud SQL (PostgreSQL 16) via SQLAlchemy ORM (DB-Light in MVP).
 
@@ -66,14 +70,19 @@ graph TD
     Client["Flutter Web Client (Desktop / Mobile)"] -->|1. REST Upload| GW["FastAPI Gateway (Python 3.13.5)"]
     Client -->|Rewarded Ad Token| AdSDK["Google Ads SDK"]
     AdSDK --> GW
-    GW -->|2. Enqueue Job| Redis["Redis 7 (Job Queue & Rate Limits)"]
-    GW -->|3. SSE Progress Stream| Client
-    Redis -->|4. Pop Job Task| Worker["Celery GPU Worker (GCP)"]
-    Worker -->|5. RAM Write| RAM["Linux tmpfs RAM Disk"]
-    Worker -->|6. Vision-Language Inference| OCR["Baidu PaddleOCR-VL 1.6"]
-    OCR -->|7. Searchable PDF / Text| RAM
-    RAM -->|8. Direct Download / Email Link| GW
-    RAM -.->|9. Instant Unlink & 60s Watchdog| Cleaner["Watchdog Process"]
+    GW -->|2. Read Config| Config["Canonical Config (app_limits_config.json)"]
+    GW -->|3. Layout Analysis| LA["PyMuPDF Layout Analyzer"]
+    LA -->|Simple Layout| QueueCPU["ocr:queue:cpu"]
+    LA -->|Complex Layout| QueueGPU["ocr:queue:gpu"]
+    QueueCPU -.->|Scale-to-Zero Trigger| WorkerCPU["Celery CPU Worker (OCRmyPDF)"]
+    QueueGPU -.->|Scale-to-Zero Trigger| WorkerGPU["Celery GPU Worker (Baidu Unlimited OCR)"]
+    GW -->|4. SSE Progress Stream| Client
+    WorkerCPU -->|5. RAM Write| RAM["Linux tmpfs RAM Disk"]
+    WorkerGPU -->|5. RAM Write| RAM
+    WorkerCPU -->|6. CPU OCR| RAM
+    WorkerGPU -->|6. AI Inference| RAM
+    RAM -->|7. Direct Download / Email Link| GW
+    RAM -.->|8. Instant Unlink & 60s Watchdog| Cleaner["Watchdog Process"]
 ```
 
 ---
@@ -81,8 +90,8 @@ graph TD
 ## 4. User Experience & Journeys
 
 ### 4.1 Key Journeys
-1. **Journey 1 (The 10-Second Aha Moment):** Zero-clutter hero dropzone → SSE live progress (`Page 3 of 8... 37%`) → Side-by-side split preview (Original Scan vs Selectable OCR Text) → 1-click downloads (`.pdf`, `.txt`, `.md`).
-2. **Journey 2 (Stackable Rewarded Ad Limit Boosts):** Over-limit file upload -> Rewarded Ad Modal -> Watch 15s ad -> Indefinitely stackable limit increments (+20MB / +15 pages per ad, runtime configurable) stored in Redis session pass (`ad_pass:{client_ip}`).
+1. **Journey 1 (The 10-Second Aha Moment):** Zero-clutter hero dropzone → Layout analysis → SSE live progress (`Page 3 of 8... 37% [GPU - Baidu Unlimited OCR]`) → Side-by-side split preview (Original Scan vs Selectable OCR Text) → 1-click downloads (`.pdf`, `.txt`, `.md`).
+2. **Journey 2 (Stackable Rewarded Ad Limit Boosts):** Over-limit file upload -> Rewarded Ad Modal -> Watch 15s ad -> Indefinitely stackable limit increments (+20MB / +15 pages per ad) stored in Redis session pass (`ad_pass:{client_ip}`), resetting 60-minute countdown timer on each ad reward.
 3. **Journey 3 (Email Link Delivery & Instant Purge):** Optional email input field for receiving 24h download links -> Input file unlinked from RAM disk *immediately* when "Send Email" is clicked. Expiration link renders friendly page: *"Link expired at HH:MM local time"*.
 4. **Journey 4 (Encrypted & Corrupted PDF Recovery):** Password-in-Place decryption prompt for encrypted PDFs; automated repair fallback (`qpdf` / `pdfcpu` / `ghostscript`) for corrupted files.
 
@@ -93,7 +102,7 @@ Display ad slots on Landing and Download pages automatically rotate every **35 s
 
 ## 5. Feature Requirements & MVP Backlog
 
-### 5.1 MVP Feature Set (16 Backlog Tickets)
+### 5.1 MVP Feature Set (17 Backlog Tickets)
 
 #### Epic 0: Foundation & Environment Setup
 - **`UC-000a`:** Monorepo Project Structure & Dependency Initialization
@@ -102,8 +111,9 @@ Display ad slots on Landing and Download pages automatically rotate every **35 s
 
 #### Epic 1–4: Core Application & Monetization
 - **`UC-001`:** Drag & Drop PDF Upload & File Validation
+- **`UC-001a`:** Document Layout & Complexity Pre-Processing Analyzer
 - **`UC-002`:** Real-Time SSE Progress Streaming
-- **`UC-003`:** Baidu PaddleOCR-VL 1.6 Worker Execution & `tmpfs` RAM Disk Management
+- **`UC-003`:** Baidu Unlimited OCR & OCRmyPDF Worker Execution & Scale-to-Zero `tmpfs` RAM Disk Management
 - **`UC-004`:** Searchable PDF Composition Engine (Invisible Layer Overlay)
 - **`UC-005`:** Interactive Side-by-Side Split Preview Viewer
 - **`UC-005b`:** Premium Apple-Grade UI Generation & All-Screen Visual Polish
@@ -112,9 +122,10 @@ Display ad slots on Landing and Download pages automatically rotate every **35 s
 - **`UC-008`:** 24-Hour Expiration TTL & Local Time Expired Link Handler
 - **`UC-009`:** 35-Second AdSense Display Ad Banner Rotation Timer
 - **`UC-010`:** Limit Exceeded Detection & Rewarded Video Ad Modal Trigger
-- **`UC-011`:** Rewarded Ad Callback & Stackable Session Limit Boost Pass (Runtime Configurable)
+- **`UC-011`:** Rewarded Ad Callback & Stackable Session Limit Boost Pass (Sliding 60m TTL Reset)
 - **`UC-012`:** Password-in-Place Encrypted PDF Decryption
 - **`UC-013`:** Corrupted PDF Auto-Repair & 60s Watchdog RAM Disk Cleaner
+
 
 ---
 

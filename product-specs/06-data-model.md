@@ -92,13 +92,25 @@ erDiagram
 | `job_id` | string (UUID) | Primary Key / Unique OCR Conversion Identifier |
 | `client_ip` | string | Hashed client IP address for rate limiting |
 | `status` | string | Current job status (`QUEUED`, `PROCESSING`, `COMPLETED`, `FAILED`, `PURGED`) |
+| `layout_complexity` | string | Document layout classification (`SIMPLE` or `COMPLEX`) |
+| `target_engine` | string | Target OCR engine (`OCRmyPDF` for CPU or `Baidu_Unlimited_OCR` for GPU) |
+| `queue_name` | string | Target Redis queue (`ocr:queue:cpu` or `ocr:queue:gpu`) |
+| `cold_start_active` | boolean | `true` if worker was cold-started upon job receipt |
 | `total_pages` | integer | Total pages in PDF |
-| `current_page` | integer | Current page undergoing PaddleOCR-VL 1.6 inference |
+| `current_page` | integer | Current page undergoing processing |
 | `output_pdf_token` | string | Ephemeral RAM disk output reference token |
 | `created_at` | timestamp (ISO 8601) | Job creation timestamp |
 | `expires_at` | timestamp (ISO 8601) | 24-hour output download link expiration timestamp |
 
 *TTL Policy:* Redis key expires automatically in **86,400 seconds (24 hours)**.
+
+#### `rate_limit:simple:{client_ip}` and `rate_limit:complex:{client_ip}` (Redis Counters)
+| Field | Type | Description |
+|-------|------|-------------|
+| `simple_count` | integer | Total simple layout conversions in current 5-hour window (default limit 20) |
+| `complex_count` | integer | Total complex AI layout conversions in current 5-hour window (default limit 5) |
+
+*TTL Policy:* Keys expire in **18,000 seconds (5 hours)**.
 
 #### `ad_pass:{client_ip}` (Redis Hash / JSON Token)
 | Field | Type | Description |
@@ -108,8 +120,9 @@ erDiagram
 | `boosted_max_file_mb` | integer | Active allowed file size limit in MB (`BASE_MAX_FILE_MB + (ads_watched_count * BOOST_PER_AD_MB)`) |
 | `last_ad_watched_at` | timestamp | Timestamp when most recent 15-second rewarded ad was completed |
 
-*TTL Policy:* Redis key expires automatically in **`SESSION_BOOST_TTL_SECONDS` (default 3,600s, runtime configurable)**.  
-*Runtime Configuration:* All limit caps (`BASE_MAX_PAGES`, `BASE_MAX_FILE_MB`), per-ad boost increments (`BOOST_PER_AD_PAGES`, `BOOST_PER_AD_MB`), and TTL durations are dynamically loaded from environment settings at runtime.
+*TTL Policy:* Redis key expires in **`AD_BOOST_TTL_SECONDS` (3,600s / 60 minutes)**. **Reset-on-Stack Expiry Policy:** Every time a user completes an ad reward to stack limits, the 60-minute TTL countdown timer resets to 60 minutes from the timestamp of the latest ad watched (`EXPIRE ad_pass:{ip} 3600`).  
+*Runtime Configuration:* Single canonical global config is loaded dynamically from `src/backend/app/app_limits_config.json`.
+
 
 ---
 

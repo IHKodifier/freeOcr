@@ -28,10 +28,17 @@ def _store_job(job_id: str, payload: dict) -> None:
         pass
 
 
-def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
+def process_ocr_job(
+    job_id: str,
+    file_bytes: bytes,
+    filename: str,
+    target_engine: str = "OCRmyPDF",
+    queue_name: str = "ocr:queue:cpu"
+) -> dict:
     """
     Executes page-by-page OCR extraction on uploaded PDF or image file bytes.
-    Saves file bytes to ephemeral RAM disk temp location, extracts page text & bounding boxes,
+    Saves file bytes to ephemeral RAM disk temp location, extracts page text & bounding boxes
+    using OCRmyPDF (CPU) or Baidu Unlimited OCR AI Model (~6 GB) (GPU),
     emits real-time SSE progress events to Redis channel job_events:{job_id},
     and guarantees ephemeral file deletion in a finally block (AC-1).
     """
@@ -52,6 +59,8 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
                     "job_id": job_id,
                     "filename": filename,
                     "status": "REPAIRING",
+                    "target_engine": target_engine,
+                    "queue_name": queue_name,
                     "message": "Attempting PDF repair...",
                     "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
                 }
@@ -94,12 +103,14 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
                 "lines": lines_data
             })
 
-            # Emit processing progress event for page
+            # Emit processing progress event for page with engine badge
             progress_payload = {
                 "job_id": job_id,
                 "status": "PROCESSING",
                 "current_page": page_num,
                 "total_pages": total_pages,
+                "target_engine": target_engine,
+                "queue_name": queue_name,
                 "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
             }
             _publish_event(job_id, progress_payload)
@@ -120,6 +131,8 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
             "status": "COMPLETED",
             "current_page": total_pages,
             "total_pages": total_pages,
+            "target_engine": target_engine,
+            "queue_name": queue_name,
             "output_pdf_token": output_pdf_token,
             "pages": pages_data,
             "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -135,6 +148,8 @@ def process_ocr_job(job_id: str, file_bytes: bytes, filename: str) -> dict:
             "job_id": job_id,
             "filename": filename,
             "status": "FAILED",
+            "target_engine": target_engine,
+            "queue_name": queue_name,
             "error_message": error_msg,
             "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }

@@ -130,7 +130,7 @@ class ProgressCard extends StatelessWidget {
               )
             else
               Text(
-                'Running PaddleOCR engine page-by-page...',
+                'Running Baidu Unlimited OCR AI engine page-by-page...',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey.shade600,
                     ),

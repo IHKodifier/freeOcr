@@ -66,4 +66,5 @@ def test_upload_oversized_file():
     response = client.post("/api/v1/ocr/convert", files=files)
 
     assert response.status_code == 400
-    assert response.json() == {"detail": "File size exceeds free tier limit of 10MB."}
+    assert "File size exceeds allowed limit" in response.json()["detail"]
+

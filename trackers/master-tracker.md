@@ -34,7 +34,7 @@
 | **UC-000c** | GitHub Actions CI/CD & Graphify MCP Integration | Sprint 0 | P0 | Completed | PASS |
 | **UC-001** | Drag & Drop PDF Upload & File Validation | Sprint 1 | P0 | Completed | PASS |
 | **UC-002** | Real-Time SSE Progress Streaming | Sprint 1 | P0 | Completed | PASS |
-| **UC-003** | Baidu PaddleOCR-VL 1.6 Worker & `tmpfs` RAM Disk | Sprint 1 | P0 | Completed | PASS |
+| **UC-003** | Baidu Unlimited OCR & OCRmyPDF Workers & `tmpfs` RAM Disk | Sprint 1 | P0 | Completed | PASS |
 | **UC-004** | Searchable PDF Composition Engine | Sprint 1 | P0 | Completed | PASS |
 | **UC-013** | Corrupted PDF Auto-Repair & 60s Watchdog Cleaner | Sprint 1 | P1 | Completed | PASS |
 

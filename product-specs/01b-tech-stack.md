@@ -10,12 +10,12 @@
 
 ## Proposed Stack Baseline (as stated by user)
 
-- **AI OCR Core:** Baidu PaddleOCR-VL 1.6 (0.9B) model running on GCP backend infrastructure.
+- **AI OCR Core:** **Baidu's Unlimited OCR AI Model (~6 GB size)** running on GCP GPU backend infrastructure for complex layouts; **OCRmyPDF** running on CPU for simple layouts.
 - **Python Environment:** **Python 3.13.5** (matching local development machine environment).
 - **Frontend Tech:** **Flutter** (Flutter Web for Desktop-first MVP; native mobile apps post-MVP; Desktop/CLI apps & Developer API at scale — no React).
 - **Authentication:** **Firebase Auth** (activated immediately post-MVP when user accounts launch).
 - **Database Architecture:** **GCP Cloud SQL (PostgreSQL)** for staging/production; **SQLAlchemy + SQLite (`sqlite:///./dev.db`)** for zero-cloud local development.
-- **MVP Database Role:** **DB-Disabled / DB-Light in MVP Production**. Because MVP has no user accounts, no login, and no persistent file storage, core conversion flow relies on **Redis** for IP rate-limiting, job queue status, and temporary rewarded ad tokens. SQLAlchemy models and PostgreSQL migrations are built and unit-tested in dev from Day 1 for instant post-MVP activation.
+- **MVP Database Role & Runtime Config:** **DB-Disabled / DB-Light in MVP Production**. Core conversion flow relies on **Redis** for IP rate-limiting, job queue status, and temporary stackable rewarded ad tokens (with sliding 60-minute TTL resets). Single canonical global configuration is managed via `src/backend/app/app_limits_config.json`.
 - **Privacy & Storage Lifecycle:**
   - **Free / Ephemeral Users:** Strict zero-retention ephemeral processing — user input & output files purged immediately post-conversion.
   - **Paid Subscription Users (Post-MVP):** Optional secure **GCP Cloud Storage (GCS)** user vault allowing paid subscribers to save non-sensitive output PDFs.
@@ -34,7 +34,7 @@
 | Component | Choice | Why It Works |
 |-----------|--------|-------------|
 | **Frontend Framework** | **Flutter (Web + Cross-Platform)** | Single codebase targets Web for MVP, then compiles natively to iOS, Android, macOS, and Windows post-MVP without rewriting UI logic. |
-| **AI OCR Engine** | Baidu PaddleOCR-VL 1.6 (0.9B) | State-of-the-art vision-language document OCR; superior layout, table, and font preservation over legacy Tesseract or basic WASM tools. |
+| **AI OCR Engine** | Baidu Unlimited OCR AI Model (~6 GB) & OCRmyPDF | Baidu Unlimited OCR single-pass algorithm for complex layouts; OCRmyPDF for simple layouts. Both CPU & GPU scale to 0 when idle. |
 | **Backend AI Processing** | FastAPI on GCP | Native Python AI model execution environment; asynchronous processing with direct PyTorch/Paddle bindings. |
 | **Local-First Zero-Cloud DB** | SQLite + SQLAlchemy (`dev.db`) | Zero cloud costs during local dev; seamless dialect parity with GCP Cloud SQL PostgreSQL when deploying staging/prod. |
 | **MVP DB Strategy** | Redis-only runtime (DB-Light MVP) | Eliminates database write overhead & user data compliance liability during MVP since conversions are 100% ephemeral and userless. |
@@ -81,7 +81,7 @@
 |-------|-----------|---------------|-------|
 | **Frontend Framework** | **Flutter 3.x (Dart)** | Cross-platform UI; Flutter Web for MVP → Mobile post-MVP → Desktop/CLI at scale | Responsive Desktop-first UI, Material 3 / Custom design tokens |
 | **Backend / API** | **FastAPI (Python 3.13.5)** | Native Python 3.13.5 AI model execution & async performance | Uvicorn ASGI server, Pydantic v2 validation |
-| **AI OCR Engine** | **Baidu PaddleOCR-VL 1.6 (0.9B)** | Superior vision-language document accuracy | PyTorch / PaddlePaddle inference backend on GCP |
+| **AI OCR Engine** | **Baidu Unlimited OCR AI Model (~6 GB) / OCRmyPDF** | Superior vision-language document accuracy for complex layouts; OCRmyPDF for simple layouts | PyTorch / Paddle inference backend on GCP; scale-to-zero CPU & GPU workers |
 | **Primary Database** | **SQLite (`dev.db`) local; GCP Cloud SQL (PostgreSQL 16) Post-MVP** | Relational schema for Auth, API Keys, Rate Limits | DB-Disabled in MVP Prod; SQLAlchemy models pre-built in dev |
 | **Auth & Session** | **Firebase Auth (Post-MVP)** | Industry standard auth for Flutter ecosystem | Activated post-MVP when accounts launch |
 | **Hosting & Deployment** | **Firebase Hosting / GCP Cloud Run (Web) + GCP Compute/Cloud Run GPU (Backend)** | Scalable GCP containerized infrastructure | CI/CD auto-deploy pipeline via GitHub Actions |

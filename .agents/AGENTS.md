@@ -30,7 +30,7 @@
 ## 3. Local-First & Zero-Cloud Execution
 - **Local Development:** Run backend and OCR services locally (Python 3.13.5 + FastAPI + SQLite `dev.db` + Redis) without mandatory cloud dependencies during feature development.
 - **Privacy & File Lifecycle:** Uploaded files must be processed securely in Linux `tmpfs` RAM disk and cleaned up immediately after processing.
-- **Cost Protection:** Do NOT spin up external paid cloud OCR APIs or paid cloud infrastructure during routine local feature development. Use local open-source OCR engines (e.g. Baidu PaddleOCR-VL 1.6 / Tesseract).
+- **Cost Protection:** Do NOT spin up external paid cloud OCR APIs or paid cloud infrastructure during routine local feature development. Use local open-source OCR engines (e.g. Baidu's Unlimited OCR AI Model ~6 GB / OCRmyPDF / Tesseract). Both CPU & GPU GCP instances scale to 0 when idle.
 
 ---
 

@@ -18,7 +18,7 @@
 | **Phase 3** | **Production Launch** | Weeks 11–12 | Deployed to GCP Cloud Run / Compute Engine; ad rotation live | All |
 | **Phase 4** | **Post-MVP SaaS Expansion** | Months 3+ | Firebase Auth, SafePay Subscriptions, GCS Vault & Developer API | PM |
 
-**Critical Path Item:** Baidu PaddleOCR-VL 1.6 (0.9B) model inference execution on GCP worker nodes with Linux `tmpfs` RAM disk integration (`UC-003` & `UC-004`).  
+**Critical Path Item:** Baidu Unlimited OCR AI Model (~6 GB) & OCRmyPDF dual-engine execution on GCP worker nodes with Linux `tmpfs` RAM disk integration (`UC-003` & `UC-004`).  
 **Governance Mandate:** **Strict Test-Driven Development (TDD)** — Automated test suites (`pytest` for backend, `flutter test` for UI) must be created and verified before implementation code is merged. **Graphify MCP** graph updated incrementally.
 
 ---
@@ -49,7 +49,7 @@
 |--------|--------------|-------|----------|------------|--------|
 | **UC-001** | Drag & Drop PDF Upload & Validation | FE/BE | S | None | Not Started |
 | **UC-002** | Real-Time SSE Progress Streaming | BE | M | UC-001 | Not Started |
-| **UC-003** | Baidu PaddleOCR-VL 1.6 Worker & `tmpfs` RAM Disk | BE | L | UC-001 | Not Started |
+| **UC-003** | Baidu Unlimited OCR & OCRmyPDF Workers & `tmpfs` RAM Disk | BE | L | UC-001 | Not Started |
 | **UC-004** | Searchable PDF Composition Engine (Invisible Layer) | BE | H | UC-003 | Not Started |
 | **UC-013** | Corrupted PDF Auto-Repair & 60s Watchdog RAM Cleaner | BE | M | UC-003 | Not Started |
 
@@ -125,6 +125,6 @@
 
 | Risk | Likelihood | Impact | Early Warning Sign | Mitigation |
 |------|-----------|--------|--------------------|-----------|
-| **PaddleOCR-VL 1.6 VRAM Overhead on GCP** | Medium | High | GPU VRAM utilization > 85% | Implement dynamic worker batching & scale worker nodes via GCP auto-scaler. |
+| **Baidu Unlimited OCR Model Size & GPU Scaling** | Medium | High | GPU VRAM utilization > 85% or cold-start latency | Implement dual-engine CPU routing for simple layouts & scale CPU/GPU workers to 0 during idle periods. |
 | **Ad Blockers Suppressing Banner Revenue** | High | Low | Ad impression metrics drop > 30% | Non-intrusive ad placement; transparent prompt explaining ad-supported free utility model. |
 | **Orphan Files in RAM Disk on Exception** | Low | High | `tmpfs` disk usage > 500MB | Dual-layer cleanup: Python context manager `finally:` unlinking + 60s Watchdog background cleaner. |
