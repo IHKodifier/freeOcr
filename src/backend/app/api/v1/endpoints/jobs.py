@@ -1,8 +1,12 @@
+import os
+import glob
+import tempfile
 import json
 import asyncio
 from fastapi import APIRouter, Request, HTTPException, status
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 from app.redis_client import get_redis_client, DEV_JOB_STORE
+from app.services.pdf_composer import get_searchable_pdf
 
 router = APIRouter()
 
@@ -163,4 +167,114 @@ async def get_job_preview(job_id: str):
         "pages": parsed.get("pages", []),
         "output_pdf_token": parsed.get("output_pdf_token")
     }
+
+
+@router.get("/{job_id}/download/{format}")
+async def download_job_file(job_id: str, format: str):
+    """
+    1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).
+    Streams requested document format, and immediately unlinks/purges
+    the original input file from RAM disk upon download stream initiation (AC-1).
+    """
+    fmt = format.lower().strip()
+    if fmt not in ("pdf", "txt", "md"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Unsupported format. Choose pdf, txt, or md."
+        )
+
+    job_data_bytes = None
+    if job_id in DEV_JOB_STORE:
+        job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        try:
+            redis_client = get_redis_client()
+            job_data_bytes = redis_client.get(f"job:{job_id}")
+        except Exception:
+            job_data_bytes = None
+
+    if not job_data_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    try:
+        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+        parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error parsing job data."
+        )
+
+    if parsed.get("status") != "COMPLETED":
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    filename = parsed.get("filename", "document")
+    filename_stem = os.path.splitext(filename)[0] or "document"
+
+    # Immediately purge ephemeral input file from RAM disk (AC-1 / Privacy Mandate)
+    ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
+    matching_inputs = glob.glob(os.path.join(ram_disk_base, f"ephemeral_{job_id}_*"))
+    for input_file in matching_inputs:
+        try:
+            os.remove(input_file)
+        except Exception:
+            pass
+
+    if fmt == "pdf":
+        output_token = parsed.get("output_pdf_token")
+        pdf_bytes = get_searchable_pdf(output_token) if output_token else None
+        if not pdf_bytes:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Searchable PDF output not found or expired."
+            )
+        out_filename = f"{filename_stem}_searchable.pdf"
+        return Response(
+            content=pdf_bytes,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="{out_filename}"'
+            }
+        )
+
+    pages = parsed.get("pages", [])
+    if fmt == "txt":
+        txt_parts = []
+        for page in pages:
+            page_text = page.get("text", "").strip()
+            if page_text:
+                txt_parts.append(page_text)
+        compiled_txt = "\n\n".join(txt_parts)
+        out_filename = f"{filename_stem}_extracted.txt"
+        return Response(
+            content=compiled_txt.encode("utf-8"),
+            media_type="text/plain; charset=utf-8",
+            headers={
+                "Content-Disposition": f'attachment; filename="{out_filename}"'
+            }
+        )
+
+    elif fmt == "md":
+        md_parts = []
+        for page in pages:
+            page_num = page.get("page_number", 1)
+            page_text = page.get("text", "").strip()
+            md_parts.append(f"# Page {page_num}\n\n{page_text}")
+        compiled_md = "\n\n---\n\n".join(md_parts)
+        out_filename = f"{filename_stem}_extracted.md"
+        return Response(
+            content=compiled_md.encode("utf-8"),
+            media_type="text/markdown; charset=utf-8",
+            headers={
+                "Content-Disposition": f'attachment; filename="{out_filename}"'
+            }
+        )
+
 

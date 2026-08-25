@@ -102,18 +102,23 @@ def process_ocr_job(
             page = doc[page_index]
             page_text = page.get_text("text").strip()
 
-            blocks = page.get_text("blocks")
+            dict_data = page.get_text("dict")
             lines_data = []
-            for b in blocks:
-                # Filter text blocks (type 0)
-                if len(b) >= 5 and b[5] == 0:
-                    x0, y0, x1, y1, block_text = b[0], b[1], b[2], b[3], b[4]
-                    clean_txt = block_text.strip()
-                    if clean_txt:
-                        lines_data.append({
-                            "bbox": [round(float(x0), 2), round(float(y0), 2), round(float(x1), 2), round(float(y1), 2)],
-                            "text": clean_txt
-                        })
+            for b in dict_data.get("blocks", []):
+                if b.get("type") == 0:
+                    for l in b.get("lines", []):
+                        line_bbox = list(l.get("bbox", []))
+                        spans = l.get("spans", [])
+                        line_text = " ".join([s.get("text", "").strip() for s in spans if s.get("text", "").strip()])
+                        if line_text:
+                            font_size = spans[0].get("size") if spans else None
+                            origin = list(spans[0].get("origin")) if (spans and spans[0].get("origin")) else None
+                            lines_data.append({
+                                "bbox": [round(float(x), 2) for x in line_bbox],
+                                "text": line_text,
+                                "size": round(float(font_size), 2) if font_size else None,
+                                "origin": [round(float(x), 2) for x in origin] if origin else None
+                            })
 
             # Check if extracted text contains actual alphanumeric words
             has_meaningful_text = any(any(c.isalnum() for c in line.get("text", "")) for line in lines_data)
@@ -126,24 +131,27 @@ def process_ocr_job(
                 try:
                     tess_dir = _get_tessdata_dir()
                     textpage = page.get_textpage_ocr(tessdata=tess_dir)
-                    ocr_blocks = textpage.extractBLOCKS()
-                    for b in ocr_blocks:
-                        if len(b) >= 5 and (len(b) < 7 or b[6] == 0):
-                            x0, y0, x1, y1, block_text = b[0], b[1], b[2], b[3], b[4]
-                            raw_lines = [l.strip() for l in block_text.split("\n") if l.strip()]
-                            if raw_lines:
-                                line_h = (float(y1) - float(y0)) / max(1, len(raw_lines))
-                                for idx, line_str in enumerate(raw_lines):
-                                    ly0 = float(y0) + idx * line_h
-                                    ly1 = ly0 + line_h
+                    ocr_dict = textpage.extractDICT()
+                    for b in ocr_dict.get("blocks", []):
+                        if b.get("type") == 0 or "lines" in b:
+                            for l in b.get("lines", []):
+                                line_bbox = list(l.get("bbox", []))
+                                spans = l.get("spans", [])
+                                line_text = " ".join([s.get("text", "").strip() for s in spans if s.get("text", "").strip()])
+                                if line_text:
+                                    font_size = spans[0].get("size") if spans else None
+                                    origin = list(spans[0].get("origin")) if (spans and spans[0].get("origin")) else None
                                     lines_data.append({
-                                        "bbox": [round(float(x0), 2), round(float(ly0), 2), round(float(x1), 2), round(float(ly1), 2)],
-                                        "text": line_str
+                                        "bbox": [round(float(x), 2) for x in line_bbox],
+                                        "text": line_text,
+                                        "size": round(float(font_size), 2) if font_size else None,
+                                        "origin": [round(float(x), 2) for x in origin] if origin else None
                                     })
                     if lines_data:
                         page_text = "\n".join([line["text"] for line in lines_data])
                 except Exception as tess_err:
                     print(f"[OCRmyPDF / Tesseract Engine Warning] {tess_err}")
+
 
 
 

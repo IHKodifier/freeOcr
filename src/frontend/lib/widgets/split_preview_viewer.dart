@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/api_service.dart';
+import '../services/download_helper.dart';
+
 
 
 
@@ -157,6 +159,24 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     });
   }
 
+  void _downloadFile(String format) {
+    final url = ApiService.getDownloadUrl(widget.jobId, format);
+    final dotIndex = widget.filename.lastIndexOf('.');
+    final stem = dotIndex > 0 ? widget.filename.substring(0, dotIndex) : widget.filename;
+    final ext = format == 'pdf' ? '_searchable.pdf' : '_extracted.$format';
+    final outFilename = '$stem$ext';
+
+    DownloadHelper.triggerDownload(url, outFilename);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Initiating direct download of $outFilename...'),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+
   @override
   void dispose() {
     _pollTimer?.cancel();
@@ -300,6 +320,87 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           ),
           const SizedBox(width: 12),
 
+          // 1-Click Direct Multi-Format Download Menu Button
+          PopupMenuButton<String>(
+            tooltip: 'Download Multi-Format Document',
+            onSelected: _downloadFile,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.primary.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.download_rounded, color: Colors.white, size: 18),
+                  SizedBox(width: 6),
+                  Text(
+                    'Download',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
+                ],
+              ),
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'pdf',
+                child: Row(
+                  children: [
+                    Icon(Icons.picture_as_pdf, color: Colors.redAccent, size: 20),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text('Searchable PDF (.pdf)', style: TextStyle(fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'txt',
+                child: Row(
+                  children: [
+                    Icon(Icons.description_outlined, color: Colors.blueAccent, size: 20),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text('Plain Text (.txt)', style: TextStyle(fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'md',
+                child: Row(
+                  children: [
+                    Icon(Icons.code, color: Colors.purpleAccent, size: 20),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text('Markdown (.md)', style: TextStyle(fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
+
+          ),
+          const SizedBox(width: 8),
+
           if (widget.onClose != null)
             IconButton(
               icon: const Icon(Icons.close),
@@ -310,6 +411,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
       ),
     );
   }
+
 
 
   Widget _buildSplitView(ThemeData theme, ColorScheme colorScheme, double totalWidth, List<dynamic> currentLines) {

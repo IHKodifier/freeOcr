@@ -202,6 +202,11 @@ class ApiService {
       debugPrint('[API Pre-Warm] Warmup ping sent (container booting): $e');
     }
   }
+
+  static String getDownloadUrl(String jobId, String format) {
+    return '$baseUrl/jobs/$jobId/download/$format';
+  }
 }
+
 
 

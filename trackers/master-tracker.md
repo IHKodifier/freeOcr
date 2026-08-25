@@ -8,9 +8,9 @@
 ## Overall Progress
 
 - **Total Backlog Tickets:** 17 Tickets (`UC-000a`, `UC-000b`, `UC-000c`, `UC-001` through `UC-013`, `UC-005b`)
-- **Completed:** 10 / 17 (59%)
+- **Completed:** 11 / 17 (65%)
 - **Current Active Sprint:** Sprint 2 — Preview, Multi-Export & Email Purge
-- **Last Updated:** 2026-08-25 — Updated with UC-005 & UC-005b Completion
+- **Last Updated:** 2026-08-25 — Updated with UC-006 Completion
 
 ---
 
@@ -20,7 +20,7 @@
 |-------|---------------|------------------|-----------|------------|--------|
 | **Phase 0** | **Sprint 0: Foundation & Environment** | UC-000a, UC-000b, UC-000c | 3 / 3 | 100% | Completed |
 | **Phase 1** | **Sprint 1: Core Conversion Engine** | UC-001, UC-002, UC-003, UC-004, UC-013 | 5 / 5 | 100% | Completed |
-| **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 2 / 6 | 33% | In Progress |
+| **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 3 / 6 | 50% | In Progress |
 | **Phase 1** | **Sprint 3: Ad Monetization & Rewarded Passes** | UC-009, UC-010, UC-011 | 0 / 3 | 0% | Not Started |
 
 ---
@@ -40,8 +40,8 @@
 
 | **UC-005** | Interactive Side-by-Side Split Preview Viewer | Sprint 2 | P0 | Completed | PASS |
 | **UC-005b**| Premium Apple-Grade UI Generation & All-Screen Visual Polish | Sprint 2 | P0 | Completed | PASS |
+| **UC-006** | 1-Click Multi-Format Direct Downloads (`.pdf`, `.txt`, `.md`)| Sprint 2 | P0 | Completed | PASS |
 
-| **UC-006** | 1-Click Multi-Format Direct Downloads (`.pdf`, `.txt`, `.md`)| Sprint 2 | P0 | Not Started | Pending |
 | **UC-007** | Email Download Link Delivery & Input Purge | Sprint 2 | P1 | Not Started | Pending |
 | **UC-008** | 24-Hour Expiration TTL & Local Time Expired Link Page | Sprint 2 | P1 | Not Started | Pending |
 | **UC-012** | Password-in-Place Encrypted PDF Decryption | Sprint 2 | P1 | Not Started | Pending |

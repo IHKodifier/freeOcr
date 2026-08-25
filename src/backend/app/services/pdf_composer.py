@@ -38,19 +38,40 @@ def compose_searchable_pdf(
                 for line in lines:
                     bbox = line.get("bbox")
                     text = line.get("text", "").strip()
+                    origin = line.get("origin")
+                    size = line.get("size")
                     if bbox and text and len(bbox) == 4:
-                        rect = pymupdf.Rect(bbox[0], bbox[1], bbox[2], bbox[3])
-                        # Insert invisible text layer over exact bounding box coordinates
-                        page.insert_textbox(
-                            rect,
+                        x0, y0, x1, y1 = float(bbox[0]), float(bbox[1]), float(bbox[2]), float(bbox[3])
+                        h = max(1.0, y1 - y0)
+                        w = max(1.0, x1 - x0)
+                        avail_w = max(1.0, min(w, page.rect.width - x0 - 2.0))
+
+                        if size:
+                            font_size = float(size)
+                        else:
+                            font_size = min(h * 0.75, avail_w / max(1, len(text) * 0.55))
+
+                        font_size = max(5.0, font_size)
+
+
+                        if origin and len(origin) == 2:
+                            org_pt = pymupdf.Point(float(origin[0]), float(origin[1]))
+                        else:
+                            org_pt = pymupdf.Point(x0, y1 - h * 0.2)
+
+                        # Insert invisible text layer (render_mode=3) over exact line coordinates
+                        page.insert_text(
+                            org_pt,
                             text,
-                            fontsize=10,
+                            fontsize=font_size,
                             render_mode=3,
                             overlay=True
                         )
 
+
         doc.save(temp_out_filepath)
         doc.close()
+
 
         with open(temp_out_filepath, "rb") as f:
             pdf_bytes = f.read()

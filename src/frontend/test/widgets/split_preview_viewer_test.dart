@@ -118,5 +118,40 @@ void main() {
     // Markdown view active
     expect(find.textContaining('Sample Header Page 1'), findsWidgets);
   });
+
+  testWidgets('SplitPreviewViewer renders download button and options', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1280, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SplitPreviewViewer(
+            jobId: 'test_job_1',
+            filename: 'sample_doc.pdf',
+            pages: samplePages,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify Download button exists in top header
+    final downloadBtn = find.text('Download');
+    expect(downloadBtn, findsOneWidget);
+
+    // Tap download button to show popup options
+    await tester.tap(downloadBtn);
+    await tester.pumpAndSettle();
+
+    // Verify download menu options render
+    expect(find.text('Searchable PDF (.pdf)'), findsOneWidget);
+    expect(find.text('Plain Text (.txt)'), findsWidgets);
+    expect(find.text('Markdown (.md)'), findsWidgets);
+  });
 }
+
+
 
