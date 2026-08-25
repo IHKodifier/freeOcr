@@ -23,7 +23,7 @@ def _store_job(job_id: str, payload: dict) -> None:
     DEV_JOB_STORE[job_id] = json_str
     try:
         redis_client = get_redis_client()
-        redis_client.set(f"job:{job_id}", json_str)
+        redis_client.set(f"job:{job_id}", json_str, ex=86400)
     except Exception:
         pass
 

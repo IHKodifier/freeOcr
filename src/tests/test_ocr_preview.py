@@ -7,12 +7,12 @@ from app.redis_client import DEV_JOB_STORE
 client = TestClient(app)
 
 
-def test_preview_non_existent_job_returns_404():
-    """Verify that requesting a preview for a non-existent job returns HTTP 404."""
+def test_preview_non_existent_job_returns_410_gone():
+    """Verify that requesting a preview for a non-existent/expired job returns HTTP 410 Gone."""
     response = client.get("/api/v1/jobs/non_existent_job_123/preview")
-    assert response.status_code == 404
+    assert response.status_code == 410
     data = response.json()
-    assert data["detail"] == "Job not found or expired."
+    assert data["detail"] == "Download link expired."
 
 
 def test_preview_completed_job_returns_pages_data():

@@ -184,6 +184,17 @@ class ApiService {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
+      } else if (response.statusCode == 410) {
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          return {
+            'is_expired': true,
+            'expired_at': data['expired_at'],
+            'detail': data['detail'],
+          };
+        } catch (_) {
+          return {'is_expired': true, 'detail': 'Download link expired.'};
+        }
       }
       return null;
     } catch (e) {

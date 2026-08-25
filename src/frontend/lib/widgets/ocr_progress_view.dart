@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/sse_service.dart';
 import 'split_preview_viewer.dart';
+import 'expired_link_view.dart';
 
 class OcrProgressView extends StatefulWidget {
   final String? jobId;
@@ -70,6 +71,9 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         if (data != null && data.containsKey('pages')) {
           _previewData = data;
           _showPreview = true;
+        } else if (data != null && data['is_expired'] == true) {
+          _previewData = data;
+          _showPreview = true;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Could not load preview data.')),
@@ -98,10 +102,12 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
   Future<void> _refreshPreviewData(String jobId) async {
     final data = await ApiService.fetchJobPreview(jobId);
-    if (mounted && data != null && data.containsKey('pages')) {
-      setState(() {
-        _previewData = data;
-      });
+    if (mounted && data != null) {
+      if (data.containsKey('pages') || data['is_expired'] == true) {
+        setState(() {
+          _previewData = data;
+        });
+      }
     }
   }
 
@@ -186,6 +192,13 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     final String displayName = widget.filename ?? (_batchItems.isNotEmpty ? _batchItems.first.filename : 'Document');
 
     if (_showPreview && _previewData != null) {
+      if (_previewData!['is_expired'] == true) {
+        return ExpiredLinkView(
+          rawExpiredAtString: _previewData!['expired_at'] as String?,
+          onUploadNew: widget.onReset,
+        );
+      }
+
       return Column(
         children: [
           SplitPreviewViewer(

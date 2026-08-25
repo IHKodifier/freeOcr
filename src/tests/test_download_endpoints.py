@@ -18,12 +18,12 @@ def test_download_invalid_format_returns_400():
     assert "Unsupported format" in data["detail"]
 
 
-def test_download_non_existent_job_returns_404():
-    """Verify that requesting a download for a non-existent job returns HTTP 404."""
+def test_download_non_existent_job_returns_410_gone():
+    """Verify that requesting a download for a non-existent/expired job returns HTTP 410 Gone."""
     response = client.get("/api/v1/jobs/non_existent_job_999/download/pdf")
-    assert response.status_code == 404
+    assert response.status_code == 410
     data = response.json()
-    assert data["detail"] == "Job not found or expired."
+    assert data["detail"] == "Download link expired."
 
 
 def test_download_pdf_success_and_purges_ram_disk():

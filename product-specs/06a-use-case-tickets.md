@@ -466,3 +466,43 @@
 - WHEN an orphan file in `/tmp` RAM disk exceeds 60s `mtime` THE SYSTEM SHALL automatically purge file via Watchdog.
 
 **Estimate:** M | **Depends on:** UC-003
+
+---
+
+### UC-014: Google Analytics 4 (GA4) Telemetry & SEO Meta-Tag Injection
+
+**Linked Story:** US-501  
+**Actor:** Google Analytics 4 SDK / Web Shell  
+**Trigger:** Web app page load or key conversion user event.  
+
+**Main Flow**
+1. GA4 `gtag.js` script tag injected into Web `index.html` head (`G-XXXXXXXXXX`).
+2. Web app dispatches pageview events on route navigation (`/`, `/result/{job_id}`, `/kb`).
+3. Custom telemetry events tracked: `document_uploaded`, `ocr_completed`, `download_clicked`, `email_sent`.
+4. SEO title, description meta tags, OpenGraph images, and canonical URL header tags injected for search indexation.
+
+**Acceptance Criteria (Testable)**
+- WHEN web app initializes THE SYSTEM SHALL load GA4 script and log pageview telemetry without blocking UI thread.
+- WHEN user completes OCR download THE SYSTEM SHALL emit custom `download_clicked` GA4 telemetry event.
+
+**Estimate:** S | **Depends on:** UC-001
+
+---
+
+### UC-015: AdSense-Qualifying Original Content Knowledge Base, Educational Docs & Embedded GitHub References
+
+**Linked Story:** US-502  
+**Actor:** Google AdSense Site Inspector / Web Visitor  
+**Trigger:** Visitor clicks Knowledge Base or Educational Documentation articles.  
+
+**Main Flow**
+1. Build static Knowledge Base & Educational pages (`/kb/ocr-guide`, `/kb/pdf-standards`, `/docs`, `/privacy`, `/terms`).
+2. Author original, high-value educational content explaining PDF text layers, OCR technology, ephemeral security, and OCRmyPDF / Baidu engine mechanics to satisfy Google AdSense publisher requirements.
+3. Embed authoritative GitHub reference links (e.g., Tesseract OCR, PyMuPDF, OCRmyPDF, open-source PDF specification repositories) directly within educational articles to demonstrate editorial depth and domain authority.
+4. Ensure search engines index educational pages (`sitemap.xml` & `robots.txt`).
+
+**Acceptance Criteria (Testable)**
+- WHEN visitor navigates to `/kb` THE SYSTEM SHALL render original educational content pages containing embedded GitHub resource links.
+- WHEN search engines index `/kb` pages THE SYSTEM SHALL provide valid OpenGraph and structured schema markup.
+
+**Estimate:** M | **Depends on:** UC-001

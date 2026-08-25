@@ -203,6 +203,9 @@ async def convert_document(
     job_id = str(uuid.uuid4())
     cold_start_active = True  # Simulated scale-to-zero cold-start trigger flag
 
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
+    expires_utc = now_utc + datetime.timedelta(hours=24)
+
     job_payload = {
         "job_id": job_id,
         "filename": filename,
@@ -212,12 +215,13 @@ async def convert_document(
         "target_engine": target_engine,
         "queue_name": target_queue,
         "cold_start_active": cold_start_active,
-        "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "created_at": now_utc.isoformat(),
+        "expires_at": expires_utc.isoformat(),
     }
 
     try:
         json_str = json.dumps(job_payload)
-        redis_client.set(f"job:{job_id}", json_str)
+        redis_client.set(f"job:{job_id}", json_str, ex=86400)
         DEV_JOB_STORE[job_id] = json_str
     except Exception:
         DEV_JOB_STORE[job_id] = json.dumps(job_payload)

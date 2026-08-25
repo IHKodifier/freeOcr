@@ -3,8 +3,9 @@ import glob
 import tempfile
 import json
 import asyncio
+import datetime
 from fastapi import APIRouter, Request, HTTPException, status
-from fastapi.responses import StreamingResponse, Response
+from fastapi.responses import StreamingResponse, Response, JSONResponse
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.pdf_composer import get_searchable_pdf
 
@@ -144,9 +145,12 @@ async def get_job_preview(job_id: str):
             job_data_bytes = None
 
     if not job_data_bytes:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Job not found or expired."
+        return JSONResponse(
+            status_code=status.HTTP_410_GONE,
+            content={
+                "detail": "Download link expired.",
+                "expired_at": None
+            }
         )
 
 
@@ -195,9 +199,12 @@ async def download_job_file(job_id: str, format: str):
             job_data_bytes = None
 
     if not job_data_bytes:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Job not found or expired."
+        return JSONResponse(
+            status_code=status.HTTP_410_GONE,
+            content={
+                "detail": "Download link expired.",
+                "expired_at": None
+            }
         )
 
     try:
@@ -209,10 +216,48 @@ async def download_job_file(job_id: str, format: str):
             detail="Error parsing job data."
         )
 
+    # Check 24-hour expiration timestamp if present in job metadata
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
+    expires_at_str = parsed.get("expires_at")
+    if expires_at_str:
+        try:
+            exp_dt = datetime.datetime.fromisoformat(expires_at_str)
+            if exp_dt.tzinfo is None:
+                exp_dt = exp_dt.replace(tzinfo=datetime.timezone.utc)
+            if now_utc > exp_dt:
+                return JSONResponse(
+                    status_code=status.HTTP_410_GONE,
+                    content={
+                        "detail": "Download link expired.",
+                        "expired_at": expires_at_str
+                    }
+                )
+        except Exception:
+            pass
+    elif parsed.get("created_at"):
+        try:
+            created_dt = datetime.datetime.fromisoformat(parsed["created_at"])
+            if created_dt.tzinfo is None:
+                created_dt = created_dt.replace(tzinfo=datetime.timezone.utc)
+            exp_dt = created_dt + datetime.timedelta(hours=24)
+            if now_utc > exp_dt:
+                return JSONResponse(
+                    status_code=status.HTTP_410_GONE,
+                    content={
+                        "detail": "Download link expired.",
+                        "expired_at": exp_dt.isoformat()
+                    }
+                )
+        except Exception:
+            pass
+
     if parsed.get("status") != "COMPLETED":
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Job not found or expired."
+        return JSONResponse(
+            status_code=status.HTTP_410_GONE,
+            content={
+                "detail": "Download link expired.",
+                "expired_at": expires_at_str
+            }
         )
 
     filename = parsed.get("filename", "document")

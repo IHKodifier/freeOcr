@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'widgets/hero_dropzone.dart';
 import 'widgets/ocr_progress_view.dart';
+import 'widgets/expired_link_view.dart';
 
 void main() {
   runApp(const FreeOcrApp());
@@ -36,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   String? _activeFilename;
   int? _activeFileSize;
   List<BatchFileItem> _batchItems = [];
+  bool _showExpiredDevPreview = false;
 
   @override
   void initState() {
@@ -44,12 +47,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onUploadSuccess(String jobId, String filename, int sizeInBytes) {
-
     setState(() {
       _activeJobId = jobId;
       _activeFilename = filename;
       _activeFileSize = sizeInBytes;
       _batchItems = [];
+      _showExpiredDevPreview = false;
     });
   }
 
@@ -59,6 +62,7 @@ class _HomePageState extends State<HomePage> {
       _activeJobId = null;
       _activeFilename = null;
       _activeFileSize = null;
+      _showExpiredDevPreview = false;
     });
   }
 
@@ -68,6 +72,7 @@ class _HomePageState extends State<HomePage> {
       _activeFilename = null;
       _activeFileSize = null;
       _batchItems = [];
+      _showExpiredDevPreview = false;
     });
   }
 
@@ -82,6 +87,21 @@ class _HomePageState extends State<HomePage> {
         title: const Text('freeOCR.me'),
         backgroundColor: colorScheme.surfaceContainer,
         centerTitle: true,
+        actions: [
+          if (kDebugMode)
+            IconButton(
+              tooltip: '[DEV] Toggle Expired Link UI Preview',
+              icon: Icon(
+                _showExpiredDevPreview ? Icons.timer_off : Icons.timer_off_outlined,
+                color: _showExpiredDevPreview ? colorScheme.error : colorScheme.onSurfaceVariant,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showExpiredDevPreview = !_showExpiredDevPreview;
+                });
+              },
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -111,7 +131,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                if (!hasActiveItems)
+                if (kDebugMode && _showExpiredDevPreview)
+                  ExpiredLinkView(
+                    expiredAt: DateTime.now().subtract(const Duration(hours: 25)),
+                    onUploadNew: _resetConversion,
+                  )
+                else if (!hasActiveItems)
                   HeroDropzone(
                     onUploadSuccess: _onUploadSuccess,
                     onBatchUploadSuccess: _onBatchUploadSuccess,

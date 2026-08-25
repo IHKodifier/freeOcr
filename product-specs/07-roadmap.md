@@ -72,15 +72,17 @@
 
 ---
 
-### Sprint 3: Ad Monetization, Rewarded Session Passes & MVP Polish (Weeks 7–8)
+### Sprint 3: Ad Monetization, Rewarded Session Passes & SEO/Content Polish (Weeks 7–8)
 
 | Ticket | Use Case Name | Owner | Estimate | Depends On | Status |
 |--------|--------------|-------|----------|------------|--------|
 | **UC-009** | 35-Second AdSense Display Ad Banner Auto-Rotation Timer | FE | S | None | Not Started |
 | **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal Trigger | FE | M | UC-001 | Not Started |
 | **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | BE/FE | M | UC-010 | Not Started |
+| **UC-014** | Google Analytics 4 (GA4) Telemetry & SEO Meta-Tag Injection | FE | S | UC-001 | Not Started |
+| **UC-015** | AdSense-Qualifying Original Content KB, Docs & GitHub Footer | FE | M | UC-001 | Not Started |
 
-**Sprint 3 Goal:** 35-second rotating ad banners active; users uploading over-limit files can watch rewarded video ads to stack limit boosts (+15 pages & +20MB per ad, runtime configurable) indefinitely up to 500MB/500+ pages.
+**Sprint 3 Goal:** 35-second rotating ad banners active; Google Analytics 4 traffic tracking active; original educational content pages and GitHub footer published for Google AdSense site qualification; users uploading over-limit files can watch rewarded video ads to stack limit boosts.
 
 **Phase 1 Gate — MVP Definition of Done:**
 - [ ] All 13 Use Case Tickets (`UC-001`–`UC-013`) pass 100% of automated unit and integration tests.

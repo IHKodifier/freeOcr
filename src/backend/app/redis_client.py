@@ -26,7 +26,7 @@ def store_job_metadata(job_id: str, payload: dict) -> None:
     try:
         client = get_redis_client()
         client.incr(f"ip_limit:{payload.get('client_ip', '127.0.0.1')}")
-        client.set(f"job:{job_id}", json_str)
+        client.set(f"job:{job_id}", json_str, ex=86400)
     except Exception:
         pass
 
