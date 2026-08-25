@@ -58,11 +58,11 @@
 
 ---
 
-### UC-000c: GitHub Actions CI/CD Pipeline & Graphify MCP Integration
+### UC-000c: GitHub Actions CI/CD Pipeline, Firebase Hosting & Graphify MCP Integration
 
 **Linked Story:** Technical Foundation  
 **Actor:** CI/CD Automation Runner  
-**Trigger:** Pull Request opened or updated into `dev` branch.  
+**Trigger:** Pull Request opened or updated into `dev` branch or merge to `main`.  
 
 **Preconditions**
 - [ ] GitHub repository configured with `dev` and `main` branch protection.
@@ -72,10 +72,12 @@
 2. Step 1: Checkout code & setup Python 3.13.5 and Flutter.
 3. Step 2: Run `pytest src/tests/ -v`.
 4. Step 3: Run `cd src/frontend; flutter test`.
-5. Initialize `graphify` knowledge graph for code structure tracking.
+5. Step 4: Build static Flutter Web bundle (`flutter build web --release`) and deploy to **Firebase Hosting** global CDN (`firebase.json` configuration).
+6. Initialize `graphify` knowledge graph for code structure tracking.
 
 **Acceptance Criteria (Testable)**
 - WHEN a PR is opened targeting `dev` THE SYSTEM SHALL execute GitHub Actions CI pipeline and block merge if any test fails.
+- WHEN merged to `main` THE SYSTEM SHALL deploy Flutter Web static assets to Firebase Hosting global CDN.
 
 **Estimate:** S | **Depends on:** UC-000a, UC-000b
 
@@ -90,14 +92,16 @@
 **Trigger:** User drops file onto landing hero zone or clicks file selector.  
 
 **Preconditions**
-- [ ] Landing page loaded in Flutter Web UI (`/`).
+- [ ] Landing page loaded in Flutter Web UI (`/`) served instantly from **Firebase Hosting** CDN (0s cold start).
 
 **Main Flow**
-1. User drags `.pdf`, `.jpg`, `.png`, or `.jpeg` file onto hero dropzone.
-2. Flutter UI validates file extension and size against limits fetched from `GET /api/v1/config` (backed by `src/backend/app/app_limits_config.json`).
-3. System checks Redis 5-hour quota counters (`rate_limit:simple:{client_ip}` / `rate_limit:complex:{client_ip}`) and active session token (`ad_pass:{client_ip}`).
-4. If file is within limits, HTTP `POST /api/v1/ocr/convert` payload is sent to FastAPI Gateway.
-5. FastAPI Gateway invokes **UC-001a Layout Analyzer**, creates Redis job key `job:{job_id}`, and enqueues to `ocr:queue:cpu` (for simple) or `ocr:queue:gpu` (for complex).
+1. Upon web app launch from Firebase Hosting, Flutter UI sends an optimistic background `GET /api/v1/config` ping to pre-warm scale-to-zero GCP Cloud Run backend containers.
+2. User drags `.pdf`, `.jpg`, `.png`, or `.jpeg` file onto hero dropzone.
+3. Flutter UI validates file extension and size against limits fetched from `GET /api/v1/config` (backed by `src/backend/app/app_limits_config.json`).
+4. System checks Redis 5-hour quota counters (`rate_limit:simple:{client_ip}` / `rate_limit:complex:{client_ip}`) and active session token (`ad_pass:{client_ip}`).
+5. If file is within limits, HTTP `POST /api/v1/ocr/convert` payload is sent to FastAPI Gateway.
+6. FastAPI Gateway invokes **UC-001a Layout Analyzer**, creates Redis job key `job:{job_id}`, and enqueues to `ocr:queue:cpu` (for simple) or `ocr:queue:gpu` (for complex).
+
 
 **Alternate Flows**
 - **A1 — Over Limit:** File exceeds free cap → Triggers **UC-010 (Rewarded Ad Modal)**.
@@ -348,7 +352,7 @@
 
 ## Epic 3: Ad Monetization & Rewarded Boosts
 
-### UC-009: 35-Second AdSense Display Ad Banner Auto-Rotation Timer
+### UC-009: Runtime Configurable AdSense Display Ad Banner Auto-Rotation Timer
 
 **Linked Story:** US-301  
 **Actor:** Google Mobile Ads SDK for Flutter / JS Script  
@@ -356,14 +360,18 @@
 
 **Main Flow**
 1. 728x90 leaderboard ad banner container rendered above fold.
-2. 35-second JavaScript timer initialized (`setInterval(refreshAds, 35000)`).
-3. If page tab is active, ad container re-fetches ad unit every 35 seconds.
+2. Flutter Web UI fetches `ad_rotation_interval_seconds` (default 35s) dynamically from `GET /api/v1/config` (backed by `src/backend/app/app_limits_config.json`).
+3. Auto-rotation timer initialized using the runtime interval (`setInterval(refreshAds, intervalSeconds * 1000)`).
+4. Updating `ad_rotation_interval_seconds` in `app_limits_config.json` changes rotation speed instantly for all users without requiring a rebuild or redeployment of the Flutter app.
+5. If page tab is active, ad container re-fetches ad unit every `intervalSeconds` seconds.
 
 **Acceptance Criteria (Testable)**
-- WHEN page is loaded and tab remains active THE SYSTEM SHALL trigger ad refresh every 35 seconds.
-- WHEN user switches to another browser tab THE SYSTEM SHALL pause 35s rotation timer.
+- WHEN page is loaded THE SYSTEM SHALL fetch `ad_rotation_interval_seconds` from `GET /api/v1/config` and initialize the timer dynamically.
+- WHEN user switches to another browser tab THE SYSTEM SHALL pause rotation timer.
+- WHEN `ad_rotation_interval_seconds` is updated in `app_limits_config.json` THE SYSTEM SHALL reflect the new timer duration on subsequent config fetches without requiring a frontend app build/redeploy.
 
 **Estimate:** S | **Depends on:** None
+
 
 ---
 

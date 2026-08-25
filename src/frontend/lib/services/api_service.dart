@@ -177,4 +177,31 @@ class ApiService {
       );
     }
   }
+
+  static Future<Map<String, dynamic>?> fetchJobPreview(String jobId) async {
+    try {
+      final uri = Uri.parse('$baseUrl/jobs/$jobId/preview');
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('[API Preview Error] $e');
+      return null;
+    }
+  }
+
+  static Future<void> prewarmBackend() async {
+    try {
+      debugPrint('[API Pre-Warm] Sending silent background ping to wake scale-to-zero backend...');
+      final uri = Uri.parse('$baseUrl/config');
+      await http.get(uri).timeout(const Duration(seconds: 10));
+      debugPrint('[API Pre-Warm] Backend container warm and responsive.');
+    } catch (e) {
+      debugPrint('[API Pre-Warm] Warmup ping sent (container booting): $e');
+    }
+  }
 }
+
+

@@ -37,7 +37,14 @@ class _HomePageState extends State<HomePage> {
   int? _activeFileSize;
   List<BatchFileItem> _batchItems = [];
 
+  @override
+  void initState() {
+    super.initState();
+    ApiService.prewarmBackend();
+  }
+
   void _onUploadSuccess(String jobId, String filename, int sizeInBytes) {
+
     setState(() {
       _activeJobId = jobId;
       _activeFilename = filename;

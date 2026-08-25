@@ -45,7 +45,7 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 - **Superior AI Accuracy & Dual-Engine Routing:** Post-upload layout analyzer routes simple PDFs to CPU (OCRmyPDF) and complex PDFs to GPU (Baidu Unlimited OCR ~6 GB).
 - **100% Visual Layout Fidelity:** Invisible text layer overlay over original high-res scan background.
 - **Zero-Retention Ephemeral Privacy:** Files processed in Linux `tmpfs` RAM disk; input files purged immediately upon download or "Send Email" click.
-- **Scale-to-Zero GCP Cost Discipline:** Both CPU and GPU GCP worker nodes scale down to 0 (powered off) when queues are empty.
+- **Decoupled 0s-Cold-Start Hosting & Scale-to-Zero GCP Discipline:** Static Flutter Web UI, knowledge articles, and blog content served instantly via **Firebase Hosting (GCP Global CDN)** (<20ms, 0s cold start, $0.00/mo cost). GCP Cloud Run API & worker containers scale to 0 when idle with optimistic background container pre-warming on app launch.
 - **Stackable Rewarded Ad Limit Boosts:** Watching 15-second video ads incrementally increases file size (+20MB) and page count (+15 pages) caps indefinitely per ad watched, with a sliding 60-minute TTL resetting on each ad.
 - **Single Canonical Config (`app_limits_config.json`):** Base limits, 5-hour quotas (Simple vs Complex), boost increments per ad, and session TTLs are defined globally in `src/backend/app/app_limits_config.json`.
 
@@ -55,7 +55,8 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 
 ### 3.1 Tech Stack Summary
 - **Frontend UI:** Flutter 3.x (Flutter Web Desktop-first MVP → Mobile post-MVP → Desktop/CLI at scale).
-- **Backend API:** Python 3.13.5 + FastAPI (ASGI).
+- **Frontend Hosting:** Firebase Hosting (GCP Global Static CDN, 0s cold start, $0.00/mo cost). Serves static Flutter Web build, blog posts, knowledge articles, and terms/privacy pages instantly.
+- **Backend API:** Python 3.13.5 + FastAPI (ASGI) on GCP Cloud Run (`min-instances = 0`, scale-to-zero).
 - **Single Canonical Config:** `src/backend/app/app_limits_config.json`.
 - **Layout Pre-Processor:** `PyMuPDF` (`fitz`) structural analyzer detecting columns, tables, and math formulas.
 - **Dual OCR Engines:** Baidu Unlimited OCR AI Model (~6 GB) on GPU workers + OCRmyPDF on CPU workers (both scale to zero).
@@ -67,23 +68,36 @@ Users need to extract readable, searchable text from scanned PDFs, receipts, not
 
 ```mermaid
 graph TD
-    Client["Flutter Web Client (Desktop / Mobile)"] -->|1. REST Upload| GW["FastAPI Gateway (Python 3.13.5)"]
-    Client -->|Rewarded Ad Token| AdSDK["Google Ads SDK"]
+    subgraph Frontend Edge Layer (0s Cold Start, $0.00/mo)
+        FH["Firebase Hosting (GCP Global Static CDN)"]
+        Client["Flutter Web Client (Desktop / Mobile)"]
+        AdSDK["Google Ads SDK"]
+    end
+
+    subgraph API Gateway Layer (Cloud Run min-instances=0)
+        GW["FastAPI Gateway (Python 3.13.5)"]
+        LA["PyMuPDF Layout Analyzer"]
+    end
+
+    FH -->|1. Instant Web App Serve <20ms| Client
+    Client -.->|2. App Boot Pre-Warm Ping| GW
+    Client -->|Rewarded Ad Token| AdSDK
     AdSDK --> GW
-    GW -->|2. Read Config| Config["Canonical Config (app_limits_config.json)"]
-    GW -->|3. Layout Analysis| LA["PyMuPDF Layout Analyzer"]
+    GW -->|3. Read Config| Config["Canonical Config (app_limits_config.json)"]
+    GW -->|4. Layout Analysis| LA
     LA -->|Simple Layout| QueueCPU["ocr:queue:cpu"]
     LA -->|Complex Layout| QueueGPU["ocr:queue:gpu"]
     QueueCPU -.->|Scale-to-Zero Trigger| WorkerCPU["Celery CPU Worker (OCRmyPDF)"]
     QueueGPU -.->|Scale-to-Zero Trigger| WorkerGPU["Celery GPU Worker (Baidu Unlimited OCR)"]
-    GW -->|4. SSE Progress Stream| Client
-    WorkerCPU -->|5. RAM Write| RAM["Linux tmpfs RAM Disk"]
-    WorkerGPU -->|5. RAM Write| RAM
-    WorkerCPU -->|6. CPU OCR| RAM
-    WorkerGPU -->|6. AI Inference| RAM
-    RAM -->|7. Direct Download / Email Link| GW
-    RAM -.->|8. Instant Unlink & 60s Watchdog| Cleaner["Watchdog Process"]
+    GW -->|5. SSE Progress Stream| Client
+    WorkerCPU -->|6. RAM Write| RAM["Linux tmpfs RAM Disk"]
+    WorkerGPU -->|6. RAM Write| RAM
+    WorkerCPU -->|7. CPU OCR| RAM
+    WorkerGPU -->|7. AI Inference| RAM
+    RAM -->|8. Direct Download / Email Link| GW
+    RAM -.->|9. Instant Unlink & 60s Watchdog| Cleaner["Watchdog Process"]
 ```
+
 
 ---
 

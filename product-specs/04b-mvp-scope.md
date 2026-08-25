@@ -36,7 +36,8 @@ Users actively seek a fast, highly accurate, layout-preserving AI OCR web utilit
 | **US-202** | 3-Format 1-Click Downloads | Flexible output formats (`.pdf`, `.txt`, `.md`) | Low |
 | **US-203** | Email Link Delivery & Input Purge | User convenience + instant zero-retention compliance | Medium |
 | **US-204** | 24-Hour Expiration & Expired Link Page | Manages output TTL & local time expiration notice | Low |
-| **US-301** | 35-Second Display Ad Rotation | Core revenue monetization for free traffic | Low |
+| **US-301** | Runtime Configurable Display Ad Rotation | Core revenue monetization; refresh interval configured dynamically via `app_limits_config.json` without app rebuilds | Low |
+
 | **US-302** | Rewarded Ad Limit Exceeded Modal | Offers stackable video ad limit boosts (+15 pages / +20MB per ad watched) | Medium |
 | **US-303** | Stackable Redis Session Boost Pass | Atomically stacks limit boosts in Redis (runtime configurable settings) | Medium |
 | **US-401** | Password-in-Place PDF Decryption | Recovers encrypted scanned PDFs smoothly | Low |
