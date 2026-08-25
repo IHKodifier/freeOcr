@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/sse_service.dart';
+import 'split_preview_viewer.dart';
 
 class OcrProgressView extends StatefulWidget {
   final String? jobId;
@@ -42,6 +43,41 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   String? _outputPdfToken;
   String? _errorMessage;
   List<BatchFileItem> _batchItems = [];
+  bool _showPreview = false;
+  Map<String, dynamic>? _previewData;
+  bool _isLoadingPreview = false;
+
+  Future<void> _toggleSplitPreview() async {
+    if (_showPreview) {
+      setState(() {
+        _showPreview = false;
+      });
+      return;
+    }
+
+    final jobId = widget.jobId ?? (_batchItems.isNotEmpty ? _batchItems.first.jobId : null);
+    if (jobId == null) return;
+
+    setState(() {
+      _isLoadingPreview = true;
+    });
+
+    final data = await ApiService.fetchJobPreview(jobId);
+
+    if (mounted) {
+      setState(() {
+        _isLoadingPreview = false;
+        if (data != null && data.containsKey('pages')) {
+          _previewData = data;
+          _showPreview = true;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Could not load preview data.')),
+          );
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -134,6 +170,26 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final String displayName = widget.filename ?? (_batchItems.isNotEmpty ? _batchItems.first.filename : 'Document');
+
+    if (_showPreview && _previewData != null) {
+      return Column(
+        children: [
+          SplitPreviewViewer(
+            jobId: widget.jobId ?? (_previewData!['job_id'] as String? ?? ''),
+            filename: displayName,
+            pages: _previewData!['pages'] as List<dynamic>? ?? [],
+            onClose: () => setState(() => _showPreview = false),
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: () => setState(() => _showPreview = false),
+            icon: const Icon(Icons.arrow_back),
+            label: const Text('Back to Status View'),
+          ),
+        ],
+      );
+    }
 
     if (_batchItems.length > 1) {
       return _buildBatchProgressUI(theme, colorScheme);
@@ -141,6 +197,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
     return _buildSingleProgressUI(theme, colorScheme);
   }
+
 
   Widget _buildSingleProgressUI(ThemeData theme, ColorScheme colorScheme) {
     final isCompleted = _status == 'COMPLETED';
@@ -256,6 +313,15 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                 ),
               ),
             ],
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: _isLoadingPreview ? null : _toggleSplitPreview,
+              icon: _isLoadingPreview
+                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.vertical_split_rounded),
+              label: const Text('Interactive Split Preview'),
+            ),
+
           ] else if (isFailed) ...[
             Icon(
               Icons.error_outline,

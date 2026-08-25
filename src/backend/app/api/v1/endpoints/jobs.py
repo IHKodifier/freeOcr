@@ -118,3 +118,45 @@ async def stream_job_events(job_id: str, request: Request):
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@router.get("/{job_id}/preview")
+async def get_job_preview(job_id: str):
+    """
+    Returns extracted text blocks and page layout metadata for an OCR job.
+    Returns 404 if job_id is expired or invalid.
+    """
+    redis_client = get_redis_client()
+    job_data_bytes = None
+    try:
+        job_data_bytes = redis_client.get(f"job:{job_id}")
+    except Exception:
+        job_data_bytes = None
+
+    if not job_data_bytes and job_id in DEV_JOB_STORE:
+        job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    try:
+        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+        parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error parsing job preview data."
+        )
+
+    return {
+        "job_id": job_id,
+        "filename": parsed.get("filename", ""),
+        "status": parsed.get("status", "UNKNOWN"),
+        "total_pages": parsed.get("total_pages", 0),
+        "pages": parsed.get("pages", []),
+        "output_pdf_token": parsed.get("output_pdf_token")
+    }
+

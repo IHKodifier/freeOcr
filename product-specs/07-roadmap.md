@@ -15,7 +15,7 @@
 | **Phase 0** | **Foundation & TDD Baseline** | Weeks 1–2 | CI/CD pipeline, Flutter shell, FastAPI skeleton, Redis & Graphify MCP initialized | Lead Engineer |
 | **Phase 1** | **MVP Build (Sprints 1–3)** | Weeks 3–8 | All 13 Use Case Tickets (`UC-001`–`UC-013`) pass automated TDD tests | Dev Team |
 | **Phase 2** | **Staging & User Validation** | Weeks 9–10 | Tested by 20 real users; 99%+ clean OCR conversion accuracy | Founder / PM |
-| **Phase 3** | **Production Launch** | Weeks 11–12 | Deployed to GCP Cloud Run / Compute Engine; ad rotation live | All |
+| **Phase 3** | **Production Launch** | Weeks 11–12 | Deployed to Firebase Hosting (Frontend CDN) + GCP Cloud Run (Backend API min-instances=0); ad rotation live | All |
 | **Phase 4** | **Post-MVP SaaS Expansion** | Months 3+ | Firebase Auth, SafePay Subscriptions, GCS Vault & Developer API | PM |
 
 **Critical Path Item:** Baidu Unlimited OCR AI Model (~6 GB) & OCRmyPDF dual-engine execution on GCP worker nodes with Linux `tmpfs` RAM disk integration (`UC-003` & `UC-004`).  

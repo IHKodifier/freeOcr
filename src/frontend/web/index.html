@@ -1,46 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR</title>
+  <meta name="title" content="freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR">
+  <meta name="description" content="100% Free & Privacy-First AI OCR utility. Convert scanned PDFs, receipts, and invoices to searchable PDF, TXT, and Markdown files. Zero data retention, instant RAM disk purging, no signup required.">
+  <meta name="keywords" content="free ocr, scanned pdf to text, pdf to searchable pdf, baidu ocr online, ocrmypdf web, free ocr utility, zero retention ocr, extract text from scanned pdf">
+  <meta name="robots" content="index, follow">
+
+  <!-- OpenGraph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://freeocr.me/">
+  <meta property="og:title" content="freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR">
+  <meta property="og:description" content="100% Free & Ephemeral AI OCR Utility. Convert scanned PDFs and images to searchable text with visual layout preservation. Zero retention.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="free_ocr_frontend">
+  <meta name="apple-mobile-web-app-title" content="freeOCR.me">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>free_ocr_frontend</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "freeOCR.me",
+    "url": "https://freeocr.me/",
+    "description": "Free, zero-retention AI OCR web utility for converting scanned PDFs and images into searchable PDFs and text documents.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
+  <!-- 
+    Semantic HTML Fallback for Search Engines (Googlebot, Bingbot) and AdSense Crawlers.
+    This content is read instantly by crawlers before or alongside JavaScript execution.
   -->
+  <div id="seo-fallback" style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;">
+    <header>
+      <h1>freeOCR.me — Free Scanned PDF to Searchable PDF & Text Converter</h1>
+      <p>The privacy-first AI OCR web platform that transforms scanned PDFs, receipts, notes, and contracts into searchable text and searchable PDFs while preserving 100% of original visual layout formatting.</p>
+    </header>
+    <main>
+      <section>
+        <h2>Instant Drag & Drop File Conversion</h2>
+        <p>Drop your scanned PDF, PNG, JPG, or JPEG file to convert instantly with zero registration or email required. Features dual-engine AI OCR routing: OCRmyPDF for simple document layouts and Baidu Unlimited OCR (~6 GB model) for complex multi-column documents, math formulas, and tables.</p>
+      </section>
+      <section>
+        <h2>Strict Zero-Retention Privacy Promise</h2>
+        <p>All file processing occurs strictly in Linux tmpfs RAM disk. Input files never touch persistent disk storage and are unlinked instantly upon conversion output generation or download link retrieval.</p>
+      </section>
+      <section>
+        <h2>Multi-Format Output & Side-by-Side Visual Preview</h2>
+        <p>Download your converted documents in 1 click as Searchable PDF, Plain Text (.txt), or Structured Markdown (.md) with an interactive side-by-side split preview viewer.</p>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2026 freeOCR.me — Free Ephemeral AI OCR Utility</p>
+    </footer>
+  </div>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
+

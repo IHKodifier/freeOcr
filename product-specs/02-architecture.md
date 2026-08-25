@@ -10,7 +10,9 @@
 
 ## Architecture Pattern
 
-**freeOCR.me** utilizes an **Asynchronous Event-Driven Web Utility Architecture** decoupled between a lightweight **Flutter Web** client, a **FastAPI (Python 3.13.5)** API Gateway on GCP, an in-memory **Redis** job queue router, a **Document Layout Complexity Analyzer**, and dual-engine worker nodes:
+**freeOCR.me** utilizes an **Asynchronous Event-Driven Web Utility Architecture** decoupled between a static **Firebase Hosting (GCP Global CDN)** frontend serving the **Flutter Web** application (<20ms latency, 0s cold start, $0.00/mo cost), a **FastAPI (Python 3.13.5)** API Gateway on **GCP Cloud Run** (scales to `min-instances = 0` during idle periods), an in-memory **Redis** job queue router, a **Document Layout Complexity Analyzer**, and dual-engine worker nodes:
+- **Frontend Hosting (Firebase Hosting):** Serves static Flutter Web compiled assets, SEO knowledge articles, blog posts, and legal terms instantly without container cold starts. Sends an optimistic background `GET /api/v1/config` ping upon app boot to pre-warm the scale-to-zero Cloud Run API container before document upload.
+- **Backend API (GCP Cloud Run):** Runs Python 3.13.5 FastAPI Gateway (`min-instances = 0`) for scale-to-zero $0 idle cost.
 - **CPU Worker Nodes:** Running **OCRmyPDF** on GCP CPU compute (scales to 0 during idle periods).
 - **GPU Worker Nodes:** Running **Baidu's Unlimited OCR AI Model (~6 GB)** on GCP GPU compute (scales to 0 during idle periods).
 
@@ -22,14 +24,15 @@ To enforce the core **zero-retention privacy promise** while delivering maximum 
 
 ```mermaid
 graph TD
-    subgraph Client Layer
+    subgraph Frontend Edge Layer (0s Cold Start, $0.00/mo)
+        FH["Firebase Hosting (GCP Global Static CDN)"]
         A["Flutter Web Client (Desktop / Mobile Browser)"]
         AdSDK["Google Ads SDK (Display / Rewarded Ads)"]
     end
 
     subgraph Edge & API Gateway Layer
         CF["Cloudflare CDN / WAF (SSL & DDoS)"]
-        GW["FastAPI Gateway (Python 3.13.5)"]
+        GW["FastAPI Gateway on GCP Cloud Run (min-instances=0)"]
         SSE["SSE Stream Handler (Real-Time Progress)"]
         LA["Layout & Complexity Analyzer (PyMuPDF Heuristics)"]
     end
@@ -56,25 +59,26 @@ graph TD
         GCS["GCP Cloud Storage (Paid User Vault)"]
     end
 
-    A -->|1. Drag & Drop PDF| CF
+    FH -->|1. Instant Web App Serve <20ms| A
+    A -.->|2. App Boot Pre-Warm Ping| GW
     A -->|Watched Rewarded Ad| AdSDK
-    AdSDK -->|2. Stacked Ad Token (Resets 60m TTL)| GW
-    CF -->|3. REST API Upload| GW
-    GW -->|4. Read Global Parameters| Config
-    GW -->|5. Analyze Layout Complexity| LA
+    AdSDK -->|3. Stacked Ad Token (Resets 60m TTL)| GW
+    CF -->|4. REST API Upload| GW
+    GW -->|5. Read Global Parameters| Config
+    GW -->|6. Analyze Layout Complexity| LA
     LA -->|Simple Layout| QueueCPU
     LA -->|Complex Layout| QueueGPU
     QueueCPU -.->|Trigger if Idle| TriggerCPU
     QueueGPU -.->|Trigger if Idle| TriggerGPU
     TriggerCPU --> WorkerCPU
     TriggerGPU --> WorkerGPU
-    GW -->|6. Subscribe Progress| SSE
-    SSE -->|7. Real-Time SSE Stream| A
-    WorkerCPU -->|8. Write Ephemeral PDF| RAM
-    WorkerGPU -->|8. Write Ephemeral PDF| RAM
-    WorkerCPU -->|9. CPU OCR Execution| RAM
-    WorkerGPU -->|9. AI Vision-Language Inference| RAM
-    RAM -->|10. Output Stream & Instant Unlink| GW
+    GW -->|7. Subscribe Progress| SSE
+    SSE -->|8. Real-Time SSE Stream| A
+    WorkerCPU -->|9. Write Ephemeral PDF| RAM
+    WorkerGPU -->|9. Write Ephemeral PDF| RAM
+    WorkerCPU -->|10. CPU OCR Execution| RAM
+    WorkerGPU -->|10. AI Vision-Language Inference| RAM
+    RAM -->|11. Output Stream & Instant Unlink| GW
     RAM -.->|Failsafe Cleanup| Cleaner
     
     %% Post-MVP Connections
@@ -82,6 +86,7 @@ graph TD
     GW -.->|Post-MVP Metadata| SQL
     WorkerGPU -.->|Post-MVP Opt-In Vault| GCS
 ```
+
 
 ---
 
