@@ -6,6 +6,8 @@ import 'widgets/hero_dropzone.dart';
 import 'widgets/ocr_progress_view.dart';
 import 'widgets/expired_link_view.dart';
 
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
+
 void main() {
   runApp(const FreeOcrApp());
 }
@@ -15,13 +17,18 @@ class FreeOcrApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'freeOCR.me',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const HomePage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (context, currentMode, _) {
+        return MaterialApp(
+          title: 'freeOCR.me',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: currentMode,
+          home: const HomePage(),
+        );
+      },
     );
   }
 }
@@ -81,6 +88,7 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final bool hasActiveItems = _activeJobId != null || _batchItems.isNotEmpty;
+    final bool isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -88,6 +96,20 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: colorScheme.surfaceContainer,
         centerTitle: true,
         actions: [
+          IconButton(
+            tooltip: isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme',
+            icon: Icon(
+              isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+              color: colorScheme.onSurfaceVariant,
+            ),
+            onPressed: () {
+              if (isDark) {
+                themeNotifier.value = ThemeMode.light;
+              } else {
+                themeNotifier.value = ThemeMode.dark;
+              }
+            },
+          ),
           if (kDebugMode)
             IconButton(
               tooltip: '[DEV] Toggle Expired Link UI Preview',
