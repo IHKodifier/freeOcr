@@ -150,6 +150,38 @@ void main() {
     expect(find.text('Searchable PDF (.pdf)'), findsOneWidget);
     expect(find.text('Plain Text (.txt)'), findsWidgets);
     expect(find.text('Markdown (.md)'), findsWidgets);
+    expect(find.text('Send Email Links (24h)'), findsOneWidget);
+  });
+
+  testWidgets('SplitPreviewViewer opens Email Delivery Dialog with explicit privacy warning banner', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1280, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SplitPreviewViewer(
+            jobId: 'test_job_1',
+            filename: 'sample_doc.pdf',
+            pages: samplePages,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Tap Email Links icon button in header
+    final emailBtn = find.byIcon(Icons.email_outlined);
+    expect(emailBtn, findsOneWidget);
+    await tester.tap(emailBtn);
+    await tester.pumpAndSettle();
+
+    // Verify dialog title, privacy warning banner, and send button render
+    expect(find.text('Email Download Links'), findsOneWidget);
+    expect(find.text('Input file is deleted immediately. Ensure email address is correct.'), findsOneWidget);
+    expect(find.text('Send Download Links'), findsOneWidget);
   });
 }
 

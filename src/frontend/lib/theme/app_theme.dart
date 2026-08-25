@@ -146,6 +146,14 @@ class AppTheme {
       colorScheme: lightColorScheme,
       scaffoldBackgroundColor: lightSurface,
       textTheme: _buildTextTheme(base.textTheme, lightOnSurface),
+      dialogTheme: DialogThemeData(
+        backgroundColor: lightSurfaceContainer,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: lightOutlineVariant, width: 1.5),
+        ),
+      ),
     );
   }
 
@@ -155,6 +163,14 @@ class AppTheme {
       colorScheme: darkColorScheme,
       scaffoldBackgroundColor: darkSurface,
       textTheme: _buildTextTheme(base.textTheme, darkOnSurface),
+      dialogTheme: DialogThemeData(
+        backgroundColor: darkSurfaceContainer,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: darkOutlineVariant, width: 1.5),
+        ),
+      ),
     );
   }
 }

@@ -2,14 +2,115 @@ import os
 import uuid
 import json
 import datetime
+import glob
+import tempfile
+from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Request, HTTPException, status, BackgroundTasks
 from fastapi.responses import JSONResponse
 from app.config import settings, load_canonical_config
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.layout_analyzer import LayoutAnalyzer
 from app.services.ocr_worker import process_ocr_job
+from app.services.email_service import validate_email_address, send_download_links_email
 
 router = APIRouter()
+
+
+class EmailDeliveryRequest(BaseModel):
+    job_id: str
+    email: str
+
+
+@router.post("/email-links")
+async def email_download_links(req: EmailDeliveryRequest, request: Request):
+    """
+    Validates email, checks job completion, instantly purges original input file
+    from RAM disk (AC-1 / Privacy Mandate), and dispatches 24-hour expiring download links.
+    """
+    if not validate_email_address(req.email):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid email address format."
+        )
+
+    job_id = req.job_id
+    job_data_bytes = None
+
+    if job_id in DEV_JOB_STORE:
+        job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        try:
+            redis_client = get_redis_client()
+            job_data_bytes = redis_client.get(f"job:{job_id}")
+        except Exception:
+            job_data_bytes = None
+
+    if not job_data_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    try:
+        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+        parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error parsing job data."
+        )
+
+    if parsed.get("status") != "COMPLETED":
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    # Privacy Mandate (AC-1): Instantly purge original input file from RAM disk upon endpoint invocation
+    ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
+    matching_inputs = glob.glob(os.path.join(ram_disk_base, f"ephemeral_{job_id}_*"))
+    input_purged = False
+    for input_file in matching_inputs:
+        try:
+            os.remove(input_file)
+            input_purged = True
+        except Exception:
+            pass
+
+    # Determine base URL for production: Priority 1 = API_BASE_URL env var, Priority 2 = Proxy headers, Priority 3 = Request URL
+    base_url = os.environ.get("API_BASE_URL")
+    if not base_url:
+        forwarded_proto = request.headers.get("x-forwarded-proto", request.url.scheme)
+        forwarded_host = request.headers.get("x-forwarded-host", request.url.netloc)
+        base_url = f"{forwarded_proto}://{forwarded_host}"
+
+    # Dispatch email with download links
+    delivery_result = send_download_links_email(req.email, job_id, base_url=base_url)
+
+    if delivery_result.get("status") == "ERROR":
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=delivery_result.get("error_detail") or "Failed to dispatch email via provider."
+        )
+
+    mode = delivery_result.get("delivery_mode", "MOCK_DEV")
+    msg = (
+        f"Download links sent to {req.email}!"
+        if mode != "MOCK_DEV"
+        else f"Download links processed for {req.email}. (Note: Local dev server is in mock mode. Add RESEND_API_KEY or SMTP to .env for live inbox delivery)."
+    )
+
+    return {
+        "status": "SUCCESS",
+        "message": msg,
+        "job_id": job_id,
+        "email": req.email,
+        "delivery_mode": mode,
+        "input_purged": input_purged,
+        "download_links": delivery_result.get("download_links", {}),
+        "expires_in_hours": 24
+    }
 
 
 @router.post("/convert", status_code=status.HTTP_202_ACCEPTED)

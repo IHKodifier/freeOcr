@@ -206,6 +206,31 @@ class ApiService {
   static String getDownloadUrl(String jobId, String format) {
     return '$baseUrl/jobs/$jobId/download/$format';
   }
+
+  static Future<Map<String, dynamic>> sendEmailLinks(String jobId, String email) async {
+    try {
+      final uri = Uri.parse('$baseUrl/ocr/email-links');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'job_id': jobId, 'email': email}),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        String detail = 'Email delivery failed (${response.statusCode})';
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          if (data.containsKey('detail')) {
+            detail = data['detail'] as String;
+          }
+        } catch (_) {}
+        return {'status': 'ERROR', 'detail': detail};
+      }
+    } catch (e) {
+      return {'status': 'ERROR', 'detail': 'Network connection error: $e'};
+    }
+  }
 }
 
 

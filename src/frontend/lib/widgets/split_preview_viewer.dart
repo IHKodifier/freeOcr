@@ -320,10 +320,24 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           ),
           const SizedBox(width: 12),
 
+          // Email Links Button
+          IconButton(
+            icon: const Icon(Icons.email_outlined, size: 20),
+            onPressed: () => _showEmailDeliveryDialog(context),
+            tooltip: 'Send Download Links via Email',
+          ),
+          const SizedBox(width: 4),
+
           // 1-Click Direct Multi-Format Download Menu Button
           PopupMenuButton<String>(
             tooltip: 'Download Multi-Format Document',
-            onSelected: _downloadFile,
+            onSelected: (value) {
+              if (value == 'email') {
+                _showEmailDeliveryDialog(context);
+              } else {
+                _downloadFile(value);
+              }
+            },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -395,6 +409,19 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                   ],
                 ),
               ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'email',
+                child: Row(
+                  children: [
+                    Icon(Icons.mark_email_read_outlined, color: Colors.teal, size: 20),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text('Send Email Links (24h)', style: TextStyle(fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
+              ),
             ],
 
 
@@ -409,6 +436,161 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
             ),
         ],
       ),
+    );
+  }
+
+  void _showEmailDeliveryDialog(BuildContext context) {
+    final emailController = TextEditingController();
+    bool isSubmitting = false;
+    String? errorMessage;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            final theme = Theme.of(context);
+            final colorScheme = theme.colorScheme;
+
+            return AlertDialog(
+              backgroundColor: colorScheme.surfaceContainer,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.8),
+                  width: 1.5,
+                ),
+              ),
+              title: Row(
+                children: [
+                  Icon(Icons.email_outlined, color: colorScheme.primary, size: 26),
+                  const SizedBox(width: 10),
+                  const Text('Email Download Links', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                ],
+              ),
+              content: SizedBox(
+                width: 420,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Receive 24-hour expiring download links for PDF, TXT, and Markdown directly in your inbox.',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Privacy Warning Banner (AC-1)
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.shade900.withValues(alpha: 0.35),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.amber.shade600.withValues(alpha: 0.6)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.warning_amber_rounded, color: Colors.amber.shade400, size: 22),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Input file is deleted immediately. Ensure email address is correct.',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Colors.amber.shade200,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Email Input Field
+                    TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: 'Email Address',
+                        hintText: 'user@example.com',
+                        prefixIcon: const Icon(Icons.mail_outline),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorText: errorMessage,
+                      ),
+                      enabled: !isSubmitting,
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: isSubmitting ? null : () => Navigator.of(dialogContext).pop(),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: isSubmitting
+                      ? null
+                      : () async {
+                          final email = emailController.text.trim();
+                          if (email.isEmpty || !email.contains('@')) {
+                            setDialogState(() {
+                              errorMessage = 'Please enter a valid email address.';
+                            });
+                            return;
+                          }
+
+                          setDialogState(() {
+                            isSubmitting = true;
+                            errorMessage = null;
+                          });
+
+                          final res = await ApiService.sendEmailLinks(widget.jobId, email);
+
+                          if (!dialogContext.mounted) return;
+
+                          if (res['status'] == 'SUCCESS') {
+                            Navigator.of(dialogContext).pop();
+                            final msg = res['message'] as String? ?? 'Download links sent to $email! Original input file purged.';
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(msg),
+                                backgroundColor: Colors.green.shade700,
+                                duration: const Duration(seconds: 5),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          } else {
+                            setDialogState(() {
+                              isSubmitting = false;
+                              errorMessage = res['detail'] as String? ?? 'Failed to send email download links.';
+                            });
+                          }
+                        },
+                  icon: isSubmitting
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Icon(Icons.send_rounded, size: 18),
+                  label: Text(isSubmitting ? 'Sending...' : 'Send Download Links'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
