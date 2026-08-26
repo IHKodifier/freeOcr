@@ -1,14 +1,11 @@
 {
   "limits": {
     "base_max_file_mb": 10,
-    "base_max_pages": 10,
-    "simple_quota_5h": 20,
-    "complex_quota_5h": 5,
+    "simple_quota_jobs_5h": 20,
+    "complex_quota_jobs_5h": 5,
     "boost_per_ad_mb": 20,
-    "boost_per_ad_pages": 15,
     "ad_boost_ttl_seconds": 3600,
-    "max_stack_file_mb": 500,
-    "max_stack_pages": 500
+    "max_stack_file_mb": 500
   },
   "monetization": {
     "ad_rotation_interval_seconds": 35,

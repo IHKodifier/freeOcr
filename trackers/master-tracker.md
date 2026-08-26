@@ -52,7 +52,7 @@
 | **UC-007** | Email Download Link Delivery & Input Purge | Sprint 2 | P1 | Completed | PASS |
 | **UC-008** | 24-Hour Expiration TTL & Local Time Expired Link Page | Sprint 2 | P1 | Completed | PASS |
 | **UC-012** | Password-in-Place Encrypted PDF Decryption | Sprint 2 | P1 | Completed | PASS |
-| **UC-009** | 35-Second AdSense Display Ad Banner Rotation Timer | Sprint 3 | P0 | Not Started | Pending |
+| **UC-009** | Configurable AdSense Display Ad Banner Auto-Rotation Timer | Sprint 3 | P0 | Not Started | Pending |
 | **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal | Sprint 3 | P0 | Not Started | Pending |
 | **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | Sprint 3 | P0 | Not Started | Pending |
 | **UC-014** | Google Analytics 4 (GA4) Telemetry & SEO Meta-Tags | Sprint 3 | P1 | Not Started | Pending |

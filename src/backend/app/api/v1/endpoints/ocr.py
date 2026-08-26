@@ -208,7 +208,7 @@ async def convert_document(
 
     # Check 5-hour rolling quotas
     quota_key = f"rate_limit:{complexity.lower()}:{client_ip}"
-    max_quota = limits_cfg.get("simple_quota_5h", 20) if complexity == "SIMPLE" else limits_cfg.get("complex_quota_5h", 5)
+    max_quota = limits_cfg.get("simple_quota_jobs_5h", 20) if complexity == "SIMPLE" else limits_cfg.get("complex_quota_jobs_5h", 5)
 
     try:
         current_used = redis_client.get(quota_key)

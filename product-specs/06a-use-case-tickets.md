@@ -379,18 +379,18 @@
 
 **Linked Story:** US-302  
 **Actor:** Flutter Web UI Validation Engine  
-**Trigger:** User drops file exceeding current session limits (`BASE_MAX_PAGES` or `BASE_MAX_FILE_MB`).  
+**Trigger:** User drops file exceeding current session file size limit (`base_max_file_mb`).  
 
 **Main Flow**
-1. Client-side PDF parser counts pages (e.g. 22 pages) and evaluates file size.
-2. Page count or file size exceeds current active limit (e.g. `BASE_MAX_PAGES = 10`, `BASE_MAX_FILE_MB = 10MB`).
+1. Client-side validation evaluates uploaded file size in MB.
+2. File size exceeds current active session limit (e.g. file size > `base_max_file_mb` of 10MB).
 3. System checks Redis for active `ad_pass:{client_ip}` boost counters.
-4. UI displays Rewarded Ad Modal: *"Unlock Stackable Limit Boost (+15 Pages & +20MB per ad watched)"* with **[Watch 15s Ad to Stack Boost]** button.
-5. Modal informs user that watching additional ads will continuously stack limits indefinitely (e.g. up to 500 MB / 500 pages).
+4. UI displays Rewarded Ad Modal: *"Unlock Stackable Limit Boost (+20MB per ad watched)"* with **[Watch 15s Ad to Stack Boost]** button.
+5. Modal informs user that watching additional ads will continuously stack file size limits up to `max_stack_file_mb` (500 MB).
 
 **Acceptance Criteria (Testable)**
-- WHEN uploaded PDF exceeds active session cap THE SYSTEM SHALL display Rewarded Ad Modal with stackable limit options.
-- THE SYSTEM SHALL load base limits (`BASE_MAX_PAGES`, `BASE_MAX_FILE_MB`) dynamically from runtime environment configuration.
+- WHEN uploaded PDF exceeds active session file size cap THE SYSTEM SHALL display Rewarded Ad Modal with stackable limit options.
+- THE SYSTEM SHALL load base limit (`base_max_file_mb`) dynamically from runtime configuration.
 
 **Estimate:** M | **Depends on:** UC-001
 
@@ -407,14 +407,13 @@
 2. Google Ads SDK triggers `onUserEarnedReward` callback with signed reward token.
 3. Flutter client calls `POST /api/v1/ads/rewarded-callback` with token.
 4. FastAPI Gateway validates reward token and increments Redis session key `ad_pass:{client_ip}`:
-   - Increments allowed page limit by `BOOST_PER_AD_PAGES` (default +15 pages, runtime configurable).
-   - Increments allowed file size limit by `BOOST_PER_AD_MB` (default +20 MB, runtime configurable).
-   - Extends Redis session TTL (default 3600s, runtime configurable).
-5. User can choose to watch another ad to stack limits further, or initiate conversion immediately if file requirements are satisfied.
+   - Increments allowed file size limit by `boost_per_ad_mb` (default +20 MB, runtime configurable).
+   - Extends Redis session TTL (`ad_boost_ttl_seconds`, default 3600s).
+5. User can choose to watch another ad to stack file size limits further up to `max_stack_file_mb`, or initiate conversion immediately.
 
 **Acceptance Criteria (Testable)**
-- WHEN rewarded ad completes THE SYSTEM SHALL atomically increment `ad_pass:{client_ip}` page cap by `BOOST_PER_AD_PAGES` and file cap by `BOOST_PER_AD_MB` in Redis within 200ms.
-- WHEN multiple ads are watched back-to-back THE SYSTEM SHALL stack limit boosts indefinitely without hardcoded ceilings.
+- WHEN rewarded ad completes THE SYSTEM SHALL atomically increment `ad_pass:{client_ip}` file size cap by `boost_per_ad_mb` in Redis within 200ms.
+- WHEN multiple ads are watched back-to-back THE SYSTEM SHALL stack file size limit boosts up to `max_stack_file_mb`.
 - ALL limit thresholds and boost step sizes SHALL be loaded from runtime configuration (never hardcoded in application logic).
 
 **Estimate:** M | **Depends on:** UC-010
