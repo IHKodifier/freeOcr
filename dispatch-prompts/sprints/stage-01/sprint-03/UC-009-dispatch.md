@@ -17,21 +17,24 @@ In Sprint 3, we implement display ad monetization and configurable rotation:
 ---
 
 ## 2. Goals & Objectives for UC-009
-1. **Backend Config Provider (`src/backend/app/app_limits_config.json` & `config.py`):**
+1. **Branch Workflow:**
+   - Checkout dedicated feature branch from `dev`: `git checkout -b feature/UC-009` (or `sprint/sprint-03-uc-009`).
+
+2. **Backend Config Provider (`src/backend/app/app_limits_config.json` & `config.py`):**
    - Ensure `ad_rotation_interval_seconds` is present in `app_limits_config.json` (default `35`).
    - Verify `GET /api/v1/config` returns `monetization.ad_rotation_interval_seconds`.
 
-2. **Flutter AdSense Banner Component (`src/frontend/lib/widgets/adsense_banner.dart`):**
+3. **Flutter AdSense Banner Component (`src/frontend/lib/widgets/adsense_banner.dart`):**
    - Build `AdSenseBanner` widget fetching rotation interval from `ApiService`.
    - Implement dynamic auto-rotation timer refreshing ad units every `ad_rotation_interval_seconds` seconds.
    - Pause timer on window blur / tab switch and resume on focus.
 
-3. **Automated Verification:**
+4. **Automated Verification:**
    - Create unit tests in `src/tests/test_adsense_config.py` verifying dynamic configuration loading.
    - Create Flutter test in `src/frontend/test/widgets/adsense_banner_test.dart` verifying ad banner rendering and timer lifecycle.
    - Run `$env:PYTHONPATH="src/backend"; .\.venv\Scripts\python.exe -m pytest src/tests/ -v` and `C:\flutter\bin\flutter.bat test`.
 
-4. **Tracker Update:**
+5. **Tracker Update:**
    - Update `trackers/stage-01/sprints/07.01.03-tracker.md`, `trackers/stage-01/07.01-tracker.md`, and `trackers/master-tracker.md`.
 
 ---
@@ -41,9 +44,10 @@ In Sprint 3, we implement display ad monetization and configurable rotation:
 ```text
 Please execute ticket UC-009: Configurable AdSense Display Ad Banner Auto-Rotation Timer.
 
-1. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
-2. Verify GET /api/v1/config returns ad_rotation_interval_seconds from app_limits_config.json.
-3. Build Flutter AdSenseBanner widget in src/frontend/lib/widgets/adsense_banner.dart with dynamic auto-rotation interval and tab blur pause.
-4. Add automated test coverage and ensure 100% of Pytest and Flutter tests pass.
-5. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
+1. Checkout dedicated feature branch from dev: `git checkout -b feature/UC-009` (or `sprint/sprint-03-uc-009`).
+2. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
+3. Verify GET /api/v1/config returns ad_rotation_interval_seconds from app_limits_config.json.
+4. Build Flutter AdSenseBanner widget in src/frontend/lib/widgets/adsense_banner.dart with dynamic auto-rotation interval and tab blur pause.
+5. Add automated test coverage and ensure 100% of Pytest and Flutter tests pass.
+6. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
 ```

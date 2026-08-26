@@ -15,13 +15,30 @@ In UC-015, we implement educational knowledgebase and API documentation content 
 
 ---
 
-## 2. Dispatch Prompt (Copy & Paste to Start)
+## 2. Goals & Objectives for UC-015
+1. **Branch Workflow:**
+   - Checkout dedicated feature branch from `dev`: `git checkout -b feature/UC-015` (or `sprint/sprint-03-uc-015`).
+
+2. **AdSense Content & Footer:**
+   - Build `/kb` Knowledge Base and `/docs` API Documentation routes in Flutter.
+   - Build global footer component with GitHub link and open-source attribution.
+
+3. **Automated Verification:**
+   - Ensure 100% of Pytest and Flutter test suites pass cleanly.
+
+4. **Tracker Update:**
+   - Update `trackers/stage-01/sprints/07.01.03-tracker.md` and `trackers/master-tracker.md`.
+
+---
+
+## 3. Dispatch Prompt (Copy & Paste to Start)
 
 ```text
 Please execute ticket UC-015: AdSense-Qualifying Content KB, Docs & GitHub Footer.
 
-1. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
-2. Build /kb Knowledge Base, /docs API Documentation routes, and GitHub repository footer component in Flutter.
-3. Ensure 100% of Pytest and Flutter test suites pass cleanly.
-4. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
+1. Checkout dedicated feature branch from dev: `git checkout -b feature/UC-015` (or `sprint/sprint-03-uc-015`).
+2. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
+3. Build /kb Knowledge Base, /docs API Documentation routes, and GitHub repository footer component in Flutter.
+4. Ensure 100% of Pytest and Flutter test suites pass cleanly.
+5. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
 ```

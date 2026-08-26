@@ -15,13 +15,30 @@ In UC-014, we implement GA4 telemetry tracking and SEO meta-tags:
 
 ---
 
-## 2. Dispatch Prompt (Copy & Paste to Start)
+## 2. Goals & Objectives for UC-014
+1. **Branch Workflow:**
+   - Checkout dedicated feature branch from `dev`: `git checkout -b feature/UC-014` (or `sprint/sprint-03-uc-014`).
+
+2. **Telemetry & SEO Integration:**
+   - Inject `gtag.js` script and canonical OpenGraph / Twitter meta-tags in `web/index.html`.
+   - Dispatch custom conversion events in Flutter UI services.
+
+3. **Automated Verification:**
+   - Ensure 100% of Pytest and Flutter test suites pass cleanly.
+
+4. **Tracker Update:**
+   - Update `trackers/stage-01/sprints/07.01.03-tracker.md` and `trackers/master-tracker.md`.
+
+---
+
+## 3. Dispatch Prompt (Copy & Paste to Start)
 
 ```text
 Please execute ticket UC-014: Google Analytics 4 (GA4) Telemetry & SEO Meta-Tags.
 
-1. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
-2. Inject GA4 script tag and OpenGraph SEO meta-tags in index.html and dispatch custom events in Flutter UI.
-3. Ensure 100% of Pytest and Flutter test suites pass cleanly.
-4. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
+1. Checkout dedicated feature branch from dev: `git checkout -b feature/UC-014` (or `sprint/sprint-03-uc-014`).
+2. Review governance in .agents/AGENTS.md and ticket specs in product-specs/06a-use-case-tickets.md.
+3. Inject GA4 script tag and OpenGraph SEO meta-tags in index.html and dispatch custom events in Flutter UI.
+4. Ensure 100% of Pytest and Flutter test suites pass cleanly.
+5. Update trackers in trackers/stage-01/sprints/07.01.03-tracker.md and master-tracker.md.
 ```
