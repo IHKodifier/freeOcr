@@ -30,6 +30,8 @@
 - [ ] **[PRE-PROD FLAG 01]:** Validate `ExpiredLinkView` UI styling, local timezone date formatting, and reset button during **UC-005b Premium UI Overhaul** before final staging push.
 - [ ] **[PRE-PROD FLAG 02]:** Verify Google Analytics 4 (`gtag.js`) traffic tracking & custom conversion events (`UC-014`) in Sprint 3.
 - [ ] **[PRE-PROD FLAG 03]:** Verify AdSense-qualifying original educational content pages (`/kb`, `/docs`) and GitHub repository footer (`UC-015`) in Sprint 3.
+- [ ] **[PRE-PROD FLAG 04]:** Google Ad Manager (GAM / AdX) GPT Integration & 31s Declared Server-Side Auto-Refresh ([`UC-009-GAM`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06b-carry-forward-tickets.md)) for production AdX deployment.
+
 
 ---
 
