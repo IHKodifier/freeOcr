@@ -43,9 +43,7 @@ class AdSenseBanner extends StatefulWidget {
 class AdSenseBannerState extends State<AdSenseBanner>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   int rotationIntervalSeconds = 35;
-  Timer? _rotationTimer;
   int get adRefreshCount => AdSenseBanner.globalAdRefreshCount;
-  bool isPaused = false;
   bool isLoadingConfig = true;
 
   late AnimationController _flashController;
@@ -82,17 +80,13 @@ class AdSenseBannerState extends State<AdSenseBanner>
     logToBrowserConsole(message);
   }
 
-
-
   void _onExternalRotationTriggered() {
     if (mounted) {
       setState(() {
-        isPaused = false;
         AdSenseBanner.globalAdRefreshCount++;
       });
       _triggerFlashAnimation();
       _logRotation('[AdSenseBanner] 🔄 Ad Rotated to Unit #${adRefreshCount + 1} (Reason: UI Stage Change / User Action - Drop/Upload/Processing/Download View)');
-      _startTimer();
     }
   }
 
@@ -114,54 +108,13 @@ class AdSenseBannerState extends State<AdSenseBanner>
       setState(() {
         isLoadingConfig = false;
       });
-      _logRotation('[AdSenseBanner] 🚀 Ad Mounted at Unit #${adRefreshCount + 1} (Interval: ${rotationIntervalSeconds}s)');
-      _startTimer();
+      _logRotation('[AdSenseBanner] 🚀 Ad Mounted at Unit #${adRefreshCount + 1} (Stage Trigger Active)');
     }
-  }
-
-  void _startTimer() {
-    _rotationTimer?.cancel();
-    if (isPaused) return;
-
-    _rotationTimer = Timer.periodic(
-      Duration(seconds: rotationIntervalSeconds),
-      (timer) {
-        if (!isPaused && mounted) {
-          setState(() {
-            AdSenseBanner.globalAdRefreshCount++;
-          });
-          _triggerFlashAnimation();
-          _logRotation('[AdSenseBanner] ⏱️ Ad Rotated to Unit #${adRefreshCount + 1} (Reason: ${rotationIntervalSeconds}s Auto-Rotation Timeout)');
-        }
-      },
-    );
-  }
-
-  void pauseTimer() {
-    setState(() {
-      isPaused = true;
-    });
-    _rotationTimer?.cancel();
-    _logRotation('[AdSenseBanner] ⏸️ Ad Auto-Rotation Timer Paused (Browser Tab Blurred/Hidden)');
-  }
-
-  void resumeTimer() {
-    setState(() {
-      isPaused = false;
-    });
-    _logRotation('[AdSenseBanner] ▶️ Ad Auto-Rotation Timer Resumed (Browser Tab Focused)');
-    _startTimer();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      resumeTimer();
-    } else if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.hidden) {
-      pauseTimer();
-    }
   }
 
   @override
@@ -169,7 +122,6 @@ class AdSenseBannerState extends State<AdSenseBanner>
     AdSenseBanner.rotationTrigger.removeListener(_onExternalRotationTriggered);
     WidgetsBinding.instance.removeObserver(this);
     _flashController.dispose();
-    _rotationTimer?.cancel();
     super.dispose();
   }
 
@@ -306,23 +258,20 @@ class AdSenseBannerState extends State<AdSenseBanner>
                                     vertical: 2.0,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: isPaused
-                                        ? Colors.orange.withOpacity(0.15)
-                                        : Colors.green.withOpacity(0.15),
+                                    color: Colors.green.withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(4.0),
                                   ),
                                   child: Text(
-                                    isPaused
-                                        ? 'Paused'
-                                        : isMobile
-                                            ? 'Auto (${rotationIntervalSeconds}s) • #${adRefreshCount}'
-                                            : 'Auto-rotating (${rotationIntervalSeconds}s) • Rotations: #${adRefreshCount}',
-                                    style: TextStyle(
+                                    isMobile
+                                        ? 'Stage • #${adRefreshCount}'
+                                        : 'Stage Rotation • Rotations: #${adRefreshCount}',
+                                    style: const TextStyle(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w500,
-                                      color: isPaused ? Colors.orange : Colors.green,
+                                      color: Colors.green,
                                     ),
                                   ),
+
                                 ),
                               ],
                             ),
