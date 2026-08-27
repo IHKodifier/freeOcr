@@ -8,7 +8,7 @@
     "max_stack_file_mb": 500
   },
   "monetization": {
-    "ad_rotation_interval_seconds": 35,
+    "ad_rotation_interval_seconds": 30,
     "rewarded_ad_duration_seconds": 15,
     "display_ads_enabled": true,
     "rewarded_ads_enabled": true

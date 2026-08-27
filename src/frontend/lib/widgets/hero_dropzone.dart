@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import '../services/api_service.dart';
+import 'adsense_banner.dart';
+
 
 class HeroDropzone extends StatefulWidget {
   final Function(String jobId, String filename, int sizeInBytes)? onUploadSuccess;
@@ -109,6 +111,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
 
     if (validItems.isEmpty) return;
 
+    // Trigger immediate AdSense rotation on file drop / upload start
+    AdSenseBanner.rotateAd();
+
     if (validItems.length == 1) {
       // Single file upload path
       final item = validItems.first;
@@ -122,6 +127,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
       _batchItems = validItems;
       _currentProcessingIndex = 0;
     });
+
 
     for (int i = 0; i < _batchItems.length; i++) {
       setState(() {
@@ -219,9 +225,11 @@ class _HeroDropzoneState extends State<HeroDropzone> {
         _lockedFileSize = null;
       });
       _showToast('Uploaded $filename (${formatBytes(sizeInBytes)}) • Job ID: ${result.jobId}');
+      AdSenseBanner.rotateAd();
       if (widget.onUploadSuccess != null) {
         widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
       }
+
     } else if (result.isPasswordRequired) {
       setState(() {
         _isPasswordRequired = true;

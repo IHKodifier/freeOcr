@@ -4,9 +4,14 @@ import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'widgets/hero_dropzone.dart';
 import 'widgets/ocr_progress_view.dart';
+import 'widgets/adsense_banner.dart';
 import 'widgets/expired_link_view.dart';
 
+
+import 'pages/result_page.dart';
+
 final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
+
 
 void main() {
   runApp(const FreeOcrApp());
@@ -26,12 +31,26 @@ class FreeOcrApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: currentMode,
-          home: const HomePage(),
+          onGenerateRoute: (settings) {
+            final name = settings.name;
+            if (name != null && name.startsWith('/result/')) {
+              final jobId = name.replaceFirst('/result/', '');
+              return MaterialPageRoute(
+                builder: (context) => ResultPage(jobId: jobId),
+                settings: settings,
+              );
+            }
+            return MaterialPageRoute(
+              builder: (context) => const HomePage(),
+              settings: settings,
+            );
+          },
         );
       },
     );
   }
 }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -152,7 +171,9 @@ class _HomePageState extends State<HomePage> {
                     color: colorScheme.tertiary,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                const AdSenseBanner(),
+                const SizedBox(height: 16),
                 if (kDebugMode && _showExpiredDevPreview)
                   ExpiredLinkView(
                     expiredAt: DateTime.now().subtract(const Duration(hours: 25)),
@@ -173,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                   ),
               ],
             ),
+
           ),
         ),
       ),

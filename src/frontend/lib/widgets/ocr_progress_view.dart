@@ -4,8 +4,13 @@ import '../services/api_service.dart';
 import '../services/sse_service.dart';
 import 'split_preview_viewer.dart';
 import 'expired_link_view.dart';
+import 'adsense_banner.dart';
+import '../pages/result_page.dart';
+
+
 
 class OcrProgressView extends StatefulWidget {
+
   final String? jobId;
   final String? filename;
   final int? fileSize;
@@ -68,12 +73,21 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     if (mounted) {
       setState(() {
         _isLoadingPreview = false;
-        if (data != null && data.containsKey('pages')) {
+        if (data != null && (data.containsKey('pages') || data['is_expired'] == true)) {
           _previewData = data;
           _showPreview = true;
-        } else if (data != null && data['is_expired'] == true) {
-          _previewData = data;
-          _showPreview = true;
+          AdSenseBanner.rotateAd();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultPage(
+                jobId: jobId,
+                filename: widget.filename,
+                pages: data['pages'] as List<dynamic>?,
+              ),
+              settings: RouteSettings(name: '/result/$jobId'),
+            ),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Could not load preview data.')),
@@ -81,6 +95,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         }
       });
     }
+
+
   }
 
   @override
@@ -116,6 +132,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     _subscriptions[jobId] = SseService.listenToJobEvents(jobId).listen(
       (event) {
         if (mounted) {
+          final previousStatus = _status;
           setState(() {
             _currentPage = event.currentPage;
             _totalPages = event.totalPages;
@@ -127,11 +144,16 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               _errorMessage = event.errorMessage;
             }
           });
+          if (previousStatus != event.status &&
+              (event.status == 'QUEUED' || event.status == 'PROCESSING' || event.status == 'COMPLETED')) {
+            AdSenseBanner.rotateAd();
+          }
           if (event.status == 'COMPLETED') {
             _refreshPreviewData(jobId);
           }
         }
       },
+
 
       onError: (error) {
         if (mounted) {
@@ -151,6 +173,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         _subscriptions[item.jobId!] = SseService.listenToJobEvents(item.jobId!).listen(
           (event) {
             if (mounted) {
+              final previousStatus = item.status;
               setState(() {
                 item.currentPage = event.currentPage;
                 item.totalPages = event.totalPages;
@@ -162,8 +185,14 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                   item.errorMessage = event.errorMessage;
                 }
               });
+              if (previousStatus != event.status &&
+                  (event.status == 'QUEUED' || event.status == 'PROCESSING' || event.status == 'COMPLETED')) {
+                AdSenseBanner.rotateAd();
+              }
             }
           },
+
+
           onError: (error) {
             if (mounted) {
               setState(() {

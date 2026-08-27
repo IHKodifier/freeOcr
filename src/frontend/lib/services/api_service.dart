@@ -254,7 +254,28 @@ class ApiService {
       return {'status': 'ERROR', 'detail': 'Network connection error: $e'};
     }
   }
+
+  static Future<int> fetchAdRotationInterval({int defaultInterval = 35}) async {
+    try {
+      final uri = Uri.parse('$baseUrl/config');
+      final response = await http.get(uri).timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        if (data.containsKey('monetization')) {
+          final monetization = data['monetization'] as Map<String, dynamic>;
+          if (monetization.containsKey('ad_rotation_interval_seconds')) {
+            final val = (monetization['ad_rotation_interval_seconds'] as num).toInt();
+            if (val > 0) return val;
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('[ApiService] fetchAdRotationInterval exception: $e');
+    }
+    return defaultInterval;
+  }
 }
+
 
 
 
