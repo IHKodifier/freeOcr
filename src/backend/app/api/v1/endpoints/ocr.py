@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Form, Request, HTTPException, status, BackgroundTasks
 from fastapi.responses import JSONResponse
 from app.config import settings, load_canonical_config
-from app.redis_client import get_redis_client, DEV_JOB_STORE
+from app.redis_client import get_redis_client, DEV_JOB_STORE, store_ad_pass_metadata, get_ad_pass_metadata
 from app.services.layout_analyzer import LayoutAnalyzer
 from app.services.ocr_worker import process_ocr_job
 from app.services.email_service import validate_email_address, send_download_links_email
@@ -21,6 +21,27 @@ router = APIRouter()
 class EmailDeliveryRequest(BaseModel):
     job_id: str
     email: str
+
+
+def _get_normalized_client_ip(request: Request) -> str:
+    ip = "127.0.0.1"
+    if request.headers.get("x-forwarded-for"):
+        ip = request.headers.get("x-forwarded-for").split(",")[0].strip()
+    elif request.client and request.client.host:
+        ip = request.client.host
+    if ip in ("::1", "localhost", "127.0.0.1", "testclient"):
+        ip = "127.0.0.1"
+    return ip
+
+
+def _get_session_keys(request: Request) -> list[str]:
+    session_id = request.headers.get("x-session-id")
+    client_ip = _get_normalized_client_ip(request)
+    keys = []
+    if session_id:
+        keys.append(f"ad_pass:sess:{session_id}")
+    keys.append(f"ad_pass:{client_ip}")
+    return keys
 
 
 @router.post("/email-links")
@@ -175,21 +196,20 @@ async def convert_document(
     limits_cfg = cfg.get("limits", {})
     base_max_mb = limits_cfg.get("base_max_file_mb", 10)
     
-    # Client IP tracking
-    client_ip = request.client.host if request.client else "127.0.0.1"
+    # Session ID & Client IP tracking
+    session_keys = _get_session_keys(request)
 
     # Check for stackable ad boost pass (sliding 60m TTL)
     redis_client = get_redis_client()
-    ad_pass_raw = None
     boosted_max_mb = base_max_mb
 
     try:
-        ad_pass_raw = redis_client.get(f"ad_pass:{client_ip}")
-        if ad_pass_raw:
-            if isinstance(ad_pass_raw, bytes):
-                ad_pass_raw = ad_pass_raw.decode("utf-8")
-            ad_pass = json.loads(ad_pass_raw)
-            boosted_max_mb = ad_pass.get("boosted_max_file_mb", base_max_mb)
+        for k in session_keys:
+            ad_pass = get_ad_pass_metadata(k)
+            if ad_pass:
+                pass_mb = ad_pass.get("boosted_max_file_mb", base_max_mb)
+                if pass_mb > boosted_max_mb:
+                    boosted_max_mb = pass_mb
     except Exception:
         pass
 
@@ -207,6 +227,7 @@ async def convert_document(
     target_queue = analysis["target_queue"]
 
     # Check 5-hour rolling quotas
+    client_ip = _get_normalized_client_ip(request)
     quota_key = f"rate_limit:{complexity.lower()}:{client_ip}"
     max_quota = limits_cfg.get("simple_quota_jobs_5h", 20) if complexity == "SIMPLE" else limits_cfg.get("complex_quota_jobs_5h", 5)
 
@@ -282,7 +303,7 @@ async def rewarded_ad_callback(request: Request):
     Validates rewarded ad view and stacks user limits (+20MB, +15 pages).
     Resets sliding 60-minute TTL window from timestamp of latest completed ad.
     """
-    client_ip = request.client.host if request.client else "127.0.0.1"
+    session_keys = _get_session_keys(request)
     cfg = load_canonical_config()
     limits_cfg = cfg.get("limits", {})
 
@@ -293,21 +314,18 @@ async def rewarded_ad_callback(request: Request):
     max_pages_cap = limits_cfg.get("max_stack_pages", 500)
 
     redis_client = get_redis_client()
-    key = f"ad_pass:{client_ip}"
     
     current_count = 0
     current_mb = limits_cfg.get("base_max_file_mb", 10)
     current_pages = limits_cfg.get("base_max_pages", 10)
 
     try:
-        existing = redis_client.get(key)
-        if existing:
-            if isinstance(existing, bytes):
-                existing = existing.decode("utf-8")
-            data = json.loads(existing)
-            current_count = data.get("ads_watched_count", 0)
-            current_mb = data.get("boosted_max_file_mb", current_mb)
-            current_pages = data.get("boosted_max_pages", current_pages)
+        for k in session_keys:
+            data = get_ad_pass_metadata(k)
+            if data:
+                current_count = max(current_count, data.get("ads_watched_count", 0))
+                current_mb = max(current_mb, data.get("boosted_max_file_mb", current_mb))
+                current_pages = max(current_pages, data.get("boosted_max_pages", current_pages))
     except Exception:
         pass
 
@@ -323,9 +341,8 @@ async def rewarded_ad_callback(request: Request):
     }
 
     try:
-        redis_client.set(key, json.dumps(ad_pass_payload))
-        # Reset 60-minute sliding TTL window upon each stacked ad reward!
-        redis_client.expire(key, ad_ttl)
+        for k in session_keys:
+            store_ad_pass_metadata(k, ad_pass_payload, ttl_seconds=ad_ttl)
     except Exception:
         pass
 

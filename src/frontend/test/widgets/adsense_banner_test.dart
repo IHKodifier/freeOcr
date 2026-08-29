@@ -11,9 +11,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: AdSenseBanner(
-            overrideRotationSeconds: 5,
-          ),
+          body: AdSenseBanner(),
         ),
       ),
     );
@@ -29,9 +27,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: AdSenseBanner(
-            overrideRotationSeconds: 30,
-          ),
+          body: AdSenseBanner(),
         ),
       ),
     );

@@ -22,7 +22,6 @@ def load_canonical_config() -> dict:
             "max_stack_file_mb": 500,
         },
         "monetization": {
-            "ad_rotation_interval_seconds": 35,
             "rewarded_ad_duration_seconds": 15,
             "display_ads_enabled": True,
             "rewarded_ads_enabled": True,

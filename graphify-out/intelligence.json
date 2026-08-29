@@ -1,0 +1,36 @@
+{
+  "hotspots": [
+    {
+      "label": "process_ocr_job()",
+      "risk": 0.674,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "stream_job_events()",
+      "risk": 0.512,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "download_job_file()",
+      "risk": 0.491,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "convert_document()",
+      "risk": 0.435,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "LayoutAnalyzer",
+      "risk": 0.347,
+      "type": "CLASS"
+    }
+  ],
+  "blast_radius": {
+    "package:flutter/material.dart": 19,
+    "get_redis_client()": 15,
+    "process_ocr_job()": 14,
+    "load_canonical_config()": 9,
+    "package:flutter_test/flutter_test.dart": 9
+  }
+}

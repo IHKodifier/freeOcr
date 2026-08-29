@@ -8,9 +8,9 @@
 ## Overall Progress
 
 - **Total Backlog Tickets:** 19 Tickets (`UC-000a`, `UC-000b`, `UC-000c`, `UC-001` through `UC-015`, `UC-005b`)
-- **Completed:** 15 / 19 (79%)
+- **Completed:** 17 / 19 (89%)
 - **Current Active Sprint:** Sprint 3 — Ad Monetization, Telemetry & SEO Content (In Progress)
-- **Last Updated:** 2026-08-26 — Updated with UC-009 Configurable AdSense Display Ad Banner Completion
+- **Last Updated:** 2026-08-29 — Updated with UC-009 (AdSense Policy Compliant User-Event Rotation), UC-010, and UC-011 Completion
 
 ---
 
@@ -21,7 +21,8 @@
 | **Phase 0** | **Sprint 0: Foundation & Environment** | UC-000a, UC-000b, UC-000c | 3 / 3 | 100% | Completed |
 | **Phase 1** | **Sprint 1: Core Conversion Engine** | UC-001, UC-002, UC-003, UC-004, UC-013 | 5 / 5 | 100% | Completed |
 | **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 6 / 6 | 100% | Completed |
-| **Phase 1** | **Sprint 3: Ad Monetization, GA4 & AdSense Content** | UC-009, UC-010, UC-011, UC-014, UC-015 | 1 / 5 | 20% | In Progress |
+| **Phase 1** | **Sprint 3: Ad Monetization, GA4 & AdSense Content** | UC-009, UC-010, UC-011, UC-014, UC-015 | 3 / 5 | 60% | In Progress |
+
 
 ---
 
@@ -30,7 +31,7 @@
 - [ ] **[PRE-PROD FLAG 01]:** Validate `ExpiredLinkView` UI styling, local timezone date formatting, and reset button during **UC-005b Premium UI Overhaul** before final staging push.
 - [ ] **[PRE-PROD FLAG 02]:** Verify Google Analytics 4 (`gtag.js`) traffic tracking & custom conversion events (`UC-014`) in Sprint 3.
 - [ ] **[PRE-PROD FLAG 03]:** Verify AdSense-qualifying original educational content pages (`/kb`, `/docs`) and GitHub repository footer (`UC-015`) in Sprint 3.
-- [ ] **[PRE-PROD FLAG 04]:** Google Ad Manager (GAM / AdX) GPT Integration & 31s Declared Server-Side Auto-Refresh ([`UC-009-GAM`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06b-carry-forward-tickets.md)) for production AdX deployment.
+- [ ] **[PRE-PROD FLAG 04]:** Google Ad Manager (GAM / AdX) GPT Integration & Declared Server-Side Auto-Refresh ([`UC-009-GAM`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06b-carry-forward-tickets.md)) for production AdX deployment.
 
 
 ---
@@ -54,9 +55,9 @@
 | **UC-007** | Email Download Link Delivery & Input Purge | Sprint 2 | P1 | Completed | PASS |
 | **UC-008** | 24-Hour Expiration TTL & Local Time Expired Link Page | Sprint 2 | P1 | Completed | PASS |
 | **UC-012** | Password-in-Place Encrypted PDF Decryption | Sprint 2 | P1 | Completed | PASS |
-| **UC-009** | Configurable AdSense Display Ad Banner Auto-Rotation Timer | Sprint 3 | P0 | Completed | PASS |
+| **UC-009** | AdSense Display Ad Banner (User-Event Rotation) | Sprint 3 | P0 | Completed | PASS |
+| **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal | Sprint 3 | P0 | Completed | PASS |
+| **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | Sprint 3 | P0 | Completed | PASS |
 
-| **UC-010** | Limit Exceeded Detection & Rewarded Video Ad Modal | Sprint 3 | P0 | Not Started | Pending |
-| **UC-011** | Rewarded Ad Callback & Stackable Session Limit Boost Pass | Sprint 3 | P0 | Not Started | Pending |
 | **UC-014** | Google Analytics 4 (GA4) Telemetry & SEO Meta-Tags | Sprint 3 | P1 | Not Started | Pending |
 | **UC-015** | AdSense-Qualifying Content KB, Docs & GitHub Footer | Sprint 3 | P1 | Not Started | Pending |

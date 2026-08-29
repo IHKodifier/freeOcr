@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import '../services/api_service.dart';
+import '../utils/limit_evaluator.dart';
 import 'adsense_banner.dart';
+import 'rewarded_video_ad_modal.dart';
 
 
 class HeroDropzone extends StatefulWidget {
@@ -25,6 +28,10 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   bool _isDragging = false;
   bool _isHovered = false;
   bool _isUploading = false;
+  double _activeLimitMb = 10.0;
+  DateTime? _boostExpiresAt;
+  Timer? _boostTicker;
+
 
   bool _isPasswordRequired = false;
   bool _isUnlocking = false;
@@ -38,7 +45,30 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   int _currentProcessingIndex = -1;
 
   @override
+  void initState() {
+    super.initState();
+    _startBoostTicker();
+  }
+
+  void _startBoostTicker() {
+    _boostTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_boostExpiresAt != null) {
+        if (DateTime.now().isAfter(_boostExpiresAt!)) {
+          setState(() {
+            _activeLimitMb = 10.0;
+            _boostExpiresAt = null;
+          });
+          _showToast('Session limit boost expired. Reverted to standard limit.', isError: true);
+        } else {
+          setState(() {}); // Rebuild for countdown ticker display
+        }
+      }
+    });
+  }
+
+  @override
   void dispose() {
+    _boostTicker?.cancel();
     _passwordController.dispose();
     super.dispose();
   }
@@ -74,7 +104,18 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   Future<void> _processMultipleFiles(List<Map<String, dynamic>> rawFiles) async {
     final List<BatchFileItem> validItems = [];
     final allowedExts = ['.pdf', '.jpg', '.jpeg', '.png'];
-    const maxBytes = 10 * 1024 * 1024; // 10MB
+
+    // Fetch canonical limits configuration from backend API dynamically
+    final config = await ApiService.fetchRuntimeConfig();
+    final limits = config['limits'] as Map<String, dynamic>? ?? {};
+    final monetization = config['monetization'] as Map<String, dynamic>? ?? {};
+
+    final double baseLimitMb = (limits['base_max_file_mb'] as num?)?.toDouble() ?? 10.0;
+    final double boostPerAdMb = (limits['boost_per_ad_mb'] as num?)?.toDouble() ?? 20.0;
+    final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 500.0;
+    final int adDuration = (monetization['rewarded_ad_duration_seconds'] as num?)?.toInt() ?? 15;
+
+    double activeLimit = _activeLimitMb < baseLimitMb ? baseLimitMb : _activeLimitMb;
 
     for (int i = 0; i < rawFiles.length; i++) {
       final String filename = rawFiles[i]['filename'] as String;
@@ -94,22 +135,90 @@ class _HeroDropzoneState extends State<HeroDropzone> {
         continue;
       }
 
-      if (size > maxBytes) {
-        _showToast('Skipped $filename: Exceeds 10MB limit.', isError: true);
-        continue;
-      }
+      bool isAccepted = false;
 
-      validItems.add(
-        BatchFileItem(
-          id: 'file_${DateTime.now().millisecondsSinceEpoch}_$i',
-          filename: filename,
-          sizeInBytes: size,
-          bytes: bytes,
-        ),
-      );
+      while (!isAccepted) {
+        final double currentActiveLimit = _activeLimitMb < baseLimitMb ? baseLimitMb : _activeLimitMb;
+        final limitEval = LimitEvaluator.evaluate(
+          fileSizeInBytes: size,
+          currentLimitMb: currentActiveLimit,
+        );
+
+        if (!limitEval.isExceeded) {
+          isAccepted = true;
+          validItems.add(
+            BatchFileItem(
+              id: 'file_${DateTime.now().millisecondsSinceEpoch}_$i',
+              filename: filename,
+              sizeInBytes: size,
+              bytes: bytes,
+            ),
+          );
+          break;
+        }
+
+        // Oversized file: Pop Rewarded Video Ad Modal cleanly without toast error noise
+        bool userWatchedAd = false;
+        double? boostedLimitFromModal;
+
+        if (mounted) {
+          await RewardedVideoAdModal.show(
+            context: context,
+            filename: filename,
+            fileSizeInBytes: size,
+            currentLimitMb: currentActiveLimit,
+            boostPerAdMb: boostPerAdMb,
+            maxStackMb: maxStackMb,
+            adDurationSeconds: adDuration,
+            onWatchAd: (boostedLimit) {
+              userWatchedAd = true;
+              boostedLimitFromModal = boostedLimit;
+              if (mounted) {
+                setState(() {
+                  _activeLimitMb = boostedLimit > maxStackMb ? maxStackMb : boostedLimit;
+                  _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
+                  _isUploading = true;
+                  _batchItems = [
+                    BatchFileItem(
+                      id: 'file_${DateTime.now().millisecondsSinceEpoch}_$i',
+                      filename: filename,
+                      sizeInBytes: size,
+                      bytes: bytes,
+                      status: 'UPLOADING',
+                    )
+                  ];
+                });
+              }
+            },
+            onCancel: () {
+              userWatchedAd = false;
+            },
+          );
+        }
+
+        if (!userWatchedAd) {
+          _showToast('Skipped $filename: Exceeds limit of ${currentActiveLimit.toInt()}MB.', isError: true);
+          break;
+        }
+
+        if (boostedLimitFromModal != null && mounted) {
+          setState(() {
+            _activeLimitMb = boostedLimitFromModal! > maxStackMb ? maxStackMb : boostedLimitFromModal!;
+            _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
+          });
+        }
+      }
     }
 
-    if (validItems.isEmpty) return;
+
+    if (validItems.isEmpty) {
+      if (mounted) {
+        setState(() {
+          _isUploading = false;
+        });
+      }
+      return;
+    }
 
     // Trigger immediate AdSense rotation on file drop / upload start
     AdSenseBanner.rotateAd();
@@ -225,7 +334,6 @@ class _HeroDropzoneState extends State<HeroDropzone> {
         _lockedFileSize = null;
       });
       _showToast('Uploaded $filename (${formatBytes(sizeInBytes)}) • Job ID: ${result.jobId}');
-      AdSenseBanner.rotateAd();
       if (widget.onUploadSuccess != null) {
         widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
       }
@@ -636,13 +744,58 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  'Supports Single or Multiple PDF, JPG, PNG files up to 10MB each',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) ...[
+                  Builder(
+                    builder: (context) {
+                      final remaining = _boostExpiresAt!.difference(DateTime.now());
+                      final minutes = remaining.inMinutes.remainder(60).toString().padLeft(2, '0');
+                      final seconds = remaining.inSeconds.remainder(60).toString().padLeft(2, '0');
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.amber.shade900.withValues(alpha: 0.4),
+                              Colors.purple.shade900.withValues(alpha: 0.3),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.amber.shade400.withValues(alpha: 0.6), width: 1.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.amber.shade500.withValues(alpha: 0.2),
+                              blurRadius: 12,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.bolt_rounded, color: Colors.amber, size: 20),
+                            const SizedBox(width: 6),
+                            Text(
+                              '⚡ Boost Active: Up to ${_activeLimitMb.toInt()}MB each (Expires in $minutes:$seconds)',
+                              style: TextStyle(
+                                color: Colors.amber.shade200,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                  textAlign: TextAlign.center,
-                ),
+                ] else ...[
+                  Text(
+                    'Supports Single or Multiple PDF, JPG, PNG files up to ${_activeLimitMb.toInt()}MB each',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: _pickFileWithDialog,

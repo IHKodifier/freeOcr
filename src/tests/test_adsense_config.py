@@ -8,33 +8,32 @@ client = TestClient(app)
 
 
 def test_adsense_config_interval_loaded():
-    """Verify that ad_rotation_interval_seconds is present in backend configuration."""
+    """Verify that monetization parameters are present in backend configuration."""
     cfg = load_canonical_config()
     assert "monetization" in cfg
     monetization = cfg["monetization"]
-    assert "ad_rotation_interval_seconds" in monetization
-    assert isinstance(monetization["ad_rotation_interval_seconds"], int)
-    assert monetization["ad_rotation_interval_seconds"] > 0
+    assert "display_ads_enabled" in monetization
+    assert "rewarded_ads_enabled" in monetization
+    assert isinstance(monetization["display_ads_enabled"], bool)
 
 
 def test_adsense_config_api_endpoint():
-    """Verify that GET /api/v1/config endpoint returns monetization.ad_rotation_interval_seconds."""
+    """Verify that GET /api/v1/config endpoint returns monetization configuration."""
     response = client.get("/api/v1/config")
     assert response.status_code == 200
     data = response.json()
     assert "monetization" in data
     monetization = data["monetization"]
-    assert "ad_rotation_interval_seconds" in monetization
-    assert monetization["ad_rotation_interval_seconds"] == 35
+    assert "display_ads_enabled" in monetization
+    assert monetization["display_ads_enabled"] is True
 
 
 def test_dynamic_config_file_reload(tmp_path, monkeypatch):
-    """Verify that modifying ad_rotation_interval_seconds in config file is reflected without app restart."""
+    """Verify that modifying monetization parameters in config file is reflected dynamically."""
     test_config = {
         "limits": {"base_max_file_mb": 10},
         "monetization": {
-            "ad_rotation_interval_seconds": 45,
-            "rewarded_ad_duration_seconds": 15,
+            "rewarded_ad_duration_seconds": 20,
             "display_ads_enabled": True,
             "rewarded_ads_enabled": True,
         },
@@ -48,4 +47,5 @@ def test_dynamic_config_file_reload(tmp_path, monkeypatch):
     response = client.get("/api/v1/config")
     assert response.status_code == 200
     data = response.json()
-    assert data["monetization"]["ad_rotation_interval_seconds"] == 45
+    assert data["monetization"]["rewarded_ad_duration_seconds"] == 20
+

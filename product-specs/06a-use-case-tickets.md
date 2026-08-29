@@ -495,13 +495,16 @@
 **Trigger:** Visitor clicks Knowledge Base or Educational Documentation articles.  
 
 **Main Flow**
-1. Build static Knowledge Base & Educational pages (`/kb/ocr-guide`, `/kb/pdf-standards`, `/docs`, `/privacy`, `/terms`).
-2. Author original, high-value educational content explaining PDF text layers, OCR technology, ephemeral security, and OCRmyPDF / Baidu engine mechanics to satisfy Google AdSense publisher requirements.
-3. Embed authoritative GitHub reference links (e.g., Tesseract OCR, PyMuPDF, OCRmyPDF, open-source PDF specification repositories) directly within educational articles to demonstrate editorial depth and domain authority.
-4. Ensure search engines index educational pages (`sitemap.xml` & `robots.txt`).
+1. Generate comprehensive Google Stitch ready prompts covering screen-by-screen UI designs for both core conversion views and full Knowledge Base / Wiki / Educational article pages.
+2. Build static Knowledge Base & Educational pages (`/kb/ocr-guide`, `/kb/pdf-standards`, `/docs`, `/privacy`, `/terms`).
+3. Author original, high-value educational content explaining PDF text layers, OCR technology, ephemeral security, and OCRmyPDF / Baidu engine mechanics to satisfy Google AdSense publisher requirements.
+4. Embed authoritative GitHub reference links (e.g., Tesseract OCR, PyMuPDF, OCRmyPDF, open-source PDF specification repositories) directly within educational articles to demonstrate editorial depth and domain authority.
+5. Implement Stitch-guided designs in Flutter with full header/footer linking, `sitemap.xml`, and `robots.txt` indexation.
 
 **Acceptance Criteria (Testable)**
+- THE SYSTEM SHALL generate Google Stitch prompts for KB/Wiki article pages alongside core application screens.
 - WHEN visitor navigates to `/kb` THE SYSTEM SHALL render original educational content pages containing embedded GitHub resource links.
 - WHEN search engines index `/kb` pages THE SYSTEM SHALL provide valid OpenGraph and structured schema markup.
 
 **Estimate:** M | **Depends on:** UC-001
+

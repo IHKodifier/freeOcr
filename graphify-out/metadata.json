@@ -1,0 +1,131 @@
+{
+  "projectName": "freeOcr",
+  "communityLabels": {
+    "0": "Community 0",
+    "1": "Community 1",
+    "2": "Community 2",
+    "3": "Community 3",
+    "4": "Community 4",
+    "5": "Community 5",
+    "6": "Community 6",
+    "7": "Community 7",
+    "8": "Community 8",
+    "9": "Community 9",
+    "10": "Community 10",
+    "11": "Community 11",
+    "12": "Community 12",
+    "13": "Community 13",
+    "14": "Community 14",
+    "15": "Community 15",
+    "16": "Community 16",
+    "17": "Community 17",
+    "18": "Community 18",
+    "19": "unknown",
+    "20": "Community 20",
+    "21": "unknown",
+    "22": "Community 22",
+    "23": "Community 23",
+    "24": "Community 24",
+    "25": "unknown",
+    "26": "Community 26",
+    "27": "unknown",
+    "28": "Community 28",
+    "29": "unknown",
+    "30": "unknown",
+    "31": "unknown",
+    "32": "unknown",
+    "33": "Community 33",
+    "34": "unknown"
+  },
+  "communitySummaries": {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "7": "",
+    "8": "",
+    "9": "",
+    "10": "",
+    "11": "",
+    "12": "",
+    "13": "",
+    "14": "",
+    "15": "",
+    "16": "",
+    "17": "",
+    "18": "",
+    "19": "Unable to determine domain due to missing code entities.",
+    "20": "",
+    "21": "Unable to determine domain due to missing code entities.",
+    "22": "",
+    "23": "",
+    "24": "",
+    "25": "Unable to determine domain due to missing code entities.",
+    "26": "",
+    "27": "Unable to determine domain due to missing code entities.",
+    "28": "",
+    "29": "Unable to determine domain due to missing code entities.",
+    "30": "Unable to determine domain due to missing code entities.",
+    "31": "Unable to determine domain due to missing code entities.",
+    "32": "Unable to determine domain due to missing code entities.",
+    "33": "",
+    "34": "Unable to determine domain due to missing code entities."
+  },
+  "communityLinks": {
+    "0": {
+      "15": 1,
+      "17": 1,
+      "14": 1,
+      "7": 3,
+      "3": 2,
+      "10": 2,
+      "16": 1
+    },
+    "15": {},
+    "17": {},
+    "14": {
+      "0": 1
+    },
+    "7": {},
+    "3": {
+      "7": 2,
+      "13": 1
+    },
+    "10": {},
+    "16": {
+      "0": 1
+    },
+    "13": {},
+    "5": {
+      "2": 2,
+      "1": 1,
+      "8": 2,
+      "9": 1,
+      "4": 1
+    },
+    "2": {
+      "8": 2,
+      "9": 1,
+      "4": 1
+    },
+    "1": {
+      "5": 1,
+      "6": 1,
+      "2": 1,
+      "8": 1,
+      "9": 1,
+      "4": 1
+    },
+    "8": {},
+    "6": {},
+    "9": {
+      "4": 1
+    },
+    "4": {
+      "14": 1
+    }
+  }
+}

@@ -1,19 +1,16 @@
-import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
 import '../utils/web_console.dart';
 
 
-/// Configurable AdSense Display Ad Banner Container Widget
-/// Fetches `ad_rotation_interval_seconds` dynamically from GET /api/v1/config.
-/// Auto-rotates ad units periodically and pauses timer on tab switch / window blur.
+/// AdSense Display Ad Banner Container Widget
+/// Compliant with Google AdSense policy: Timer-based publisher ad refreshes are strictly disabled.
+/// Ad rotation triggers occur strictly on direct user interaction events (e.g. file drop, result view).
 class AdSenseBanner extends StatefulWidget {
   final double height;
   final double maxWidth;
-  final int? overrideRotationSeconds;
 
-  /// Global notifier to trigger immediate ad unit rotation on conversion stage events.
+  /// Global notifier to trigger immediate ad unit rotation on direct user interaction events.
   static final ValueNotifier<int> rotationTrigger = ValueNotifier<int>(0);
 
   /// Global session counter preserving total ad unit rotations across route navigations.
@@ -24,7 +21,7 @@ class AdSenseBanner extends StatefulWidget {
     globalAdRefreshCount = 0;
   }
 
-  /// Trigger an immediate rotation of the AdSense banner (e.g. on file drop, upload, processing start, completion).
+  /// Trigger an immediate rotation of the AdSense banner on explicit user action (e.g. file drop, view results).
   static void rotateAd() {
     rotationTrigger.value++;
   }
@@ -33,7 +30,6 @@ class AdSenseBanner extends StatefulWidget {
     super.key,
     this.height = 90.0,
     this.maxWidth = 728.0,
-    this.overrideRotationSeconds,
   });
 
   @override
@@ -42,9 +38,7 @@ class AdSenseBanner extends StatefulWidget {
 
 class AdSenseBannerState extends State<AdSenseBanner>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
-  int rotationIntervalSeconds = 35;
   int get adRefreshCount => AdSenseBanner.globalAdRefreshCount;
-  bool isLoadingConfig = true;
 
   late AnimationController _flashController;
   late Animation<double> _flashAnimation;
@@ -64,7 +58,7 @@ class AdSenseBannerState extends State<AdSenseBanner>
       curve: Curves.easeOut,
     );
 
-    _initRotationConfig();
+    _logRotation('[AdSenseBanner] 🚀 Ad Mounted at Unit #${adRefreshCount + 1} (User Event Driven)');
   }
 
   void _triggerFlashAnimation() {
@@ -86,29 +80,7 @@ class AdSenseBannerState extends State<AdSenseBanner>
         AdSenseBanner.globalAdRefreshCount++;
       });
       _triggerFlashAnimation();
-      _logRotation('[AdSenseBanner] 🔄 Ad Rotated to Unit #${adRefreshCount + 1} (Reason: UI Stage Change / User Action - Drop/Upload/Processing/Download View)');
-    }
-  }
-
-  Future<void> _initRotationConfig() async {
-    if (widget.overrideRotationSeconds != null) {
-      rotationIntervalSeconds = widget.overrideRotationSeconds!;
-    } else {
-      final interval = await ApiService.fetchAdRotationInterval(
-        defaultInterval: 35,
-      );
-      if (mounted) {
-        setState(() {
-          rotationIntervalSeconds = interval;
-          isLoadingConfig = false;
-        });
-      }
-    }
-    if (mounted) {
-      setState(() {
-        isLoadingConfig = false;
-      });
-      _logRotation('[AdSenseBanner] 🚀 Ad Mounted at Unit #${adRefreshCount + 1} (Stage Trigger Active)');
+      _logRotation('[AdSenseBanner] 🔄 Ad Rotated to Unit #${adRefreshCount + 1} (Reason: Direct User Action - File Drop / Result View)');
     }
   }
 

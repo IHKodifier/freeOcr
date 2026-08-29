@@ -144,10 +144,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               _errorMessage = event.errorMessage;
             }
           });
-          if (previousStatus != event.status &&
-              (event.status == 'QUEUED' || event.status == 'PROCESSING' || event.status == 'COMPLETED')) {
-            AdSenseBanner.rotateAd();
-          }
           if (event.status == 'COMPLETED') {
             _refreshPreviewData(jobId);
           }
@@ -185,10 +181,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                   item.errorMessage = event.errorMessage;
                 }
               });
-              if (previousStatus != event.status &&
-                  (event.status == 'QUEUED' || event.status == 'PROCESSING' || event.status == 'COMPLETED')) {
-                AdSenseBanner.rotateAd();
-              }
             }
           },
 

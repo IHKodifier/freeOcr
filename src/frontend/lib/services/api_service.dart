@@ -111,6 +111,17 @@ String getFileTypeDescription(String filename) {
 
 class ApiService {
   static const String baseUrl = 'http://127.0.0.1:8000/api/v1';
+  static String? _sessionId;
+
+  static String get sessionId {
+    _sessionId ??= 'sess_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(999999)}';
+    return _sessionId!;
+  }
+
+  static Map<String, String> get defaultHeaders => {
+    'X-Session-ID': sessionId,
+    'Accept': 'application/json',
+  };
 
   static Future<UploadResult> uploadDocument({
     required String filename,
@@ -135,6 +146,7 @@ class ApiService {
           }
         },
       );
+      request.headers.addAll(defaultHeaders);
 
       if (password != null && password.isNotEmpty) {
         request.fields['password'] = password;
@@ -255,26 +267,53 @@ class ApiService {
     }
   }
 
-  static Future<int> fetchAdRotationInterval({int defaultInterval = 35}) async {
+  static Future<Map<String, dynamic>> fetchRuntimeConfig() async {
+
     try {
       final uri = Uri.parse('$baseUrl/config');
       final response = await http.get(uri).timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        if (data.containsKey('monetization')) {
-          final monetization = data['monetization'] as Map<String, dynamic>;
-          if (monetization.containsKey('ad_rotation_interval_seconds')) {
-            final val = (monetization['ad_rotation_interval_seconds'] as num).toInt();
-            if (val > 0) return val;
-          }
-        }
+        return jsonDecode(response.body) as Map<String, dynamic>;
       }
     } catch (e) {
-      debugPrint('[ApiService] fetchAdRotationInterval exception: $e');
+      debugPrint('[ApiService] fetchRuntimeConfig exception: $e');
     }
-    return defaultInterval;
+    return {
+      'limits': {
+        'base_max_file_mb': 10,
+        'boost_per_ad_mb': 20,
+        'max_stack_file_mb': 500,
+        'ad_boost_ttl_seconds': 3600,
+      },
+      'monetization': {
+        'rewarded_ad_duration_seconds': 15,
+        'display_ads_enabled': true,
+        'rewarded_ads_enabled': true,
+      },
+    };
+  }
+
+  static Future<Map<String, dynamic>> notifyRewardedAdWatched() async {
+    try {
+      final uri = Uri.parse('$baseUrl/ocr/rewarded-ad-callback');
+      final response = await http.post(
+        uri,
+        headers: defaultHeaders,
+      ).timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      }
+    } catch (e) {
+      debugPrint('[ApiService] notifyRewardedAdWatched exception: $e');
+    }
+    return {
+      'status': 'SUCCESS',
+      'boosted_max_file_mb': 30.0,
+      'ttl_seconds': 3600,
+    };
   }
 }
+
 
 
 

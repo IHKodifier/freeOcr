@@ -59,7 +59,10 @@ def test_upload_empty_0byte_file():
     assert response.json() == {"detail": "File is empty. Please select a valid document."}
 
 
+from app.redis_client import DEV_AD_PASS_STORE
+
 def test_upload_oversized_file():
+    DEV_AD_PASS_STORE.clear()
     # 11MB file content simulation
     oversized_content = b"X" * (11 * 1024 * 1024)
     files = {"file": ("large.pdf", oversized_content, "application/pdf")}
