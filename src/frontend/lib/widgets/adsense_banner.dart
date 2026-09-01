@@ -1,6 +1,4 @@
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import '../utils/web_console.dart';
 
 
 /// AdSense Display Ad Banner Container Widget
@@ -69,9 +67,6 @@ class AdSenseBannerState extends State<AdSenseBanner>
 
   void _logRotation(String message) {
     debugPrint(message);
-    print(message);
-    developer.log(message, name: 'AdSenseBanner');
-    logToBrowserConsole(message);
   }
 
   void _onExternalRotationTriggered() {
@@ -108,25 +103,13 @@ class AdSenseBannerState extends State<AdSenseBanner>
         final flashValue = 1.0 - _flashAnimation.value;
         final flashColor = theme.primaryColor;
 
-        final containerBg = Color.lerp(
-          isDark ? Colors.white.withOpacity(0.04) : Colors.black.withOpacity(0.02),
-          flashColor.withOpacity(isDark ? 0.25 : 0.18),
-          flashValue,
-        );
-
         final borderColor = Color.lerp(
-          isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.06),
+          isDark ? Colors.white.withOpacity(0.15) : const Color(0xFFCBD5E1),
           flashColor.withOpacity(0.9),
           flashValue,
         )!;
 
         final borderWidth = 1.0 + (1.5 * flashValue);
-
-        final boxShadowColor = Color.lerp(
-          Colors.black.withOpacity(0.03),
-          flashColor.withOpacity(0.4),
-          flashValue,
-        )!;
 
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -144,20 +127,12 @@ class AdSenseBannerState extends State<AdSenseBanner>
                 ),
                 margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
                 decoration: BoxDecoration(
-                  color: containerBg,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(12.0),
                   border: Border.all(
                     color: borderColor,
                     width: borderWidth,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: boxShadowColor,
-                      blurRadius: 10 + (12 * flashValue),
-                      spreadRadius: 2 * flashValue,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
                 ),
                 child: ClipRRect(
 

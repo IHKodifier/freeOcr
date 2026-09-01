@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /kb
+Allow: /kb/*
+Allow: /docs
+Allow: /privacy
+Allow: /terms
+
+Disallow: /api/
+
+Sitemap: https://freeocr.me/sitemap.xml

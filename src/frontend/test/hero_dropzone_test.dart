@@ -13,16 +13,12 @@ void main() {
       ),
     );
 
-    // Verify Title & Subtitle presence
+    // Verify Title presence
     expect(find.textContaining('Drag & Drop'), findsOneWidget);
-    expect(
-      find.textContaining('10MB'),
-      findsOneWidget,
-    );
 
     // Verify Icons and Select File button
-    expect(find.byIcon(Icons.cloud_upload_outlined), findsOneWidget);
-    expect(find.textContaining('Select File'), findsOneWidget);
+    expect(find.byIcon(Icons.cloud_upload_rounded), findsOneWidget);
+    expect(find.textContaining('Select PDF or Images'), findsOneWidget);
 
   });
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/sse_service.dart';
+import '../services/telemetry_service.dart';
 import 'split_preview_viewer.dart';
 import 'expired_link_view.dart';
 import 'adsense_banner.dart';
@@ -132,7 +133,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     _subscriptions[jobId] = SseService.listenToJobEvents(jobId).listen(
       (event) {
         if (mounted) {
-          final previousStatus = _status;
           setState(() {
             _currentPage = event.currentPage;
             _totalPages = event.totalPages;
@@ -145,6 +145,10 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             }
           });
           if (event.status == 'COMPLETED') {
+            TelemetryService.trackOcrCompleted(
+              jobId: jobId,
+              pageCount: event.totalPages > 0 ? event.totalPages : null,
+            );
             _refreshPreviewData(jobId);
           }
         }
@@ -169,7 +173,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         _subscriptions[item.jobId!] = SseService.listenToJobEvents(item.jobId!).listen(
           (event) {
             if (mounted) {
-              final previousStatus = item.status;
               setState(() {
                 item.currentPage = event.currentPage;
                 item.totalPages = event.totalPages;

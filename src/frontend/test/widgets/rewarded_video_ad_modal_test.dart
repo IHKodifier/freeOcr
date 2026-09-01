@@ -59,6 +59,10 @@ void main() {
       expect(find.text('File Size Limit Exceeded'), findsOneWidget);
       expect(find.textContaining('large_document.pdf'), findsOneWidget);
 
+      // Verify initial callback states
+      expect(watchAdClicked, isFalse);
+      expect(cancelClicked, isFalse);
+
       // Verify file size and limit display
       expect(find.textContaining('15.0 MB'), findsOneWidget);
       expect(find.textContaining('10.0 MB'), findsOneWidget);

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import '../services/api_service.dart';
+import '../services/telemetry_service.dart';
 import '../utils/limit_evaluator.dart';
 import 'adsense_banner.dart';
 import 'rewarded_video_ad_modal.dart';
@@ -114,8 +115,6 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     final double boostPerAdMb = (limits['boost_per_ad_mb'] as num?)?.toDouble() ?? 20.0;
     final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 500.0;
     final int adDuration = (monetization['rewarded_ad_duration_seconds'] as num?)?.toInt() ?? 15;
-
-    double activeLimit = _activeLimitMb < baseLimitMb ? baseLimitMb : _activeLimitMb;
 
     for (int i = 0; i < rawFiles.length; i++) {
       final String filename = rawFiles[i]['filename'] as String;
@@ -278,6 +277,15 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     });
 
     _showToast('Batch upload completed (${_batchItems.length} files queued)!');
+    for (final bItem in _batchItems) {
+      if (bItem.status == 'QUEUED') {
+        TelemetryService.trackDocumentUploaded(
+          filename: bItem.filename,
+          fileSizeInBytes: bItem.sizeInBytes,
+          source: 'batch_upload',
+        );
+      }
+    }
 
     if (widget.onBatchUploadSuccess != null) {
       widget.onBatchUploadSuccess!(_batchItems);
@@ -334,6 +342,11 @@ class _HeroDropzoneState extends State<HeroDropzone> {
         _lockedFileSize = null;
       });
       _showToast('Uploaded $filename (${formatBytes(sizeInBytes)}) • Job ID: ${result.jobId}');
+      TelemetryService.trackDocumentUploaded(
+        filename: filename,
+        fileSizeInBytes: sizeInBytes,
+        source: 'single_upload',
+      );
       if (widget.onUploadSuccess != null) {
         widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
       }
@@ -667,23 +680,30 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                           size: 32,
                         ),
                         const SizedBox(width: 14),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _batchItems.first.filename,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _batchItems.first.filename,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${getFileTypeDescription(_batchItems.first.filename)} • ${formatBytes(_batchItems.first.sizeInBytes)}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
+                              const SizedBox(height: 2),
+                              Text(
+                                '${getFileTypeDescription(_batchItems.first.filename)} • ${formatBytes(_batchItems.first.sizeInBytes)}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -719,31 +739,60 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                 ],
               ] else ...[
                 AnimatedScale(
-                  scale: isActive ? 1.1 : 1.0,
+                  scale: isActive ? 1.08 : 1.0,
                   duration: const Duration(milliseconds: 200),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      color: colorScheme.primaryContainer.withValues(alpha: 0.5),
+                      color: const Color(0xFF6366F1).withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      Icons.cloud_upload_outlined,
-                      size: 48,
-                      color: colorScheme.primary,
+                    child: const Icon(
+                      Icons.cloud_upload_rounded,
+                      size: 52,
+                      color: Color(0xFF6366F1),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 Text(
-                  'Drag & Drop PDFs or Images',
+                  'Drag & Drop files here',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.onSurface,
+                    letterSpacing: -0.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
+                Text(
+                  'or',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _pickFileWithDialog,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF6366F1),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Select PDF or Images',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
                 if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) ...[
                   Builder(
                     builder: (context) {
@@ -761,13 +810,6 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                           ),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.amber.shade400.withValues(alpha: 0.6), width: 1.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.amber.shade500.withValues(alpha: 0.2),
-                              blurRadius: 12,
-                              spreadRadius: 1,
-                            ),
-                          ],
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -787,26 +829,38 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                       );
                     },
                   ),
-                ] else ...[
-                  Text(
-                    'Supports Single or Multiple PDF, JPG, PNG files up to ${_activeLimitMb.toInt()}MB each',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  const SizedBox(height: 16),
                 ],
-                const SizedBox(height: 24),
-                FilledButton.icon(
-                  onPressed: _pickFileWithDialog,
-                  icon: const Icon(Icons.file_open_outlined),
-                  label: const Text('Select Files'),
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                // Format Badges Row matching Stitch Screen 01
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: ['PDF', 'PNG', 'JPG', 'WEBP', 'TIFF', 'BMP'].map((fmt) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white.withOpacity(0.06)
+                            : const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white.withOpacity(0.1)
+                              : const Color(0xFFCBD5E1),
+                          width: 0.8,
+                        ),
+                      ),
+                      child: Text(
+                        fmt,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ],
             ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/api_service.dart';
 import '../services/download_helper.dart';
+import '../services/telemetry_service.dart';
 
 
 
@@ -167,6 +168,11 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     final outFilename = '$stem$ext';
 
     DownloadHelper.triggerDownload(url, outFilename);
+    TelemetryService.trackDownloadClicked(
+      jobId: widget.jobId,
+      format: format,
+      filename: outFilename,
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Initiating direct download of $outFilename...'),
@@ -553,6 +559,11 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                           if (!dialogContext.mounted) return;
 
                           if (res['status'] == 'SUCCESS') {
+                            final domain = email.contains('@') ? email.split('@').last : 'unknown';
+                            TelemetryService.trackEmailSent(
+                              jobId: widget.jobId,
+                              recipientDomain: domain,
+                            );
                             Navigator.of(dialogContext).pop();
                             final msg = res['message'] as String? ?? 'Download links sent to $email! Original input file purged.';
                             ScaffoldMessenger.of(context).showSnackBar(

@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://freeocr.me/">
+
   <!-- Primary SEO Meta Tags -->
   <title>freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR</title>
   <meta name="title" content="freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR">
@@ -17,6 +20,16 @@
   <meta property="og:url" content="https://freeocr.me/">
   <meta property="og:title" content="freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR">
   <meta property="og:description" content="100% Free & Ephemeral AI OCR Utility. Convert scanned PDFs and images to searchable text with visual layout preservation. Zero retention.">
+  <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
+  <meta property="og:site_name" content="freeOCR.me">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://freeocr.me/">
+  <meta name="twitter:title" content="freeOCR.me — Free Scanned PDF to Searchable PDF & Text | AI OCR">
+  <meta name="twitter:description" content="100% Free & Ephemeral AI OCR Utility. Convert scanned PDFs and images to searchable text with visual layout preservation. Zero retention.">
+  <meta name="twitter:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -27,6 +40,35 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFTTL86J86"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FFTTL86J86', { 'send_page_view': false });
+
+    // JS Interop helpers for Flutter Telemetry Service
+    window.trackGa4Event = function(eventName, eventParams) {
+      const params = eventParams || {};
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, params);
+      }
+      console.log('[GA4 Telemetry Event]', eventName, params);
+    };
+
+    window.trackGa4PageView = function(pagePath, pageTitle) {
+      const title = pageTitle || document.title;
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'page_view', {
+          'page_path': pagePath,
+          'page_title': title
+        });
+      }
+      console.log('[GA4 Telemetry PageView]', pagePath, title);
+    };
+  </script>
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
