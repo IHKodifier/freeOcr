@@ -7,25 +7,25 @@ import 'package:free_ocr_frontend/utils/limit_evaluator.dart';
 void main() {
   group('LimitEvaluator Unit Tests', () {
     test('Correctly identifies file size under limit', () {
-      const fileSizeInBytes = 5 * 1024 * 1024; // 5MB
-      const currentLimitMb = 10.0;
+      const fileSizeInBytes = 25 * 1024 * 1024; // 25MB
+      const currentLimitMb = 50.0;
       final result = LimitEvaluator.evaluate(
         fileSizeInBytes: fileSizeInBytes,
         currentLimitMb: currentLimitMb,
       );
       expect(result.isExceeded, isFalse);
-      expect(result.fileSizeMb, closeTo(5.0, 0.01));
+      expect(result.fileSizeMb, closeTo(25.0, 0.01));
     });
 
     test('Correctly identifies file size exceeding limit', () {
-      const fileSizeInBytes = 15 * 1024 * 1024; // 15MB
-      const currentLimitMb = 10.0;
+      const fileSizeInBytes = 60 * 1024 * 1024; // 60MB
+      const currentLimitMb = 50.0;
       final result = LimitEvaluator.evaluate(
         fileSizeInBytes: fileSizeInBytes,
         currentLimitMb: currentLimitMb,
       );
       expect(result.isExceeded, isTrue);
-      expect(result.fileSizeMb, closeTo(15.0, 0.01));
+      expect(result.fileSizeMb, closeTo(60.0, 0.01));
     });
   });
 
@@ -39,10 +39,10 @@ void main() {
           home: Scaffold(
             body: RewardedVideoAdModal(
               filename: 'large_document.pdf',
-              fileSizeInBytes: 15 * 1024 * 1024,
-              currentLimitMb: 10.0,
-              boostPerAdMb: 20.0,
-              maxStackMb: 500.0,
+              fileSizeInBytes: 60 * 1024 * 1024,
+              currentLimitMb: 50.0,
+              boostPerAdMb: 50.0,
+              maxStackMb: 900.0,
               adDurationSeconds: 15,
               onWatchAd: (boostedLimit) {
                 watchAdClicked = true;
@@ -64,12 +64,12 @@ void main() {
       expect(cancelClicked, isFalse);
 
       // Verify file size and limit display
-      expect(find.textContaining('15.0 MB'), findsOneWidget);
-      expect(find.textContaining('10.0 MB'), findsOneWidget);
+      expect(find.textContaining('60.0 MB'), findsOneWidget);
+      expect(find.textContaining('50.0 MB'), findsOneWidget);
 
-      // Verify boost pass info (+20 MB per ad up to 500 MB)
-      expect(find.textContaining('+20 MB'), findsWidgets);
-      expect(find.textContaining('500 MB'), findsOneWidget);
+      // Verify boost pass info (+50 MB per ad up to 900 MB)
+      expect(find.textContaining('+50 MB'), findsWidgets);
+      expect(find.textContaining('900 MB'), findsOneWidget);
 
 
       // Verify Watch Ad button
@@ -98,8 +98,8 @@ void main() {
           home: Scaffold(
             body: RewardedVideoAdModal(
               filename: 'large_document.pdf',
-              fileSizeInBytes: 15 * 1024 * 1024,
-              currentLimitMb: 10.0,
+              fileSizeInBytes: 60 * 1024 * 1024,
+              currentLimitMb: 50.0,
               onWatchAd: (boostedLimit) {},
               onCancel: () {
                 cancelClicked = true;

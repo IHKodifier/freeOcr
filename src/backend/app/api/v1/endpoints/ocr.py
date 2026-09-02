@@ -194,7 +194,7 @@ async def convert_document(
     # Load single canonical global config
     cfg = load_canonical_config()
     limits_cfg = cfg.get("limits", {})
-    base_max_mb = limits_cfg.get("base_max_file_mb", 10)
+    base_max_mb = limits_cfg.get("base_max_file_mb", 50)
     
     # Session ID & Client IP tracking
     session_keys = _get_session_keys(request)
@@ -300,23 +300,23 @@ async def convert_document(
 @router.post("/rewarded-ad-callback")
 async def rewarded_ad_callback(request: Request):
     """
-    Validates rewarded ad view and stacks user limits (+20MB, +15 pages).
+    Validates rewarded ad view and stacks user limits (+50MB, +15 pages).
     Resets sliding 60-minute TTL window from timestamp of latest completed ad.
     """
     session_keys = _get_session_keys(request)
     cfg = load_canonical_config()
     limits_cfg = cfg.get("limits", {})
 
-    boost_mb = limits_cfg.get("boost_per_ad_mb", 20)
+    boost_mb = limits_cfg.get("boost_per_ad_mb", 50)
     boost_pages = limits_cfg.get("boost_per_ad_pages", 15)
     ad_ttl = limits_cfg.get("ad_boost_ttl_seconds", 3600)
-    max_mb_cap = limits_cfg.get("max_stack_file_mb", 500)
+    max_mb_cap = limits_cfg.get("max_stack_file_mb", 900)
     max_pages_cap = limits_cfg.get("max_stack_pages", 500)
 
     redis_client = get_redis_client()
     
     current_count = 0
-    current_mb = limits_cfg.get("base_max_file_mb", 10)
+    current_mb = limits_cfg.get("base_max_file_mb", 50)
     current_pages = limits_cfg.get("base_max_pages", 10)
 
     try:

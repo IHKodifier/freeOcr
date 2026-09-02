@@ -1,13 +1,16 @@
 # Community 22
 
-> 4 nodes · cohesion 0.67
+> 7 nodes · cohesion 0.29
 
 ## Key Concepts
 
-- [markdown_to_simple_html()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L16) (3 connections)
-- [main()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L84) (2 connections)
-- [build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L1) (2 connections)
-- [Converts basic markdown formatting into clean semantic HTML structure.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L17) (1 connections)
+- [test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L1) (3 connections)
+- [test_download_expired_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L34) (2 connections)
+- [test_download_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L57) (2 connections)
+- [test_job_metadata_timestamps()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L12) (2 connections)
+- [Verify storing job metadata includes created_at and expires_at timestamps.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L13) (1 connections)
+- [Verify that requesting a download for an expired job returns HTTP 410 Gone with](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L35) (1 connections)
+- [Verify that requesting a download for a non-existent or evicted job returns HTTP](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L58) (1 connections)
 
 ## Relationships
 
@@ -15,11 +18,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\scripts\build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py)
 
 ## Audit Trail
 
-- EXTRACTED: 8 (100%)
+- EXTRACTED: 12 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

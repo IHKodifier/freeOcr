@@ -1,14 +1,17 @@
 # Community 20
 
-> 5 nodes · cohesion 0.40
+> 8 nodes · cohesion 0.25
 
 ## Key Concepts
 
-- [test_ocr_preview.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L1) (2 connections)
-- [test_preview_completed_job_returns_pages_data()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L18) (2 connections)
-- [test_preview_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L10) (2 connections)
-- [Verify that requesting a preview for a non-existent/expired job returns HTTP 410](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L11) (1 connections)
-- [Verify that requesting a preview for a completed job returns extracted pages & l](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L19) (1 connections)
+- [test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L1) (4 connections)
+- [test_healthz_endpoint_healthy()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L25) (2 connections)
+- [test_healthz_endpoint_unhealthy_database()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L49) (2 connections)
+- [test_healthz_endpoint_unhealthy_redis()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L37) (2 connections)
+- [Verify /healthz endpoint returns HTTP 200 when DB and Redis are connected.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L26) (1 connections)
+- [Verify /healthz endpoint returns HTTP 503 when Redis ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L38) (1 connections)
+- [Verify /healthz endpoint returns HTTP 503 when Database ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L50) (1 connections)
+- [test_health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L16) (1 connections)
 
 ## Relationships
 
@@ -16,11 +19,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_preview.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py)
 
 ## Audit Trail
 
-- EXTRACTED: 8 (100%)
+- EXTRACTED: 14 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

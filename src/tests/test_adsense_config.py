@@ -31,7 +31,7 @@ def test_adsense_config_api_endpoint():
 def test_dynamic_config_file_reload(tmp_path, monkeypatch):
     """Verify that modifying monetization parameters in config file is reflected dynamically."""
     test_config = {
-        "limits": {"base_max_file_mb": 10},
+        "limits": {"base_max_file_mb": 50},
         "monetization": {
             "rewarded_ad_duration_seconds": 20,
             "display_ads_enabled": True,

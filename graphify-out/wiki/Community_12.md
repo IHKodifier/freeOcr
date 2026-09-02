@@ -1,17 +1,25 @@
 # Community 12
 
-> 8 nodes · cohesion 0.25
+> 16 nodes · cohesion 0.12
 
 ## Key Concepts
 
-- [test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L1) (4 connections)
-- [test_healthz_endpoint_healthy()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L25) (2 connections)
-- [test_healthz_endpoint_unhealthy_database()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L49) (2 connections)
-- [test_healthz_endpoint_unhealthy_redis()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L37) (2 connections)
-- [Verify /healthz endpoint returns HTTP 200 when DB and Redis are connected.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L26) (1 connections)
-- [Verify /healthz endpoint returns HTTP 503 when Redis ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L38) (1 connections)
-- [Verify /healthz endpoint returns HTTP 503 when Database ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L50) (1 connections)
-- [test_health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L16) (1 connections)
+- [adsense_banner.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (16 connections)
+- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [AdSenseBannerState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [AnimatedBuilder](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [Center](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [didChangeAppLifecycleState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [LayoutBuilder](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [_logRotation](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [_onExternalRotationTriggered](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [resetSessionCount](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [rotateAd](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
+- [_triggerFlashAnimation](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart) (1 connections)
 
 ## Relationships
 
@@ -19,11 +27,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\adsense_banner.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/adsense_banner.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 14 (100%)
+- EXTRACTED: 31 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

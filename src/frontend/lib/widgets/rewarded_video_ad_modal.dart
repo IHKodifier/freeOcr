@@ -18,8 +18,8 @@ class RewardedVideoAdModal extends StatefulWidget {
     required this.filename,
     required this.fileSizeInBytes,
     required this.currentLimitMb,
-    this.boostPerAdMb = 20.0,
-    this.maxStackMb = 500.0,
+    this.boostPerAdMb = 50.0,
+    this.maxStackMb = 900.0,
     this.adDurationSeconds = 15,
     required this.onWatchAd,
     this.onCancel,
@@ -30,8 +30,8 @@ class RewardedVideoAdModal extends StatefulWidget {
     required String filename,
     required int fileSizeInBytes,
     required double currentLimitMb,
-    double boostPerAdMb = 20.0,
-    double maxStackMb = 500.0,
+    double boostPerAdMb = 50.0,
+    double maxStackMb = 900.0,
     int adDurationSeconds = 15,
     required Function(double boostedLimitMb) onWatchAd,
     VoidCallback? onCancel,
@@ -73,7 +73,7 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
   bool _isPlayingAd = false;
   bool _isSyncing = false;
   bool _isUnlockedSuccess = false;
-  double _newLimitMb = 30.0;
+  double _newLimitMb = 50.0;
   int _secondsRemaining = 15;
   Timer? _adTimer;
 
@@ -341,9 +341,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                               _buildSuccessDetailRow(
                                 isDark: isDark,
                                 icon: Icons.layers_outlined,
-                                title: 'Stack Up to 500 MB + Session Renewal',
+                                title: 'Stack Up to 900 MB + Session Renewal',
                                 subtitle:
-                                    'Each ad watch adds +20 MB per ad (up to 500 MB max) and resets your full 1-hour session window so you have plenty of time to process your files.',
+                                    'Each ad watch adds +50 MB per ad (up to 900 MB max) and resets your full 1-hour session window so you have plenty of time to process your files.',
                               ),
                             ],
                           ),

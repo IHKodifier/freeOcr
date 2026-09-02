@@ -29,7 +29,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   bool _isDragging = false;
   bool _isHovered = false;
   bool _isUploading = false;
-  double _activeLimitMb = 10.0;
+  double _activeLimitMb = 50.0;
   DateTime? _boostExpiresAt;
   Timer? _boostTicker;
 
@@ -56,7 +56,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
       if (_boostExpiresAt != null) {
         if (DateTime.now().isAfter(_boostExpiresAt!)) {
           setState(() {
-            _activeLimitMb = 10.0;
+            _activeLimitMb = 50.0;
             _boostExpiresAt = null;
           });
           _showToast('Session limit boost expired. Reverted to standard limit.', isError: true);
@@ -111,9 +111,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     final limits = config['limits'] as Map<String, dynamic>? ?? {};
     final monetization = config['monetization'] as Map<String, dynamic>? ?? {};
 
-    final double baseLimitMb = (limits['base_max_file_mb'] as num?)?.toDouble() ?? 10.0;
-    final double boostPerAdMb = (limits['boost_per_ad_mb'] as num?)?.toDouble() ?? 20.0;
-    final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 500.0;
+    final double baseLimitMb = (limits['base_max_file_mb'] as num?)?.toDouble() ?? 50.0;
+    final double boostPerAdMb = (limits['boost_per_ad_mb'] as num?)?.toDouble() ?? 50.0;
+    final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 900.0;
     final int adDuration = (monetization['rewarded_ad_duration_seconds'] as num?)?.toInt() ?? 15;
 
     for (int i = 0; i < rawFiles.length; i++) {

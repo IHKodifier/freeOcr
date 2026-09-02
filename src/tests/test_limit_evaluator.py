@@ -27,9 +27,9 @@ def test_get_config_limits_endpoint():
     data = response.json()
     assert "limits" in data
     limits = data["limits"]
-    assert limits["base_max_file_mb"] == 10
-    assert limits["boost_per_ad_mb"] == 20
-    assert limits["max_stack_file_mb"] == 500
+    assert limits["base_max_file_mb"] == 50
+    assert limits["boost_per_ad_mb"] == 50
+    assert limits["max_stack_file_mb"] == 900
 
 
 def test_dynamic_limit_config_reload(tmp_path, monkeypatch):
