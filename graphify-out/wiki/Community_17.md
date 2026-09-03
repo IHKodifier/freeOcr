@@ -1,19 +1,17 @@
 # Community 17
 
-> 10 nodes · cohesion 0.20
+> 8 nodes · cohesion 0.25
 
 ## Key Concepts
 
-- [dart:html](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_web.dart) (3 connections)
-- [web_console_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_web.dart) (3 connections)
-- [dart:developer](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_web.dart) (2 connections)
-- [download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart) (2 connections)
-- [url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (2 connections)
-- [web_console_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_stub.dart) (2 connections)
-- [triggerDownload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart) (1 connections)
-- [openUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (1 connections)
-- [browserConsoleLog](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_stub.dart) (1 connections)
-- [browserConsoleLog](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_web.dart) (1 connections)
+- [progress_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (8 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [Card](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [_getStatusColor](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [_getStatusIcon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [ProgressCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
+- [Text](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart) (1 connections)
 
 ## Relationships
 
@@ -21,14 +19,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\web_console_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_stub.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\web_console_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\progress_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/progress_card.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 18 (100%)
+- EXTRACTED: 15 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

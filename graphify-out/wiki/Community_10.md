@@ -1,29 +1,28 @@
 # Community 10
 
-> 20 nodes · cohesion 0.10
+> 19 nodes · cohesion 0.11
 
 ## Key Concepts
 
-- [ocr_progress_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (23 connections)
-- [adsense_banner.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (2 connections)
-- [../pages/result_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (2 connections)
-- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [_buildBatchProgressUI](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [_buildSingleProgressUI](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [Column](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [ExpiredLinkView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [OcrProgressView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [_OcrProgressViewState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [SnackBar](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [_subscribeToBatchSse](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [_subscribeToSingleSse](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [../services/sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- [split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
+- [hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (24 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [DropTarget](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [Function](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [HeroDropzone](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [_HeroDropzoneState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [Icon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [_processMultipleFiles](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [_processSingleUpload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [_showToast](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [_startBoostTicker](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [package:desktop_drop/desktop_drop.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [package:file_picker/file_picker.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
+- [../utils/limit_evaluator.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
 
 ## Relationships
 
@@ -31,11 +30,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\ocr_progress_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 44 (100%)
+- EXTRACTED: 42 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

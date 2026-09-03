@@ -1,14 +1,15 @@
 # Community 24
 
-> 5 nodes · cohesion 0.40
+> 6 nodes · cohesion 0.33
 
 ## Key Concepts
 
-- [test_ocr_preview.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L1) (2 connections)
-- [test_preview_completed_job_returns_pages_data()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L18) (2 connections)
-- [test_preview_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L10) (2 connections)
-- [Verify that requesting a preview for a non-existent/expired job returns HTTP 410](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L11) (1 connections)
-- [Verify that requesting a preview for a completed job returns extracted pages & l](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py#L19) (1 connections)
+- [test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L1) (5 connections)
+- [test_upload_empty_0byte_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L54) (1 connections)
+- [test_upload_oversized_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L64) (1 connections)
+- [test_upload_unsupported_file_extension()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L46) (1 connections)
+- [test_upload_valid_image_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L33) (1 connections)
+- [test_upload_valid_pdf_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L11) (1 connections)
 
 ## Relationships
 
@@ -16,11 +17,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_preview.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_preview.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py)
 
 ## Audit Trail
 
-- EXTRACTED: 8 (100%)
+- EXTRACTED: 10 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -101,6 +101,12 @@ def process_ocr_job(
             else:
                 raise open_err
 
+        # Convert raster image documents (PNG, JPG, etc.) to PDF so PyMuPDF's get_textpage_ocr can process pages
+        if not filename.lower().endswith(".pdf"):
+            pdf_bytes = doc.convert_to_pdf()
+            doc.close()
+            doc = pymupdf.open("pdf", pdf_bytes)
+
         total_pages = len(doc)
         pages_data = []
         _easyocr_reader = None

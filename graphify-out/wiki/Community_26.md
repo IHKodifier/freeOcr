@@ -1,13 +1,14 @@
 # Community 26
 
-> 4 nodes · cohesion 0.67
+> 5 nodes · cohesion 0.40
 
 ## Key Concepts
 
-- [markdown_to_simple_html()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L16) (3 connections)
-- [main()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L84) (2 connections)
-- [build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L1) (2 connections)
-- [Converts basic markdown formatting into clean semantic HTML structure.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L17) (1 connections)
+- [test_ocr_sse.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py#L1) (4 connections)
+- [test_sse_endpoint_non_existent_job_returns_404()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py#L94) (1 connections)
+- [test_sse_endpoint_returns_event_stream_headers()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py#L10) (1 connections)
+- [test_sse_stream_emits_failed_event()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py#L70) (1 connections)
+- [test_sse_stream_emits_page_progress_and_completed_events()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py#L33) (1 connections)
 
 ## Relationships
 
@@ -15,7 +16,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\scripts\build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_sse.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_sse.py)
 
 ## Audit Trail
 

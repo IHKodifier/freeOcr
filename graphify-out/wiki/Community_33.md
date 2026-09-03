@@ -1,11 +1,12 @@
 # Community 33
 
-> 2 nodes · cohesion 1.00
+> 3 nodes · cohesion 0.67
 
 ## Key Concepts
 
-- [download_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_stub.dart) (1 connections)
-- [triggerDownload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_stub.dart) (1 connections)
+- [test_sse_events.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L1) (2 connections)
+- [test_sse_endpoint_non_existent_job_returns_404()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L10) (1 connections)
+- [test_sse_endpoint_streams_redis_events()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L20) (1 connections)
 
 ## Relationships
 
@@ -13,11 +14,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_sse_events.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py)
 
 ## Audit Trail
 
-- EXTRACTED: 2 (100%)
+- EXTRACTED: 4 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

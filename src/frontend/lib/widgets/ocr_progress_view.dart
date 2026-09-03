@@ -369,7 +369,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               icon: _isLoadingPreview
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.vertical_split_rounded),
-              label: const Text('Interactive Split Preview'),
+              label: const Text('Proceed to My File'),
             ),
 
           ] else if (isFailed) ...[

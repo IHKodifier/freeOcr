@@ -4,10 +4,10 @@
 
 ## Key Concepts
 
-- [limit_evaluator.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (3 connections)
-- [evaluate](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
-- [LimitEvaluationResult](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
-- [LimitEvaluator](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
+- [download_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (3 connections)
+- [download_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
+- [DownloadHelper](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
+- [triggerDownload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
 
 ## Relationships
 
@@ -15,7 +15,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\limit_evaluator.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart)
 
 ## Audit Trail
 

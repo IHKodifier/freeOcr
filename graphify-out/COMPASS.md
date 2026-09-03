@@ -1,10 +1,10 @@
-# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr (2026-09-02)
+# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr (2026-09-04)
 
 > [!NOTE]
 > This is a token-optimized summary. For deep logic, see GRAPH_REPORT.md.
 
 ## Core Abstractions (God Nodes)
-1. `package:flutter/material.dart` (31 edges)
+1. `package:flutter/material.dart` (32 edges)
 2. `get_redis_client()` (15 edges)
 3. `process_ocr_job()` (14 edges)
 4. `package:flutter_test/flutter_test.dart` (14 edges)

@@ -86,11 +86,11 @@ def test_process_ocr_job_ephemeral_file_cleanup_on_exception():
 
 def test_process_ocr_job_image_file():
     job_id = "test-job-ocr-image-789"
-    # Create single page PDF or PNG pixmap
+    # Create single page PDF or PNG pixmap with legible OCR resolution
     doc = pymupdf.open()
-    page = doc.new_page(width=100, height=100)
-    page.insert_text((10, 30), "Image text OCR test")
-    pix = page.get_pixmap()
+    page = doc.new_page(width=400, height=150)
+    page.insert_text((30, 70), "Image text OCR test", fontsize=18)
+    pix = page.get_pixmap(dpi=150)
     png_bytes = pix.tobytes("png")
     doc.close()
 
@@ -104,6 +104,8 @@ def test_process_ocr_job_image_file():
     assert result["job_id"] == job_id
     assert result["total_pages"] == 1
     assert len(result["pages"]) == 1
+    assert "Image" in result["pages"][0]["text"]
+    assert len(result["pages"][0]["lines"]) > 0
 
 
 def test_convert_endpoint_triggers_background_ocr_worker():
