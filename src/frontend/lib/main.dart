@@ -9,6 +9,7 @@ import 'widgets/adsense_banner.dart';
 import 'widgets/expired_link_view.dart';
 import 'widgets/app_header.dart';
 import 'widgets/app_footer.dart';
+import 'widgets/landing_faq_section.dart';
 
 import 'pages/result_page.dart';
 import 'pages/kb_page.dart';
@@ -251,6 +252,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            if (!hasActiveItems) const LandingFaqSection(),
             const SizedBox(height: 32),
             const AppFooter(),
           ],

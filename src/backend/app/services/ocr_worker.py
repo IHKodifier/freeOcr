@@ -168,7 +168,39 @@ def process_ocr_job(
                 if not lines_data and target_engine == "Baidu_Unlimited_OCR":
                     try:
                         print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout...")
-                        # Baidu Unlimited OCR Engine integration endpoint/service
+                        try:
+                            from paddleocr import PaddleOCR
+                            _baidu_engine = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
+                            pix = page.get_pixmap(dpi=300)
+                            img_bytes = pix.tobytes("png")
+
+                            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_img:
+                                tmp_img.write(img_bytes)
+                                tmp_img_path = tmp_img.name
+
+                            try:
+                                ocr_results = _baidu_engine.ocr(tmp_img_path, cls=True)
+                                if ocr_results and ocr_results[0]:
+                                    for res in ocr_results[0]:
+                                        bbox_coords = res[0]
+                                        text_tuple = res[1]
+                                        if text_tuple and text_tuple[0]:
+                                            x_coords = [pt[0] for pt in bbox_coords]
+                                            y_coords = [pt[1] for pt in bbox_coords]
+                                            x0, y0, x1, y1 = min(x_coords), min(y_coords), max(x_coords), max(y_coords)
+                                            lines_data.append({
+                                                "bbox": [round(float(x0), 2), round(float(y0), 2), round(float(x1), 2), round(float(y1), 2)],
+                                                "text": text_tuple[0].strip(),
+                                                "size": None,
+                                                "origin": None
+                                            })
+                                    if lines_data:
+                                        page_text = "\n".join([line["text"] for line in lines_data])
+                            finally:
+                                if os.path.exists(tmp_img_path):
+                                    os.remove(tmp_img_path)
+                        except ImportError:
+                            print("[Baidu Unlimited OCR] PaddleOCR library not present in local dev env; falling back to PyMuPDF/Tesseract.")
                     except Exception as baidu_err:
                         print(f"[Baidu Unlimited OCR Worker Error] {baidu_err}")
 
