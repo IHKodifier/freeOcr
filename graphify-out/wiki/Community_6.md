@@ -25,7 +25,7 @@
 - [test_unrepairable_garbage_pdf_failure()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_pdf_repair.py#L54) (3 connections)
 - [test_watchdog_ignores_non_ephemeral_files()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_pdf_repair.py#L91) (3 connections)
 - [test_watchdog_purges_old_ephemeral_files()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_pdf_repair.py#L63) (3 connections)
-- [test_convert_endpoint_triggers_background_ocr_worker()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_worker.py#L109) (2 connections)
+- [test_convert_endpoint_triggers_background_ocr_worker()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_worker.py#L111) (2 connections)
 - [test_process_ocr_job_image_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_worker.py#L87) (2 connections)
 - [pdf_repair.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_repair.py#L1) (1 connections)
 - [watchdog.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/watchdog.py#L1) (1 connections)
@@ -33,7 +33,7 @@
 
 ## Relationships
 
-- [[Community 5]] (13 shared connections)
+- No strong cross-community connections detected
 
 ## Source Files
 

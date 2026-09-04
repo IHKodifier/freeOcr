@@ -1,29 +1,30 @@
 # Community 20
 
-> 7 nodes · cohesion 0.29
+> 8 nodes · cohesion 0.25
 
 ## Key Concepts
 
-- [test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L1) (3 connections)
-- [test_adsense_config_interval_loaded()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L10) (3 connections)
-- [test_adsense_config_api_endpoint()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L20) (2 connections)
-- [test_dynamic_config_file_reload()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L31) (2 connections)
-- [Verify that monetization parameters are present in backend configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L11) (1 connections)
-- [Verify that GET /api/v1/config endpoint returns monetization configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L21) (1 connections)
-- [Verify that modifying monetization parameters in config file is reflected dynami](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L32) (1 connections)
+- [test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L1) (4 connections)
+- [test_healthz_endpoint_healthy()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L25) (2 connections)
+- [test_healthz_endpoint_unhealthy_database()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L49) (2 connections)
+- [test_healthz_endpoint_unhealthy_redis()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L37) (2 connections)
+- [Verify /healthz endpoint returns HTTP 200 when DB and Redis are connected.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L26) (1 connections)
+- [Verify /healthz endpoint returns HTTP 503 when Redis ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L38) (1 connections)
+- [Verify /healthz endpoint returns HTTP 503 when Database ping fails.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L50) (1 connections)
+- [test_health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py#L16) (1 connections)
 
 ## Relationships
 
-- [[Community 8]] (3 shared connections)
+- [[Community 18]] (3 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_health.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_health.py)
 
 ## Audit Trail
 
-- EXTRACTED: 12 (92%)
-- INFERRED: 1 (8%)
+- EXTRACTED: 14 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

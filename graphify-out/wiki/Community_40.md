@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/__init__.py#L1) (0 connections)
+- [__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/__init__.py#L1) (0 connections)
 
 ## Relationships
 
@@ -12,7 +12,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/__init__.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/__init__.py)
 
 ## Audit Trail
 

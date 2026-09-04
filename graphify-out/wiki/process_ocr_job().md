@@ -9,8 +9,8 @@ sequenceDiagram
     participant P0 as process_ocr_job()
     participant P1 as compose_searchable_pdf()
     participant P2 as test_get_searchable_pdf_retrieval()
-    participant P3 as _create_sample_pdf_bytes()
-    participant P4 as get_searchable_pdf()
+    participant P3 as get_searchable_pdf()
+    participant P4 as _create_sample_pdf_bytes()
     participant P5 as test_compose_searchable_pdf_from_pdf()
     participant P6 as test_compose_searchable_pdf_from_image()
     participant P7 as _create_sample_image_bytes()
@@ -42,8 +42,8 @@ sequenceDiagram
     P5-->>- P1: return
     P5->>+ P1: calls
     P1-->>- P5: return
-    P5->>+ P3: calls
-    P3-->>- P5: return
+    P5->>+ P4: calls
+    P4-->>- P5: return
     P1->>+ P6: calls
     P6-->>- P1: return
     P6->>+ P1: calls
@@ -54,8 +54,8 @@ sequenceDiagram
     P8-->>- P1: return
     P8->>+ P1: calls
     P1-->>- P8: return
-    P8->>+ P3: calls
-    P3-->>- P8: return
+    P8->>+ P4: calls
+    P4-->>- P8: return
     P0->>+ P9: calls
     P9-->>- P0: return
     P0->>+ P10: calls

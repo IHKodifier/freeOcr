@@ -242,6 +242,10 @@ class ApiService {
     return '$baseUrl/jobs/$jobId/download/$format';
   }
 
+  static String getPageImageUrl(String jobId, int pageNumber) {
+    return '$baseUrl/jobs/$jobId/pages/$pageNumber/image';
+  }
+
   static Future<Map<String, dynamic>> sendEmailLinks(String jobId, String email) async {
     try {
       final uri = Uri.parse('$baseUrl/ocr/email-links');

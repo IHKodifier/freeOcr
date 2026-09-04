@@ -2,33 +2,33 @@
   "hotspots": [
     {
       "label": "process_ocr_job()",
-      "risk": 0.672,
+      "risk": 0.664,
       "type": "FUNCTION"
     },
     {
       "label": "stream_job_events()",
-      "risk": 0.427,
+      "risk": 0.415,
       "type": "FUNCTION"
     },
     {
       "label": "download_job_file()",
-      "risk": 0.412,
+      "risk": 0.4,
       "type": "FUNCTION"
     },
     {
       "label": "convert_document()",
-      "risk": 0.37,
+      "risk": 0.357,
       "type": "FUNCTION"
     },
     {
-      "label": "LayoutAnalyzer",
+      "label": "get_job_page_image()",
       "risk": 0.293,
-      "type": "CLASS"
+      "type": "FUNCTION"
     }
   ],
   "blast_radius": {
     "package:flutter/material.dart": 32,
-    "get_redis_client()": 15,
+    "get_redis_client()": 16,
     "process_ocr_job()": 14,
     "package:flutter_test/flutter_test.dart": 14,
     "load_canonical_config()": 9

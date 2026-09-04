@@ -36,12 +36,16 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   late List<dynamic> _pages;
   bool _isReloading = false;
   Timer? _pollTimer;
+  late TransformationController _transformationController;
+  double _zoomScale = 1.0;
 
   @override
   void initState() {
     super.initState();
     _pages = List.from(widget.pages);
     _textEditingController = TextEditingController();
+    _transformationController = TransformationController();
+    _transformationController.addListener(_onTransformationChanged);
     _updateTextForCurrentPage();
 
     // Auto-reload preview data if lines are empty (e.g. backend OCR worker was still processing)
@@ -49,6 +53,44 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
       _reloadPreviewData();
       _startPollingForLines();
     }
+  }
+
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    _textEditingController.dispose();
+    _transformationController.removeListener(_onTransformationChanged);
+    _transformationController.dispose();
+    super.dispose();
+  }
+
+  void _onTransformationChanged() {
+    final scale = _transformationController.value.getMaxScaleOnAxis();
+    if ((scale - _zoomScale).abs() > 0.02) {
+      setState(() {
+        _zoomScale = double.parse(scale.clamp(0.5, 3.0).toStringAsFixed(2));
+      });
+    }
+  }
+
+  void _setZoom(double newScale) {
+    final target = double.parse(newScale.clamp(0.5, 3.0).toStringAsFixed(2));
+    setState(() {
+      _zoomScale = target;
+      _transformationController.value = Matrix4.identity()..scale(target, target);
+    });
+  }
+
+  void _zoomIn() {
+    _setZoom(_zoomScale + 0.25);
+  }
+
+  void _zoomOut() {
+    _setZoom(_zoomScale - 0.25);
+  }
+
+  void _resetZoom() {
+    _setZoom(1.0);
   }
 
   void _startPollingForLines() {
@@ -125,15 +167,17 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     if (_currentPageIndex > 0) {
       setState(() {
         _currentPageIndex--;
+        _resetZoom();
         _updateTextForCurrentPage();
       });
     }
   }
 
   void _goToNextPage() {
-    if (_currentPageIndex < widget.pages.length - 1) {
+    if (_currentPageIndex < _pages.length - 1) {
       setState(() {
         _currentPageIndex++;
+        _resetZoom();
         _updateTextForCurrentPage();
       });
     }
@@ -182,14 +226,6 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     );
   }
 
-
-  @override
-  void dispose() {
-    _pollTimer?.cancel();
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -235,9 +271,9 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                   builder: (context, constraints) {
                     final bool isNarrow = constraints.maxWidth < 700;
                     if (isNarrow) {
-                      return _buildStackedView(theme, colorScheme, currentLines);
+                      return _buildStackedView(theme, colorScheme);
                     }
-                    return _buildSplitView(theme, colorScheme, constraints.maxWidth, currentLines);
+                    return _buildSplitView(theme, colorScheme, constraints.maxWidth);
                   },
                 ),
               ),
@@ -607,17 +643,17 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
 
 
 
-  Widget _buildSplitView(ThemeData theme, ColorScheme colorScheme, double totalWidth, List<dynamic> currentLines) {
+  Widget _buildSplitView(ThemeData theme, ColorScheme colorScheme, double totalWidth) {
     const minPaneWidth = 250.0;
     final leftWidth = (_splitRatio * totalWidth).clamp(minPaneWidth, totalWidth - minPaneWidth);
     final rightWidth = totalWidth - leftWidth - 8.0;
 
     return Row(
       children: [
-        // Left Pane: Scan Bounding Box Viewer
+        // Left Pane: Interactive Document Page Preview
         SizedBox(
           width: leftWidth,
-          child: _buildLeftScanPane(theme, colorScheme, currentLines),
+          child: _buildDocumentPreviewPane(theme, colorScheme),
         ),
 
         // Split Drag Handle
@@ -653,13 +689,13 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     );
   }
 
-  Widget _buildStackedView(ThemeData theme, ColorScheme colorScheme, List<dynamic> currentLines) {
+  Widget _buildStackedView(ThemeData theme, ColorScheme colorScheme) {
     return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
-            height: 300,
-            child: _buildLeftScanPane(theme, colorScheme, currentLines),
+            height: 350,
+            child: _buildDocumentPreviewPane(theme, colorScheme),
           ),
           Divider(height: 1, color: colorScheme.outlineVariant),
           SizedBox(
@@ -671,164 +707,223 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     );
   }
 
-  Widget _buildLeftScanPane(ThemeData theme, ColorScheme colorScheme, List<dynamic> currentLines) {
+  Widget _buildDocumentPreviewPane(ThemeData theme, ColorScheme colorScheme) {
+    final currentPageNum = _currentPageIndex + 1;
+    final totalPages = _pages.isNotEmpty ? _pages.length : 1;
+    final pageImageUrl = ApiService.getPageImageUrl(widget.jobId, currentPageNum);
+
     return Container(
       color: colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header & Zoom Controls Toolbar
           Wrap(
             alignment: WrapAlignment.spaceBetween,
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 8,
-            runSpacing: 4,
+            runSpacing: 6,
             children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.picture_as_pdf_outlined, size: 18, color: colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Document Page Preview',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: colorScheme.primary.withValues(alpha: 0.3)),
+                    ),
+                    child: Text(
+                      'Page $currentPageNum',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // Zoom Controls (Zoom Out, Slider, Zoom In, Reset Chip)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.6)),
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.find_in_page_outlined, size: 18, color: colorScheme.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Original Document Layout Scan',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.primary,
+                    IconButton(
+                      icon: const Icon(Icons.zoom_out, size: 16),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+                      onPressed: _zoomScale > 0.5 ? _zoomOut : null,
+                      tooltip: 'Zoom Out',
+                    ),
+                    SizedBox(
+                      width: 90,
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 3,
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 10),
+                          activeTrackColor: colorScheme.primary,
+                          inactiveTrackColor: colorScheme.outlineVariant,
+                          thumbColor: colorScheme.primary,
+                        ),
+                        child: Slider(
+                          value: _zoomScale.clamp(0.5, 3.0),
+                          min: 0.5,
+                          max: 3.0,
+                          divisions: 25,
+                          onChanged: (val) => _setZoom(val),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.zoom_in, size: 16),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+                      onPressed: _zoomScale < 3.0 ? _zoomIn : null,
+                      tooltip: 'Zoom In',
+                    ),
+                    InkWell(
+                      onTap: _resetZoom,
+                      borderRadius: BorderRadius.circular(6),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: colorScheme.surface,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                        ),
+                        child: Text(
+                          '${(_zoomScale * 100).round()}%',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'monospace',
+                            fontSize: 11,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.green.shade400),
-                ),
-                child: Text(
-                  '${currentLines.length} Bounding Blocks',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: Colors.green.shade700,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
+
+          // Interactive Pan & Zoom Viewport
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: colorScheme.outlineVariant),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: currentLines.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 32,
-                            height: 32,
-                            child: CircularProgressIndicator(strokeWidth: 3),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'OCRmyPDF Layout Processing in Progress...',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: InteractiveViewer(
+                  transformationController: _transformationController,
+                  minScale: 0.5,
+                  maxScale: 3.0,
+                  boundaryMargin: const EdgeInsets.all(100),
+                  clipBehavior: Clip.hardEdge,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Image.network(
+                        pageImageUrl,
+                        key: ValueKey('${widget.jobId}_page_$currentPageNum'),
+                        fit: BoxFit.contain,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 28,
+                                  height: 28,
+                                  child: CircularProgressIndicator(strokeWidth: 2.5),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Rendering Page $currentPageNum Preview...',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
-                              'Extracting text blocks... Bounding blocks will update automatically.',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.grey.shade600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-
-
-                  : ListView.separated(
-                      itemCount: currentLines.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 8),
-                      itemBuilder: (context, index) {
-
-                        final block = currentLines[index];
-                        final bbox = block['bbox'] as List<dynamic>? ?? [];
-                        final blockText = block['text'] as String? ?? '';
-                        final bboxStr = bbox.length == 4 ? '[${bbox.join(', ')}]' : '';
-
-                        return Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: colorScheme.primaryContainer.withValues(alpha: 0.25),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: colorScheme.primary.withValues(alpha: 0.4),
-                              width: 1,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Icon(Icons.image_not_supported_outlined, size: 40, color: Colors.grey.shade500),
+                                  const SizedBox(height: 12),
                                   Text(
-                                    'Block #${index + 1}',
-                                    style: theme.textTheme.labelSmall?.copyWith(
+                                    'Page $currentPageNum Preview Not Available',
+                                    style: theme.textTheme.titleSmall?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      color: colorScheme.primary,
+                                      color: Colors.grey.shade800,
                                     ),
                                   ),
-                                  const Spacer(),
-                                  if (bboxStr.isNotEmpty)
-                                    Flexible(
-                                      child: Text(
-                                        'bbox $bboxStr',
-                                        style: theme.textTheme.labelSmall?.copyWith(
-                                          fontFamily: 'monospace',
-                                          color: Colors.grey.shade700,
-                                          fontSize: 10,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'High-fidelity preview is unavailable or expired.',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Colors.grey.shade600,
                                     ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  OutlinedButton.icon(
+                                    onPressed: () {
+                                      setState(() {});
+                                    },
+                                    icon: const Icon(Icons.refresh, size: 16),
+                                    label: const Text('Retry Preview'),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                blockText,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black87,
-                                  fontFamily: 'monospace',
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                            ),
+                          );
+                        },
+                      ),
                     ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

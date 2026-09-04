@@ -1,25 +1,25 @@
 # Community 28
 
-> 4 nodes · cohesion 0.50
+> 4 nodes · cohesion 0.67
 
 ## Key Concepts
 
-- [download_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (3 connections)
-- [download_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
-- [DownloadHelper](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
-- [triggerDownload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart) (1 connections)
+- [markdown_to_simple_html()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L16) (3 connections)
+- [main()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L84) (2 connections)
+- [build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L1) (2 connections)
+- [Converts basic markdown formatting into clean semantic HTML structure.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L17) (1 connections)
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[unknown]] (1 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\scripts\build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py)
 
 ## Audit Trail
 
-- EXTRACTED: 6 (100%)
+- EXTRACTED: 8 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

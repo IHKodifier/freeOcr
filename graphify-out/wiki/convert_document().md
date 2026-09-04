@@ -18,16 +18,17 @@ sequenceDiagram
     participant P9 as test_check_redis_connection_mocked_success()
     participant P10 as test_check_redis_connection_mocked_failure()
     participant P11 as email_download_links()
-    participant P12 as download_job_file()
-    participant P13 as store_job_metadata()
-    participant P14 as get_job_metadata()
-    participant P15 as stream_job_events()
-    participant P16 as get_job_preview()
-    participant P17 as _publish_event()
-    participant P18 as _store_job()
-    participant P19 as test_redis_client_configuration()
-    participant P20 as analyze_pdf_bytes()
-    participant P21 as _get_normalized_client_ip()
+    participant P12 as get_job_page_image()
+    participant P13 as download_job_file()
+    participant P14 as store_job_metadata()
+    participant P15 as get_job_metadata()
+    participant P16 as stream_job_events()
+    participant P17 as get_job_preview()
+    participant P18 as _publish_event()
+    participant P19 as _store_job()
+    participant P20 as test_redis_client_configuration()
+    participant P21 as analyze_pdf_bytes()
+    participant P22 as _get_normalized_client_ip()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P0: calls
@@ -82,16 +83,18 @@ sequenceDiagram
     P18-->>- P1: return
     P1->>+ P19: calls
     P19-->>- P1: return
+    P1->>+ P20: calls
+    P20-->>- P1: return
     P0->>+ P3: calls
     P3-->>- P0: return
     P0->>+ P4: calls
     P4-->>- P0: return
     P0->>+ P5: calls
     P5-->>- P0: return
-    P0->>+ P20: calls
-    P20-->>- P0: return
     P0->>+ P21: calls
     P21-->>- P0: return
+    P0->>+ P22: calls
+    P22-->>- P0: return
 ```
 
 ## Connections by Relation

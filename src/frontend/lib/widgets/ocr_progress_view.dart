@@ -76,7 +76,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         _isLoadingPreview = false;
         if (data != null && (data.containsKey('pages') || data['is_expired'] == true)) {
           _previewData = data;
-          _showPreview = true;
           AdSenseBanner.rotateAd();
           Navigator.push(
             context,
@@ -229,13 +228,13 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             jobId: widget.jobId ?? (_previewData!['job_id'] as String? ?? ''),
             filename: displayName,
             pages: _previewData!['pages'] as List<dynamic>? ?? [],
-            onClose: () => setState(() => _showPreview = false),
+            onClose: widget.onReset ?? () => setState(() => _showPreview = false),
           ),
           const SizedBox(height: 16),
           OutlinedButton.icon(
-            onPressed: () => setState(() => _showPreview = false),
-            icon: const Icon(Icons.arrow_back),
-            label: const Text('Back to Status View'),
+            onPressed: widget.onReset ?? () => setState(() => _showPreview = false),
+            icon: const Icon(Icons.upload_file),
+            label: const Text('Convert Another File'),
           ),
         ],
       );

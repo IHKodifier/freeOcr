@@ -1,27 +1,28 @@
 # Community 24
 
-> 6 nodes · cohesion 0.33
+> 7 nodes · cohesion 0.29
 
 ## Key Concepts
 
-- [test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L1) (5 connections)
-- [test_upload_empty_0byte_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L54) (1 connections)
-- [test_upload_oversized_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L64) (1 connections)
-- [test_upload_unsupported_file_extension()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L46) (1 connections)
-- [test_upload_valid_image_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L33) (1 connections)
-- [test_upload_valid_pdf_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L11) (1 connections)
+- [test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L1) (3 connections)
+- [test_download_expired_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L34) (2 connections)
+- [test_download_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L57) (2 connections)
+- [test_job_metadata_timestamps()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L12) (2 connections)
+- [Verify storing job metadata includes created_at and expires_at timestamps.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L13) (1 connections)
+- [Verify that requesting a download for an expired job returns HTTP 410 Gone with](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L35) (1 connections)
+- [Verify that requesting a download for a non-existent or evicted job returns HTTP](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L58) (1 connections)
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 22]] (3 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py)
 
 ## Audit Trail
 
-- EXTRACTED: 10 (100%)
+- EXTRACTED: 12 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

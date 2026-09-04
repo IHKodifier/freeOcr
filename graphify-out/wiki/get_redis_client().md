@@ -1,6 +1,6 @@
 # get_redis_client()
 
-> God node · 15 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
+> God node · 16 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
 
 ## Call Trace Diagram
 
@@ -22,14 +22,15 @@ sequenceDiagram
     participant P13 as check_redis_connection()
     participant P14 as email_download_links()
     participant P15 as store_ad_pass_metadata()
-    participant P16 as download_job_file()
-    participant P17 as store_job_metadata()
-    participant P18 as get_job_metadata()
-    participant P19 as stream_job_events()
-    participant P20 as get_job_preview()
-    participant P21 as _publish_event()
-    participant P22 as _store_job()
-    participant P23 as test_redis_client_configuration()
+    participant P16 as get_job_page_image()
+    participant P17 as download_job_file()
+    participant P18 as store_job_metadata()
+    participant P19 as get_job_metadata()
+    participant P20 as stream_job_events()
+    participant P21 as get_job_preview()
+    participant P22 as _publish_event()
+    participant P23 as _store_job()
+    participant P24 as test_redis_client_configuration()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P0: calls
@@ -90,6 +91,8 @@ sequenceDiagram
     P22-->>- P0: return
     P0->>+ P23: calls
     P23-->>- P0: return
+    P0->>+ P24: calls
+    P24-->>- P0: return
 ```
 
 ## Connections by Relation
@@ -101,6 +104,7 @@ sequenceDiagram
 - [[get_ad_pass_metadata()]] `EXTRACTED`
 - [[email_download_links()]] `INFERRED`
 - [[store_ad_pass_metadata()]] `EXTRACTED`
+- [[get_job_page_image()]] `INFERRED`
 - [[download_job_file()]] `INFERRED`
 - [[store_job_metadata()]] `EXTRACTED`
 - [[get_job_metadata()]] `EXTRACTED`

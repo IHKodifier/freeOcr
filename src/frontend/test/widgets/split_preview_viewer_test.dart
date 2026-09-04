@@ -183,6 +183,53 @@ void main() {
     expect(find.text('Input file is deleted immediately. Ensure email address is correct.'), findsOneWidget);
     expect(find.text('Send Download Links'), findsOneWidget);
   });
+
+  testWidgets('SplitPreviewViewer renders document preview with zoom slider & pan/zoom controls', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1280, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SplitPreviewViewer(
+            jobId: 'test_job_zoom',
+            filename: 'zoom_test.pdf',
+            pages: samplePages,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
+
+    // Verify Document Page Preview label
+    expect(find.text('Document Page Preview'), findsOneWidget);
+
+    // Verify Zoom Controls: Zoom In, Zoom Out, 100% chip, Slider
+    expect(find.byIcon(Icons.zoom_in), findsOneWidget);
+    expect(find.byIcon(Icons.zoom_out), findsOneWidget);
+    expect(find.text('100%'), findsOneWidget);
+    expect(find.byType(Slider), findsOneWidget);
+
+    // Tap Zoom In and verify zoom percentage increases
+    await tester.tap(find.byIcon(Icons.zoom_in));
+    await tester.pump();
+    expect(find.text('125%'), findsOneWidget);
+
+    // Tap Zoom Out and verify zoom percentage decreases
+    await tester.tap(find.byIcon(Icons.zoom_out));
+    await tester.pump();
+    expect(find.text('100%'), findsOneWidget);
+
+    // Tap Reset chip after zooming
+    await tester.tap(find.byIcon(Icons.zoom_in));
+    await tester.pump();
+    expect(find.text('125%'), findsOneWidget);
+    await tester.tap(find.text('125%'));
+    await tester.pump();
+    expect(find.text('100%'), findsOneWidget);
+  });
 }
 
 

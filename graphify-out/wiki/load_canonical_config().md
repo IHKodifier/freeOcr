@@ -14,22 +14,23 @@ sequenceDiagram
     participant P5 as get_ad_pass_metadata()
     participant P6 as email_download_links()
     participant P7 as store_ad_pass_metadata()
-    participant P8 as download_job_file()
-    participant P9 as store_job_metadata()
-    participant P10 as get_job_metadata()
-    participant P11 as stream_job_events()
-    participant P12 as get_job_preview()
-    participant P13 as _publish_event()
-    participant P14 as _store_job()
-    participant P15 as test_redis_client_configuration()
-    participant P16 as _get_session_keys()
-    participant P17 as analyze_pdf_bytes()
-    participant P18 as _get_normalized_client_ip()
-    participant P19 as get_runtime_config()
-    participant P20 as test_adsense_config_interval_loaded()
-    participant P21 as test_limit_config_values()
-    participant P22 as .get_canonical_config()
-    participant P23 as test_canonical_config_loader()
+    participant P8 as get_job_page_image()
+    participant P9 as download_job_file()
+    participant P10 as store_job_metadata()
+    participant P11 as get_job_metadata()
+    participant P12 as stream_job_events()
+    participant P13 as get_job_preview()
+    participant P14 as _publish_event()
+    participant P15 as _store_job()
+    participant P16 as test_redis_client_configuration()
+    participant P17 as _get_session_keys()
+    participant P18 as analyze_pdf_bytes()
+    participant P19 as _get_normalized_client_ip()
+    participant P20 as get_runtime_config()
+    participant P21 as test_adsense_config_interval_loaded()
+    participant P22 as test_limit_config_values()
+    participant P23 as .get_canonical_config()
+    participant P24 as test_canonical_config_loader()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P2: calls
@@ -62,20 +63,20 @@ sequenceDiagram
     P14-->>- P2: return
     P2->>+ P15: calls
     P15-->>- P2: return
+    P2->>+ P16: calls
+    P16-->>- P2: return
     P1->>+ P0: calls
     P0-->>- P1: return
     P1->>+ P5: calls
     P5-->>- P1: return
-    P1->>+ P16: calls
-    P16-->>- P1: return
     P1->>+ P17: calls
     P17-->>- P1: return
     P1->>+ P18: calls
     P18-->>- P1: return
+    P1->>+ P19: calls
+    P19-->>- P1: return
     P0->>+ P3: calls
     P3-->>- P0: return
-    P0->>+ P19: calls
-    P19-->>- P0: return
     P0->>+ P20: calls
     P20-->>- P0: return
     P0->>+ P21: calls
@@ -84,6 +85,8 @@ sequenceDiagram
     P22-->>- P0: return
     P0->>+ P23: calls
     P23-->>- P0: return
+    P0->>+ P24: calls
+    P24-->>- P0: return
 ```
 
 ## Connections by Relation

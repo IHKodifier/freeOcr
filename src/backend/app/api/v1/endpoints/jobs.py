@@ -4,12 +4,14 @@ import tempfile
 import json
 import asyncio
 import datetime
+import pymupdf
 from fastapi import APIRouter, Request, HTTPException, status
 from fastapi.responses import StreamingResponse, Response, JSONResponse
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.pdf_composer import get_searchable_pdf
 
 router = APIRouter()
+DEV_PAGE_IMAGE_STORE: dict[str, bytes] = {}
 
 
 @router.get("/{job_id}/events", response_class=StreamingResponse)
@@ -171,6 +173,123 @@ async def get_job_preview(job_id: str):
         "pages": parsed.get("pages", []),
         "output_pdf_token": parsed.get("output_pdf_token")
     }
+
+
+@router.get("/{job_id}/pages/{page_number}/image")
+async def get_job_page_image(job_id: str, page_number: int = 1):
+    """
+    Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given job and page.
+    """
+    if page_number < 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Page number must be 1 or greater."
+        )
+
+    cache_key = f"{job_id}_{page_number}"
+    if cache_key in DEV_PAGE_IMAGE_STORE:
+        return Response(
+            content=DEV_PAGE_IMAGE_STORE[cache_key],
+            media_type="image/png",
+            headers={"Cache-Control": "public, max-age=3600"}
+        )
+
+    job_data_bytes = None
+    if job_id in DEV_JOB_STORE:
+        job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        try:
+            redis_client = get_redis_client()
+            job_data_bytes = redis_client.get(f"job:{job_id}")
+        except Exception:
+            job_data_bytes = None
+
+    if not job_data_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    try:
+        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+        parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error parsing job data."
+        )
+
+    pdf_bytes = None
+    output_token = parsed.get("output_pdf_token")
+    if output_token:
+        pdf_bytes = get_searchable_pdf(output_token)
+
+    # If searchable PDF is available in store
+    if pdf_bytes:
+        try:
+            doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+            total_doc_pages = len(doc)
+            if page_number > total_doc_pages:
+                doc.close()
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Page not found. Document has {total_doc_pages} pages."
+                )
+            page = doc[page_number - 1]
+            pix = page.get_pixmap(dpi=150)
+            img_bytes = pix.tobytes("png")
+            doc.close()
+            DEV_PAGE_IMAGE_STORE[cache_key] = img_bytes
+            return Response(
+                content=img_bytes,
+                media_type="image/png",
+                headers={"Cache-Control": "public, max-age=3600"}
+            )
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to render document page: {e}"
+            )
+
+    # Fallback to ephemeral input file in RAM disk if processing
+    ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
+    matching_inputs = glob.glob(os.path.join(ram_disk_base, f"ephemeral_{job_id}_*"))
+    for input_file in matching_inputs:
+        try:
+            doc = pymupdf.open(input_file)
+            if not input_file.lower().endswith(".pdf"):
+                pdf_bytes_conv = doc.convert_to_pdf()
+                doc.close()
+                doc = pymupdf.open("pdf", pdf_bytes_conv)
+            total_doc_pages = len(doc)
+            if page_number > total_doc_pages:
+                doc.close()
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Page not found. Document has {total_doc_pages} pages."
+                )
+            page = doc[page_number - 1]
+            pix = page.get_pixmap(dpi=150)
+            img_bytes = pix.tobytes("png")
+            doc.close()
+            DEV_PAGE_IMAGE_STORE[cache_key] = img_bytes
+            return Response(
+                content=img_bytes,
+                media_type="image/png",
+                headers={"Cache-Control": "public, max-age=3600"}
+            )
+        except HTTPException:
+            raise
+        except Exception:
+            pass
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Page preview unavailable."
+    )
 
 
 @router.get("/{job_id}/download/{format}")

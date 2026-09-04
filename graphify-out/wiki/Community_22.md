@@ -4,26 +4,26 @@
 
 ## Key Concepts
 
-- [test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L1) (3 connections)
-- [test_download_expired_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L34) (2 connections)
-- [test_download_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L57) (2 connections)
-- [test_job_metadata_timestamps()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L12) (2 connections)
-- [Verify storing job metadata includes created_at and expires_at timestamps.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L13) (1 connections)
-- [Verify that requesting a download for an expired job returns HTTP 410 Gone with](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L35) (1 connections)
-- [Verify that requesting a download for a non-existent or evicted job returns HTTP](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py#L58) (1 connections)
+- [test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L1) (3 connections)
+- [test_adsense_config_interval_loaded()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L10) (3 connections)
+- [test_adsense_config_api_endpoint()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L20) (2 connections)
+- [test_dynamic_config_file_reload()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L31) (2 connections)
+- [Verify that monetization parameters are present in backend configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L11) (1 connections)
+- [Verify that GET /api/v1/config endpoint returns monetization configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L21) (1 connections)
+- [Verify that modifying monetization parameters in config file is reflected dynami](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L32) (1 connections)
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 20]] (3 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_link_expiration.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_link_expiration.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py)
 
 ## Audit Trail
 
-- EXTRACTED: 12 (100%)
-- INFERRED: 0 (0%)
+- EXTRACTED: 12 (92%)
+- INFERRED: 1 (8%)
 - AMBIGUOUS: 0 (0%)
 
 ---

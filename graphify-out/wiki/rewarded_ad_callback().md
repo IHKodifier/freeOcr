@@ -20,14 +20,15 @@ sequenceDiagram
     participant P11 as test_check_redis_connection_mocked_failure()
     participant P12 as email_download_links()
     participant P13 as store_ad_pass_metadata()
-    participant P14 as download_job_file()
-    participant P15 as store_job_metadata()
-    participant P16 as get_job_metadata()
-    participant P17 as stream_job_events()
-    participant P18 as get_job_preview()
-    participant P19 as _publish_event()
-    participant P20 as _store_job()
-    participant P21 as test_redis_client_configuration()
+    participant P14 as get_job_page_image()
+    participant P15 as download_job_file()
+    participant P16 as store_job_metadata()
+    participant P17 as get_job_metadata()
+    participant P18 as stream_job_events()
+    participant P19 as get_job_preview()
+    participant P20 as _publish_event()
+    participant P21 as _store_job()
+    participant P22 as test_redis_client_configuration()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P2: calls
@@ -78,6 +79,8 @@ sequenceDiagram
     P20-->>- P1: return
     P1->>+ P21: calls
     P21-->>- P1: return
+    P1->>+ P22: calls
+    P22-->>- P1: return
     P0->>+ P3: calls
     P3-->>- P0: return
     P0->>+ P4: calls

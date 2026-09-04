@@ -99,32 +99,20 @@ class _ResultPageState extends State<ResultPage> {
                     else if (_previewData != null && _previewData!['is_expired'] == true)
                       ExpiredLinkView(
                         rawExpiredAtString: _previewData!['expired_at'] as String?,
-                        onUploadNew: () => Navigator.pushReplacementNamed(context, '/'),
+                        onUploadNew: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
                       )
                     else if (_previewData != null && _previewData!.containsKey('pages')) ...[
                       SplitPreviewViewer(
                         jobId: widget.jobId,
                         filename: displayName,
                         pages: _previewData!['pages'] as List<dynamic>? ?? [],
-                        onClose: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          } else {
-                            Navigator.pushReplacementNamed(context, '/');
-                          }
-                        },
+                        onClose: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(
-                        onPressed: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          } else {
-                            Navigator.pushReplacementNamed(context, '/');
-                          }
-                        },
+                        onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
                         icon: const Icon(Icons.upload_file),
-                        label: const Text('Convert Another PDF / Image'),
+                        label: const Text('Convert Another File'),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

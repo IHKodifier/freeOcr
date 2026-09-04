@@ -5,7 +5,7 @@
 
 ## Core Abstractions (God Nodes)
 1. `package:flutter/material.dart` (32 edges)
-2. `get_redis_client()` (15 edges)
+2. `get_redis_client()` (16 edges)
 3. `process_ocr_job()` (14 edges)
 4. `package:flutter_test/flutter_test.dart` (14 edges)
 5. `load_canonical_config()` (9 edges)

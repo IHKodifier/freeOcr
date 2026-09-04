@@ -4,9 +4,9 @@
 
 ## Key Concepts
 
-- [test_sse_events.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L1) (2 connections)
-- [test_sse_endpoint_non_existent_job_returns_404()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L10) (1 connections)
-- [test_sse_endpoint_streams_redis_events()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py#L20) (1 connections)
+- [web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (2 connections)
+- [logToBrowserConsole](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
+- [web_console_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
 
 ## Relationships
 
@@ -14,7 +14,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_sse_events.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_sse_events.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart)
 
 ## Audit Trail
 
