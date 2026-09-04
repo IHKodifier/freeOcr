@@ -50,4 +50,5 @@ Thumbs.db
 tmp/
 ramdisk/
 scratch/
+.firebase/
 

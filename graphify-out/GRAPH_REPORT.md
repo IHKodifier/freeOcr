@@ -1,7 +1,7 @@
 # Graph Report - E:\Non_Office\Dev_Space\vibe_skool\freeOcr  (2026-09-04)
 
 ## Corpus Check
-- 93 files · ~143,149 words
+- 93 files · ~145,803 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

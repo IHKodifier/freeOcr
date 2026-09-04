@@ -493,6 +493,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           builder: (context, setDialogState) {
             final theme = Theme.of(context);
             final colorScheme = theme.colorScheme;
+            final isDark = theme.brightness == Brightness.dark;
 
             return AlertDialog(
               backgroundColor: colorScheme.surfaceContainer,
@@ -525,23 +526,35 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
 
                     // Privacy Warning Banner (AC-1)
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.amber.shade900.withValues(alpha: 0.35),
+                        color: isDark
+                            ? const Color(0xFF451A03).withValues(alpha: 0.5)
+                            : const Color(0xFFFFF7ED),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.amber.shade600.withValues(alpha: 0.6)),
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFFB45309).withValues(alpha: 0.7)
+                              : const Color(0xFFFDBA74),
+                          width: 1.2,
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.warning_amber_rounded, color: Colors.amber.shade400, size: 22),
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            color: isDark ? const Color(0xFFFBBF24) : const Color(0xFFD97706),
+                            size: 22,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Input file is deleted immediately. Ensure email address is correct.',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: Colors.amber.shade200,
+                                fontSize: 13,
+                                height: 1.35,
+                                color: isDark ? const Color(0xFFFEF3C7) : const Color(0xFF9A3412),
                               ),
                             ),
                           ),

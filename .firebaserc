@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "freeocr-staging-app",
+    "staging": "freeocr-staging-app"
+  }
+}

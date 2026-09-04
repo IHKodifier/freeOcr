@@ -690,9 +690,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "jobs_rationale_19",
       "community": 2,
-      "norm_label": "real-time server-sent events (sse) progress streaming endpoint.     subscribes"
+      "norm_label": "real-time server-sent events (sse) progress streaming endpoint.     subscribes",
+      "id": "jobs_rationale_19"
     },
     {
       "label": "Returns extracted text blocks and page layout metadata for an OCR job.     Retu",
@@ -703,9 +703,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "jobs_rationale_132",
       "community": 2,
-      "norm_label": "returns extracted text blocks and page layout metadata for an ocr job.     retu"
+      "norm_label": "returns extracted text blocks and page layout metadata for an ocr job.     retu",
+      "id": "jobs_rationale_132"
     },
     {
       "label": "Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j",
@@ -716,9 +716,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "jobs_rationale_180",
       "community": 2,
-      "norm_label": "renders and streams high-fidelity 150 dpi page preview image (png) for a given j"
+      "norm_label": "renders and streams high-fidelity 150 dpi page preview image (png) for a given j",
+      "id": "jobs_rationale_180"
     },
     {
       "label": "1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).     Streams r",
@@ -729,9 +729,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "jobs_rationale_297",
       "community": 2,
-      "norm_label": "1-click multi-format direct downloads endpoint (.pdf, .txt, .md).     streams r"
+      "norm_label": "1-click multi-format direct downloads endpoint (.pdf, .txt, .md).     streams r",
+      "id": "jobs_rationale_297"
     },
     {
       "label": "ocr.py",
@@ -7836,9 +7836,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "test_job_page_image_rationale_24",
       "community": 17,
-      "norm_label": "verify that requesting a page preview for a non-existent job returns 404 or 410."
+      "norm_label": "verify that requesting a page preview for a non-existent job returns 404 or 410.",
+      "id": "test_job_page_image_rationale_24"
     },
     {
       "label": "Verify that requesting page 1 and page 2 image for a completed job returns 200 i",
@@ -7849,9 +7849,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "test_job_page_image_rationale_30",
       "community": 17,
-      "norm_label": "verify that requesting page 1 and page 2 image for a completed job returns 200 i"
+      "norm_label": "verify that requesting page 1 and page 2 image for a completed job returns 200 i",
+      "id": "test_job_page_image_rationale_30"
     },
     {
       "label": "Verify that requesting a page number higher than total pages returns 404.",
@@ -7862,9 +7862,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "test_job_page_image_rationale_63",
       "community": 17,
-      "norm_label": "verify that requesting a page number higher than total pages returns 404."
+      "norm_label": "verify that requesting a page number higher than total pages returns 404.",
+      "id": "test_job_page_image_rationale_63"
     },
     {
       "label": "Verify that invalid page numbers (0 or negative) are rejected.",
@@ -7875,9 +7875,9 @@
       "granularity": "low",
       "heat": 0.015,
       "owner": "unowned",
-      "id": "test_job_page_image_rationale_85",
       "community": 17,
-      "norm_label": "verify that invalid page numbers (0 or negative) are rejected."
+      "norm_label": "verify that invalid page numbers (0 or negative) are rejected.",
+      "id": "test_job_page_image_rationale_85"
     },
     {
       "label": "test_layout_analyzer.py",
@@ -9810,8 +9810,8 @@
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\backend\\app\\api\\v1\\endpoints\\jobs.py",
       "source_location": "L203",
       "weight": 1.0,
-      "_src": "jobs_get_job_page_image",
-      "_tgt": "redis_client_get_redis_client",
+      "_src": "redis_client_get_redis_client",
+      "_tgt": "jobs_get_job_page_image",
       "source": "redis_client_get_redis_client",
       "target": "jobs_get_job_page_image"
     },
