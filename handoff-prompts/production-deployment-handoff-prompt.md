@@ -35,5 +35,8 @@ Execute the 6-phase production deployment outlined in `handoff-prompts/productio
 - **Phase 5:** Verify SEO pre-rendered HTML pages and deploy production `ads.txt` and GAM network slot IDs.
 - **Phase 6:** Execute end-to-end smoke test on live production domain and verify GA4 telemetry dashboard.
 
-Please read `handoff-prompts/production-deployment-plan.md` and await my confirmation before executing any production merges or deployments.
+### First Step Required from You:
+1. Read `handoff-prompts/production-deployment-plan.md`.
+2. Present it immediately as the active `implementation_plan.md` artifact with `RequestFeedback: true` and `UserFacing: true` so the UI renders the interactive **Proceed** button.
+3. Stop and await my click on the **Proceed** button before executing any production merges, commands, or deployments.
 ```
