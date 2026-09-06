@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'gam_js_interop.dart';
 
 /// Google Ad Manager (GAM / AdX) GPT Banner Widget
-/// Supports declared 31-second server-side ad refresh inventory slots
+/// Supports declared 60-second server-side ad refresh inventory slots
 /// Compliant with Google Ad Manager policy via GPT `gpt.js` viewability focus listeners.
 class GamBannerWidget extends StatefulWidget {
   final double height;
@@ -25,6 +25,7 @@ class GamBannerWidget extends StatefulWidget {
 
   /// Triggers a Google Ad Manager (GAM / AdX) slot refresh via gpt.js interop.
   static void refreshGamSlot() {
+    globalRefreshCount++;
     refreshTrigger.value++;
     triggerGamAdSlotRefresh();
   }
@@ -33,7 +34,7 @@ class GamBannerWidget extends StatefulWidget {
     super.key,
     this.height = 90.0,
     this.maxWidth = 728.0,
-    this.autoRefreshSeconds = 31,
+    this.autoRefreshSeconds = 60,
   });
 
   @override
@@ -45,7 +46,7 @@ class GamBannerWidgetState extends State<GamBannerWidget>
   int get refreshCount => GamBannerWidget.globalRefreshCount;
 
   Timer? _refreshTimer;
-  int _secondsUntilNextRefresh = 31;
+  int _secondsUntilNextRefresh = 60;
   bool _isViewable = true;
 
   late AnimationController _flashController;
@@ -69,7 +70,7 @@ class GamBannerWidgetState extends State<GamBannerWidget>
     );
 
     _startAutoRefreshTimer();
-    debugPrint('[GamBannerWidget] 🚀 GAM GPT Banner Mounted (31s Declared Auto-Refresh Active)');
+    debugPrint('[GamBannerWidget] 🚀 GAM GPT Banner Mounted (${widget.autoRefreshSeconds}s Declared Auto-Refresh Active)');
   }
 
   void _startAutoRefreshTimer() {
@@ -99,7 +100,6 @@ class GamBannerWidgetState extends State<GamBannerWidget>
   void _onExternalRefreshTriggered() {
     if (mounted) {
       setState(() {
-        GamBannerWidget.globalRefreshCount++;
         _secondsUntilNextRefresh = widget.autoRefreshSeconds;
       });
       _triggerFlashAnimation();
@@ -262,7 +262,7 @@ class GamBannerWidgetState extends State<GamBannerWidget>
                                     ),
                                     child: Text(
                                       _isViewable
-                                          ? 'Declared 31s Refresh • #$refreshCount'
+                                          ? 'Declared ${widget.autoRefreshSeconds}s Refresh • #$refreshCount'
                                           : 'Paused (Tab Hidden)',
                                       style: TextStyle(
                                         fontSize: 9,

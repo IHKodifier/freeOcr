@@ -13,7 +13,7 @@ void main() {
         const MaterialApp(
           home: Scaffold(
             body: GamBannerWidget(
-              autoRefreshSeconds: 31,
+              autoRefreshSeconds: 60,
             ),
           ),
         ),
@@ -26,10 +26,10 @@ void main() {
       expect(find.textContaining('/1234567/freeocr_leaderboard_728x90'), findsOneWidget);
 
       // Verify declared refresh badge
-      expect(find.textContaining('Declared 31s Refresh'), findsOneWidget);
+      expect(find.textContaining('Declared 60s Refresh'), findsOneWidget);
 
-      // Verify initial 31s countdown ticker
-      expect(find.text('31s'), findsOneWidget);
+      // Verify initial 60s countdown ticker
+      expect(find.text('60s'), findsOneWidget);
     });
 
     testWidgets('GamBannerWidget.refreshGamSlot() increments refresh counter and updates UI', (WidgetTester tester) async {
@@ -53,7 +53,7 @@ void main() {
       expect(find.textContaining('#1'), findsWidgets);
     });
 
-    testWidgets('Auto-refresh timer counts down and triggers slot refresh after 31 seconds', (WidgetTester tester) async {
+    testWidgets('Auto-refresh timer counts down and triggers slot refresh after declared timeout', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -64,11 +64,11 @@ void main() {
         ),
       );
 
-      expect(find.textContaining('5s'), findsOneWidget);
+      expect(find.text('5s'), findsOneWidget);
 
       // Advance timer by 2 seconds
       await tester.pump(const Duration(seconds: 2));
-      expect(find.textContaining('3s'), findsOneWidget);
+      expect(find.text('3s'), findsOneWidget);
 
       // Advance timer past 5 seconds
       await tester.pump(const Duration(seconds: 4));
