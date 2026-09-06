@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class JobEvent {
@@ -21,19 +22,21 @@ class JobEvent {
 
   factory JobEvent.fromJson(Map<String, dynamic> json) {
     return JobEvent(
-      jobId: json['job_id'] ?? '',
-      status: json['status'] ?? 'QUEUED',
+      jobId: json['job_id']?.toString() ?? '',
+      status: json['status']?.toString() ?? 'QUEUED',
       currentPage: json['current_page'] is int
-          ? json['current_page']
+          ? json['current_page'] as int
           : (json['current_page'] != null ? int.tryParse(json['current_page'].toString()) ?? 0 : 0),
       totalPages: json['total_pages'] is int
-          ? json['total_pages']
+          ? json['total_pages'] as int
           : (json['total_pages'] != null ? int.tryParse(json['total_pages'].toString()) ?? 1 : 1),
       outputPdfToken: json['output_pdf_token'] as String?,
       errorMessage: json['error_message'] as String?,
     );
   }
 
+  bool get isCompleted => status == 'COMPLETED';
+  bool get isFailed => status == 'FAILED';
   double get progress {
     if (status == 'COMPLETED') return 1.0;
     if (totalPages <= 0) return 0.0;
@@ -45,14 +48,20 @@ class JobEvent {
 typedef OcrProgressEvent = JobEvent;
 
 class SseService {
+  static const String defaultBaseUrl = String.fromEnvironment(
+    'BACKEND_BASE_URL',
+    defaultValue: kIsWeb ? '' : 'http://127.0.0.1:8000',
+  );
+
   final String baseUrl;
   final http.Client _client;
 
-  SseService({this.baseUrl = 'http://127.0.0.1:8000', http.Client? client})
-      : _client = client ?? http.Client();
+  SseService({String? baseUrl, http.Client? client})
+      : baseUrl = baseUrl ?? defaultBaseUrl,
+        _client = client ?? http.Client();
 
-  static Stream<JobEvent> listenToJobEvents(String jobId, {String baseUrl = 'http://127.0.0.1:8000'}) {
-    return SseService(baseUrl: baseUrl).subscribeToJob(jobId);
+  static Stream<JobEvent> listenToJobEvents(String jobId, {String? baseUrl}) {
+    return SseService(baseUrl: baseUrl ?? defaultBaseUrl).subscribeToJob(jobId);
   }
 
   Stream<JobEvent> subscribeToJob(String jobId) {

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Reusable Apple-inspired Frosted Glassmorphism Card Container
@@ -30,8 +31,8 @@ class GlassCard extends StatelessWidget {
 
     final defaultBackground = backgroundColor ??
         (isDark
-            ? const Color.fromRGBO(30, 41, 59, 0.75)
-            : const Color.fromRGBO(255, 255, 255, 0.85));
+            ? (kIsWeb ? const Color(0xFF1E293B) : const Color.fromRGBO(30, 41, 59, 0.75))
+            : (kIsWeb ? Colors.white : const Color.fromRGBO(255, 255, 255, 0.85)));
 
     final defaultBorder = borderColor ??
         (isDark
@@ -57,14 +58,22 @@ class GlassCard extends StatelessWidget {
       child: child,
     );
 
-    // Apply frosted glass blur filter
-    Widget glassWidget = ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+    // Apply frosted glass blur filter (bypassed on Web where BackdropFilter causes white buffer blowout on zoom)
+    Widget glassWidget;
+    if (kIsWeb) {
+      glassWidget = ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
         child: cardContent,
-      ),
-    );
+      );
+    } else {
+      glassWidget = ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+          child: cardContent,
+        ),
+      );
+    }
 
     if (margin != EdgeInsets.zero) {
       glassWidget = Padding(

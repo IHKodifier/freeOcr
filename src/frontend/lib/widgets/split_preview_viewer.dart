@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/api_service.dart';
@@ -39,6 +41,8 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   late TransformationController _transformationController;
   double _zoomScale = 1.0;
 
+  final GlobalKey _viewerKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -73,24 +77,68 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     }
   }
 
-  void _setZoom(double newScale) {
-    final target = double.parse(newScale.clamp(0.5, 3.0).toStringAsFixed(2));
+  void _zoomAtFocalPoint(double zoomFactor, Offset focalPoint) {
+    final currentMatrix = _transformationController.value;
+    final currentScale = currentMatrix.getMaxScaleOnAxis();
+    final targetScale = (currentScale * zoomFactor).clamp(0.5, 3.0);
+    final effectiveFactor = targetScale / currentScale;
+
+    if ((effectiveFactor - 1.0).abs() < 0.001) return;
+
+    // Focal point transformation matrix: translate to origin -> scale -> translate back
+    final translationToOrigin = Matrix4.translationValues(-focalPoint.dx, -focalPoint.dy, 0);
+    final scaleMatrix = Matrix4.diagonal3Values(effectiveFactor, effectiveFactor, 1.0);
+    final translationBack = Matrix4.translationValues(focalPoint.dx, focalPoint.dy, 0);
+
+    final newMatrix = translationBack * scaleMatrix * translationToOrigin * currentMatrix;
+
     setState(() {
-      _zoomScale = target;
-      _transformationController.value = Matrix4.identity()..scale(target, target);
+      _zoomScale = double.parse(targetScale.toStringAsFixed(2));
+      _transformationController.value = newMatrix;
     });
   }
 
+  void _zoomFromCenter(double targetScale) {
+    final currentScale = _transformationController.value.getMaxScaleOnAxis();
+    final clampedTarget = targetScale.clamp(0.5, 3.0);
+    final factor = clampedTarget / currentScale;
+    if ((factor - 1.0).abs() < 0.001) return;
+
+    final RenderBox? box = _viewerKey.currentContext?.findRenderObject() as RenderBox?;
+    final center = box != null && box.hasSize
+        ? box.size.center(Offset.zero)
+        : const Offset(300, 300);
+    _zoomAtFocalPoint(factor, center);
+  }
+
+  void _setZoom(double newScale) {
+    _zoomFromCenter(newScale);
+  }
+
   void _zoomIn() {
-    _setZoom(_zoomScale + 0.25);
+    _zoomFromCenter(_zoomScale + 0.25);
   }
 
   void _zoomOut() {
-    _setZoom(_zoomScale - 0.25);
+    _zoomFromCenter(_zoomScale - 0.25);
   }
 
   void _resetZoom() {
-    _setZoom(1.0);
+    setState(() {
+      _zoomScale = 1.0;
+      _transformationController.value = Matrix4.identity();
+    });
+  }
+
+  void _handlePointerSignal(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      // Handles precision trackpad pinch gestures (which Chrome dispatches as ctrlKey + wheel)
+      // and physical mouse wheel while holding Ctrl, pivoting naturally around the pointer location.
+      if (HardwareKeyboard.instance.isControlPressed) {
+        final zoomFactor = event.scrollDelta.dy < 0 ? 1.08 : 0.92;
+        _zoomAtFocalPoint(zoomFactor, event.localPosition);
+      }
+    }
   }
 
   void _startPollingForLines() {
@@ -232,9 +280,6 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     final colorScheme = theme.colorScheme;
     final totalPages = _pages.length;
     final currentPageNum = totalPages > 0 ? _currentPageIndex + 1 : 0;
-    final currentLines = _pages.isNotEmpty && _currentPageIndex < _pages.length
-        ? (_pages[_currentPageIndex]['lines'] as List<dynamic>? ?? [])
-        : [];
 
     return Container(
       width: double.infinity,
@@ -258,28 +303,48 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-          child: Column(
-            children: [
-              // Top Glassmorphic Header Bar
-              _buildTopHeader(theme, colorScheme, currentPageNum, totalPages),
+        child: kIsWeb
+            ? Column(
+                children: [
+                  // Top Glassmorphic Header Bar
+                  _buildTopHeader(theme, colorScheme, currentPageNum, totalPages),
 
-              // Split Panes Container
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final bool isNarrow = constraints.maxWidth < 700;
-                    if (isNarrow) {
-                      return _buildStackedView(theme, colorScheme);
-                    }
-                    return _buildSplitView(theme, colorScheme, constraints.maxWidth);
-                  },
+                  // Split Panes Container
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final bool isNarrow = constraints.maxWidth < 700;
+                        if (isNarrow) {
+                          return _buildStackedView(theme, colorScheme);
+                        }
+                        return _buildSplitView(theme, colorScheme, constraints.maxWidth);
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                child: Column(
+                  children: [
+                    // Top Glassmorphic Header Bar
+                    _buildTopHeader(theme, colorScheme, currentPageNum, totalPages),
+
+                    // Split Panes Container
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final bool isNarrow = constraints.maxWidth < 700;
+                          if (isNarrow) {
+                            return _buildStackedView(theme, colorScheme);
+                          }
+                          return _buildSplitView(theme, colorScheme, constraints.maxWidth);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -722,7 +787,6 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
 
   Widget _buildDocumentPreviewPane(ThemeData theme, ColorScheme colorScheme) {
     final currentPageNum = _currentPageIndex + 1;
-    final totalPages = _pages.isNotEmpty ? _pages.length : 1;
     final pageImageUrl = ApiService.getPageImageUrl(widget.jobId, currentPageNum);
 
     return Container(
@@ -844,9 +908,12 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           // Interactive Pan & Zoom Viewport
           Expanded(
             child: Container(
+              key: _viewerKey,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: theme.brightness == Brightness.dark
+                    ? const Color(0xFF131B2E)
+                    : Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: colorScheme.outlineVariant),
                 boxShadow: [
@@ -859,13 +926,16 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: InteractiveViewer(
-                  transformationController: _transformationController,
-                  minScale: 0.5,
-                  maxScale: 3.0,
-                  boundaryMargin: const EdgeInsets.all(100),
-                  clipBehavior: Clip.hardEdge,
-                  child: Center(
+                child: Listener(
+                  onPointerSignal: _handlePointerSignal,
+                  child: InteractiveViewer(
+                    transformationController: _transformationController,
+                    minScale: 0.5,
+                    maxScale: 3.0,
+                    boundaryMargin: const EdgeInsets.all(100),
+                    clipBehavior: Clip.hardEdge,
+                    trackpadScrollCausesScale: true,
+                    child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Image.network(
@@ -939,7 +1009,8 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
               ),
             ),
           ),
-        ],
+        ),
+      ],
       ),
     );
   }

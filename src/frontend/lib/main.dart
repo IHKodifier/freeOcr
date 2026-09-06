@@ -141,7 +141,9 @@ class _HomePageState extends State<HomePage> {
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppHeader(
+
         currentRoute: '/',
         onThemeToggle: () {
           if (isDark) {

@@ -4,17 +4,52 @@ import tempfile
 import json
 import asyncio
 import datetime
+import urllib.parse
 import pymupdf
 from fastapi import APIRouter, Request, HTTPException, status
 from fastapi.responses import StreamingResponse, Response, JSONResponse
-from app.redis_client import get_redis_client, DEV_JOB_STORE
+from app.redis_client import get_redis_client, DEV_JOB_STORE, EphemeralRamStore
 from app.services.pdf_composer import get_searchable_pdf
 
 router = APIRouter()
-DEV_PAGE_IMAGE_STORE: dict[str, bytes] = {}
+DEV_PAGE_IMAGE_STORE: EphemeralRamStore = EphemeralRamStore("page_img", is_bytes=True)
+
+
+@router.get("/{job_id}")
+async def get_job_status(job_id: str):
+    """
+    Returns job status and progress for polling or verification.
+    """
+    job_data_bytes = None
+    if job_id in DEV_JOB_STORE:
+        job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        try:
+            redis_client = get_redis_client()
+            job_data_bytes = redis_client.get(f"job:{job_id}")
+        except Exception:
+            job_data_bytes = None
+
+    if not job_data_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found or expired."
+        )
+
+    try:
+        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+        parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+        return parsed
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error parsing job data."
+        )
 
 
 @router.get("/{job_id}/events", response_class=StreamingResponse)
+
 async def stream_job_events(job_id: str, request: Request):
     """
     Real-time Server-Sent Events (SSE) progress streaming endpoint.
@@ -400,11 +435,12 @@ async def download_job_file(job_id: str, format: str):
                 detail="Searchable PDF output not found or expired."
             )
         out_filename = f"{filename_stem}_searchable.pdf"
+        safe_filename = urllib.parse.quote(out_filename)
         return Response(
             content=pdf_bytes,
             media_type="application/pdf",
             headers={
-                "Content-Disposition": f'attachment; filename="{out_filename}"'
+                "Content-Disposition": f'attachment; filename="{out_filename}"; filename*=UTF-8\'\'{safe_filename}'
             }
         )
 
@@ -417,11 +453,12 @@ async def download_job_file(job_id: str, format: str):
                 txt_parts.append(page_text)
         compiled_txt = "\n\n".join(txt_parts)
         out_filename = f"{filename_stem}_extracted.txt"
+        safe_filename = urllib.parse.quote(out_filename)
         return Response(
             content=compiled_txt.encode("utf-8"),
             media_type="text/plain; charset=utf-8",
             headers={
-                "Content-Disposition": f'attachment; filename="{out_filename}"'
+                "Content-Disposition": f'attachment; filename="{out_filename}"; filename*=UTF-8\'\'{safe_filename}'
             }
         )
 
@@ -433,11 +470,12 @@ async def download_job_file(job_id: str, format: str):
             md_parts.append(f"# Page {page_num}\n\n{page_text}")
         compiled_md = "\n\n---\n\n".join(md_parts)
         out_filename = f"{filename_stem}_extracted.md"
+        safe_filename = urllib.parse.quote(out_filename)
         return Response(
             content=compiled_md.encode("utf-8"),
             media_type="text/markdown; charset=utf-8",
             headers={
-                "Content-Disposition": f'attachment; filename="{out_filename}"'
+                "Content-Disposition": f'attachment; filename="{out_filename}"; filename*=UTF-8\'\'{safe_filename}'
             }
         )
 

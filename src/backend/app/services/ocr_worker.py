@@ -116,8 +116,8 @@ def process_ocr_job(
             page = doc[page_index]
             page_text = page.get_text("text").strip()
 
-            dict_data = page.get_text("dict")
             lines_data = []
+            dict_data = page.get_text("dict")
             for b in dict_data.get("blocks", []):
                 if b.get("type") == 0:
                     for l in b.get("lines", []):
@@ -144,7 +144,7 @@ def process_ocr_job(
                 # Engine 1: OCRmyPDF / Tesseract Engine (Designated Engine for Simple Layout Scanned PDFs)
                 try:
                     tess_dir = _get_tessdata_dir()
-                    textpage = page.get_textpage_ocr(tessdata=tess_dir)
+                    textpage = page.get_textpage_ocr(tessdata=tess_dir, dpi=300, full=True)
                     ocr_dict = textpage.extractDICT()
                     for b in ocr_dict.get("blocks", []):
                         if b.get("type") == 0 or "lines" in b:
@@ -163,21 +163,21 @@ def process_ocr_job(
                                     })
                     if lines_data:
                         page_text = "\n".join([line["text"] for line in lines_data])
+
                 except Exception as tess_err:
                     print(f"[OCRmyPDF / Tesseract Engine Warning] {tess_err}")
-
-
-
-
 
                 # Engine 2: Baidu Unlimited OCR Engine (Designated AI Engine for Complex Layouts / Multi-Column OCR)
                 if not lines_data and target_engine == "Baidu_Unlimited_OCR":
                     try:
-                        print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout...")
+                        print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout at 300 DPI...")
                         try:
                             from paddleocr import PaddleOCR
                             _baidu_engine = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
-                            pix = page.get_pixmap(dpi=300)
+                            target_dpi = 300
+                            pix = page.get_pixmap(dpi=target_dpi)
+                            scale_x = page.rect.width / max(1.0, float(pix.width))
+                            scale_y = page.rect.height / max(1.0, float(pix.height))
                             img_bytes = pix.tobytes("png")
 
                             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_img:
@@ -187,6 +187,8 @@ def process_ocr_job(
                             try:
                                 ocr_results = _baidu_engine.ocr(tmp_img_path, cls=True)
                                 if ocr_results and ocr_results[0]:
+                                    font = pymupdf.Font("helv")
+                                    font_height_ratio = max(0.5, font.ascender - font.descender)
                                     for res in ocr_results[0]:
                                         bbox_coords = res[0]
                                         text_tuple = res[1]
@@ -194,11 +196,21 @@ def process_ocr_job(
                                             x_coords = [pt[0] for pt in bbox_coords]
                                             y_coords = [pt[1] for pt in bbox_coords]
                                             x0, y0, x1, y1 = min(x_coords), min(y_coords), max(x_coords), max(y_coords)
+                                            # Scale 300 DPI pixel coordinates to PDF point canvas
+                                            x0_scaled = float(x0) * scale_x
+                                            y0_scaled = float(y0) * scale_y
+                                            x1_scaled = float(x1) * scale_x
+                                            y1_scaled = float(y1) * scale_y
+                                            h_scaled = max(1.0, y1_scaled - y0_scaled)
+                                            est_font_size = max(5.0, h_scaled / font_height_ratio)
+                                            descender_depth = abs(font.descender) * est_font_size
+                                            origin_y = y1_scaled - descender_depth
+
                                             lines_data.append({
-                                                "bbox": [round(float(x0), 2), round(float(y0), 2), round(float(x1), 2), round(float(y1), 2)],
+                                                "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
                                                 "text": text_tuple[0].strip(),
-                                                "size": None,
-                                                "origin": None
+                                                "size": round(est_font_size, 2),
+                                                "origin": [round(x0_scaled, 2), round(origin_y, 2)]
                                             })
                                     if lines_data:
                                         page_text = "\n".join([line["text"] for line in lines_data])

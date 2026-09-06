@@ -4,7 +4,20 @@
   <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Pure Web App Architecture: Stable app viewport & dark base background -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0b0f19;
+      overflow-x: hidden;
+    }
+  </style>
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://freeocr.me/">
 
@@ -47,7 +60,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-FFTTL86J86', { 'send_page_view': false });
+    gtag('config', 'G-FFTTL86J86', { 'send_page_view': true });
 
     // JS Interop helpers for Flutter Telemetry Service
     window.trackGa4Event = function(eventName, eventParams) {
@@ -67,6 +80,45 @@
         });
       }
       console.log('[GA4 Telemetry PageView]', pagePath, title);
+    };
+
+    // Robust file downloader that guarantees proper filename and extension in Chrome, Edge, Safari, Firefox
+    window.downloadFileFromUrl = function(url, filename) {
+      fetch(url)
+        .then(function(res) {
+          if (!res.ok) throw new Error('Download failed: ' + res.status);
+          return res.blob();
+        })
+        .then(function(blob) {
+          var blobUrl = window.URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = blobUrl;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+            if (a.parentNode) {
+              a.parentNode.removeChild(a);
+            }
+            window.URL.revokeObjectURL(blobUrl);
+          }, 30000);
+        })
+        .catch(function(err) {
+          console.warn('[Download] Fallback to direct anchor:', err);
+          var a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = filename;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+            if (a.parentNode) {
+              a.parentNode.removeChild(a);
+            }
+          }, 5000);
+        });
     };
   </script>
 

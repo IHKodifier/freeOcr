@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 
@@ -197,12 +198,8 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
     final Color secondaryText = isDark ? const Color(0xFFCBD5E1) : const Color(0xFF475569);
     final Color labelText = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 530),
+    final modalContainer = Container(
+      constraints: const BoxConstraints(maxWidth: 530),
           decoration: BoxDecoration(
             color: modalBg,
             borderRadius: BorderRadius.circular(24),
@@ -618,8 +615,15 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
               ],
             ),
           ),
-        ),
-      ),
+        );
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: kIsWeb
+          ? modalContainer
+          : BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+              child: modalContainer,
+            ),
     );
   }
 
