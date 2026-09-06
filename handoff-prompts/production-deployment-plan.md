@@ -155,4 +155,4 @@ How the application reads the AI model's raw output to reconstruct the searchabl
    - Download Searchable PDF in Chrome and Edge; confirm `.pdf` extension is saved.
    - Verify instant file cleanup in RAM disk.
 2. **GA4 Realtime Dashboard:**
-   - Confirm incoming page views and custom conversion events (`file_dropped`, `ocr_started`, `ocr_completed`, `download_clicked`) appear in Google Analytics 4 (`G-FFTTL86J86`).
+   - Confirm incoming page views and custom conversion events (`file_dropped`, `ocr_started`, `ocr_completed`, `download_clicked`) appear in Google Analytics 4 (`G-E852V95BXB`).

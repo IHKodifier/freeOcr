@@ -3,6 +3,7 @@ import glob
 import tempfile
 import json
 import asyncio
+import time
 import datetime
 import urllib.parse
 import pymupdf
@@ -107,6 +108,7 @@ async def stream_job_events(job_id: str, request: Request):
                             except Exception:
                                 pass
                 else:
+                    last_ping = time.time()
                     while True:
                         if await request.is_disconnected():
                             break
@@ -115,12 +117,16 @@ async def stream_job_events(job_id: str, request: Request):
                             raw_data = message.get("data")
                             data_str = raw_data.decode("utf-8") if isinstance(raw_data, bytes) else str(raw_data)
                             yield f"data: {data_str}\n\n"
+                            last_ping = time.time()
                             try:
                                 parsed = json.loads(data_str)
                                 if parsed.get("status") in ("COMPLETED", "FAILED"):
                                     break
                             except Exception:
                                 pass
+                        elif time.time() - last_ping > 10.0:
+                            yield ": keepalive\n\n"
+                            last_ping = time.time()
                         await asyncio.sleep(0.05)
             finally:
                 try:
@@ -131,6 +137,7 @@ async def stream_job_events(job_id: str, request: Request):
         else:
             # Fallback for local development when Redis is unavailable
             last_status = None
+            last_ping = time.time()
             while True:
                 if await request.is_disconnected():
                     break
@@ -144,10 +151,14 @@ async def stream_job_events(job_id: str, request: Request):
                         if state_key != last_status:
                             last_status = state_key
                             yield f"data: {json.dumps(parsed)}\n\n"
+                            last_ping = time.time()
                             if curr_status in ("COMPLETED", "FAILED"):
                                 break
                     except Exception:
                         pass
+                if time.time() - last_ping > 10.0:
+                    yield ": keepalive\n\n"
+                    last_ping = time.time()
                 await asyncio.sleep(0.2)
 
 

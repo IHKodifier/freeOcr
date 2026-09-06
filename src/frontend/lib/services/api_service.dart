@@ -230,6 +230,19 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>?> fetchJobStatus(String jobId) async {
+    try {
+      final uri = Uri.parse('$baseUrl/jobs/$jobId');
+      final response = await http.get(uri).timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   static Future<void> prewarmBackend() async {
     try {
       debugPrint('[API Pre-Warm] Sending silent background ping to wake scale-to-zero backend...');

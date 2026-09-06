@@ -53,6 +53,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   bool _showPreview = false;
   Map<String, dynamic>? _previewData;
   bool _isLoadingPreview = false;
+  Timer? _pollingTimer;
 
   Future<void> _toggleSplitPreview() async {
     if (_showPreview) {
@@ -95,8 +96,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         }
       });
     }
-
-
   }
 
   @override
@@ -111,9 +110,84 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
     if (_batchItems.isNotEmpty) {
       _subscribeToBatchSse();
+      _startPollingFallback();
     } else if (widget.jobId != null && widget.jobId!.isNotEmpty) {
       _subscribeToSingleSse(widget.jobId!);
+      _startPollingFallback();
     }
+  }
+
+  void _startPollingFallback() {
+    _pollingTimer?.cancel();
+    _pollingTimer = Timer.periodic(const Duration(seconds: 3), (_) async {
+      if (!mounted) return;
+      if (_status == 'COMPLETED' || _status == 'FAILED') {
+        _pollingTimer?.cancel();
+        return;
+      }
+
+      final singleJobId = widget.jobId;
+      if (singleJobId != null && singleJobId.isNotEmpty) {
+        final jobData = await ApiService.fetchJobStatus(singleJobId);
+        if (mounted && jobData != null) {
+          final status = jobData['status']?.toString();
+          final currPage = jobData['current_page'] is int
+              ? jobData['current_page'] as int
+              : int.tryParse(jobData['current_page']?.toString() ?? '0') ?? 0;
+          final totalPages = jobData['total_pages'] is int
+              ? jobData['total_pages'] as int
+              : int.tryParse(jobData['total_pages']?.toString() ?? '0') ?? 0;
+          final token = jobData['output_pdf_token']?.toString();
+          final error = jobData['error']?.toString();
+
+          if (currPage > _currentPage || status != _status) {
+            setState(() {
+              if (currPage > _currentPage) _currentPage = currPage;
+              if (totalPages > 0) _totalPages = totalPages;
+              if (status != null) _status = status;
+              if (token != null) _outputPdfToken = token;
+              if (error != null) _errorMessage = error;
+            });
+          }
+
+          if (status == 'COMPLETED') {
+            _pollingTimer?.cancel();
+            TelemetryService.trackOcrCompleted(
+              jobId: singleJobId,
+              pageCount: _totalPages > 0 ? _totalPages : null,
+            );
+            _refreshPreviewData(singleJobId);
+          }
+        }
+      }
+
+      if (_batchItems.isNotEmpty) {
+        bool allDone = true;
+        for (final item in _batchItems) {
+          if (item.jobId != null && item.status != 'COMPLETED' && item.status != 'FAILED') {
+            allDone = false;
+            final jobData = await ApiService.fetchJobStatus(item.jobId!);
+            if (mounted && jobData != null) {
+              final status = jobData['status']?.toString();
+              final currPage = jobData['current_page'] is int ? jobData['current_page'] as int : 0;
+              final totalPages = jobData['total_pages'] is int ? jobData['total_pages'] as int : 0;
+              final token = jobData['output_pdf_token']?.toString();
+              final error = jobData['error']?.toString();
+              setState(() {
+                if (currPage > item.currentPage) item.currentPage = currPage;
+                if (totalPages > 0) item.totalPages = totalPages;
+                if (status != null) item.status = status;
+                if (token != null) item.outputPdfToken = token;
+                if (error != null) item.errorMessage = error;
+              });
+            }
+          }
+        }
+        if (allDone) {
+          _pollingTimer?.cancel();
+        }
+      }
+    });
   }
 
   Future<void> _refreshPreviewData(String jobId) async {
@@ -202,6 +276,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
   @override
   void dispose() {
+    _pollingTimer?.cancel();
     for (final sub in _subscriptions.values) {
       sub.cancel();
     }
