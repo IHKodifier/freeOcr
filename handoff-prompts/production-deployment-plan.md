@@ -1,13 +1,13 @@
 # Production Deployment Implementation Plan: freeOCR.me (Staging to Production)
 
 > **Purpose:** Comprehensive deployment blueprint and context-efficient handoff plan for launching **freeOCR.me** from staging (`dev`) to production (`main`).  
-> **Current Status:** Staging Verified (40/40 Flutter Tests PASS, 12/12 Backend Tests PASS, Remote `origin/dev` Up-to-Date at commit `0f2588d`).
+> **Current Status:** Staging Verified (40/40 Flutter Tests PASS, 12/12 Backend Tests PASS, Remote `origin/dev` Up-to-Date).
 
 ---
 
 ## 1. Executive Summary & Current Repository State
 
-- **Git Branch:** `dev` (Commit `0f2588d` pushed to `origin/dev`). Clean working directory.
+- **Git Branch:** `dev` (Synchronized with `origin/dev`). Clean working directory.
 - **Chrome Download Filename Fix:** Verified and deployed. Uses 30-second delayed Blob revocation via `window.downloadFileFromUrl` and RFC 5987 / 6266 `Content-Disposition` headers in FastAPI.
 - **Pure Web App Viewport:** Restored to clean, production-standard architecture (`user-scalable=no`). Viewport is rock-solid with zero black voids and reliable button/dropzone interaction.
 - **Live Staging Environments:**
@@ -88,7 +88,10 @@ Per `.agents/AGENTS.md` Rule 2:
          --region us-central1
        ```
      - **Scale-to-Zero Cost Protection:** `--min-instances 0` ensures the GPU instance completely shuts down when the queue is idle, guaranteeing zero GPU compute costs during off-peak hours.
-     - **Model Weights Storage & Caching:** The ~6 GB model weights are stored in a regional GCP Cloud Storage bucket (`gs://freeocr-models-prod/baidu_unlimited_ocr/`) and cached on first container spin-up (or mounted via Cloud Storage FUSE) to avoid image bloat.
+     - **Model Weights Storage Cost:** The ~6 GB model weights are stored in a regional GCP Cloud Storage bucket (`gs://freeocr-models-prod/baidu_unlimited_ocr/`). At standard GCP storage rates ($0.020/GB/mo), storing the 6 GB model costs **~$0.12 per month** (12 cents/month) while the GPU instance is at scale 0.
+     - **Cold-Start Latency & User Experience:**
+       - **Simple Layouts (CPU - 80%+ of uploads):** Starts in <1.5s using `OCRmyPDF`/Tesseract.
+       - **Complex Layouts (GPU Cold Start):** When a cold GPU container starts, mounting/reading weights into VRAM takes ~8 to 12 seconds. The frontend's SSE listener immediately displays an informative progress status (`Spinning up high-precision neural OCR engine...`), keeping the user engaged without UI freezing. Once warmed, processing takes ~1.0s to 1.5s per page, and the container remains warm for subsequent requests.
 2. **Production Secrets (GCP Secret Manager):**
    - `REDIS_URL`: Production Upstash Redis TLS connection string.
    - `RESEND_API_KEY`: Production Resend API key for 24-hour expiring email download links (`UC-007`).
