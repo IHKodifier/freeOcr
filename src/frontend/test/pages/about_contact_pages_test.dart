@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:free_ocr_frontend/main.dart';
+import 'package:free_ocr_frontend/pages/about_page.dart';
+import 'package:free_ocr_frontend/pages/contact_page.dart';
+
+void main() {
+  group('About Page Route & Content Tests', () {
+    testWidgets('AboutPage renders mission, RAM disk privacy, and open source engines via /about', (WidgetTester tester) async {
+      await tester.pumpWidget(const FreeOcrApp());
+      await tester.pumpAndSettle();
+
+      final BuildContext context = tester.element(find.byType(HomePage));
+      Navigator.pushNamed(context, '/about');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AboutPage), findsOneWidget);
+      expect(find.text('ABOUT FREEOCR.ME'), findsOneWidget);
+      expect(find.textContaining('Democratizing Document OCR'), findsOneWidget);
+      expect(find.textContaining('1. Our Mission & Philosophy'), findsOneWidget);
+      expect(find.textContaining('2. Ephemeral RAM-Disk Security'), findsOneWidget);
+      expect(find.textContaining('Baidu Unlimited OCR'), findsAtLeast(1));
+    });
+  });
+
+  group('Contact Page Route, Form Validation & Submission Tests', () {
+    testWidgets('ContactPage renders channels and validates required fields via /contact', (WidgetTester tester) async {
+      await tester.pumpWidget(const FreeOcrApp());
+      await tester.pumpAndSettle();
+
+      final BuildContext context = tester.element(find.byType(HomePage));
+      Navigator.pushNamed(context, '/contact');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ContactPage), findsOneWidget);
+      expect(find.text('CONTACT & SUPPORT'), findsOneWidget);
+      expect(find.textContaining('support@freeocr.me'), findsAtLeast(1));
+      expect(find.textContaining('privacy@freeocr.me'), findsAtLeast(1));
+
+      // Attempt to submit empty form to trigger validation
+      final submitBtn = find.byKey(const Key('contact_submit_btn'));
+      await tester.ensureVisible(submitBtn);
+      await tester.tap(submitBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Please enter your name'), findsOneWidget);
+      expect(find.text('Please enter your email address'), findsOneWidget);
+
+      // Fill in valid details
+      await tester.enterText(find.byKey(const Key('contact_name_field')), 'AdSense Reviewer');
+      await tester.enterText(find.byKey(const Key('contact_email_field')), 'reviewer@google.com');
+      await tester.enterText(find.byKey(const Key('contact_subject_field')), 'Domain Evaluation');
+      await tester.enterText(find.byKey(const Key('contact_message_field')), 'Testing publisher contactability response flow.');
+      await tester.pumpAndSettle();
+
+      // Submit valid form
+      await tester.tap(submitBtn);
+      await tester.pumpAndSettle();
+
+      // Expect success view and confirmation message
+      expect(find.text('Thank You for Contacting Us!'), findsOneWidget);
+      expect(find.textContaining('Message sent!'), findsOneWidget);
+    });
+  });
+}

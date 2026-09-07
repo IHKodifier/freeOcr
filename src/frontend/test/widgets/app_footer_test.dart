@@ -21,17 +21,24 @@ void main() {
 
     // Verify Navigation Buttons
     expect(find.byKey(const Key('footer_home_btn')), findsOneWidget);
+    expect(find.byKey(const Key('footer_about_btn')), findsOneWidget);
     expect(find.byKey(const Key('footer_kb_btn')), findsOneWidget);
     expect(find.byKey(const Key('footer_docs_btn')), findsOneWidget);
     expect(find.byKey(const Key('footer_privacy_btn')), findsOneWidget);
     expect(find.byKey(const Key('footer_terms_btn')), findsOneWidget);
+    expect(find.byKey(const Key('footer_contact_btn')), findsOneWidget);
 
-    // Verify Social Media Handles
+    // Verify Live Social Media Handles (Twitter/X, Instagram)
     expect(find.byKey(const Key('footer_social_twitter')), findsOneWidget);
-    expect(find.byKey(const Key('footer_social_linkedin')), findsOneWidget);
-    expect(find.byKey(const Key('footer_social_discord')), findsOneWidget);
+    expect(find.byKey(const Key('footer_social_instagram')), findsOneWidget);
 
-    // Verify Repository link is NOT present
+    // FB & YT temporarily hidden until claimed tomorrow morning PKT
+    expect(find.byKey(const Key('footer_social_facebook')), findsNothing);
+    expect(find.byKey(const Key('footer_social_youtube')), findsNothing);
+
+    // Verify Deprecated Handles are NOT present
+    expect(find.byKey(const Key('footer_social_linkedin')), findsNothing);
+    expect(find.byKey(const Key('footer_social_discord')), findsNothing);
     expect(find.byKey(const Key('footer_github_repo_link')), findsNothing);
 
     // Verify Engine Attribution Chips
@@ -39,5 +46,39 @@ void main() {
     expect(find.byKey(const Key('chip_tesseract')), findsOneWidget);
     expect(find.byKey(const Key('chip_ocrmypdf')), findsOneWidget);
     expect(find.byKey(const Key('chip_pymupdf')), findsOneWidget);
+  });
+
+  testWidgets('SocialLinks.openSocialChannel triggers high-contrast fallback dialog when URL is unclaimed', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () => SocialLinks.openSocialChannel(
+              context,
+              platformName: 'Facebook',
+              url: '',
+            ),
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    ));
+    await tester.pumpAndSettle();
+
+    // Tap button to open fallback dialog
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    // Verify high-contrast dialog appears
+    expect(find.text('Facebook Channel'), findsOneWidget);
+    expect(find.textContaining('presence is launching soon!'), findsOneWidget);
+    expect(find.text('Close'), findsOneWidget);
+    expect(find.text('Contact Support'), findsOneWidget);
+
+    // Tap Close to dismiss
+    await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Facebook Channel'), findsNothing);
   });
 }

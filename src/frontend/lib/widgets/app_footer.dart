@@ -1,20 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../constants/social_links.dart';
 import '../utils/url_helper.dart';
+import 'brand_icons.dart';
 
 /// Global, responsive 4-column footer component for freeOCR.me.
 /// Governed by docs/DESIGN.md & Google Stitch Screen 01 specification.
 class AppFooter extends StatelessWidget {
   const AppFooter({super.key});
-
-  static const String twitterUrl = 'https://twitter.com/freeocr_me';
-  static const String linkedinUrl = 'https://linkedin.com/company/freeocr-me';
-  static const String discordUrl = 'https://discord.gg/freeocr';
-
-  static const String baiduOcrUrl = 'https://github.com/PaddlePaddle/PaddleOCR';
-  static const String ocrmypdfUrl = 'https://github.com/ocrmypdf/OCRmyPDF';
-  static const String tesseractUrl = 'https://github.com/tesseract-ocr/tesseract';
-  static const String pymupdfUrl = 'https://github.com/pymupdf/PyMuPDF';
 
   void _navigateTo(BuildContext context, String routeName) {
     if (ModalRoute.of(context)?.settings.name != routeName) {
@@ -164,39 +157,86 @@ class AppFooter extends StatelessWidget {
           children: [
             IconButton(
               key: const Key('footer_social_twitter'),
-              icon: const Icon(Icons.flutter_dash, size: 18),
+              icon: BrandIcon(
+                type: BrandType.xTwitter,
+                size: 20,
+                color: colorScheme.onSurface,
+              ),
               tooltip: 'Twitter / X',
               style: IconButton.styleFrom(
                 padding: const EdgeInsets.all(8),
-                minimumSize: Size.zero,
+                minimumSize: const Size(36, 36),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () => UrlHelper.openUrl(twitterUrl),
+              onPressed: () => SocialLinks.openSocialChannel(
+                context,
+                platformName: 'Twitter / X',
+                url: SocialLinks.twitterUrl,
+              ),
             ),
             const SizedBox(width: 8),
             IconButton(
-              key: const Key('footer_social_linkedin'),
-              icon: const Icon(Icons.business_center, size: 18),
-              tooltip: 'LinkedIn',
+              key: const Key('footer_social_instagram'),
+              icon: BrandIcon(
+                type: BrandType.instagram,
+                size: 20,
+                color: colorScheme.onSurface,
+              ),
+              tooltip: 'Instagram',
               style: IconButton.styleFrom(
                 padding: const EdgeInsets.all(8),
-                minimumSize: Size.zero,
+                minimumSize: const Size(36, 36),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () => UrlHelper.openUrl(linkedinUrl),
+              onPressed: () => SocialLinks.openSocialChannel(
+                context,
+                platformName: 'Instagram',
+                url: SocialLinks.instagramUrl,
+              ),
+            ),
+            // TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
+            /*
+            const SizedBox(width: 8),
+            IconButton(
+              key: const Key('footer_social_facebook'),
+              icon: BrandIcon(
+                type: BrandType.facebook,
+                size: 20,
+                color: colorScheme.onSurface,
+              ),
+              tooltip: 'Facebook',
+              style: IconButton.styleFrom(
+                padding: const EdgeInsets.all(8),
+                minimumSize: const Size(36, 36),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              onPressed: () => SocialLinks.openSocialChannel(
+                context,
+                platformName: 'Facebook',
+                url: SocialLinks.facebookUrl,
+              ),
             ),
             const SizedBox(width: 8),
             IconButton(
-              key: const Key('footer_social_discord'),
-              icon: const Icon(Icons.chat_bubble_outline, size: 18),
-              tooltip: 'Discord Community',
+              key: const Key('footer_social_youtube'),
+              icon: BrandIcon(
+                type: BrandType.youtube,
+                size: 20,
+                color: colorScheme.onSurface,
+              ),
+              tooltip: 'YouTube',
               style: IconButton.styleFrom(
                 padding: const EdgeInsets.all(8),
-                minimumSize: Size.zero,
+                minimumSize: const Size(36, 36),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () => UrlHelper.openUrl(discordUrl),
+              onPressed: () => SocialLinks.openSocialChannel(
+                context,
+                platformName: 'YouTube',
+                url: SocialLinks.youtubeUrl,
+              ),
             ),
+            */
           ],
         ),
       ],
@@ -220,6 +260,14 @@ class AppFooter extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text('Home', style: linkStyle),
+          ),
+        ),
+        InkWell(
+          key: const Key('footer_about_btn'),
+          onTap: () => _navigateTo(context, '/about'),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('About Us', style: linkStyle),
           ),
         ),
         InkWell(
@@ -261,25 +309,25 @@ class AppFooter extends StatelessWidget {
             _buildEngineChip(
               context,
               label: "Baidu Unlimited OCR",
-              url: baiduOcrUrl,
+              url: SocialLinks.baiduOcrUrl,
               key: const Key('chip_baiduocr'),
             ),
             _buildEngineChip(
               context,
               label: 'Tesseract OCR',
-              url: tesseractUrl,
+              url: SocialLinks.tesseractUrl,
               key: const Key('chip_tesseract'),
             ),
             _buildEngineChip(
               context,
               label: 'OCRmyPDF',
-              url: ocrmypdfUrl,
+              url: SocialLinks.ocrmypdfUrl,
               key: const Key('chip_ocrmypdf'),
             ),
             _buildEngineChip(
               context,
               label: 'PyMuPDF',
-              url: pymupdfUrl,
+              url: SocialLinks.pymupdfUrl,
               key: const Key('chip_pymupdf'),
             ),
           ],
@@ -348,6 +396,14 @@ class AppFooter extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text('Terms of Service', style: linkStyle),
+          ),
+        ),
+        InkWell(
+          key: const Key('footer_contact_btn'),
+          onTap: () => _navigateTo(context, '/contact'),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('Contact Us', style: linkStyle),
           ),
         ),
       ],

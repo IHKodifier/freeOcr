@@ -15,11 +15,13 @@ class AppTheme {
   static const Color lightSecondary = Color(0xFF3B82F6); // Cyber Blue
   static const Color lightOnSecondary = Color(0xFFFFFFFF);
   static const Color lightSecondaryContainer = Color(0xFFDBEAFE);
+  static const Color lightOnSecondaryContainer = Color(0xFF1E3A8A); // High-contrast deep blue
 
   static const Color lightTertiary = Color(0xFF10B981); // Emerald Green
 
   static const Color lightSurface = Color(0xFFF8FAFC); // Slate Light
   static const Color lightOnSurface = Color(0xFF0F172A);
+  static const Color lightOnSurfaceVariant = Color(0xFF475569); // Slate 600 - High contrast muted
   static const Color lightSurfaceContainer = Color(0xFFFFFFFF);
   static const Color lightSurfaceContainerHigh = Color.fromRGBO(255, 255, 255, 0.75);
 
@@ -37,11 +39,13 @@ class AppTheme {
   static const Color darkSecondary = Color(0xFF60A5FA); // Cyber Blue Dark
   static const Color darkOnSecondary = Color(0xFF0F172A);
   static const Color darkSecondaryContainer = Color(0xFF1E3A8A);
+  static const Color darkOnSecondaryContainer = Color(0xFFDBEAFE); // High-contrast light blue
 
   static const Color darkTertiary = Color(0xFF34D399); // Emerald Green Dark
 
   static const Color darkSurface = Color(0xFF0F172A); // Slate Dark
   static const Color darkOnSurface = Color(0xFFF8FAFC);
+  static const Color darkOnSurfaceVariant = Color(0xFF94A3B8); // Slate 400
   static const Color darkSurfaceContainer = Color(0xFF1E293B); // Slate Card
   static const Color darkSurfaceContainerHigh = Color.fromRGBO(30, 41, 59, 0.75);
 
@@ -59,9 +63,11 @@ class AppTheme {
     secondary: lightSecondary,
     onSecondary: lightOnSecondary,
     secondaryContainer: lightSecondaryContainer,
+    onSecondaryContainer: lightOnSecondaryContainer,
     tertiary: lightTertiary,
     surface: lightSurface,
     onSurface: lightOnSurface,
+    onSurfaceVariant: lightOnSurfaceVariant,
     surfaceContainer: lightSurfaceContainer,
     surfaceContainerHigh: lightSurfaceContainerHigh,
     outline: lightOutline,
@@ -77,9 +83,11 @@ class AppTheme {
     secondary: darkSecondary,
     onSecondary: darkOnSecondary,
     secondaryContainer: darkSecondaryContainer,
+    onSecondaryContainer: darkOnSecondaryContainer,
     tertiary: darkTertiary,
     surface: darkSurface,
     onSurface: darkOnSurface,
+    onSurfaceVariant: darkOnSurfaceVariant,
     surfaceContainer: darkSurfaceContainer,
     surfaceContainerHigh: darkSurfaceContainerHigh,
     outline: darkOutline,

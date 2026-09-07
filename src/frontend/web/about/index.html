@@ -5,17 +5,17 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Terms of Service — freeOCR.me</title>
-  <meta name="title" content="Terms of Service — freeOCR.me">
-  <meta name="description" content="freeOCR.me Terms of Service. Understand acceptable use, fair usage quotas, document ownership guarantees, and platform disclaimers.">
+  <title>About Us — freeOCR.me</title>
+  <meta name="title" content="About Us — freeOCR.me | Democratizing Document OCR with Zero-Storage Privacy">
+  <meta name="description" content="Learn about freeOCR.me, our mission to provide completely free, privacy-first document OCR with ephemeral RAM disk processing, zero cloud data retention, and open-source AI engines.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freeocr.me/terms">
+  <link rel="canonical" href="https://freeocr.me/about">
 
   <!-- OpenGraph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freeocr.me/terms">
-  <meta property="og:title" content="Terms of Service — freeOCR.me">
-  <meta property="og:description" content="Clear, transparent terms of service governing freeOCR.me ephemeral document OCR utility.">
+  <meta property="og:url" content="https://freeocr.me/about">
+  <meta property="og:title" content="About Us — freeOCR.me">
+  <meta property="og:description" content="100% Free Online AI OCR utility. Ephemeral Linux RAM disk processing with zero disk retention.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -121,6 +121,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--accent);
+      font-weight: bold;
     }
     .logo span { color: var(--accent); }
     .nav-wrapper {
@@ -138,114 +140,134 @@
     nav a:hover, nav a.active { color: var(--accent); font-weight: 600; }
     .theme-toggle-btn {
       background: var(--toggle-bg);
-      color: var(--toggle-color);
       border: none;
-      border-radius: 8px;
-      padding: 8px;
+      color: var(--toggle-color);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
-    }
-    .theme-toggle-btn:hover {
-      transform: scale(1.05);
     }
     .container {
       max-width: 900px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
       flex: 1;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
     }
     h1 {
       font-size: 2.25rem;
       font-weight: 800;
-      margin-bottom: 0.5rem;
+      letter-spacing: -0.03em;
       color: var(--heading);
-      letter-spacing: -0.5px;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
     }
-    .meta {
+    .subtitle {
+      font-size: 1.15rem;
       color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
     }
-    /* Seamless ad container: collapses completely when no ad is loaded */
-    .ad-banner-slot {
-      margin: 1rem 0 1.5rem;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-    }
-    .terms-section {
+    .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 1.75rem;
       margin-bottom: 1.5rem;
     }
-    h2 {
+    .card h2 {
       font-size: 1.25rem;
       font-weight: 700;
-      margin-bottom: 0.75rem;
       color: var(--heading);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    p {
+    .card p {
       color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.7;
+      font-size: 0.98rem;
+      margin-bottom: 0.85rem;
     }
-    p + p { margin-top: 0.75rem; }
-    ul {
-      margin: 0.75rem 0 0.75rem 1.5rem;
+    .card p:last-child { margin-bottom: 0; }
+    .card ul {
+      margin-left: 1.25rem;
       color: var(--text-muted);
-      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
     }
-    li + li { margin-top: 0.5rem; }
-    a { color: var(--accent-light); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    .card li { margin-bottom: 0.4rem; }
     footer {
-      border-top: 1px solid var(--border);
       background: var(--footer-bg);
+      border-top: 1px solid var(--border);
       padding: 3rem 2rem 2rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: auto;
+      margin-top: 4rem;
     }
     .footer-grid {
       max-width: 1100px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2.5rem;
-      margin-bottom: 2.5rem;
+      gap: 2rem;
     }
     .footer-col h3 {
-      color: var(--heading);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      color: var(--heading);
       margin-bottom: 1rem;
     }
-    .footer-links {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.5rem; }
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
+      font-size: 0.88rem;
       transition: color 0.2s;
     }
     .footer-links a:hover { color: var(--accent); }
     .footer-bottom {
       max-width: 1100px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
+      margin: 2rem auto 0;
       padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
       text-align: center;
-      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .social-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--toggle-bg);
+      color: var(--heading);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .social-btn:hover {
+      background: rgba(99, 102, 241, 0.2);
     }
     .social-modal-overlay {
       position: fixed;
@@ -271,108 +293,89 @@
     }
     @media (max-width: 768px) {
       .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
       header { padding: 0.75rem 1rem; }
+      .container { padding: 1.5rem 1rem; }
     }
   </style>
 </head>
 <body>
+
   <header>
     <a href="/" class="logo">
-      <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-          <polyline points="10 9 9 9 8 9"></polyline>
-        </svg>
-      </div>
-      freeOCR<span>.me</span>
+      <div class="logo-icon">📄</div>
+      <div>freeOCR<span>.me</span></div>
     </a>
     <div class="nav-wrapper">
       <nav>
         <a href="/">Home</a>
-        <a href="/about">About</a>
+        <a href="/about" class="active">About</a>
         <a href="/knowledge-base">Knowledge Base</a>
         <a href="/api-docs">API Docs</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms" class="active">Terms</a>
         <a href="/contact">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <svg id="sunIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-        </svg>
-        <svg id="moonIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-        </svg>
+        <span id="sunIcon" style="display:none;">☀️</span>
+        <span id="moonIcon">🌙</span>
       </button>
     </div>
   </header>
 
   <main class="container">
-    <article>
-      <h1>Terms of Service</h1>
-      <div class="meta">Last Updated: August 30, 2026 &bull; freeOCR.me Platform Agreement</div>
+    <div class="badge">ABOUT FREEOCR.ME</div>
+    <h1>Democratizing Document OCR with Zero-Storage Privacy</h1>
+    <p class="subtitle">A high-performance web utility converting scanned documents into searchable PDFs and clean digital text without accounts, paywalls, or privacy trade-offs.</p>
 
-      <!-- Native Google AdSense Display Unit (seamless / collapses when empty) -->
-      <div class="ad-banner-slot">
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; text-align:center;"
-             data-ad-client="ca-pub-6775900998665017"
-             data-ad-slot="9876543210"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+    <div class="card">
+      <h2>💡 1. Our Mission & Philosophy</h2>
+      <p>Traditional online OCR tools typically lock users behind steep monthly subscriptions, enforce arbitrary 5-page conversion caps, or compromise document privacy by retaining user files on permanent disk storage.</p>
+      <p>freeOCR.me was designed from the ground up as a pure utility: fast, completely free, and strictly private. Anyone can upload scanned PDF documents up to 100 MB right out of the box, with optional rewarded video extensions up to 1,000 MB (1 GB) for heavy multi-hundred-page documents.</p>
+    </div>
 
-      <section class="terms-section">
-        <h2>1. Acceptance of Terms</h2>
-        <p>By accessing and using <strong>freeOCR.me</strong>, you agree to be bound by these Terms of Service and all applicable local, national, and international laws. If you do not agree, you are prohibited from using this service.</p>
-      </section>
+    <div class="card">
+      <h2>🛡️ 2. Ephemeral RAM-Disk Security (Zero Retention)</h2>
+      <p>Privacy is the central architectural pillar of freeOCR.me:</p>
+      <ul>
+        <li><strong>Volatile Memory Processing:</strong> Uploaded documents reside exclusively in ephemeral Linux <code>tmpfs</code> RAM disks rather than persistent solid-state or hard drives.</li>
+        <li><strong>Instant Cleanup:</strong> Files are automatically and irrevocably unlinked and wiped immediately upon download completion or after session expiration.</li>
+        <li><strong>Zero Account Creation:</strong> No signups, passwords, cookies for profiling, or credit card requirements.</li>
+      </ul>
+    </div>
 
-      <section class="terms-section">
-        <h2>2. Permitted Use &amp; Fair Usage Policy</h2>
-        <p>freeOCR.me is provided free of charge for personal, academic, and commercial OCR conversions. You agree to use the service in compliance with fair usage guidelines:</p>
-        <ul>
-          <li><strong>Base Session Limit:</strong> 100 MB free per conversion session without registration.</li>
-          <li><strong>Extended Session Limits:</strong> Users may voluntarily extend capacity up to 1 GB per file by viewing rewarded video advertisements (+50 MB boost per ad).</li>
-          <li><strong>Rate Limits:</strong> Maximum 10 document upload requests per minute per IP address to safeguard infrastructure availability.</li>
-          <li><strong>Prohibited Content:</strong> You may not upload files containing malware, trojans, ransomware, or materials that violate intellectual property or criminal laws.</li>
-        </ul>
-      </section>
+    <div class="card">
+      <h2>⚙️ 3. Open-Source AI Engines</h2>
+      <p>freeOCR.me brings together industry-leading open-source machine learning and PDF engineering libraries:</p>
+      <ul>
+        <li><strong>Baidu Unlimited OCR (PaddleOCR):</strong> Industrial-grade deep learning model delivering high recognition accuracy across complex multilingual document layouts.</li>
+        <li><strong>OCRmyPDF:</strong> The standard in PDF remastering, creating ISO-compliant searchable PDF/A documents with invisible text overlays.</li>
+        <li><strong>Tesseract OCR:</strong> The proven optical character recognition engine maintained by Google and the open-source community.</li>
+        <li><strong>PyMuPDF:</strong> Lightning-fast PDF parsing and rendering.</li>
+      </ul>
+    </div>
 
-      <section class="terms-section">
-        <h2>3. Document Ownership &amp; Intellectual Property</h2>
-        <p>You retain 100% full ownership, copyright, and intellectual property rights to all documents you upload and all searchable outputs synthesized by the service. freeOCR.me claims zero intellectual property rights over your data.</p>
-      </section>
-
-      <section class="terms-section">
-        <h2>4. Disclaimer of Warranties &amp; Limitation of Liability</h2>
-        <p>freeOCR.me is provided on an <em>"AS IS"</em> and <em>"AS AVAILABLE"</em> basis without warranties of any kind. Optical character recognition accuracy depends on input scan resolution, lighting, and document condition. While our AI neural engines strive for maximum fidelity, we do not warrant 100% error-free transcription.</p>
-      </section>
-
-      <section class="terms-section">
-        <h2>5. Modifications to Service &amp; Terms</h2>
-        <p>We reserve the right to modify or discontinue features, limits, and these terms at any time. Continued use of the platform constitutes acceptance of updated terms.</p>
-      </section>
-    </article>
+    <div class="card">
+      <h2>🌱 4. Transparent Monetization & Sustainability</h2>
+      <p>To keep freeOCR.me permanently free for users globally without charging subscription fees or selling user data, we sustain our server infrastructure through:</p>
+      <ul>
+        <li><strong>Google AdSense:</strong> Minimal, non-intrusive display advertisements placed in designated non-obstructive page sections.</li>
+        <li><strong>Rewarded Quota Extensions:</strong> Users processing large files can watch an optional 15-second sponsor video to earn +50 MB extra capacity up to 1 GB.</li>
+      </ul>
+    </div>
   </main>
 
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
         <h3>freeOCR.me</h3>
-        <p>Privacy-First Scanned PDF to Searchable PDF/Text Web Platform. Ephemeral document synthesis powered by Baidu Unlimited OCR &amp; open-source AI.</p>
-        <div style="display:flex; gap:0.6rem; margin-top:1rem;">
-          <a href="https://x.com/freeocrme" title="Twitter / X" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">𝕏</a>
-          <a href="https://instagram.com/freeocrme" title="Instagram" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">📷</a>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
+          Privacy-First Ephemeral OCR Platform.<br>
+          Files processed in volatile Linux RAM disk.
+        </p>
+        <div class="social-row">
+          <a href="https://x.com/freeocrme" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">𝕏</a>
+          <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank" rel="noopener">📷</a>
           <!-- TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
-          <a href="#facebook" onclick="openSocialModal('Facebook'); return false;" title="Facebook" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">fb</a>
-          <a href="#youtube" onclick="openSocialModal('YouTube'); return false;" title="YouTube" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">▶</a>
+          <a href="#facebook" onclick="openSocialModal('Facebook'); return false;" class="social-btn" title="Facebook">fb</a>
+          <a href="#youtube" onclick="openSocialModal('YouTube'); return false;" class="social-btn" title="YouTube">▶</a>
           -->
         </div>
       </div>
@@ -391,10 +394,11 @@
           <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">Baidu OCR</a></li>
           <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener">Tesseract</a></li>
           <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener">OCRmyPDF</a></li>
+          <li><a href="https://github.com/pymupdf/PyMuPDF" target="_blank" rel="noopener">PyMuPDF</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h3>Legal &amp; Support</h3>
+        <h3>Legal & Support</h3>
         <ul class="footer-links">
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/terms">Terms of Service</a></li>

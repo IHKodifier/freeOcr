@@ -17,6 +17,8 @@ import 'pages/kb_page.dart';
 import 'pages/docs_page.dart';
 import 'pages/privacy_page.dart';
 import 'pages/terms_page.dart';
+import 'pages/about_page.dart';
+import 'pages/contact_page.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
 
@@ -79,6 +81,18 @@ class FreeOcrApp extends StatelessWidget {
             if (name == '/terms') {
               return MaterialPageRoute(
                 builder: (context) => const TermsPage(),
+                settings: settings,
+              );
+            }
+            if (name == '/about') {
+              return MaterialPageRoute(
+                builder: (context) => const AboutPage(),
+                settings: settings,
+              );
+            }
+            if (name == '/contact') {
+              return MaterialPageRoute(
+                builder: (context) => const ContactPage(),
                 settings: settings,
               );
             }
