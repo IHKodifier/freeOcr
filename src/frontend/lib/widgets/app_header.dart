@@ -147,15 +147,8 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       PopupMenuButton<String>(
                         icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
                         onSelected: (route) {
-                          if (route == '/') {
-                            if (currentRoute != '/') Navigator.of(context).pushNamed('/');
-                          } else if (kDebugMode) {
-                            if (currentRoute != route) Navigator.of(context).pushNamed(route);
-                          } else if (kIsWeb) {
-                            if (route == '/kb') UrlHelper.navigateToPath('/knowledge-base', openNewTab: true);
-                            if (route == '/docs') UrlHelper.navigateToPath('/api-docs', openNewTab: true);
-                          } else {
-                            if (currentRoute != route) Navigator.of(context).pushNamed(route);
+                          if (currentRoute != route) {
+                            Navigator.of(context).pushNamed(route);
                           }
                         },
                         itemBuilder: (context) => [
@@ -208,13 +201,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        if (kDebugMode) {
-                          if (currentRoute != '/kb') {
-                            Navigator.of(context).pushNamed('/kb');
-                          }
-                        } else if (kIsWeb) {
-                          UrlHelper.navigateToPath('/knowledge-base', openNewTab: true);
-                        } else if (currentRoute != '/kb') {
+                        if (currentRoute != '/kb') {
                           Navigator.of(context).pushNamed('/kb');
                         }
                       },
@@ -232,13 +219,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        if (kDebugMode) {
-                          if (currentRoute != '/docs') {
-                            Navigator.of(context).pushNamed('/docs');
-                          }
-                        } else if (kIsWeb) {
-                          UrlHelper.navigateToPath('/api-docs', openNewTab: true);
-                        } else if (currentRoute != '/docs') {
+                        if (currentRoute != '/docs') {
                           Navigator.of(context).pushNamed('/docs');
                         }
                       },

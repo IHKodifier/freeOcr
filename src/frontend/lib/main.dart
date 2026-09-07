@@ -18,11 +18,15 @@ import 'pages/docs_page.dart';
 import 'pages/privacy_page.dart';
 import 'pages/terms_page.dart';
 import 'utils/url_strategy_helper.dart';
+import 'utils/theme_storage_helper.dart';
 
-final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier<ThemeMode>(ThemeStorageHelper.loadTheme());
 
 void main() {
   configureAppUrlStrategy();
+  themeNotifier.addListener(() {
+    ThemeStorageHelper.saveTheme(themeNotifier.value);
+  });
   runApp(const FreeOcrApp());
 }
 

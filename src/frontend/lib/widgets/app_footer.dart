@@ -17,20 +17,6 @@ class AppFooter extends StatelessWidget {
   static const String pymupdfUrl = 'https://github.com/pymupdf/PyMuPDF';
 
   void _navigateTo(BuildContext context, String routeName) {
-    if (!kDebugMode && kIsWeb) {
-      if (routeName == '/kb') {
-        UrlHelper.navigateToPath('/knowledge-base', openNewTab: true);
-        return;
-      }
-      if (routeName == '/docs') {
-        UrlHelper.navigateToPath('/api-docs', openNewTab: true);
-        return;
-      }
-      if (routeName == '/privacy' || routeName == '/terms') {
-        UrlHelper.navigateToPath(routeName, openNewTab: true);
-        return;
-      }
-    }
     if (ModalRoute.of(context)?.settings.name != routeName) {
       Navigator.pushNamed(context, routeName);
     }
