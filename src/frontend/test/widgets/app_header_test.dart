@@ -34,8 +34,8 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    // Verify Brand logo scanner icon
-    expect(find.byIcon(Icons.document_scanner_rounded), findsOneWidget);
+    // Verify Brand logo
+    expect(find.byKey(const Key('header_brand_logo')), findsOneWidget);
 
     // Verify Navigation Buttons
     expect(find.byKey(const Key('header_home_btn')), findsOneWidget);

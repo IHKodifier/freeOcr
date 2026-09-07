@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../utils/url_helper.dart';
 
 /// Reusable Apple-inspired AppHeader with Navigation & Theme Toggle
 /// Governed by docs/DESIGN.md & Stitch Screen 01 (freeOCR.me Scanner Logo)
@@ -39,6 +40,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: Row(
           children: [
+            if (Navigator.canPop(context)) ...[
+              IconButton(
+                icon: const Icon(Icons.arrow_back_rounded, size: 20),
+                tooltip: 'Back',
+                onPressed: () => Navigator.pop(context),
+              ),
+              const SizedBox(width: 4),
+            ],
             // --- Brand Logo & Scanner Icon ---
             InkWell(
               onTap: () {
@@ -50,20 +59,56 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6366F1).withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: const Color(0xFF6366F1).withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.document_scanner_rounded,
-                      color: Color(0xFF6366F1),
-                      size: 20,
+                  ClipRRect(
+                    key: const Key('header_brand_logo'),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/brand_logo_icon.png',
+                      width: 32,
+                      height: 32,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        if (kIsWeb) {
+                          return Image.network(
+                            'favicon.png',
+                            width: 32,
+                            height: 32,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.document_scanner_rounded,
+                                color: Color(0xFF6366F1),
+                                size: 20,
+                              ),
+                            ),
+                          );
+                        }
+                        return Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.document_scanner_rounded,
+                            color: Color(0xFF6366F1),
+                            size: 20,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -102,8 +147,15 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       PopupMenuButton<String>(
                         icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
                         onSelected: (route) {
-                          if (currentRoute != route) {
-                            Navigator.of(context).pushNamed(route);
+                          if (route == '/') {
+                            if (currentRoute != '/') Navigator.of(context).pushNamed('/');
+                          } else if (kDebugMode) {
+                            if (currentRoute != route) Navigator.of(context).pushNamed(route);
+                          } else if (kIsWeb) {
+                            if (route == '/kb') UrlHelper.navigateToPath('/knowledge-base', openNewTab: true);
+                            if (route == '/docs') UrlHelper.navigateToPath('/api-docs', openNewTab: true);
+                          } else {
+                            if (currentRoute != route) Navigator.of(context).pushNamed(route);
                           }
                         },
                         itemBuilder: (context) => [
@@ -156,7 +208,13 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        if (currentRoute != '/kb') {
+                        if (kDebugMode) {
+                          if (currentRoute != '/kb') {
+                            Navigator.of(context).pushNamed('/kb');
+                          }
+                        } else if (kIsWeb) {
+                          UrlHelper.navigateToPath('/knowledge-base', openNewTab: true);
+                        } else if (currentRoute != '/kb') {
                           Navigator.of(context).pushNamed('/kb');
                         }
                       },
@@ -174,7 +232,13 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        if (currentRoute != '/docs') {
+                        if (kDebugMode) {
+                          if (currentRoute != '/docs') {
+                            Navigator.of(context).pushNamed('/docs');
+                          }
+                        } else if (kIsWeb) {
+                          UrlHelper.navigateToPath('/api-docs', openNewTab: true);
+                        } else if (currentRoute != '/docs') {
                           Navigator.of(context).pushNamed('/docs');
                         }
                       },

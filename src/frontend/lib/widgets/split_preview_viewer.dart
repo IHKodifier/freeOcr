@@ -303,48 +303,279 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: kIsWeb
-            ? Column(
-                children: [
-                  // Top Glassmorphic Header Bar
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final bool isNarrow = constraints.maxWidth < 700;
+
+            final Widget content = Column(
+              children: [
+                if (isNarrow)
+                  _buildMobileHeader(theme, colorScheme, currentPageNum, totalPages)
+                else
                   _buildTopHeader(theme, colorScheme, currentPageNum, totalPages),
+                Expanded(
+                  child: isNarrow
+                      ? _buildMobileBody(theme, colorScheme)
+                      : _buildSplitView(theme, colorScheme, constraints.maxWidth),
+                ),
+              ],
+            );
 
-                  // Split Panes Container
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final bool isNarrow = constraints.maxWidth < 700;
-                        if (isNarrow) {
-                          return _buildStackedView(theme, colorScheme);
-                        }
-                        return _buildSplitView(theme, colorScheme, constraints.maxWidth);
-                      },
-                    ),
-                  ),
-                ],
-              )
-            : BackdropFilter(
+            if (kIsWeb) {
+              return content;
+            } else {
+              return BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                child: Column(
-                  children: [
-                    // Top Glassmorphic Header Bar
-                    _buildTopHeader(theme, colorScheme, currentPageNum, totalPages),
+                child: content,
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
 
-                    // Split Panes Container
-                    Expanded(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final bool isNarrow = constraints.maxWidth < 700;
-                          if (isNarrow) {
-                            return _buildStackedView(theme, colorScheme);
-                          }
-                          return _buildSplitView(theme, colorScheme, constraints.maxWidth);
-                        },
-                      ),
-                    ),
-                  ],
+  Widget _buildMobileHeader(ThemeData theme, ColorScheme colorScheme, int currentPageNum, int totalPages) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        border: Border(
+          bottom: BorderSide(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.description_outlined, color: colorScheme.primary, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              widget.filename,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.2,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            icon: _isReloading
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.refresh, size: 18),
+            onPressed: _isReloading ? null : _reloadPreviewData,
+            tooltip: 'Reload Extracted Text',
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          ),
+          const SizedBox(width: 4),
+
+          // Compact Page Navigation Pill
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: colorScheme.outlineVariant),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left, size: 18),
+                  onPressed: _currentPageIndex > 0 ? _goToPreviousPage : null,
+                  tooltip: 'Previous Page',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+                ),
+                Text(
+                  'Page $currentPageNum of $totalPages',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right, size: 18),
+                  onPressed: _currentPageIndex < totalPages - 1 ? _goToNextPage : null,
+                  tooltip: 'Next Page',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+                ),
+              ],
+            ),
+          ),
+
+          if (widget.onClose != null) ...[
+            const SizedBox(width: 4),
+            IconButton(
+              icon: const Icon(Icons.close, size: 18),
+              onPressed: widget.onClose,
+              tooltip: 'Close',
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMobileBody(ThemeData theme, ColorScheme colorScheme) {
+    return Container(
+      color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.3),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Prominent Primary Download Action: Download Searchable PDF
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _downloadFile('pdf'),
+              icon: const Icon(Icons.picture_as_pdf_outlined, size: 20),
+              label: const Text(
+                'Download Searchable PDF',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // 2. Wrapped Secondary Actions (100% visible, touch friendly)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              OutlinedButton.icon(
+                onPressed: () => _downloadFile('txt'),
+                icon: const Icon(Icons.description_outlined, size: 16),
+                label: const Text('Download .TXT'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
               ),
+              OutlinedButton.icon(
+                onPressed: () => _downloadFile('md'),
+                icon: const Icon(Icons.code, size: 16),
+                label: const Text('Download .MD'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              OutlinedButton.icon(
+                onPressed: () => _showEmailDeliveryDialog(context),
+                icon: const Icon(Icons.email_outlined, size: 16),
+                label: const Text('Email Links'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          Divider(height: 1, color: colorScheme.outlineVariant.withValues(alpha: 0.6)),
+          const SizedBox(height: 12),
+
+          // 3. Format Switcher Tabs & Copy Button
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: colorScheme.outlineVariant),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildTabOption(
+                        label: 'Plain Text (.txt)',
+                        isActive: !_isMarkdownMode,
+                        onTap: () => setState(() => _isMarkdownMode = false),
+                        colorScheme: colorScheme,
+                      ),
+                      _buildTabOption(
+                        label: 'Markdown (.md)',
+                        isActive: _isMarkdownMode,
+                        onTap: () => setState(() => _isMarkdownMode = true),
+                        colorScheme: colorScheme,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: _copyTextToClipboard,
+                icon: Icon(
+                  _copiedToClipboard ? Icons.check : Icons.copy_all_rounded,
+                  size: 16,
+                ),
+                label: Text(_copiedToClipboard ? 'Copied!' : 'Copy Text'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _copiedToClipboard ? Colors.green.shade600 : colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 1,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+
+          // 4. Extracted OCR Text Box
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: colorScheme.surface,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: colorScheme.outlineVariant),
+              ),
+              child: TextField(
+                controller: _textEditingController,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontFamily: _isMarkdownMode ? 'sans-serif' : 'monospace',
+                  height: 1.45,
+                  fontSize: 13,
+                ),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'No OCR text extracted for this page...',
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

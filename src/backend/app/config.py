@@ -14,12 +14,12 @@ def load_canonical_config() -> dict:
             return json.load(f)
     return {
         "limits": {
-            "base_max_file_mb": 50,
+            "base_max_file_mb": 100,
             "simple_quota_jobs_5h": 20,
             "complex_quota_jobs_5h": 5,
             "boost_per_ad_mb": 50,
             "ad_boost_ttl_seconds": 3600,
-            "max_stack_file_mb": 900,
+            "max_stack_file_mb": 1024,
         },
         "monetization": {
             "rewarded_ad_duration_seconds": 15,
@@ -41,7 +41,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./dev.db"
     REDIS_URL: str = "redis://localhost:6379/0"
     ENVIRONMENT: str = "development"
-    FREE_TIER_MAX_FILE_MB: int = 50
+    FREE_TIER_MAX_FILE_MB: int = 100
     ALLOWED_EXTENSIONS: set = {".pdf", ".jpg", ".jpeg", ".png"}
 
     model_config = SettingsConfigDict(

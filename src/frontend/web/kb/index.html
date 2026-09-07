@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Knowledge Base &amp; Technical Architecture — freeOCR.me</title>
+  <meta name="title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
+  <meta name="description" content="Comprehensive engineering guide on dual-layer searchable PDF synthesis (ISO 32000-1), Radon deskewing, Otsu binarization, neural OCR routing, and volatile RAM disk security.">
+  <meta name="keywords" content="dual-layer pdf, searchable pdf, ocr architecture, radon deskewing, otsu binarization, ram disk ocr, ephemeral security, baidu unlimited ocr, ocrmypdf">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freeocr.me/knowledge-base">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freeocr.me/knowledge-base">
+  <meta property="og:title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
+  <meta property="og:description" content="In-depth engineering whitepapers on AI optical character recognition, coordinate normalization, and zero-retention security.">
+  <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Google AdSense Monetization Tag -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+
+  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --border: rgba(255, 255, 255, 0.08);
+      --code-bg: #1e293b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    .container {
+      max-width: 960px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .intro {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    .ad-banner-slot {
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1.5rem 0 2rem;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.75rem 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active {
+      color: var(--accent-light);
+      border-bottom-color: var(--accent);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .article-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2.25rem;
+      margin-bottom: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-light);
+    }
+    p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 0.5rem; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 3.5rem 2rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-col h3 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { color: var(--text-muted); transition: color 0.2s; text-decoration: none; }
+    .footer-col a:hover { color: #fff; }
+    .footer-brand p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; margin-top: 0.5rem; }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+      nav a { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <img src="/icons/Icon-192.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px;">
+      freeOCR<span>.me</span>
+    </a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/knowledge-base" class="active">Knowledge Base</a>
+      <a href="/api-docs">API Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Knowledge Base &amp; Technical Architecture</h1>
+    <p class="intro">In-depth technical whitepapers on high-fidelity optical character recognition, neural document layout decomposition, and Linux RAM disk ephemeral security.</p>
+
+    <!-- Native Google AdSense Display Unit -->
+    <div class="ad-banner-slot">
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; text-align:center;"
+           data-ad-client="ca-pub-6775900998665017"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav" role="tablist">
+      <button class="tab-btn active" onclick="switchTab(0)" id="tab-0">1. OCR Guide &amp; Dual-Layer PDF</button>
+      <button class="tab-btn" onclick="switchTab(1)" id="tab-1">2. PDF Standards &amp; History</button>
+      <button class="tab-btn" onclick="switchTab(2)" id="tab-2">3. Ephemeral RAM-Disk Security</button>
+    </div>
+
+    <!-- Tab Pane 1: OCR Architecture -->
+    <div class="tab-pane active" id="pane-0">
+      <article class="article-card">
+        <h2>Dual-Layer Searchable PDF Architecture (ISO 32000-1)</h2>
+        <p>A dual-layer PDF (commonly known as a "Searchable PDF") preserves the exact visual fidelity of the original scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan bitmap.</p>
+        
+        <h3>How freeOCR.me Synthesizes Dual-Layer PDFs:</h3>
+        <ul>
+          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at its original resolution and DPI. Stamps, hand-written annotations, and signatures remain visually intact.</li>
+          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are mapped from pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
+            <br><code>scale_x = page.rect.width / pix.width</code>, <code>scale_y = page.rect.height / pix.height</code>.
+          </li>
+          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font rendering mode 3, text is rendered in an invisible glyph layer positioned over each matching scanned word. Users can highlight, copy, and search (Ctrl+F) with 100% geometric accuracy.</li>
+        </ul>
+
+        <h3>Preprocessing &amp; Layout Heuristics:</h3>
+        <ul>
+          <li><strong>Deskewing via Radon Transforms:</strong> Scanned pages frequently enter at slight tilt angles. Radon transform projections calculate horizontal skew (-15° to +15°) and automatically rotate pages prior to segmentation.</li>
+          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground text from aged paper textures, background bleed-through, and coffee stains.</li>
+          <li><strong>Dual Engine Routing:</strong> Clean, single-column documents route to OCRmyPDF/Tesseract on CPU for rapid &lt;1.5s completion. Complex multi-column documents, math formulas, and nested tables dynamically route to our Baidu Unlimited OCR neural model (~6 GB weights) running on Nvidia GPU instances.</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- Tab Pane 2: Standards -->
+    <div class="tab-pane" id="pane-1">
+      <article class="article-card">
+        <h2>The Evolution of Portable Document Standards</h2>
+        <p>Before the Portable Document Format (PDF) was invented by Dr. John Warnock in 1991 (the "Camelot Project"), sharing formatted digital documents across different operating systems was notoriously fragmented.</p>
+        
+        <h3>Key Milestones in Document Interchange:</h3>
+        <ul>
+          <li><strong>PostScript (1984):</strong> A page-description programming language that allowed laser printers to rasterize vector glyphs. However, PostScript files required a full interpreter to execute, making fast screen previewing slow and resource-heavy.</li>
+          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary stream, allowing pages to render on-screen independently.</li>
+          <li><strong>ISO 32000-1 (2008):</strong> PDF was officially standardized by the International Organization for Standardization as an open format. Render mode 3 was codified to allow font characters to define bounding geometry and selection without coloring pixels.</li>
+          <li><strong>PDF/A (Archive Standard):</strong> Forbids external font dependencies and encryption, ensuring documents can still be opened and rendered accurately 100 years into the future.</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- Tab Pane 3: Security -->
+    <div class="tab-pane" id="pane-2">
+      <article class="article-card">
+        <h2>Zero-Retention Ephemeral RAM-Disk Security (Linux tmpfs)</h2>
+        <p>Document privacy is the foundational design pillar of freeOCR.me. Traditional cloud converters save files to Amazon S3 or Google Cloud Storage buckets where they may persist indefinitely.</p>
+
+        <h3>Our Kernel-Level Security Guarantees:</h3>
+        <ul>
+          <li><strong>Volatile Memory Mount:</strong> Uploaded documents reside exclusively in a Linux <code>tmpfs</code> RAM disk mount. Files never touch physical non-volatile storage (NVMe, SSD, or HDD).</li>
+          <li><strong>Instant Cryptographic Unlink:</strong> As soon as the output PDF or text is assembled, input files are cryptographically unlinked from memory using standard POSIX <code>unlink()</code> calls. Once the active conversion session terminates or 24 hours expire, RAM pages are zeroed.</li>
+          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to fine-tune machine learning models.</li>
+          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to 0 instances when idle, completely clearing runtime memory.</li>
+        </ul>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo" style="margin-bottom: 0.5rem;">
+          <img src="/icons/Icon-192.png" width="24" height="24" alt="freeOCR.me Logo" style="border-radius: 5px;">
+          freeOCR<span>.me</span>
+        </div>
+        <p>100% Free Ephemeral AI OCR Engine. Scanned PDF to searchable dual-layer PDF with zero data retention.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/">PDF to Searchable PDF</a></li>
+          <li><a href="/knowledge-base">Knowledge Base</a></li>
+          <li><a href="/api-docs">Developer API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Engines</h3>
+        <ul>
+          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR AI</a></li>
+          <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener noreferrer">OCRmyPDF</a></li>
+          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener noreferrer">Tesseract</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 freeOCR.me — Open Source Ephemeral Document AI. Zero Disk Retention Guaranteed.
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(index) {
+      document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+        b.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.tab-pane').forEach(function(p, i) {
+        p.classList.toggle('active', i === index);
+      });
+    }
+
+    // Support deep linking via hash
+    window.addEventListener('DOMContentLoaded', function() {
+      if (window.location.hash === '#standards') switchTab(1);
+      if (window.location.hash === '#security') switchTab(2);
+    });
+  </script>
+</body>
+</html>

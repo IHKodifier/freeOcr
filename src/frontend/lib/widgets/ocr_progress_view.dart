@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../services/download_helper.dart';
 import '../services/sse_service.dart';
 import '../services/telemetry_service.dart';
 import 'split_preview_viewer.dart';
@@ -95,6 +96,70 @@ class _OcrProgressViewState extends State<OcrProgressView> {
           );
         }
       });
+    }
+  }
+
+  Future<void> _openResultPage(String jobId, String filename) async {
+    AdSenseBanner.rotateAd();
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultPage(
+          jobId: jobId,
+          filename: filename,
+        ),
+        settings: RouteSettings(name: '/result/$jobId'),
+      ),
+    );
+  }
+
+  void _downloadBatchItemFile(String jobId, String filename, String format, {bool showToast = true}) {
+    final url = ApiService.getDownloadUrl(jobId, format);
+    final dotIndex = filename.lastIndexOf('.');
+    final stem = dotIndex > 0 ? filename.substring(0, dotIndex) : filename;
+    final ext = format == 'pdf' ? '_searchable.pdf' : '_extracted.$format';
+    final outFilename = '$stem$ext';
+
+    DownloadHelper.triggerDownload(url, outFilename);
+    TelemetryService.trackDownloadClicked(
+      jobId: jobId,
+      format: format,
+      filename: outFilename,
+    );
+    if (showToast && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Downloading $outFilename...'),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  void _downloadAllCompletedAsZip() {
+    final completedItems = _batchItems.where((i) => i.status == 'COMPLETED' && i.jobId != null).toList();
+    if (completedItems.isEmpty) return;
+
+    final jobIds = completedItems.map((i) => i.jobId!).toList();
+    final url = ApiService.getBatchDownloadZipUrl(jobIds, 'pdf');
+    const outFilename = 'freeOCR_searchable_batch.zip';
+
+    DownloadHelper.triggerDownload(url, outFilename);
+    TelemetryService.trackDownloadClicked(
+      jobId: jobIds.first,
+      format: 'zip',
+      filename: outFilename,
+    );
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Downloading single ZIP containing all ${completedItems.length} Searchable PDFs...'),
+          duration: const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 
@@ -520,15 +585,15 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   }
 
   Widget _buildBatchProgressUI(ThemeData theme, ColorScheme colorScheme) {
-    final completedCount = _batchItems.where((i) => i.status == 'COMPLETED').length;
+    final completedCount = _batchItems.where((i) => i.status == 'COMPLETED' && i.jobId != null).length;
     final failedCount = _batchItems.where((i) => i.status == 'FAILED').length;
     final isAllDone = (completedCount + failedCount) == _batchItems.length;
 
     return Container(
       width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 680, minHeight: 300),
+      constraints: const BoxConstraints(maxWidth: 720, minHeight: 300),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(20),
@@ -578,77 +643,210 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               final isDone = item.status == 'COMPLETED';
               final isErr = item.status == 'FAILED';
 
-              return Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isDone
-                      ? Colors.green.withValues(alpha: 0.08)
-                      : isErr
-                          ? colorScheme.errorContainer.withValues(alpha: 0.2)
-                          : colorScheme.surfaceContainerHighest,
+              return Material(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
+                child: InkWell(
+                  onTap: (isDone && item.jobId != null)
+                      ? () => _openResultPage(item.jobId!, item.filename)
+                      : null,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: isDone
-                        ? Colors.green.shade300
-                        : isErr
-                            ? colorScheme.error
-                            : colorScheme.outlineVariant,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isDone
+                          ? Colors.green.withValues(alpha: 0.08)
+                          : isErr
+                              ? colorScheme.errorContainer.withValues(alpha: 0.2)
+                              : colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isDone
+                            ? Colors.green.shade300
+                            : isErr
+                                ? colorScheme.error
+                                : colorScheme.outlineVariant,
+                      ),
+                    ),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final bool isCompact = constraints.maxWidth < 480;
+
+                        final fileInfoWidget = Row(
+                          children: [
+                            Icon(
+                              item.filename.toLowerCase().endsWith('.pdf')
+                                  ? Icons.picture_as_pdf
+                                  : Icons.image,
+                              color: colorScheme.primary,
+                              size: 28,
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.filename,
+                                    style: theme.textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    item.totalPages > 0
+                                        ? 'Page ${item.currentPage} of ${item.totalPages} • Converted'
+                                        : item.status,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: isDone
+                                          ? Colors.green.shade700
+                                          : colorScheme.onSurfaceVariant,
+                                      fontWeight: isDone ? FontWeight.w600 : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (isCompact && isDone)
+                              Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
+                          ],
+                        );
+
+                        if (!isDone || item.jobId == null) {
+                          return Row(
+                            children: [
+                              Expanded(child: fileInfoWidget),
+                              const SizedBox(width: 12),
+                              if (isErr)
+                                Icon(Icons.error_outline, color: colorScheme.error)
+                              else
+                                const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2.5),
+                                ),
+                            ],
+                          );
+                        }
+
+                        // Completed Item Actions: View, Download PDF, More Formats
+                        final actionsWidget = Wrap(
+                          spacing: 8,
+                          runSpacing: 6,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          alignment: WrapAlignment.end,
+                          children: [
+                            OutlinedButton.icon(
+                              onPressed: () => _openResultPage(item.jobId!, item.filename),
+                              icon: const Icon(Icons.visibility_outlined, size: 16),
+                              label: const Text('View'),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                visualDensity: VisualDensity.compact,
+                              ),
+                            ),
+                            FilledButton.icon(
+                              onPressed: () => _downloadBatchItemFile(item.jobId!, item.filename, 'pdf'),
+                              icon: const Icon(Icons.download_rounded, size: 16),
+                              label: const Text('PDF'),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Colors.green.shade700,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                visualDensity: VisualDensity.compact,
+                              ),
+                            ),
+                            PopupMenuButton<String>(
+                              tooltip: 'More formats',
+                              icon: Icon(Icons.more_vert, size: 18, color: colorScheme.onSurfaceVariant),
+                              onSelected: (format) => _downloadBatchItemFile(item.jobId!, item.filename, format),
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  value: 'txt',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.description_outlined, color: Colors.blueAccent, size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Download .TXT'),
+                                    ],
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'md',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.code, color: Colors.purpleAccent, size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Download .MD'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+
+                        if (isCompact) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              fileInfoWidget,
+                              const SizedBox(height: 10),
+                              actionsWidget,
+                            ],
+                          );
+                        } else {
+                          return Row(
+                            children: [
+                              Expanded(child: fileInfoWidget),
+                              const SizedBox(width: 12),
+                              actionsWidget,
+                            ],
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      item.filename.toLowerCase().endsWith('.pdf')
-                          ? Icons.picture_as_pdf
-                          : Icons.image,
-                      color: colorScheme.primary,
-                      size: 28,
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.filename,
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            item.totalPages > 0
-                                ? 'Page ${item.currentPage} of ${item.totalPages}'
-                                : item.status,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    if (isDone)
-                      Icon(Icons.check_circle, color: Colors.green.shade600)
-                    else if (isErr)
-                      Icon(Icons.error_outline, color: colorScheme.error)
-                    else
-                      const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2.5),
-                      ),
-                  ],
                 ),
               );
             },
           ),
-          if (widget.onReset != null && isAllDone) ...[
-            const SizedBox(height: 24),
-            OutlinedButton.icon(
-              onPressed: widget.onReset,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Convert More Files'),
+          if (isAllDone) ...[
+            const SizedBox(height: 28),
+            Wrap(
+              spacing: 16,
+              runSpacing: 12,
+              alignment: WrapAlignment.center,
+              children: [
+                if (completedCount > 0)
+                  FilledButton.icon(
+                    onPressed: _downloadAllCompletedAsZip,
+                    icon: const Icon(Icons.archive_rounded, size: 20),
+                    label: Text(
+                      'Download All as ZIP ($completedCount Searchable ${completedCount == 1 ? "PDF" : "PDFs"})',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.green.shade700,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                    ),
+                  ),
+                if (widget.onReset != null)
+                  OutlinedButton.icon(
+                    onPressed: widget.onReset,
+                    icon: const Icon(Icons.refresh_rounded, size: 20),
+                    label: const Text(
+                      'Convert More Files',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    ),
+                  ),
+              ],
             ),
           ],
         ],

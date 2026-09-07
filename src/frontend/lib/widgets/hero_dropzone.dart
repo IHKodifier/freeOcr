@@ -111,9 +111,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
     final limits = config['limits'] as Map<String, dynamic>? ?? {};
     final monetization = config['monetization'] as Map<String, dynamic>? ?? {};
 
-    final double baseLimitMb = (limits['base_max_file_mb'] as num?)?.toDouble() ?? 50.0;
+    final double baseLimitMb = (limits['base_max_file_mb'] as num?)?.toDouble() ?? 100.0;
     final double boostPerAdMb = (limits['boost_per_ad_mb'] as num?)?.toDouble() ?? 50.0;
-    final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 900.0;
+    final double maxStackMb = (limits['max_stack_file_mb'] as num?)?.toDouble() ?? 1024.0;
     final int adDuration = (monetization['rewarded_ad_duration_seconds'] as num?)?.toInt() ?? 15;
 
     for (int i = 0; i < rawFiles.length; i++) {
@@ -444,9 +444,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           width: double.infinity,
-          constraints: const BoxConstraints(maxWidth: 680, minHeight: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          padding: const EdgeInsets.all(32),
+          constraints: const BoxConstraints(maxWidth: 680, minHeight: 240),
+          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           decoration: BoxDecoration(
             color: isActive
                 ? colorScheme.primaryContainer.withValues(alpha: 0.25)
@@ -742,42 +742,43 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                   scale: isActive ? 1.08 : 1.0,
                   duration: const Duration(milliseconds: 200),
                   child: Container(
-                    padding: const EdgeInsets.all(18),
+                    padding: const EdgeInsets.all(13),
                     decoration: BoxDecoration(
                       color: const Color(0xFF6366F1).withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.cloud_upload_rounded,
-                      size: 52,
+                      size: 42,
                       color: Color(0xFF6366F1),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
                 Text(
                   'Drag & Drop files here',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.onSurface,
                     letterSpacing: -0.5,
+                    fontSize: 20,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   'or',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _pickFileWithDialog,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6366F1),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 10),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -792,7 +793,47 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.4),
+                      width: 1,
+                    ),
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 6,
+                    children: [
+                      const Icon(
+                        Icons.check_circle_outline_rounded,
+                        size: 15,
+                        color: Color(0xFF10B981),
+                      ),
+                      Text(
+                        'Up to 100 MB free per PDF',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const Text(
+                        '• Boost up to 1 GB with Ads',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF6366F1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
                 if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) ...[
                   Builder(
                     builder: (context) {

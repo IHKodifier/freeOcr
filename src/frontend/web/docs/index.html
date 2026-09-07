@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Developer REST API Documentation — freeOCR.me</title>
+  <meta name="title" content="Developer REST API Documentation — freeOCR.me">
+  <meta name="description" content="Explore the freeOCR.me REST API endpoints: multipart document upload, real-time Server-Sent Events (SSE) streaming, batch ZIP downloads, and ephemeral RAM disk processing.">
+  <meta name="keywords" content="ocr api, free ocr api, pdf ocr api, rest api ocr, searchable pdf api, sse stream ocr, fast ocr endpoint">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freeocr.me/api-docs">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freeocr.me/api-docs">
+  <meta property="og:title" content="Developer REST API Documentation — freeOCR.me">
+  <meta property="og:description" content="High-performance FastAPI OCR endpoints with SSE real-time streaming and zero disk retention.">
+  <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Google AdSense Monetization Tag -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+
+  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --border: rgba(255, 255, 255, 0.08);
+      --code-bg: #1e293b;
+      --method-post: #10b981;
+      --method-get: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    .container {
+      max-width: 960px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .intro {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    .ad-banner-slot {
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1.5rem 0 2rem;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .endpoint-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .badge-post { background-color: var(--method-post); }
+    .badge-get { background-color: var(--method-get); }
+    .endpoint-path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .code-wrapper {
+      position: relative;
+      margin-top: 1rem;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--accent); }
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 3.5rem 2rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-col h3 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { color: var(--text-muted); transition: color 0.2s; text-decoration: none; }
+    .footer-col a:hover { color: #fff; }
+    .footer-brand p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; margin-top: 0.5rem; }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+      nav a { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <img src="/icons/Icon-192.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px;">
+      freeOCR<span>.me</span>
+    </a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/knowledge-base">Knowledge Base</a>
+      <a href="/api-docs" class="active">API Docs</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Developer REST API Documentation</h1>
+    <p class="intro">Integrate freeOCR.me's high-throughput, ephemeral OCR engine directly into your automated pipelines. Standard REST endpoints, real-time Server-Sent Events (SSE), and zero disk retention.</p>
+
+    <!-- Native Google AdSense Display Unit -->
+    <div class="ad-banner-slot">
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; text-align:center;"
+           data-ad-client="ca-pub-6775900998665017"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <!-- Endpoint 1 -->
+    <div class="endpoint-card">
+      <div class="endpoint-header">
+        <span class="badge badge-post">POST</span>
+        <span class="endpoint-path">/api/v1/ocr/upload</span>
+      </div>
+      <p>Initiates an asynchronous OCR conversion job. Uploads are processed strictly in volatile Linux RAM disk (tmpfs). Accepts PDF, PNG, JPG, or JPEG up to active session quota (100 MB free base limit, expandable to 1 GB).</p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>curl -X POST "https://freeocr.me/api/v1/ocr/upload" \
+  -H "Accept: application/json" \
+  -F "file=@scanned_contract.pdf"</code></pre>
+      </div>
+    </div>
+
+    <!-- Endpoint 2 -->
+    <div class="endpoint-card">
+      <div class="endpoint-header">
+        <span class="badge badge-get">GET</span>
+        <span class="endpoint-path">/api/v1/jobs/{job_id}/stream</span>
+      </div>
+      <p>Subscribes to live Server-Sent Events (SSE) emitting real-time conversion progress per page, current state (<code>QUEUED</code>, <code>PROCESSING</code>, <code>COMPLETED</code>), and page bounding count.</p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>curl -N "https://freeocr.me/api/v1/jobs/job_98a76b54/stream" \
+  -H "Accept: text/event-stream"</code></pre>
+      </div>
+    </div>
+
+    <!-- Endpoint 3 -->
+    <div class="endpoint-card">
+      <div class="endpoint-header">
+        <span class="badge badge-get">GET</span>
+        <span class="endpoint-path">/api/v1/jobs/{job_id}/download?format=pdf</span>
+      </div>
+      <p>Downloads the generated output. Format parameter accepts <code>pdf</code> (dual-layer searchable PDF ISO 32000-1), <code>txt</code> (raw text string), or <code>md</code> (layout-aware Markdown).</p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>curl -O "https://freeocr.me/api/v1/jobs/job_98a76b54/download?format=pdf"</code></pre>
+      </div>
+    </div>
+
+    <!-- Endpoint 4 -->
+    <div class="endpoint-card">
+      <div class="endpoint-header">
+        <span class="badge badge-get">GET</span>
+        <span class="endpoint-path">/api/v1/jobs/batch-download/zip?job_ids=id1,id2</span>
+      </div>
+      <p>Streams an in-memory ZIP archive (<code>freeOCR_searchable_batch.zip</code>) bundling multiple converted documents in a single HTTP transfer.</p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>curl -O "https://freeocr.me/api/v1/jobs/batch-download/zip?job_ids=job_1,job_2&amp;format=pdf"</code></pre>
+      </div>
+    </div>
+
+    <!-- Endpoint 5 -->
+    <div class="endpoint-card">
+      <div class="endpoint-header">
+        <span class="badge badge-get">GET</span>
+        <span class="endpoint-path">/api/v1/config</span>
+      </div>
+      <p>Queries platform-wide quotas and dynamic configuration parameters (base limits, boost step sizes, queue names).</p>
+      <div class="code-wrapper">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>curl -s "https://freeocr.me/api/v1/config" | jq .</code></pre>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo" style="margin-bottom: 0.5rem;">
+          <img src="/icons/Icon-192.png" width="24" height="24" alt="freeOCR.me Logo" style="border-radius: 5px;">
+          freeOCR<span>.me</span>
+        </div>
+        <p>100% Free Ephemeral AI OCR Engine. Scanned PDF to searchable dual-layer PDF with zero data retention.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/">PDF to Searchable PDF</a></li>
+          <li><a href="/knowledge-base">Knowledge Base</a></li>
+          <li><a href="/api-docs">Developer API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Engines</h3>
+        <ul>
+          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR AI</a></li>
+          <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener noreferrer">OCRmyPDF</a></li>
+          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener noreferrer">Tesseract</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 freeOCR.me — Open Source Ephemeral Document AI. Zero Disk Retention Guaranteed.
+    </div>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = originalText; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

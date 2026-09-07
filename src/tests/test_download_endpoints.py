@@ -112,3 +112,51 @@ def test_download_md_success():
     assert "Heading: Deep Learning" in content_text
     assert "# Page 2" in content_text
     assert "Conclusion paragraph" in content_text
+
+
+def test_batch_download_zip_success():
+    """Verify downloading batch zip produces a valid ZIP file containing all completed files."""
+    import io
+    import zipfile
+
+    job1_id = "test_batch_job_1"
+    token1 = "token_pdf_1"
+    DEV_PDF_STORE[token1] = b"%PDF-1.4 file 1 content"
+    DEV_JOB_STORE[job1_id] = json.dumps({
+        "job_id": job1_id,
+        "filename": "doc_first.pdf",
+        "status": "COMPLETED",
+        "output_pdf_token": token1,
+        "pages": [{"page_number": 1, "text": "Page 1"}]
+    })
+
+    job2_id = "test_batch_job_2"
+    token2 = "token_pdf_2"
+    DEV_PDF_STORE[token2] = b"%PDF-1.4 file 2 content"
+    DEV_JOB_STORE[job2_id] = json.dumps({
+        "job_id": job2_id,
+        "filename": "doc_second.pdf",
+        "status": "COMPLETED",
+        "output_pdf_token": token2,
+        "pages": [{"page_number": 1, "text": "Page 2"}]
+    })
+
+    response = client.get(f"/api/v1/jobs/batch-download/zip?job_ids={job1_id},{job2_id}&format=pdf")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/zip"
+    assert 'attachment; filename="freeOCR_searchable_batch.zip"' in response.headers["content-disposition"]
+
+    with zipfile.ZipFile(io.BytesIO(response.content), "r") as zf:
+        namelist = zf.namelist()
+        assert "doc_first_searchable.pdf" in namelist
+        assert "doc_second_searchable.pdf" in namelist
+        assert zf.read("doc_first_searchable.pdf") == b"%PDF-1.4 file 1 content"
+        assert zf.read("doc_second_searchable.pdf") == b"%PDF-1.4 file 2 content"
+
+
+def test_batch_download_zip_invalid_format():
+    """Verify batch zip with invalid format returns HTTP 400 Bad Request."""
+    response = client.get("/api/v1/jobs/batch-download/zip?job_ids=job1&format=exe")
+    assert response.status_code == 400
+    assert "Unsupported format" in response.json()["detail"]
+

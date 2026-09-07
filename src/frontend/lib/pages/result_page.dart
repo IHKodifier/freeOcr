@@ -106,13 +106,25 @@ class _ResultPageState extends State<ResultPage> {
                         jobId: widget.jobId,
                         filename: displayName,
                         pages: _previewData!['pages'] as List<dynamic>? ?? [],
-                        onClose: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
+                        onClose: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                          }
+                        },
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(
-                        onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
-                        icon: const Icon(Icons.upload_file),
-                        label: const Text('Convert Another File'),
+                        onPressed: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                          }
+                        },
+                        icon: Icon(Navigator.canPop(context) ? Icons.arrow_back : Icons.upload_file),
+                        label: Text(Navigator.canPop(context) ? 'Back to Batch Results' : 'Convert Another File'),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

@@ -194,7 +194,7 @@ async def convert_document(
     # Load single canonical global config
     cfg = load_canonical_config()
     limits_cfg = cfg.get("limits", {})
-    base_max_mb = limits_cfg.get("base_max_file_mb", 50)
+    base_max_mb = limits_cfg.get("base_max_file_mb", 100)
     
     # Session ID & Client IP tracking
     session_keys = _get_session_keys(request)
@@ -310,13 +310,13 @@ async def rewarded_ad_callback(request: Request):
     boost_mb = limits_cfg.get("boost_per_ad_mb", 50)
     boost_pages = limits_cfg.get("boost_per_ad_pages", 15)
     ad_ttl = limits_cfg.get("ad_boost_ttl_seconds", 3600)
-    max_mb_cap = limits_cfg.get("max_stack_file_mb", 900)
+    max_mb_cap = limits_cfg.get("max_stack_file_mb", 1024)
     max_pages_cap = limits_cfg.get("max_stack_pages", 500)
 
     redis_client = get_redis_client()
     
     current_count = 0
-    current_mb = limits_cfg.get("base_max_file_mb", 50)
+    current_mb = limits_cfg.get("base_max_file_mb", 100)
     current_pages = limits_cfg.get("base_max_pages", 10)
 
     try:

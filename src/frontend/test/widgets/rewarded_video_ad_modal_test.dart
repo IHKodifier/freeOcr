@@ -42,7 +42,7 @@ void main() {
               fileSizeInBytes: 60 * 1024 * 1024,
               currentLimitMb: 50.0,
               boostPerAdMb: 50.0,
-              maxStackMb: 900.0,
+              maxStackMb: 1024.0,
               adDurationSeconds: 15,
               onWatchAd: (boostedLimit) {
                 watchAdClicked = true;
@@ -67,9 +67,9 @@ void main() {
       expect(find.textContaining('60.0 MB'), findsOneWidget);
       expect(find.textContaining('50.0 MB'), findsOneWidget);
 
-      // Verify boost pass info (+50 MB per ad up to 900 MB)
+      // Verify boost pass info (+50 MB per ad up to 1024 MB)
       expect(find.textContaining('+50 MB'), findsWidgets);
-      expect(find.textContaining('900 MB'), findsOneWidget);
+      expect(find.textContaining('1024 MB'), findsOneWidget);
 
 
       // Verify Watch Ad button

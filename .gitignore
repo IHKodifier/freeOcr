@@ -51,4 +51,5 @@ tmp/
 ramdisk/
 scratch/
 .firebase/
-
+test_*.pdf
+*.pdf

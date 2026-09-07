@@ -54,25 +54,25 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (50MB base limit).')),
+                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).')),
                         const SizedBox(width: 16),
-                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'PyMuPDF analyzes layout complexity while images upscale to 300 DPI for high-accuracy neural character recognition.')),
+                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'Deep neural models analyze document layout, structure, and reading order while pages are enhanced to 300 DPI for high-accuracy character recognition.')),
                         const SizedBox(width: 16),
-                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '03', title: 'Real-Time SSE Stream', description: 'Watch page-by-page progress stream live over Server-Sent Events (SSE) as text bounding boxes extract.')),
+                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '03', title: 'Live Page-by-Page Progress', description: 'Watch your document convert in real time with live progress tracking as each page is scanned, recognized, and assembled.')),
                         const SizedBox(width: 16),
-                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '04', title: 'RAM Disk Purge', description: 'Files are processed strictly in Linux tmpfs RAM memory and unlinked automatically upon conversion completion.')),
+                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '04', title: 'Zero File Retention', description: 'Files are processed strictly in volatile Linux RAM disk memory (tmpfs) and deleted permanently automatically upon conversion completion.')),
                       ],
                     );
                   }
                   return Column(
                     children: [
-                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (50MB base limit).'),
+                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).'),
                       const SizedBox(height: 12),
-                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'PyMuPDF analyzes layout complexity while images upscale to 300 DPI for high-accuracy neural character recognition.'),
+                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'Deep neural models analyze document layout, structure, and reading order while pages are enhanced to 300 DPI for high-accuracy character recognition.'),
                       const SizedBox(height: 12),
-                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '03', title: 'Real-Time SSE Stream', description: 'Watch page-by-page progress stream live over Server-Sent Events (SSE) as text bounding boxes extract.'),
+                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '03', title: 'Live Page-by-Page Progress', description: 'Watch your document convert in real time with live progress tracking as each page is scanned, recognized, and assembled.'),
                       const SizedBox(height: 12),
-                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '04', title: 'RAM Disk Purge', description: 'Files are processed strictly in Linux tmpfs RAM memory and unlinked automatically upon conversion completion.'),
+                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '04', title: 'Zero File Retention', description: 'Files are processed strictly in volatile Linux RAM disk memory (tmpfs) and deleted permanently automatically upon conversion completion.'),
                     ],
                   );
                 },
@@ -100,7 +100,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.picture_as_pdf, title: 'Invisible Searchable PDF Overlay', description: 'Generates an invisible text layer positioned precisely over your original scanned PDF pages, preserving 100% of visual fonts, headers, and images.'),
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.lock_open, title: 'Password-in-Place PDF Decryption', description: 'Decrypt password-protected PDFs directly in your browser session before processing without unencrypting sensitive files onto persistent disk storage.'),
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.download_for_offline, title: '1-Click Multi-Format Export', description: 'Export extracted text in 1 click as Searchable PDF, Plain Text (.txt), or Clean Structured Markdown (.md) for LLM prompting and note apps.'),
-                      _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.bolt, title: 'Stackable Session Limit Passes', description: 'Need to process larger multi-hundred-page files? Watch 15-second rewarded video ads to stack +50MB session limit increments up to 900MB.'),
+                      _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.bolt, title: 'Stackable Session Limit Passes', description: 'Need to process larger multi-hundred-page files? Watch 15-second rewarded video ads to stack +50MB session limit increments up to 1 GB (1,024MB).'),
                     ],
                   );
                 },
@@ -147,8 +147,8 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 theme,
                 colorScheme,
                 index: 3,
-                question: 'How do stackable rewarded ad session passes increase file size limits up to 900MB?',
-                answer: 'Standard free uploads permit files up to 50MB per document. If your scanned book, contract, or ledger exceeds 50MB, our Rewarded Video Ad Modal offers +50MB limit boost passes per 15-second ad watched. Watching multiple ads stacks session limits up to 900MB while resetting your 1-hour session expiration timer.',
+                question: 'How do stackable rewarded ad session passes increase file size limits up to 1 GB?',
+                answer: 'Standard free uploads permit files up to 100MB per document. If your scanned book, contract, or ledger exceeds 100MB, our Rewarded Video Ad Modal offers +50MB limit boost passes per 15-second ad watched. Watching multiple ads stacks session limits up to 1 GB (1,024MB) while resetting your 1-hour session expiration timer.',
               ),
               _buildFaqItem(
                 context,

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Privacy Policy (GDPR &amp; CCPA Compliant) — freeOCR.me</title>
+  <meta name="title" content="Privacy Policy (GDPR &amp; CCPA Compliant) — freeOCR.me">
+  <meta name="description" content="freeOCR.me Privacy Policy. Learn about our zero-retention ephemeral processing in Linux tmpfs RAM-disk, GDPR and CCPA rights, and AdSense cookie disclosures.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freeocr.me/privacy">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://freeocr.me/privacy">
+  <meta property="og:title" content="Privacy Policy — freeOCR.me">
+  <meta property="og:description" content="Strict zero-retention ephemeral document processing in Linux RAM disk. Read our complete GDPR and CCPA privacy policy.">
+  <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Google AdSense Monetization Tag -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+
+  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    .container {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .meta {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .ad-banner-slot {
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1.5rem 0 2rem;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .policy-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    p + p { margin-top: 0.75rem; }
+    a { color: var(--accent-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 3.5rem 2rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-col h3 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { color: var(--text-muted); transition: color 0.2s; }
+    .footer-col a:hover { color: #fff; text-decoration: none; }
+    .footer-brand p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; margin-top: 0.5rem; }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+      nav a { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <img src="/icons/Icon-192.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px;">
+      freeOCR<span>.me</span>
+    </a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/knowledge-base">Knowledge Base</a>
+      <a href="/api-docs">API Docs</a>
+      <a href="/privacy" class="active">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <article>
+      <h1>Privacy Policy (GDPR &amp; CCPA Compliant)</h1>
+      <div class="meta">Last Updated: August 30, 2026 • freeOCR.me Trust &amp; Ephemeral Architecture</div>
+
+      <!-- Native Google AdSense Display Unit -->
+      <div class="ad-banner-slot">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; text-align:center;"
+             data-ad-client="ca-pub-6775900998665017"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+
+      <section class="policy-section">
+        <h2>1. Zero Persistent Document Storage Guarantee</h2>
+        <p>freeOCR.me processes all uploaded PDF and image files strictly in volatile Linux RAM disk (<code>tmpfs</code>). Uploaded documents are automatically unlinked and purged permanently from memory immediately upon conversion completion or within 24 hours. We never inspect, store, mine, or retain your documents on persistent hard drives or external storage volumes.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>2. General Data Protection Regulation (GDPR) Compliance</h2>
+        <p>Under the European Union General Data Protection Regulation (GDPR), users possess explicit rights regarding personal data processing. freeOCR.me operates on a strict zero-registration, privacy-first model: we do not collect personal identification, user accounts, passwords, or stored file data. Any user interactions occur anonymously without identity correlation.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>3. California Consumer Privacy Act (CCPA) Disclosure</h2>
+        <p>Under the California Consumer Privacy Act (CCPA), California residents have the right to know what personal information is collected, request deletion, and opt out of the sale of personal information. freeOCR.me DOES NOT SELL your personal information or document content to third parties under any circumstances.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>4. Google AdSense &amp; Third-Party Advertising Cookies</h2>
+        <p>We use Google AdSense to display non-intrusive advertisements that support the infrastructure costs of running high-performance GPU and CPU optical character recognition. Google and its advertising partners use cookies (including the DoubleClick cookie) to serve relevant advertisements based on visits to this and other websites across the Internet.</p>
+        <p>Users may opt out of personalized advertising by visiting the <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ads Settings portal</a> or through browser-level tracking protections.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>5. Anonymized Telemetry &amp; Local Browser Storage</h2>
+        <p>We collect aggregated, anonymized interaction events (such as page views and conversion success status) via Google Analytics 4 (GA4) solely to monitor server health and uptime. We utilize local browser storage (LocalStorage) exclusively to store your Light/Dark Mode theme preference and your active session limit boost passes.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo" style="margin-bottom: 0.5rem;">
+          <img src="/icons/Icon-192.png" width="24" height="24" alt="freeOCR.me Logo" style="border-radius: 5px;">
+          freeOCR<span>.me</span>
+        </div>
+        <p>100% Free Ephemeral AI OCR Engine. Scanned PDF to searchable dual-layer PDF with zero data retention.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/">PDF to Searchable PDF</a></li>
+          <li><a href="/knowledge-base">Knowledge Base</a></li>
+          <li><a href="/api-docs">Developer API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Engines</h3>
+        <ul>
+          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR AI</a></li>
+          <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener noreferrer">OCRmyPDF</a></li>
+          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener noreferrer">Tesseract</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 freeOCR.me — Open Source Ephemeral Document AI. Zero Disk Retention Guaranteed.
+    </div>
+  </footer>
+</body>
+</html>

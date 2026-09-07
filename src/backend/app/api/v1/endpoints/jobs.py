@@ -5,9 +5,11 @@ import json
 import asyncio
 import time
 import datetime
+import io
+import zipfile
 import urllib.parse
 import pymupdf
-from fastapi import APIRouter, Request, HTTPException, status
+from fastapi import APIRouter, Request, HTTPException, status, Query
 from fastapi.responses import StreamingResponse, Response, JSONResponse
 from app.redis_client import get_redis_client, DEV_JOB_STORE, EphemeralRamStore
 from app.services.pdf_composer import get_searchable_pdf
@@ -335,6 +337,118 @@ async def get_job_page_image(job_id: str, page_number: int = 1):
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail="Page preview unavailable."
+    )
+
+
+@router.get("/batch-download/zip")
+async def batch_download_zip(
+    job_ids: str = Query(..., description="Comma-separated list of job IDs"),
+    format: str = "pdf"
+):
+    """
+    Streams a single ZIP archive containing all completed documents in the batch.
+    Prevents browser multi-download blocking and provides 1-click batch retrieval.
+    """
+    fmt = format.lower().strip()
+    if fmt not in ("pdf", "txt", "md"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Unsupported format. Choose pdf, txt, or md."
+        )
+
+    id_list = [jid.strip() for jid in job_ids.split(",") if jid.strip()]
+    if not id_list:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No job IDs provided."
+        )
+
+    zip_buffer = io.BytesIO()
+    added_count = 0
+    used_filenames = set()
+
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        for job_id in id_list:
+            job_data_bytes = None
+            if job_id in DEV_JOB_STORE:
+                job_data_bytes = DEV_JOB_STORE[job_id]
+            if not job_data_bytes:
+                try:
+                    redis_client = get_redis_client()
+                    job_data_bytes = redis_client.get(f"job:{job_id}")
+                except Exception:
+                    job_data_bytes = None
+
+            if not job_data_bytes:
+                continue
+
+            try:
+                data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+                parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
+            except Exception:
+                continue
+
+            if parsed.get("status") != "COMPLETED":
+                continue
+
+            orig_filename = parsed.get("filename", f"doc_{job_id}")
+            filename_stem = os.path.splitext(orig_filename)[0] or "document"
+
+            file_bytes = None
+            arc_name = ""
+
+            if fmt == "pdf":
+                output_token = parsed.get("output_pdf_token")
+                file_bytes = get_searchable_pdf(output_token) if output_token else None
+                arc_name = f"{filename_stem}_searchable.pdf"
+            elif fmt == "txt":
+                pages = parsed.get("pages", [])
+                txt_parts = [p.get("text", "").strip() for p in pages if p.get("text", "").strip()]
+                file_bytes = "\n\n".join(txt_parts).encode("utf-8")
+                arc_name = f"{filename_stem}_extracted.txt"
+            elif fmt == "md":
+                pages = parsed.get("pages", [])
+                md_parts = [f"# Page {p.get('page_number', 1)}\n\n{p.get('text', '').strip()}" for p in pages]
+                file_bytes = "\n\n---\n\n".join(md_parts).encode("utf-8")
+                arc_name = f"{filename_stem}_extracted.md"
+
+            if file_bytes:
+                final_arc_name = arc_name
+                counter = 1
+                while final_arc_name in used_filenames:
+                    dot_idx = arc_name.rfind(".")
+                    if dot_idx > 0:
+                        final_arc_name = f"{arc_name[:dot_idx]}_{counter}{arc_name[dot_idx:]}"
+                    else:
+                        final_arc_name = f"{arc_name}_{counter}"
+                    counter += 1
+                used_filenames.add(final_arc_name)
+                zf.writestr(final_arc_name, file_bytes)
+                added_count += 1
+
+                # Clean up ephemeral input files from RAM disk as mandate requires
+                ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()
+                matching_inputs = glob.glob(os.path.join(ram_disk_base, f"ephemeral_{job_id}_*"))
+                for input_file in matching_inputs:
+                    try:
+                        os.remove(input_file)
+                    except Exception:
+                        pass
+
+    if added_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No completed files found for the provided job IDs."
+        )
+
+    zip_bytes = zip_buffer.getvalue()
+    out_filename = "freeOCR_searchable_batch.zip" if fmt == "pdf" else f"freeOCR_{fmt}_batch.zip"
+    return Response(
+        content=zip_bytes,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="{out_filename}"'
+        }
     )
 
 

@@ -230,6 +230,44 @@ void main() {
     await tester.pump();
     expect(find.text('100%'), findsOneWidget);
   });
+
+  testWidgets('SplitPreviewViewer on mobile hides preview pane and shows wrapped download actions', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SplitPreviewViewer(
+            jobId: 'test_job_mobile',
+            filename: 'receipt_2026.pdf',
+            pages: samplePages,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // 1. Preview pane and zoom controls must NOT be present on mobile
+    expect(find.text('Document Page Preview'), findsNothing);
+    expect(find.byType(Slider), findsNothing);
+    expect(find.byIcon(Icons.zoom_in), findsNothing);
+    expect(find.byIcon(Icons.zoom_out), findsNothing);
+
+    // 2. Wrapped download actions must be present and visible
+    expect(find.text('Download Searchable PDF'), findsOneWidget);
+    expect(find.text('Download .TXT'), findsOneWidget);
+    expect(find.text('Download .MD'), findsOneWidget);
+    expect(find.byIcon(Icons.email_outlined), findsWidgets);
+
+    // 3. Extracted text and controls must be present
+    expect(find.text('Plain Text (.txt)'), findsOneWidget);
+    expect(find.text('Markdown (.md)'), findsOneWidget);
+    expect(find.text('Copy Text'), findsOneWidget);
+    expect(find.textContaining('Sample Header Page 1'), findsWidgets);
+  });
 }
 
 

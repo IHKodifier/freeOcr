@@ -1,6 +1,8 @@
 {
   "hosting": {
     "public": "src/frontend/build/web",
+    "cleanUrls": true,
+    "trailingSlash": false,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -30,7 +32,7 @@
         ]
       },
       {
-        "source": "@(index.html|main.dart.js|flutter.js|flutter_service_worker.js|version.json)",
+        "source": "@(**/*.html|index.html|main.dart.js|flutter.js|flutter_service_worker.js|version.json)",
         "headers": [
           {
             "key": "Cache-Control",

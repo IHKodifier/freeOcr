@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 
 class UploadResult {
@@ -110,10 +111,19 @@ String getFileTypeDescription(String filename) {
 }
 
 class ApiService {
-  static const String baseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: kIsWeb ? '/api/v1' : 'http://127.0.0.1:8000/api/v1',
-  );
+  static String get baseUrl {
+    const envUrl = String.fromEnvironment('API_BASE_URL');
+    if (envUrl.isNotEmpty) return envUrl;
+    if (kIsWeb) {
+      final host = Uri.base.host;
+      if (host == 'localhost' || host == '127.0.0.1') {
+        return 'http://127.0.0.1:8000/api/v1';
+      }
+      return '/api/v1';
+    }
+    return 'http://127.0.0.1:8000/api/v1';
+  }
+
   static String? _sessionId;
 
   static String get sessionId {
@@ -258,6 +268,11 @@ class ApiService {
     return '$baseUrl/jobs/$jobId/download/$format';
   }
 
+  static String getBatchDownloadZipUrl(List<String> jobIds, [String format = 'pdf']) {
+    final joined = jobIds.join(',');
+    return '$baseUrl/jobs/batch-download/zip?job_ids=$joined&format=$format';
+  }
+
   static String getPageImageUrl(String jobId, int pageNumber) {
     return '$baseUrl/jobs/$jobId/pages/$pageNumber/image';
   }
@@ -287,22 +302,42 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> fetchRuntimeConfig() async {
+  static Map<String, dynamic>? _cachedConfig;
 
+  static Future<Map<String, dynamic>> fetchRuntimeConfig() async {
+    // 1. Primary: Fetch live canonical config from backend (reads app_limits_config.json dynamically without restart)
     try {
       final uri = Uri.parse('$baseUrl/config');
-      final response = await http.get(uri).timeout(const Duration(seconds: 5));
+      final response = await http.get(uri).timeout(const Duration(seconds: 4));
       if (response.statusCode == 200) {
-        return jsonDecode(response.body) as Map<String, dynamic>;
+        final parsed = jsonDecode(response.body) as Map<String, dynamic>;
+        _cachedConfig = parsed;
+        return parsed;
       }
     } catch (e) {
-      debugPrint('[ApiService] fetchRuntimeConfig exception: $e');
+      debugPrint('[ApiService] Live /config unavailable ($e), falling back to bundled canonical config.');
     }
+
+    if (_cachedConfig != null) {
+      return _cachedConfig!;
+    }
+
+    // 2. Secondary: Load canonical configuration directly from the bundled app_limits_config.json asset
+    try {
+      final jsonString = await rootBundle.loadString('assets/config/app_limits_config.json');
+      final parsed = jsonDecode(jsonString) as Map<String, dynamic>;
+      _cachedConfig = parsed;
+      return parsed;
+    } catch (e) {
+      debugPrint('[ApiService] rootBundle app_limits_config.json load error: $e');
+    }
+
+    // 3. Fallback structure in case both network and bundle are unavailable
     return {
       'limits': {
-        'base_max_file_mb': 10,
-        'boost_per_ad_mb': 20,
-        'max_stack_file_mb': 500,
+        'base_max_file_mb': 100,
+        'boost_per_ad_mb': 50,
+        'max_stack_file_mb': 1024,
         'ad_boost_ttl_seconds': 3600,
       },
       'monetization': {
