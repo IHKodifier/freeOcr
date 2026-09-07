@@ -7,11 +7,18 @@ import 'package:free_ocr_frontend/pages/contact_page.dart';
 void main() {
   group('About Page Route & Content Tests', () {
     testWidgets('AboutPage renders mission, RAM disk privacy, and open source engines via /about', (WidgetTester tester) async {
-      await tester.pumpWidget(const FreeOcrApp());
-      await tester.pumpAndSettle();
+      tester.view.physicalSize = const Size(1280, 1024);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-      final BuildContext context = tester.element(find.byType(HomePage));
-      Navigator.pushNamed(context, '/about');
+      await tester.pumpWidget(MaterialApp(
+        initialRoute: '/about',
+        routes: {
+          '/about': (context) => const AboutPage(),
+          '/contact': (context) => const ContactPage(),
+        },
+      ));
       await tester.pumpAndSettle();
 
       expect(find.byType(AboutPage), findsOneWidget);
@@ -25,11 +32,17 @@ void main() {
 
   group('Contact Page Route, Form Validation & Submission Tests', () {
     testWidgets('ContactPage renders channels and validates required fields via /contact', (WidgetTester tester) async {
-      await tester.pumpWidget(const FreeOcrApp());
-      await tester.pumpAndSettle();
+      tester.view.physicalSize = const Size(1280, 1024);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-      final BuildContext context = tester.element(find.byType(HomePage));
-      Navigator.pushNamed(context, '/contact');
+      await tester.pumpWidget(MaterialApp(
+        initialRoute: '/contact',
+        routes: {
+          '/contact': (context) => const ContactPage(),
+        },
+      ));
       await tester.pumpAndSettle();
 
       expect(find.byType(ContactPage), findsOneWidget);

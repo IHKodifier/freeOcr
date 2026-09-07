@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:free_ocr_frontend/constants/social_links.dart';
 import 'package:free_ocr_frontend/widgets/app_footer.dart';
 
 void main() {
