@@ -34,6 +34,8 @@ class _KbPageState extends State<KbPage> {
   int _slugToTab(String? slug) {
     if (slug == 'pdf-history' || slug == 'pdf-standards') return 1;
     if (slug == 'privacy-security' || slug == 'zero-disk') return 2;
+    if (slug == 'scan-restoration' || slug == 'binarization' || slug == 'deskew') return 3;
+    if (slug == 'markdown-vs-text' || slug == 'markdown' || slug == 'structured-text') return 4;
     return 0; // Default to OCR guide
   }
 
@@ -80,31 +82,44 @@ class _KbPageState extends State<KbPage> {
                                 Container(
                                   width: double.infinity,
                                   margin: const EdgeInsets.only(bottom: 20),
-                                  child: SegmentedButton<int>(
-                                    key: const Key('kb_segmented_tabs'),
-                                    segments: const [
-                                      ButtonSegment<int>(
-                                        value: 0,
-                                        label: Text('OCR Guide'),
-                                        icon: Icon(Icons.document_scanner_outlined, size: 18),
-                                      ),
-                                      ButtonSegment<int>(
-                                        value: 1,
-                                        label: Text('PDF History'),
-                                        icon: Icon(Icons.description_outlined, size: 18),
-                                      ),
-                                      ButtonSegment<int>(
-                                        value: 2,
-                                        label: Text('RAM Privacy'),
-                                        icon: Icon(Icons.security_outlined, size: 18),
-                                      ),
-                                    ],
-                                    selected: {_selectedTab},
-                                    onSelectionChanged: (newSelection) {
-                                      setState(() {
-                                        _selectedTab = newSelection.first;
-                                      });
-                                    },
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: SegmentedButton<int>(
+                                      key: const Key('kb_segmented_tabs'),
+                                      segments: const [
+                                        ButtonSegment<int>(
+                                          value: 0,
+                                          label: Text('OCR Guide'),
+                                          icon: Icon(Icons.document_scanner_outlined, size: 18),
+                                        ),
+                                        ButtonSegment<int>(
+                                          value: 1,
+                                          label: Text('PDF History'),
+                                          icon: Icon(Icons.description_outlined, size: 18),
+                                        ),
+                                        ButtonSegment<int>(
+                                          value: 2,
+                                          label: Text('RAM Privacy'),
+                                          icon: Icon(Icons.security_outlined, size: 18),
+                                        ),
+                                        ButtonSegment<int>(
+                                          value: 3,
+                                          label: Text('Restoration'),
+                                          icon: Icon(Icons.auto_fix_high_outlined, size: 18),
+                                        ),
+                                        ButtonSegment<int>(
+                                          value: 4,
+                                          label: Text('Markdown'),
+                                          icon: Icon(Icons.text_snippet_outlined, size: 18),
+                                        ),
+                                      ],
+                                      selected: {_selectedTab},
+                                      onSelectionChanged: (newSelection) {
+                                        setState(() {
+                                          _selectedTab = newSelection.first;
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ),
 
@@ -151,22 +166,17 @@ class _KbPageState extends State<KbPage> {
                                             child: SegmentedButton<int>(
                                               key: const Key('kb_segmented_tabs'),
                                               segments: const [
-                                                ButtonSegment<int>(value: 0, label: Text('OCR')),
-                                                ButtonSegment<int>(value: 1, label: Text('PDF')),
-                                                ButtonSegment<int>(value: 2, label: Text('RAM')),
+                                                ButtonSegment<int>(value: 0, label: Text('OCR Guide')),
+                                                ButtonSegment<int>(value: 1, label: Text('PDF History')),
+                                                ButtonSegment<int>(value: 2, label: Text('RAM Privacy')),
+                                                ButtonSegment<int>(value: 3, label: Text('Restoration')),
+                                                ButtonSegment<int>(value: 4, label: Text('Markdown')),
                                               ],
                                               selected: {_selectedTab},
                                               onSelectionChanged: (s) {},
                                             ),
                                           ),
 
-                                          _buildSidebarNavItem(
-                                            context,
-                                            index: 1,
-                                            title: 'The Evolution of PDF',
-                                            icon: Icons.description_outlined,
-                                          ),
-                                          const SizedBox(height: 6),
                                           _buildSidebarNavItem(
                                             context,
                                             index: 0,
@@ -176,9 +186,30 @@ class _KbPageState extends State<KbPage> {
                                           const SizedBox(height: 6),
                                           _buildSidebarNavItem(
                                             context,
+                                            index: 1,
+                                            title: 'The Evolution of PDF',
+                                            icon: Icons.description_outlined,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          _buildSidebarNavItem(
+                                            context,
                                             index: 2,
                                             title: 'Zero-Disk Retention',
                                             icon: Icons.security_outlined,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          _buildSidebarNavItem(
+                                            context,
+                                            index: 3,
+                                            title: 'Scan Restoration',
+                                            icon: Icons.auto_fix_high_outlined,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          _buildSidebarNavItem(
+                                            context,
+                                            index: 4,
+                                            title: 'Markdown vs TXT',
+                                            icon: Icons.text_snippet_outlined,
                                           ),
                                         ],
                                       ),
@@ -186,6 +217,7 @@ class _KbPageState extends State<KbPage> {
                                   ],
                                 ),
                               ),
+
 
                               const SizedBox(width: 20),
 
@@ -272,11 +304,23 @@ class _KbPageState extends State<KbPage> {
 
   // --- Breadcrumb Navigation Row ---
   Widget _buildBreadcrumbs(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
-    final String currentTitle = _selectedTab == 1
-        ? 'The Evolution of PDF'
-        : _selectedTab == 0
-            ? 'Understanding OCR'
-            : 'Zero-Disk Retention';
+    final String currentTitle;
+    switch (_selectedTab) {
+      case 1:
+        currentTitle = 'The Evolution of PDF';
+        break;
+      case 2:
+        currentTitle = 'Zero-Disk Retention';
+        break;
+      case 3:
+        currentTitle = 'Scan Restoration & Binarization';
+        break;
+      case 4:
+        currentTitle = 'Structured Markdown vs Plain Text';
+        break;
+      default:
+        currentTitle = 'Understanding OCR';
+    }
 
     return Row(
       children: [
@@ -305,10 +349,10 @@ class _KbPageState extends State<KbPage> {
         const SizedBox(width: 6),
         Text(
           currentTitle,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF6366F1),
+            color: Color(0xFF6366F1),
           ),
         ),
       ],
@@ -393,10 +437,20 @@ class _KbPageState extends State<KbPage> {
 
   // --- Article Content Selector ---
   Widget _buildSelectedArticle(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
-    if (_selectedTab == 1) return _buildPdfHistoryArticle(context, theme, colorScheme);
-    if (_selectedTab == 2) return _buildPrivacyArticle(context, theme, colorScheme);
-    return _buildOcrGuideArticle(context, theme, colorScheme);
+    switch (_selectedTab) {
+      case 1:
+        return _buildPdfHistoryArticle(context, theme, colorScheme);
+      case 2:
+        return _buildPrivacyArticle(context, theme, colorScheme);
+      case 3:
+        return _buildScanRestorationArticle(context, theme, colorScheme);
+      case 4:
+        return _buildMarkdownVsTextArticle(context, theme, colorScheme);
+      default:
+        return _buildOcrGuideArticle(context, theme, colorScheme);
+    }
   }
+
 
   // --- Article 1: Guide to OCR & Image Preprocessing ---
   Widget _buildOcrGuideArticle(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
@@ -628,7 +682,135 @@ class _KbPageState extends State<KbPage> {
     );
   }
 
+  // --- Article 4: Scan Restoration & Adaptive Binarization ---
+  Widget _buildScanRestorationArticle(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'How to Extract Clean Text from Low-Resolution Scans, Faded Receipts & Distorted Documents',
+          style: theme.textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
+            color: colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          'Real-world document digitization rarely starts with pristine, high-resolution scans. Mobile camera photographs taken under uneven ambient lighting, faded thermal store receipts, crumpled contracts, and low-resolution 72 DPI faxes present severe challenges for standard optical character recognition systems.',
+          style: theme.textTheme.bodyLarge?.copyWith(
+            height: 1.6,
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        _buildH2(theme, '1. Radon Transform Deskewing'),
+        const SizedBox(height: 10),
+        Text(
+          'When physical sheets are fed into automatic document feeders or photographed with handheld devices, they frequently introduce rotational skew. Applying character segmentation directly on tilted lines produces broken word boundaries and garbled reading order. freeOCR.me implements a high-precision Radon transform algorithm:',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 10),
+        _buildBulletPoint(context, 'Intensity Projections:', 'The Radon transform calculates intensity projections along radial lines across angular steps of 0.1° spanning -15° to +15°.'),
+        _buildBulletPoint(context, 'Maximum Variance Baseline:', 'Because lines of text create intense peaks of variance when projected parallel to their baselines, the angle exhibiting maximum variance corresponds precisely to document orientation.'),
+        _buildBulletPoint(context, 'Bicubic Rotation:', 'The image is rotated using bicubic interpolation with boundary mirroring, restoring crisp horizontal text orientation without clipping edge characters.'),
+        const SizedBox(height: 20),
+
+        _buildH2(theme, '2. Adaptive Otsu Binarization'),
+        const SizedBox(height: 10),
+        Text(
+          'Global thresholding algorithms choose a single intensity cutoff for the entire image. This fails dramatically on thermal receipts with faded ink or scans with shadow gradients across the gutter. freeOCR.me employs local adaptive thresholding:',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 10),
+        _buildBulletPoint(context, 'Rolling Window Evaluation:', 'The page is evaluated in localized rolling windows (15x15 to 31x31 pixels).'),
+        _buildBulletPoint(context, 'Luminescence Adaptation:', 'The threshold dynamically adjusts based on local contrast and background luminescence, isolating faint character strokes on faded thermal paper while suppressing dark background bleed-through.'),
+        const SizedBox(height: 20),
+
+        _buildH2(theme, '3. Neural Super-Resolution & DPI Upscaling'),
+        const SizedBox(height: 10),
+        Text(
+          'Character recognition engines achieve peak accuracy at 300 DPI. Input scans below 150 DPI suffer from merged character loops (e.g., confusing \'e\', \'a\', and \'o\'). Our preprocessor detects sub-standard DPI and applies Lanczos-4 resampling and edge-sharpening kernels, restoring character geometry before neural inference.',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 20),
+
+        _buildTechnicalTipBox(
+          context,
+          title: 'Restoration Best Practice',
+          body: 'For optimal results with camera photos of documents, ensure the page fills at least 80% of the camera frame and avoid harsh direct flashlight reflections that saturate paper white levels.',
+        ),
+      ],
+    );
+  }
+
+  // --- Article 5: Structured Markdown vs Plain Text ---
+  Widget _buildMarkdownVsTextArticle(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Why Structured Markdown (.md) is Superior to Plain Text (.txt) for OCR Output',
+          style: theme.textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
+            color: colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          'For over three decades, optical character recognition tools have defaulted to outputting unformatted Plain Text (.txt). While plain text provides basic raw characters, it strips away the document\'s architectural DNA: headers, tabular relationships, semantic hierarchy, and block structures.',
+          style: theme.textTheme.bodyLarge?.copyWith(
+            height: 1.6,
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        _buildH2(theme, '1. Heading Hierarchy & Document Outlining'),
+        const SizedBox(height: 10),
+        Text(
+          'In unformatted text, an 18pt bold chapter title looks identical to a 10pt body paragraph, forcing human readers and automated parsers to guess where sections begin. freeOCR.me analyzes font size clustering, vertical line spacing, and stroke weights to assign semantic Markdown headings (# Heading 1, ## Heading 2, ### Heading 3), creating an instant table of contents for your document.',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 20),
+
+        _buildH2(theme, '2. Tabular Data & Financial Ledger Preservation'),
+        const SizedBox(height: 10),
+        Text(
+          'When multi-column financial statements or invoices are converted to plain text, column alignments collapse into jumbled, ambiguous lines where numbers lose connection to their column headers. Structured Markdown preserves tables with standard syntax (| Column | Header |), ensuring spreadsheets, bank statements, and legal exhibits can be imported cleanly into Excel, Notion, Obsidian, or database pipelines.',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 20),
+
+        _buildH2(theme, '3. Code Snippets & Mathematical Notation'),
+        const SizedBox(height: 10),
+        Text(
+          'Technical whitepapers and academic research frequently interleave source code, chemical notations, or formulas. Markdown allows fencing with backticks, preventing indentation collapse and syntax corruption.',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 20),
+
+        _buildH2(theme, '4. LLM & RAG Pipeline Readiness'),
+        const SizedBox(height: 10),
+        Text(
+          'Modern AI agents and Retrieval-Augmented Generation (RAG) frameworks rely on semantic Markdown chunking. By utilizing Markdown headings and paragraph breaks as natural semantic split boundaries, vector search embeddings retain contextual relevance without mid-sentence truncation.',
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+        const SizedBox(height: 20),
+
+        _buildSecurityNoteBox(
+          context,
+          title: 'Export Compatibility Note',
+          body: 'freeOCR.me allows 1-click downloads in all three primary formats: Searchable PDF, Clean Structured Markdown (.md), and Plain Text (.txt), giving you total workflow flexibility.',
+        ),
+      ],
+    );
+  }
+
   // --- Helper Widgets ---
+
   Widget _buildH2(ThemeData theme, String text) {
     return Text(
       text,

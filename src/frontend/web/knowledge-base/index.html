@@ -432,67 +432,51 @@
 
     <!-- Navigation Tabs -->
     <div class="tabs-nav" role="tablist">
-      <button class="tab-btn active" onclick="switchTab(0)" id="tab-0">1. OCR Guide &amp; Dual-Layer PDF</button>
-      <button class="tab-btn" onclick="switchTab(1)" id="tab-1">2. PDF Standards &amp; History</button>
-      <button class="tab-btn" onclick="switchTab(2)" id="tab-2">3. Ephemeral RAM-Disk Security</button>
+      <button class="tab-btn active" onclick="switchTab(0)" id="tab-0">1. Dual-Layer PDF Architecture</button>
+      <button class="tab-btn" onclick="switchTab(1)" id="tab-1">2. Evolution of PDF &amp; PDF/A</button>
+      <button class="tab-btn" onclick="switchTab(2)" id="tab-2">3. Kernel-Level Ephemeral Security</button>
+      <button class="tab-btn" onclick="switchTab(3)" id="tab-3">4. Scan Restoration &amp; Binarization</button>
+      <button class="tab-btn" onclick="switchTab(4)" id="tab-4">5. Structured Markdown vs Plain Text</button>
     </div>
 
     <!-- Tab Pane 1: OCR Architecture -->
     <div class="tab-pane active" id="pane-0">
       <article class="article-card">
-        <h2>Dual-Layer Searchable PDF Architecture (ISO 32000-1)</h2>
-        <p>A dual-layer PDF (commonly known as a "Searchable PDF") preserves the exact visual fidelity of the original
-          scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan
-          bitmap.</p>
+        <h2>Dual-Layer Searchable PDF Architecture (ISO 32000-1 &amp; Invisible Font Render Mode 3)</h2>
+        <p>A dual-layer PDF (commonly known as a "Searchable PDF" or "Sandwich PDF") preserves the exact visual fidelity of the original scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan bitmap.</p>
 
         <h3>How freeOCR.me Synthesizes Dual-Layer PDFs:</h3>
         <ul>
-          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at
-            its original resolution and DPI. Stamps, hand-written annotations, and signatures remain visually intact.
-          </li>
-          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are mapped from
-            pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
+          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at its native resolution and color space. Stamps, hand-written signatures, physical creases, and official seals remain visually authentic.</li>
+          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are transformed from raster pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
             <br><code>scale_x = page.rect.width / pix.width</code>,
             <code>scale_y = page.rect.height / pix.height</code>.
           </li>
-          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font
-            rendering mode 3, text is rendered in an invisible glyph layer positioned over each matching scanned word.
-            Users can highlight, copy, and search (Ctrl+F) with 100% geometric accuracy.</li>
+          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font rendering mode 3 ("Neither fill nor stroke text"), character glyphs are positioned with microscopic precision over each matching scanned word. The PDF reader calculates selection bounds and clipboard text without rendering colored pixels, enabling transparent highlight, copy, and search (Ctrl+F) operations.</li>
+          <li><strong>Word-Level Alignment &amp; Spacing:</strong> Standard text insertion operators (<code>Tj</code>, <code>TJ</code>) combined with character spacing (<code>Tc</code>) and word spacing (<code>Tw</code>) parameters distribute glyph widths to eliminate drift across multi-column documents.</li>
         </ul>
 
         <h3>Preprocessing &amp; Layout Heuristics:</h3>
         <ul>
-          <li><strong>Deskewing via Radon Transforms:</strong> Scanned pages frequently enter at slight tilt angles.
-            Radon transform projections calculate horizontal skew (-15° to +15°) and automatically rotate pages prior to
-            segmentation.</li>
-          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground text from aged paper textures,
-            background bleed-through, and coffee stains.</li>
-          <li><strong>Dual Engine Routing:</strong> Clean, single-column documents route to OCRmyPDF/Tesseract on CPU
-            for rapid &lt;1.5s completion. Complex multi-column documents, math formulas, and nested tables dynamically
-            route to our Baidu Unlimited OCR neural model (~6 GB weights) running on Nvidia GPU instances.</li>
+          <li><strong>Deskewing via Radon Projections:</strong> Calculates skew angles between -15° and +15° across text baselines to rotate pages back to true horizontal alignment before segmentation.</li>
+          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground character strokes from paper grain, stains, and ink bleed-through.</li>
+          <li><strong>Dual Engine Neural Routing:</strong> Single-column linear text routes to CPU workers running OCRmyPDF and Tesseract. Complex multi-column tables, mathematical formulas, and multilingual scripts route to Baidu Unlimited OCR on GPU clusters.</li>
         </ul>
       </article>
     </div>
 
-    <!-- Tab Pane 2: Standards -->
+    <!-- Tab Pane 2: PDF Standards -->
     <div class="tab-pane" id="pane-1">
       <article class="article-card">
-        <h2>The Evolution of Portable Document Standards</h2>
-        <p>Before the Portable Document Format (PDF) was invented by Dr. John Warnock in 1991 (the "Camelot Project"),
-          sharing formatted digital documents across different operating systems was notoriously fragmented.</p>
+        <h2>The Evolution of Document Interchange: PostScript, PDF 1.0, and Long-Term PDF/A Archiving</h2>
+        <p>Before the Portable Document Format (PDF) was created by Dr. John Warnock in 1991 under Adobe's "Camelot Project", distributing formatted digital documents across heterogeneous operating systems was plagued by incompatible printer drivers, missing system fonts, and broken page geometry.</p>
 
         <h3>Key Milestones in Document Interchange:</h3>
         <ul>
-          <li><strong>PostScript (1984):</strong> A page-description programming language that allowed laser printers to
-            rasterize vector glyphs. However, PostScript files required a full interpreter to execute, making fast
-            screen previewing slow and resource-heavy.</li>
-          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary
-            stream, allowing pages to render on-screen independently.</li>
-          <li><strong>ISO 32000-1 (2008):</strong> PDF was officially standardized by the International Organization for
-            Standardization as an open format. Render mode 3 was codified to allow font characters to define bounding
-            geometry and selection without coloring pixels.</li>
-          <li><strong>PDF/A (Archive Standard):</strong> Forbids external font dependencies and encryption, ensuring
-            documents can still be opened and rendered accurately 100 years into the future.</li>
+          <li><strong>PostScript (1984):</strong> A complete page-description programming language that allowed laser printers to rasterize vector glyphs. However, PostScript required a full Turing-complete interpreter to execute, making real-time on-screen previewing slow and memory-intensive.</li>
+          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary object stream. By removing procedural loops and adding page index dictionaries, PDF enabled rapid random page rendering and interactive cross-platform viewing.</li>
+          <li><strong>ISO 32000-1 (2008):</strong> PDF was formalized as an open international standard by the ISO. Render mode 3 was codified to allow font characters to define bounding geometry and selection without coloring pixels, laying the legal foundation for modern searchable PDF overlays.</li>
+          <li><strong>PDF/A Long-Term Archival Standard (ISO 19005):</strong> Specifically engineered for decades-long legal, government, and academic archival. PDF/A strictly forbids external font dependencies, audio/video streams, JavaScript execution, and encryption, guaranteeing that an archived document can be reproduced identically in 100 years. freeOCR.me creates PDF/A-compliant dual-layer files.</li>
         </ul>
       </article>
     </div>
@@ -500,25 +484,68 @@
     <!-- Tab Pane 3: Security -->
     <div class="tab-pane" id="pane-2">
       <article class="article-card">
-        <h2>Zero-Retention Ephemeral RAM-Disk Security (Linux tmpfs)</h2>
-        <p>Document privacy is the foundational design pillar of freeOCR.me. Traditional cloud converters save files to
-          Amazon S3 or Google Cloud Storage buckets where they may persist indefinitely.</p>
+        <h2>Kernel-Level Zero-Retention Security: Operating Ephemeral AI Workloads in Linux tmpfs RAM Disks</h2>
+        <p>Document privacy is the foundational architectural principle of freeOCR.me. Unlike conventional cloud converters that write user files to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants linger in filesystem journals, unallocated sectors, and backup snapshots, freeOCR.me enforces privacy directly at the Linux kernel boundary.</p>
 
-        <h3>Our Kernel-Level Security Guarantees:</h3>
+        <h3>Our Kernel-Level Security Architecture:</h3>
         <ul>
-          <li><strong>Volatile Memory Mount:</strong> Uploaded documents reside exclusively in a Linux
-            <code>tmpfs</code> RAM disk mount. Files never touch physical non-volatile storage (NVMe, SSD, or HDD).</li>
-          <li><strong>Instant Cryptographic Unlink:</strong> As soon as the output PDF or text is assembled, input files
-            are cryptographically unlinked from memory using standard POSIX <code>unlink()</code> calls. Once the active
-            conversion session terminates or 24 hours expire, RAM pages are zeroed.</li>
-          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to
-            fine-tune machine learning models.</li>
-          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to
-            0 instances when idle, completely clearing runtime memory.</li>
+          <li><strong>Volatile Memory Mount (<code>tmpfs</code>):</strong> All uploaded documents, temporary page bitmaps, deskewed buffers, and reconstructed PDFs reside exclusively in Linux <code>tmpfs</code> RAM disk mounts. Data exists strictly as electrical charge in volatile DRAM chips. At no stage does your document ever touch persistent storage or magnetic platters.</li>
+          <li><strong>Instant Cryptographic POSIX Unlink:</strong> The moment your OCR conversion generates the final output stream, an automated file unlinking protocol executes standard POSIX <code>unlink()</code> calls. Inode references are severed and physical DRAM pages are returned to the kernel free pool immediately.</li>
+          <li><strong>Autonomous Janitor &amp; Watchdog Daemon:</strong> A continuous background watchdog sweeps the RAM disk directory every 60 seconds. Any orphaned session older than 60 minutes is forcefully purged, guaranteeing zero memory leakage.</li>
+          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to fine-tune machine learning models.</li>
+          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to 0 instances when idle, completely clearing runtime memory.</li>
         </ul>
       </article>
     </div>
+
+    <!-- Tab Pane 4: Scan Restoration & Binarization -->
+    <div class="tab-pane" id="pane-3">
+      <article class="article-card">
+        <h2>How to Extract Clean Text from Low-Resolution Scans, Faded Receipts &amp; Distorted Documents</h2>
+        <p>Real-world document digitization rarely starts with pristine, high-resolution scans. Mobile camera photographs taken under uneven ambient lighting, faded thermal store receipts, crumpled contracts, and low-resolution 72 DPI faxes present severe challenges for standard optical character recognition systems.</p>
+
+        <h3>1. Radon Transform Deskewing</h3>
+        <p>When physical sheets are fed into automatic document feeders or photographed with handheld devices, they frequently introduce rotational skew. Applying character segmentation directly on tilted lines produces broken word boundaries and garbled reading order. freeOCR.me implements a high-precision Radon transform algorithm:</p>
+        <ul>
+          <li>The Radon transform calculates intensity projections along radial lines across angular steps of 0.1° spanning -15° to +15°.</li>
+          <li>Because lines of text create intense peaks of variance when projected parallel to their baselines, the angle exhibiting maximum variance corresponds precisely to the document's orientation.</li>
+          <li>The image is rotated using bicubic interpolation with boundary mirroring, restoring crisp horizontal text orientation without clipping edge characters.</li>
+        </ul>
+
+        <h3>2. Adaptive Otsu Binarization</h3>
+        <p>Global thresholding algorithms choose a single intensity cutoff for the entire image. This fails dramatically on thermal receipts with faded ink or scans with shadow gradients across the gutter. freeOCR.me employs local adaptive thresholding:</p>
+        <ul>
+          <li>The page is evaluated in localized rolling windows ($15 \times 15$ to $31 \times 31$ pixels).</li>
+          <li>The threshold dynamically adjusts based on local contrast and background luminescence, isolating faint character strokes on faded thermal paper while suppressing dark background bleed-through.</li>
+        </ul>
+
+        <h3>3. Neural Super-Resolution &amp; DPI Upscaling</h3>
+        <p>Character recognition engines achieve peak accuracy at 300 DPI. Input scans below 150 DPI suffer from merged character loops (e.g., confusing 'e', 'a', and 'o'). Our preprocessor detects sub-standard DPI and applies Lanczos-4 resampling and edge-sharpening kernels, restoring character geometry before neural inference.</p>
+      </article>
+    </div>
+
+    <!-- Tab Pane 5: Markdown vs Plain Text -->
+    <div class="tab-pane" id="pane-4">
+      <article class="article-card">
+        <h2>Why Structured Markdown (.md) is Superior to Plain Text (.txt) for OCR Output</h2>
+        <p>For over three decades, optical character recognition tools have defaulted to outputting unformatted Plain Text (<code>.txt</code>). While plain text provides basic raw characters, it strips away the document's architectural DNA: headers, tabular relationships, semantic hierarchy, and block structures.</p>
+
+        <h3>1. Heading Hierarchy &amp; Document Outlining</h3>
+        <p>In unformatted text, an 18pt bold chapter title looks identical to a 10pt body paragraph, forcing human readers and automated parsers to guess where sections begin. freeOCR.me analyzes font size clustering, vertical line spacing, and stroke weights to assign semantic Markdown headings (<code># Heading 1</code>, <code>## Heading 2</code>, <code>### Heading 3</code>), creating an instant table of contents for your document.</p>
+
+        <h3>2. Tabular Data &amp; Financial Ledger Preservation</h3>
+        <p>When multi-column financial statements or invoices are converted to plain text, column alignments collapse into jumbled, ambiguous lines where numbers lose connection to their column headers. Structured Markdown preserves tables with standard syntax (<code>| Column | Header |</code>), ensuring spreadsheets, bank statements, and legal exhibits can be imported cleanly into Excel, Notion, Obsidian, or database pipelines.</p>
+
+        <h3>3. Code Snippets &amp; Mathematical Notation</h3>
+        <p>Technical whitepapers and academic research frequently interleave source code, chemical notations, or formulas. Markdown allows fencing with backticks (<code>```python</code>), preventing indentation collapse and syntax corruption.</p>
+
+        <h3>4. LLM &amp; RAG Pipeline Readiness</h3>
+        <p>Modern AI agents and Retrieval-Augmented Generation (RAG) frameworks rely on semantic Markdown chunking. By utilizing Markdown headings and paragraph breaks as natural semantic split boundaries, vector search embeddings retain contextual relevance without mid-sentence truncation.</p>
+      </article>
+    </div>
   </main>
+
+
 
   <footer>
     <div class="footer-grid">

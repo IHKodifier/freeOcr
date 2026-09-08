@@ -24,8 +24,8 @@ void main() {
       expect(find.byType(AboutPage), findsOneWidget);
       expect(find.text('ABOUT FREEOCR.ME'), findsOneWidget);
       expect(find.textContaining('Democratizing Document OCR'), findsOneWidget);
-      expect(find.textContaining('1. Our Mission & Philosophy'), findsOneWidget);
-      expect(find.textContaining('2. Ephemeral RAM-Disk Security'), findsOneWidget);
+      expect(find.textContaining('Founding Mission & Philosophy'), findsOneWidget);
+      expect(find.textContaining('Ephemeral RAM-Disk Security Guarantee'), findsOneWidget);
       expect(find.textContaining('Baidu Unlimited OCR'), findsAtLeast(1));
     });
   });

@@ -85,47 +85,52 @@ class _AboutPageState extends State<AboutPage> {
                     // Section 1: Our Mission
                     _buildCard(
                       context,
-                      title: '1. Our Mission & Philosophy',
+                      title: '1. Our Founding Mission & Philosophy',
                       icon: Icons.lightbulb_outline_rounded,
-                      body: 'Traditional online OCR tools typically lock users behind steep monthly subscriptions, place arbitrary 5-page conversion limits, or compromise document privacy by retaining uploaded files on server disks.\n\n'
-                          'freeOCR.me was conceived with a single guiding principle: document accessibility tools should be accessible to everyone, everywhere, without compromising data confidentiality. We offer a generous 100 MB base upload limit that can be extended up to 1 GB completely free.',
+                      body: 'The modern digital landscape is littered with utility websites that promise "free online OCR" only to bait-and-switch visitors behind aggressive paywalls. Users frequently encounter arbitrary 3-page conversion limits, coercive \$15–\$30 monthly subscriptions, intrusive watermarks stamped across output pages, or opaque terms that grant platforms broad rights to inspect, retain, or monetize uploaded private paperwork.\n\n'
+                          'freeOCR.me was conceived with a fundamentally different ethos: document accessibility is an essential utility of the information age and must remain universally accessible to everyone, everywhere, without financial friction or privacy compromise. Whether you are a student archiving historical library scans, an independent researcher digitizing out-of-print books, a legal assistant searching through trial discovery records, or an everyday consumer trying to read a faded medical receipt, you deserve an industrial-strength conversion engine that respects your time, your wallet, and your confidentiality.\n\n'
+                          'We made a permanent, non-negotiable architectural commitment from day one: freeOCR.me is completely free to use. There are no credit card prompts, no trial subscriptions that silently bill you, no locked enterprise features, and no mandatory account creation. Every visitor instantly receives a 100 MB per-file upload allowance, stackable up to 1,000 MB (1 GB) for heavy multi-hundred-page archives.',
                     ),
                     const SizedBox(height: 16),
 
-                    // Section 2: Ephemeral Architecture
+                    // Section 2: Open-Source Engines
                     _buildCard(
                       context,
-                      title: '2. Ephemeral RAM-Disk Security (Zero Retention)',
-                      icon: Icons.security_rounded,
-                      body: 'Privacy is not an afterthought at freeOCR.me — it is the foundation of our engineering architecture:\n\n'
-                          '• Volatile Memory Processing: All uploaded PDFs and images are processed inside Linux tmpfs RAM disks rather than persistent hard drives.\n'
-                          '• Instant Ephemeral Cleanup: As soon as your OCR conversion completes and you download the result, files are purged immediately.\n'
-                          '• Zero User Accounts: We do not require registration, passwords, or personal email addresses to use the core utility.',
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Section 3: Open-Source Engines
-                    _buildCard(
-                      context,
-                      title: '3. Open-Source AI Engines',
+                      title: '2. Transparent Technology Stack Attribution & Neural Engineering',
                       icon: Icons.hub_rounded,
-                      body: 'We stand on the shoulders of giants. freeOCR.me is powered by leading open-source machine learning and document processing technologies:\n\n'
-                          '• Baidu Unlimited OCR (PaddleOCR): Industrial-grade deep learning model delivering exceptional recognition accuracy across multilingual and complex document layouts.\n'
-                          '• OCRmyPDF: The gold standard in PDF remastering, generating ISO-compliant searchable PDF/A documents with invisible text overlays.\n'
-                          '• Tesseract OCR: The battle-tested optical character recognition engine maintained by Google and open-source contributors.\n'
-                          '• PyMuPDF: Ultra-fast PDF rendering and geometry parsing.',
+                      body: 'Rather than disguising established open algorithms behind proprietary marketing buzzwords, freeOCR.me proudly attributes and builds upon the extraordinary open-source software and machine learning communities. Our multi-stage pipeline integrates state-of-the-art neural networks, computer vision algorithms, and PDF remastering engines:\n\n'
+                          '• Baidu Unlimited OCR (PaddleOCR): A massive ~6 GB deep neural vision architecture that represents the frontier of open optical character recognition. Unlike legacy pattern-matching engines, Baidu Unlimited OCR excels at multi-column newspaper layouts, complex mathematical formulas rendered in TeX syntax, rotated text lines, dense financial tables, and multilingual character sets including Chinese, Japanese, Korean, Arabic, and Latin scripts.\n\n'
+                          '• OCRmyPDF: The gold standard in PDF remastering, developed and maintained by open-source contributors worldwide. OCRmyPDF intelligently inspects incoming PDF streams, applies lossless image optimization, corrects page skew, and synthesizes invisible text layers adhering to ISO 32000-1 and PDF/A archiving standards.\n\n'
+                          '• Tesseract OCR: Maintained by Google and the global open-source community, Tesseract provides battle-tested, lightning-fast character recognition for standard linear documents, letters, contracts, and single-column text.\n\n'
+                          '• PyMuPDF & Artifex MuPDF Core: High-performance C-based rendering and PDF manipulation library enabling sub-second document vectorization, automated DPI upscaling to 300 DPI, and client-side password decryption without writing decrypted files to disk.\n\n'
+                          '• FastAPI & Modern Python Asynchronous Core: Our backend microservices are orchestrated with FastAPI and Python 3.13, delivering sub-millisecond routing, strict Pydantic schema validation, and real-time Server-Sent Events (SSE) streaming for page-by-page OCR progress.',
                     ),
                     const SizedBox(height: 16),
 
-                    // Section 4: Transparent Monetization
+                    // Section 3: Transparent Monetization
                     _buildCard(
                       context,
-                      title: '4. Transparent Monetization & Sustainability',
+                      title: '3. Transparent Monetization & Infrastructure Sustainability',
                       icon: Icons.monetization_on_outlined,
-                      body: 'To keep freeOCR.me permanently free for users around the globe without charging subscription fees or selling user data, we sustain our server infrastructure through:\n\n'
-                          '1. Google AdSense: Minimal, non-intrusive display advertisements placed in designated non-obstructive page sections.\n'
-                          '2. Rewarded Extensions: Users processing exceptionally large documents can watch a brief 15-second video sponsor ad to earn +50 MB extra capacity up to 1,000 MB (1 GB).',
+                      body: 'Running industrial-grade AI models on dedicated GPU clusters and high-core CPU servers incurs significant continuous computing, bandwidth, and electrical costs. How does freeOCR.me maintain a high-performance infrastructure without selling user data or charging subscriptions? The answer lies in radical economic transparency:\n\n'
+                          '1. Contextual Display Advertising (Google AdSense & Google Ad Manager): We display non-obstructive, privacy-compliant advertisements positioned cleanly outside the document interaction flow. These ads generate baseline revenue to cover routine cloud compute and server uptime.\n\n'
+                          '2. Rewarded Video Extensions (User-Driven Compute Offsetting): For users processing extraordinarily heavy files—such as scanned books or court dockets spanning hundreds of megabytes—we introduced voluntary 15-second rewarded video ads. Watching a brief sponsor message directly offsets the exact GPU compute expenditure needed to perform neural inference across your pages, rewarding you with +50 MB of additional upload capacity per ad up to a huge 1,024 MB (1 GB).\n\n'
+                          '3. Zero Data Monetization: We never sell telemetry, we never share document contents with third-party data brokers, and we never use your uploaded files to train commercial machine learning models. User attention directly sustains user compute.',
                     ),
+                    const SizedBox(height: 16),
+
+                    // Section 4: Ephemeral RAM-Disk Security
+                    _buildCard(
+                      context,
+                      title: '4. Kernel-Level Ephemeral RAM-Disk Security Guarantee',
+                      icon: Icons.security_rounded,
+                      body: 'In traditional cloud document processing architectures, uploaded files are written to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants and metadata can persist across filesystem journals, backups, and snapshot volumes for months or years. At freeOCR.me, user confidentiality is enforced at the operating system kernel level:\n\n'
+                          '• Linux tmpfs Volatile Memory Execution: All uploaded files, intermediate page bitmaps, deskewed buffers, and OCR artifacts exist exclusively in Linux tmpfs RAM disk mounts. Bytes are written only to volatile DRAM chips. At no point does your document ever touch persistent storage or non-volatile physical disk platters.\n\n'
+                          '• Instant Automated Unlink Protocols: The moment your OCR conversion finishes and your output PDF, TXT, or Markdown stream is generated, an automated file unlinking protocol executes immediately. Ephemeral file pointers are severed, and memory allocations are returned to the kernel.\n\n'
+                          '• Autonomous Janitor & Watchdog Daemon: A continuous background watchdog process monitors the RAM disk mount. Any orphaned session older than 60 minutes is forcefully unlinked, preventing memory leakage and guaranteeing that no orphaned document ever lingers.\n\n'
+                          '• Zero Account & Zero Tracking Footprint: We do not ask for your name, email address, password, or payment information. We set no profiling cookies and maintain zero database records connecting your identity to the documents you convert.',
+                    ),
+
                   ],
                 ),
               ),

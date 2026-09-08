@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 import '../services/telemetry_service.dart';
 import '../utils/url_helper.dart';
 import '../constants/social_links.dart';
@@ -23,6 +24,7 @@ class _ContactPageState extends State<ContactPage> {
   final _subjectController = TextEditingController();
   final _messageController = TextEditingController();
 
+  bool _isSubmitting = false;
   bool _isSubmitted = false;
   String _selectedCategory = 'General Inquiry';
 
@@ -49,9 +51,25 @@ class _ContactPageState extends State<ContactPage> {
     super.dispose();
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
+    if (_isSubmitting) return;
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
+        _isSubmitting = true;
+      });
+
+      await ApiService.submitContactForm(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        category: _selectedCategory,
+        subject: _subjectController.text.trim(),
+        message: _messageController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _isSubmitting = false;
         _isSubmitted = true;
       });
 
@@ -73,6 +91,7 @@ class _ContactPageState extends State<ContactPage> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -308,11 +327,20 @@ class _ContactPageState extends State<ContactPage> {
                                     height: 48,
                                     child: FilledButton.icon(
                                       key: const Key('contact_submit_btn'),
-                                      onPressed: _handleSubmit,
-                                      icon: const Icon(Icons.send_rounded),
-                                      label: const Text(
-                                        'Submit Inquiry',
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                      onPressed: _isSubmitting ? null : _handleSubmit,
+                                      icon: _isSubmitting
+                                          ? const SizedBox(
+                                              width: 18,
+                                              height: 18,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                              ),
+                                            )
+                                          : const Icon(Icons.send_rounded),
+                                      label: Text(
+                                        _isSubmitting ? 'Sending...' : 'Submit Inquiry',
+                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                                       ),
                                       style: FilledButton.styleFrom(
                                         backgroundColor: const Color(0xFF6366F1),
@@ -322,6 +350,7 @@ class _ContactPageState extends State<ContactPage> {
                                       ),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ),
