@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -7,7 +8,8 @@
 
   <title>About Us — freeOCR.me</title>
   <meta name="title" content="About Us — freeOCR.me | Democratizing Document OCR with Zero-Storage Privacy">
-  <meta name="description" content="Learn about freeOCR.me, our mission to provide completely free, privacy-first document OCR with ephemeral RAM disk processing, zero cloud data retention, and open-source AI engines.">
+  <meta name="description"
+    content="Learn about freeOCR.me, our mission to provide completely free, privacy-first document OCR with ephemeral RAM disk processing, zero cloud data retention, and open-source AI engines.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freeocr.me/about">
 
@@ -15,7 +17,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://freeocr.me/about">
   <meta property="og:title" content="About Us — freeOCR.me">
-  <meta property="og:description" content="100% Free Online AI OCR utility. Ephemeral Linux RAM disk processing with zero disk retention.">
+  <meta property="og:description"
+    content="100% Free Online AI OCR utility. Ephemeral Linux RAM disk processing with zero disk retention.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -25,23 +28,24 @@
 
   <!-- Theme Script (Runs synchronously before render to prevent flash) -->
   <script>
-    (function() {
+    (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 
   <!-- Google AdSense Monetization Tag -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017"
+    crossorigin="anonymous"></script>
 
   <!-- Google Analytics 4 (GA4) Telemetry Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
   </script>
@@ -62,6 +66,7 @@
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
     }
+
     [data-theme="dark"] {
       --bg: #0b0f19;
       --card-bg: #111827;
@@ -78,7 +83,12 @@
       --toggle-color: #f3f4f6;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg);
@@ -89,6 +99,7 @@
       flex-direction: column;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -102,6 +113,7 @@
       top: 0;
       z-index: 100;
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -112,6 +124,7 @@
       color: var(--heading);
       text-decoration: none;
     }
+
     .logo-icon {
       width: 32px;
       height: 32px;
@@ -124,12 +137,17 @@
       color: var(--accent);
       font-weight: bold;
     }
-    .logo span { color: var(--accent); }
+
+    .logo span {
+      color: var(--accent);
+    }
+
     .nav-wrapper {
       display: flex;
       align-items: center;
       gap: 1.25rem;
     }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
@@ -137,7 +155,13 @@
       font-weight: 500;
       transition: color 0.2s;
     }
-    nav a:hover, nav a.active { color: var(--accent); font-weight: 600; }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .theme-toggle-btn {
       background: var(--toggle-bg);
       border: none;
@@ -150,12 +174,14 @@
       align-items: center;
       justify-content: center;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
       flex: 1;
     }
+
     .badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
@@ -168,6 +194,7 @@
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
     }
+
     h1 {
       font-size: 2.25rem;
       font-weight: 800;
@@ -176,12 +203,14 @@
       margin-bottom: 0.75rem;
       line-height: 1.2;
     }
+
     .subtitle {
       font-size: 1.15rem;
       color: var(--text-muted);
       margin-bottom: 2rem;
       line-height: 1.5;
     }
+
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -189,6 +218,7 @@
       padding: 1.75rem;
       margin-bottom: 1.5rem;
     }
+
     .card h2 {
       font-size: 1.25rem;
       font-weight: 700;
@@ -198,25 +228,35 @@
       align-items: center;
       gap: 0.5rem;
     }
+
     .card p {
       color: var(--text-muted);
       font-size: 0.98rem;
       margin-bottom: 0.85rem;
     }
-    .card p:last-child { margin-bottom: 0; }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
     .card ul {
       margin-left: 1.25rem;
       color: var(--text-muted);
       font-size: 0.95rem;
       margin-bottom: 0.85rem;
     }
-    .card li { margin-bottom: 0.4rem; }
+
+    .card li {
+      margin-bottom: 0.4rem;
+    }
+
     footer {
       background: var(--footer-bg);
       border-top: 1px solid var(--border);
       padding: 3rem 2rem 2rem;
       margin-top: 4rem;
     }
+
     .footer-grid {
       max-width: 1100px;
       margin: 0 auto;
@@ -224,21 +264,33 @@
       grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 2rem;
     }
+
     .footer-col h3 {
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--heading);
       margin-bottom: 1rem;
     }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 0.5rem; }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 0.88rem;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--accent); }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
     .footer-bottom {
       max-width: 1100px;
       margin: 2rem auto 0;
@@ -248,11 +300,13 @@
       color: var(--text-muted);
       font-size: 0.82rem;
     }
+
     .social-row {
       display: flex;
       gap: 0.75rem;
       margin-top: 1rem;
     }
+
     .social-btn {
       display: flex;
       align-items: center;
@@ -266,9 +320,11 @@
       font-size: 0.9rem;
       transition: background 0.2s;
     }
+
     .social-btn:hover {
       background: rgba(99, 102, 241, 0.2);
     }
+
     .social-modal-overlay {
       position: fixed;
       top: 0;
@@ -282,6 +338,7 @@
       justify-content: center;
       z-index: 9999;
     }
+
     .social-modal-box {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -291,13 +348,24 @@
       width: 90%;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
     }
+
     @media (max-width: 768px) {
-      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      header { padding: 0.75rem 1rem; }
-      .container { padding: 1.5rem 1rem; }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      header {
+        padding: 0.75rem 1rem;
+      }
+
+      .container {
+        padding: 1.5rem 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -310,7 +378,6 @@
         <a href="/">Home</a>
         <a href="/about" class="active">About</a>
         <a href="/knowledge-base">Knowledge Base</a>
-        <a href="/api-docs">API Docs</a>
         <a href="/contact">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
@@ -323,21 +390,28 @@
   <main class="container">
     <div class="badge">ABOUT FREEOCR.ME</div>
     <h1>Democratizing Document OCR with Zero-Storage Privacy</h1>
-    <p class="subtitle">A high-performance web utility converting scanned documents into searchable PDFs and clean digital text without accounts, paywalls, or privacy trade-offs.</p>
+    <p class="subtitle">A high-performance web utility converting scanned documents into searchable PDFs and clean
+      digital text without accounts, paywalls, or privacy trade-offs.</p>
 
     <div class="card">
       <h2>💡 1. Our Mission & Philosophy</h2>
-      <p>Traditional online OCR tools typically lock users behind steep monthly subscriptions, enforce arbitrary 5-page conversion caps, or compromise document privacy by retaining user files on permanent disk storage.</p>
-      <p>freeOCR.me was designed from the ground up as a pure utility: fast, completely free, and strictly private. Anyone can upload scanned PDF documents up to 100 MB right out of the box, with optional rewarded video extensions up to 1,000 MB (1 GB) for heavy multi-hundred-page documents.</p>
+      <p>Traditional online OCR tools typically lock users behind steep monthly subscriptions, enforce arbitrary 5-page
+        conversion caps, or compromise document privacy by retaining user files on permanent disk storage.</p>
+      <p>freeOCR.me was designed from the ground up as a pure utility: fast, completely free, and strictly private.
+        Anyone can upload scanned PDF documents up to 100 MB right out of the box, with optional rewarded video
+        extensions up to 1,000 MB (1 GB) for heavy multi-hundred-page documents.</p>
     </div>
 
     <div class="card">
       <h2>🛡️ 2. Ephemeral RAM-Disk Security (Zero Retention)</h2>
       <p>Privacy is the central architectural pillar of freeOCR.me:</p>
       <ul>
-        <li><strong>Volatile Memory Processing:</strong> Uploaded documents reside exclusively in ephemeral Linux <code>tmpfs</code> RAM disks rather than persistent solid-state or hard drives.</li>
-        <li><strong>Instant Cleanup:</strong> Files are automatically and irrevocably unlinked and wiped immediately upon download completion or after session expiration.</li>
-        <li><strong>Zero Account Creation:</strong> No signups, passwords, cookies for profiling, or credit card requirements.</li>
+        <li><strong>Volatile Memory Processing:</strong> Uploaded documents reside exclusively in ephemeral Linux
+          <code>tmpfs</code> RAM disks rather than persistent solid-state or hard drives.</li>
+        <li><strong>Instant Cleanup:</strong> Files are automatically and irrevocably unlinked and wiped immediately
+          upon download completion or after session expiration.</li>
+        <li><strong>Zero Account Creation:</strong> No signups, passwords, cookies for profiling, or credit card
+          requirements.</li>
       </ul>
     </div>
 
@@ -345,19 +419,25 @@
       <h2>⚙️ 3. Open-Source AI Engines</h2>
       <p>freeOCR.me brings together industry-leading open-source machine learning and PDF engineering libraries:</p>
       <ul>
-        <li><strong>Baidu Unlimited OCR (PaddleOCR):</strong> Industrial-grade deep learning model delivering high recognition accuracy across complex multilingual document layouts.</li>
-        <li><strong>OCRmyPDF:</strong> The standard in PDF remastering, creating ISO-compliant searchable PDF/A documents with invisible text overlays.</li>
-        <li><strong>Tesseract OCR:</strong> The proven optical character recognition engine maintained by Google and the open-source community.</li>
+        <li><strong>Baidu Unlimited OCR (PaddleOCR):</strong> Industrial-grade deep learning model delivering high
+          recognition accuracy across complex multilingual document layouts.</li>
+        <li><strong>OCRmyPDF:</strong> The standard in PDF remastering, creating ISO-compliant searchable PDF/A
+          documents with invisible text overlays.</li>
+        <li><strong>Tesseract OCR:</strong> The proven optical character recognition engine maintained by Google and the
+          open-source community.</li>
         <li><strong>PyMuPDF:</strong> Lightning-fast PDF parsing and rendering.</li>
       </ul>
     </div>
 
     <div class="card">
       <h2>🌱 4. Transparent Monetization & Sustainability</h2>
-      <p>To keep freeOCR.me permanently free for users globally without charging subscription fees or selling user data, we sustain our server infrastructure through:</p>
+      <p>To keep freeOCR.me permanently free for users globally without charging subscription fees or selling user data,
+        we sustain our server infrastructure through:</p>
       <ul>
-        <li><strong>Google AdSense:</strong> Minimal, non-intrusive display advertisements placed in designated non-obstructive page sections.</li>
-        <li><strong>Rewarded Quota Extensions:</strong> Users processing large files can watch an optional 15-second sponsor video to earn +50 MB extra capacity up to 1 GB.</li>
+        <li><strong>Google AdSense:</strong> Minimal, non-intrusive display advertisements placed in designated
+          non-obstructive page sections.</li>
+        <li><strong>Rewarded Quota Extensions:</strong> Users processing large files can watch an optional 15-second
+          sponsor video to earn +50 MB extra capacity up to 1 GB.</li>
       </ul>
     </div>
   </main>
@@ -372,11 +452,10 @@
         </p>
         <div class="social-row">
           <a href="https://x.com/freeocrme" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">𝕏</a>
-          <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank" rel="noopener">📷</a>
-          <!-- TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
-          <a href="#facebook" onclick="openSocialModal('Facebook'); return false;" class="social-btn" title="Facebook">fb</a>
-          <a href="#youtube" onclick="openSocialModal('YouTube'); return false;" class="social-btn" title="YouTube">▶</a>
-          -->
+          <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank"
+            rel="noopener">📷</a>
+          <a href="https://facebook.com/freeOCRme" class="social-btn" title="Facebook" target="_blank"
+            rel="noopener">fb</a>
         </div>
       </div>
       <div class="footer-col">
@@ -385,7 +464,6 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about">About Us</a></li>
           <li><a href="/knowledge-base">Knowledge Base</a></li>
-          <li><a href="/api-docs">API Docs</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -411,23 +489,6 @@
     </div>
   </footer>
 
-  <!-- Social Launch Fallback Modal -->
-  <div id="socialModal" class="social-modal-overlay" style="display:none;" onclick="if(event.target === this) closeSocialModal()">
-    <div class="social-modal-box">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-        <span style="font-size:22px;">📢</span>
-        <h3 id="socialModalTitle" style="margin:0; font-size:1.18rem; font-weight:700; color:var(--heading);">Platform Channel</h3>
-      </div>
-      <p id="socialModalBody" style="color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin-bottom:20px;">
-        Our official presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.
-      </p>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button onclick="closeSocialModal()" style="padding:8px 16px; border-radius:8px; border:1px solid var(--border); background:var(--toggle-bg); color:var(--text); cursor:pointer; font-weight:500; font-size:0.9rem;">Close</button>
-        <a href="/contact" style="display:inline-block; padding:8px 16px; border-radius:8px; background:var(--accent); color:white; text-decoration:none; font-weight:500; font-size:0.9rem;">Contact Support</a>
-      </div>
-    </div>
-  </div>
-
   <script>
     var toggleBtn = document.getElementById('themeToggleBtn');
     var sunIcon = document.getElementById('sunIcon');
@@ -446,24 +507,16 @@
     var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     updateIcons(currentTheme);
 
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', function () {
       var active = document.documentElement.getAttribute('data-theme') || 'light';
       var next = active === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try {
         localStorage.setItem('freeocr_theme', next);
-      } catch(e) {}
+      } catch (e) { }
       updateIcons(next);
     });
-
-    function openSocialModal(platform) {
-      document.getElementById('socialModalTitle').textContent = platform + ' Channel';
-      document.getElementById('socialModalBody').textContent = 'Our official ' + platform + ' presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.';
-      document.getElementById('socialModal').style.display = 'flex';
-    }
-    function closeSocialModal() {
-      document.getElementById('socialModal').style.display = 'none';
-    }
   </script>
 </body>
+
 </html>

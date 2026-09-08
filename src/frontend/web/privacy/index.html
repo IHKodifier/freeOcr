@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -7,7 +8,8 @@
 
   <title>Privacy Policy (GDPR &amp; CCPA Compliant) — freeOCR.me</title>
   <meta name="title" content="Privacy Policy (GDPR &amp; CCPA Compliant) — freeOCR.me">
-  <meta name="description" content="freeOCR.me Privacy Policy. Learn about our zero-retention ephemeral processing in Linux tmpfs RAM-disk, GDPR and CCPA rights, and AdSense cookie disclosures.">
+  <meta name="description"
+    content="freeOCR.me Privacy Policy. Learn about our zero-retention ephemeral processing in Linux tmpfs RAM-disk, GDPR and CCPA rights, and AdSense cookie disclosures.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freeocr.me/privacy">
 
@@ -15,7 +17,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://freeocr.me/privacy">
   <meta property="og:title" content="Privacy Policy — freeOCR.me">
-  <meta property="og:description" content="Strict zero-retention ephemeral document processing in Linux RAM disk. Read our complete GDPR and CCPA privacy policy.">
+  <meta property="og:description"
+    content="Strict zero-retention ephemeral document processing in Linux RAM disk. Read our complete GDPR and CCPA privacy policy.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -25,23 +28,24 @@
 
   <!-- Theme Script (Runs synchronously before render to prevent flash) -->
   <script>
-    (function() {
+    (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 
   <!-- Google AdSense Monetization Tag -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017"
+    crossorigin="anonymous"></script>
 
   <!-- Google Analytics 4 (GA4) Telemetry Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
   </script>
@@ -62,6 +66,7 @@
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
     }
+
     [data-theme="dark"] {
       --bg: #0b0f19;
       --card-bg: #111827;
@@ -78,7 +83,12 @@
       --toggle-color: #f3f4f6;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg);
@@ -89,6 +99,7 @@
       flex-direction: column;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -102,6 +113,7 @@
       top: 0;
       z-index: 100;
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -112,6 +124,7 @@
       color: var(--heading);
       text-decoration: none;
     }
+
     .logo-icon {
       width: 32px;
       height: 32px;
@@ -122,12 +135,17 @@
       align-items: center;
       justify-content: center;
     }
-    .logo span { color: var(--accent); }
+
+    .logo span {
+      color: var(--accent);
+    }
+
     .nav-wrapper {
       display: flex;
       align-items: center;
       gap: 1.25rem;
     }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
@@ -135,7 +153,13 @@
       font-weight: 500;
       transition: color 0.2s;
     }
-    nav a:hover, nav a.active { color: var(--accent); font-weight: 600; }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .theme-toggle-btn {
       background: var(--toggle-bg);
       color: var(--toggle-color);
@@ -148,15 +172,18 @@
       justify-content: center;
       transition: all 0.2s;
     }
+
     .theme-toggle-btn:hover {
       transform: scale(1.05);
     }
+
     .container {
       max-width: 900px;
       margin: 2.5rem auto;
       padding: 0 1.5rem;
       flex: 1;
     }
+
     h1 {
       font-size: 2.25rem;
       font-weight: 800;
@@ -164,11 +191,13 @@
       color: var(--heading);
       letter-spacing: -0.5px;
     }
+
     .meta {
       color: var(--text-muted);
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
     }
+
     /* Seamless ad container: collapses completely when no ad is loaded */
     .ad-banner-slot {
       margin: 1rem 0 1.5rem;
@@ -176,6 +205,7 @@
       display: flex;
       justify-content: center;
     }
+
     .policy-section {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -183,26 +213,43 @@
       padding: 1.75rem;
       margin-bottom: 1.5rem;
     }
+
     h2 {
       font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 0.75rem;
       color: var(--heading);
     }
+
     p {
       color: var(--text-muted);
       font-size: 1rem;
       line-height: 1.7;
     }
-    p + p { margin-top: 0.75rem; }
+
+    p+p {
+      margin-top: 0.75rem;
+    }
+
     ul {
       margin: 0.75rem 0 0.75rem 1.5rem;
       color: var(--text-muted);
       line-height: 1.7;
     }
-    li + li { margin-top: 0.5rem; }
-    a { color: var(--accent-light); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    li+li {
+      margin-top: 0.5rem;
+    }
+
+    a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
     footer {
       border-top: 1px solid var(--border);
       background: var(--footer-bg);
@@ -211,6 +258,7 @@
       font-size: 0.9rem;
       margin-top: auto;
     }
+
     .footer-grid {
       max-width: 1100px;
       margin: 0 auto;
@@ -219,6 +267,7 @@
       gap: 2.5rem;
       margin-bottom: 2.5rem;
     }
+
     .footer-col h3 {
       color: var(--heading);
       font-size: 0.95rem;
@@ -227,18 +276,27 @@
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
     }
+
     .footer-links {
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    .footer-links li { margin-bottom: 0.6rem; }
+
+    .footer-links li {
+      margin-bottom: 0.6rem;
+    }
+
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--accent); }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
     .footer-bottom {
       max-width: 1100px;
       margin: 0 auto;
@@ -247,6 +305,7 @@
       text-align: center;
       font-size: 0.85rem;
     }
+
     .social-modal-overlay {
       position: fixed;
       top: 0;
@@ -260,6 +319,7 @@
       justify-content: center;
       z-index: 9999;
     }
+
     .social-modal-box {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -269,18 +329,32 @@
       width: 90%;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
     }
+
     @media (max-width: 768px) {
-      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-      header { padding: 0.75rem 1rem; }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      header {
+        padding: 0.75rem 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
     <a href="/" class="logo">
       <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
           <polyline points="14 2 14 8 20 8"></polyline>
           <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -295,17 +369,21 @@
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/knowledge-base">Knowledge Base</a>
-        <a href="/api-docs">API Docs</a>
         <a href="/privacy" class="active">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="/contact">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <svg id="sunIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        <svg id="sunIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+          </path>
         </svg>
-        <svg id="moonIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        <svg id="moonIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
         </svg>
       </button>
     </div>
@@ -318,52 +396,66 @@
 
       <!-- Native Google AdSense Display Unit (seamless / collapses when empty) -->
       <div class="ad-banner-slot">
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; text-align:center;"
-             data-ad-client="ca-pub-6775900998665017"
-             data-ad-slot="9876543210"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
+          data-ad-client="ca-pub-6775900998665017" data-ad-slot="9876543210" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
         <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
+          (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
       </div>
 
       <section class="policy-section">
         <h2>1. Zero Persistent Document Storage Guarantee</h2>
-        <p>freeOCR.me is engineered from the ground up on a <strong>zero-retention, ephemeral-first architecture</strong>. When you upload a PDF or image for optical character recognition, the file is written exclusively to volatile Linux RAM disk (<code>tmpfs</code>).</p>
-        <p>Your uploaded documents and synthesized searchable outputs are purged immediately upon conversion completion or within 24 hours under our automated watchdog janitor. We never inspect, store, mine, sell, or retain your raw documents on persistent hard drives.</p>
+        <p>freeOCR.me is engineered from the ground up on a <strong>zero-retention, ephemeral-first
+            architecture</strong>. When you upload a PDF or image for optical character recognition, the file is written
+          exclusively to volatile Linux RAM disk (<code>tmpfs</code>).</p>
+        <p>Your uploaded documents and synthesized searchable outputs are purged immediately upon conversion completion
+          or within 24 hours under our automated watchdog janitor. We never inspect, store, mine, sell, or retain your
+          raw documents on persistent hard drives.</p>
       </section>
 
       <section class="policy-section">
         <h2>2. Data We Collect &amp; Process</h2>
-        <p>To operate our free OCR platform, prevent abuse, and serve programmatic advertisements, we collect minimal operational metrics:</p>
+        <p>To operate our free OCR platform, prevent abuse, and serve programmatic advertisements, we collect minimal
+          operational metrics:</p>
         <ul>
-          <li><strong>Technical Session Metadata:</strong> Anonymized session IDs, conversion duration, file size, page count, and OCR engine routing choices.</li>
-          <li><strong>IP Address &amp; Request Headers:</strong> Transient IP addresses logged in memory for DDoS rate limiting (maximum 10 requests per minute) and rate-limit evaluation.</li>
-          <li><strong>Optional Email Address:</strong> If you explicitly use our "Send via Email" delivery feature, your email address is used solely to dispatch the download link and is unlinked after delivery.</li>
+          <li><strong>Technical Session Metadata:</strong> Anonymized session IDs, conversion duration, file size, page
+            count, and OCR engine routing choices.</li>
+          <li><strong>IP Address &amp; Request Headers:</strong> Transient IP addresses logged in memory for DDoS rate
+            limiting (maximum 10 requests per minute) and rate-limit evaluation.</li>
+          <li><strong>Optional Email Address:</strong> If you explicitly use our "Send via Email" delivery feature, your
+            email address is used solely to dispatch the download link and is unlinked after delivery.</li>
         </ul>
       </section>
 
       <section class="policy-section">
         <h2>3. Google AdSense &amp; Advertising Cookies</h2>
-        <p>freeOCR.me is monetized through Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on prior visits to this or other websites.</p>
-        <p>Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to freeOCR.me and other sites on the Internet. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a> or <a href="https://www.aboutads.info" target="_blank" rel="noopener">aboutads.info</a>.</p>
+        <p>freeOCR.me is monetized through Google AdSense. Third-party vendors, including Google, use cookies to serve
+          ads based on prior visits to this or other websites.</p>
+        <p>Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to
+          freeOCR.me and other sites on the Internet. You may opt out of personalized advertising by visiting <a
+            href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a> or <a
+            href="https://www.aboutads.info" target="_blank" rel="noopener">aboutads.info</a>.</p>
       </section>
 
       <section class="policy-section">
         <h2>4. Your GDPR &amp; CCPA Rights</h2>
-        <p>Under the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), users enjoy comprehensive data privacy rights:</p>
+        <p>Under the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), users enjoy
+          comprehensive data privacy rights:</p>
         <ul>
-          <li><strong>Right to Erasure (Right to be Forgotten):</strong> Because all files are purged immediately from RAM disk, your document data is erased by design.</li>
-          <li><strong>Right to Access &amp; Portability:</strong> You may request confirmation of any operational logs associated with your session.</li>
-          <li><strong>Do Not Sell My Personal Information:</strong> freeOCR.me never sells personal information or uploaded document contents to any third party.</li>
+          <li><strong>Right to Erasure (Right to be Forgotten):</strong> Because all files are purged immediately from
+            RAM disk, your document data is erased by design.</li>
+          <li><strong>Right to Access &amp; Portability:</strong> You may request confirmation of any operational logs
+            associated with your session.</li>
+          <li><strong>Do Not Sell My Personal Information:</strong> freeOCR.me never sells personal information or
+            uploaded document contents to any third party.</li>
         </ul>
       </section>
 
       <section class="policy-section">
         <h2>5. Contact Data Protection Officer</h2>
-        <p>If you have any questions or data protection requests regarding this policy, contact our Data Protection Officer at <a href="mailto:privacy@freeocr.me">privacy@freeocr.me</a>.</p>
+        <p>If you have any questions or data protection requests regarding this policy, contact our Data Protection
+          Officer at <a href="mailto:privacy@freeocr.me">privacy@freeocr.me</a>.</p>
       </section>
     </article>
   </main>
@@ -372,14 +464,15 @@
     <div class="footer-grid">
       <div class="footer-col">
         <h3>freeOCR.me</h3>
-        <p>Privacy-First Scanned PDF to Searchable PDF/Text Web Platform. Ephemeral document synthesis powered by Baidu Unlimited OCR &amp; open-source AI.</p>
+        <p>Privacy-First Scanned PDF to Searchable PDF/Text Web Platform. Ephemeral document synthesis powered by Baidu
+          Unlimited OCR &amp; open-source AI.</p>
         <div style="display:flex; gap:0.6rem; margin-top:1rem;">
-          <a href="https://x.com/freeocrme" title="Twitter / X" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">𝕏</a>
-          <a href="https://instagram.com/freeocrme" title="Instagram" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">📷</a>
-          <!-- TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
-          <a href="#facebook" onclick="openSocialModal('Facebook'); return false;" title="Facebook" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">fb</a>
-          <a href="#youtube" onclick="openSocialModal('YouTube'); return false;" title="YouTube" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">▶</a>
-          -->
+          <a href="https://x.com/freeocrme" title="Twitter / X" target="_blank" rel="noopener"
+            style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">𝕏</a>
+          <a href="https://instagram.com/freeocrme" title="Instagram" target="_blank" rel="noopener"
+            style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">📷</a>
+          <a href="https://facebook.com/freeOCRme" title="Facebook" target="_blank" rel="noopener"
+            style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:var(--toggle-bg); color:var(--heading); text-decoration:none; font-size:0.9rem;">fb</a>
         </div>
       </div>
       <div class="footer-col">
@@ -388,7 +481,6 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about">About Us</a></li>
           <li><a href="/knowledge-base">Knowledge Base</a></li>
-          <li><a href="/api-docs">API Docs</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -413,23 +505,6 @@
     </div>
   </footer>
 
-  <!-- Social Launch Fallback Modal -->
-  <div id="socialModal" class="social-modal-overlay" style="display:none;" onclick="if(event.target === this) closeSocialModal()">
-    <div class="social-modal-box">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-        <span style="font-size:22px;">📢</span>
-        <h3 id="socialModalTitle" style="margin:0; font-size:1.18rem; font-weight:700; color:var(--heading);">Platform Channel</h3>
-      </div>
-      <p id="socialModalBody" style="color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin-bottom:20px;">
-        Our official presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.
-      </p>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button onclick="closeSocialModal()" style="padding:8px 16px; border-radius:8px; border:1px solid var(--border); background:var(--toggle-bg); color:var(--text); cursor:pointer; font-weight:500; font-size:0.9rem;">Close</button>
-        <a href="/contact" style="display:inline-block; padding:8px 16px; border-radius:8px; background:var(--accent); color:white; text-decoration:none; font-weight:500; font-size:0.9rem;">Contact Support</a>
-      </div>
-    </div>
-  </div>
-
   <script>
     var toggleBtn = document.getElementById('themeToggleBtn');
     var sunIcon = document.getElementById('sunIcon');
@@ -448,24 +523,16 @@
     var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     updateIcons(currentTheme);
 
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', function () {
       var active = document.documentElement.getAttribute('data-theme') || 'light';
       var next = active === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try {
         localStorage.setItem('freeocr_theme', next);
-      } catch(e) {}
+      } catch (e) { }
       updateIcons(next);
     });
-
-    function openSocialModal(platform) {
-      document.getElementById('socialModalTitle').textContent = platform + ' Channel';
-      document.getElementById('socialModalBody').textContent = 'Our official ' + platform + ' presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.';
-      document.getElementById('socialModal').style.display = 'flex';
-    }
-    function closeSocialModal() {
-      document.getElementById('socialModal').style.display = 'none';
-    }
   </script>
 </body>
+
 </html>

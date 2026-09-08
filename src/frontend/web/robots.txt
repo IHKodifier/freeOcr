@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Allow: /kb
 Allow: /kb/*
-Allow: /docs
 Allow: /privacy
 Allow: /terms
 

@@ -67,7 +67,12 @@ class AppFooter extends StatelessWidget {
                     const SizedBox(height: 32),
                     _buildNavColumn(context, sectionTitleStyle, linkStyle),
                     const SizedBox(height: 32),
-                    _buildEnginesColumn(context, theme, colorScheme, sectionTitleStyle),
+                    _buildEnginesColumn(
+                      context,
+                      theme,
+                      colorScheme,
+                      sectionTitleStyle,
+                    ),
                     const SizedBox(height: 32),
                     _buildLegalColumn(context, sectionTitleStyle, linkStyle),
                   ],
@@ -79,22 +84,40 @@ class AppFooter extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: _buildBrandColumn(context, theme, colorScheme, linkStyle),
+                    child: _buildBrandColumn(
+                      context,
+                      theme,
+                      colorScheme,
+                      linkStyle,
+                    ),
                   ),
                   const SizedBox(width: 24),
                   Expanded(
                     flex: 2,
-                    child: _buildNavColumn(context, sectionTitleStyle, linkStyle),
+                    child: _buildNavColumn(
+                      context,
+                      sectionTitleStyle,
+                      linkStyle,
+                    ),
                   ),
                   const SizedBox(width: 24),
                   Expanded(
                     flex: 3,
-                    child: _buildEnginesColumn(context, theme, colorScheme, sectionTitleStyle),
+                    child: _buildEnginesColumn(
+                      context,
+                      theme,
+                      colorScheme,
+                      sectionTitleStyle,
+                    ),
                   ),
                   const SizedBox(width: 24),
                   Expanded(
                     flex: 2,
-                    child: _buildLegalColumn(context, sectionTitleStyle, linkStyle),
+                    child: _buildLegalColumn(
+                      context,
+                      sectionTitleStyle,
+                      linkStyle,
+                    ),
                   ),
                 ],
               );
@@ -194,8 +217,6 @@ class AppFooter extends StatelessWidget {
                 url: SocialLinks.instagramUrl,
               ),
             ),
-            // TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
-            /*
             const SizedBox(width: 8),
             IconButton(
               key: const Key('footer_social_facebook'),
@@ -216,27 +237,6 @@ class AppFooter extends StatelessWidget {
                 url: SocialLinks.facebookUrl,
               ),
             ),
-            const SizedBox(width: 8),
-            IconButton(
-              key: const Key('footer_social_youtube'),
-              icon: BrandIcon(
-                type: BrandType.youtube,
-                size: 20,
-                color: colorScheme.onSurface,
-              ),
-              tooltip: 'YouTube',
-              style: IconButton.styleFrom(
-                padding: const EdgeInsets.all(8),
-                minimumSize: const Size(36, 36),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              onPressed: () => SocialLinks.openSocialChannel(
-                context,
-                platformName: 'YouTube',
-                url: SocialLinks.youtubeUrl,
-              ),
-            ),
-            */
           ],
         ),
       ],
@@ -276,14 +276,6 @@ class AppFooter extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text('Knowledge Base', style: linkStyle),
-          ),
-        ),
-        InkWell(
-          key: const Key('footer_docs_btn'),
-          onTap: () => _navigateTo(context, '/docs'),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Text('API Docs', style: linkStyle),
           ),
         ),
       ],

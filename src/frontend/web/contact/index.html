@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -7,7 +8,8 @@
 
   <title>Contact Us — freeOCR.me</title>
   <meta name="title" content="Contact Us — freeOCR.me | Official Support & Inquiries">
-  <meta name="description" content="Contact freeOCR.me support. Inquire about document OCR conversions, submit bug reports, reach our Data Protection Officer, or explore partnerships.">
+  <meta name="description"
+    content="Contact freeOCR.me support. Inquire about document OCR conversions, submit bug reports, reach our Data Protection Officer, or explore partnerships.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freeocr.me/contact">
 
@@ -15,7 +17,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://freeocr.me/contact">
   <meta property="og:title" content="Contact Us — freeOCR.me">
-  <meta property="og:description" content="Reach freeOCR.me support and engineering team. Direct email channels and fast response times.">
+  <meta property="og:description"
+    content="Reach freeOCR.me support and engineering team. Direct email channels and fast response times.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -42,23 +45,24 @@
 
   <!-- Theme Script -->
   <script>
-    (function() {
+    (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 
   <!-- Google AdSense Monetization Tag -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017"
+    crossorigin="anonymous"></script>
 
   <!-- Google Analytics 4 (GA4) Telemetry Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
   </script>
@@ -81,6 +85,7 @@
       --input-bg: #ffffff;
       --input-border: #cbd5e1;
     }
+
     [data-theme="dark"] {
       --bg: #0b0f19;
       --card-bg: #111827;
@@ -99,7 +104,12 @@
       --input-border: rgba(255, 255, 255, 0.12);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg);
@@ -110,6 +120,7 @@
       flex-direction: column;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -123,6 +134,7 @@
       top: 0;
       z-index: 100;
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -133,6 +145,7 @@
       color: var(--heading);
       text-decoration: none;
     }
+
     .logo-icon {
       width: 32px;
       height: 32px;
@@ -145,12 +158,17 @@
       color: var(--accent);
       font-weight: bold;
     }
-    .logo span { color: var(--accent); }
+
+    .logo span {
+      color: var(--accent);
+    }
+
     .nav-wrapper {
       display: flex;
       align-items: center;
       gap: 1.25rem;
     }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
@@ -158,7 +176,13 @@
       font-weight: 500;
       transition: color 0.2s;
     }
-    nav a:hover, nav a.active { color: var(--accent); font-weight: 600; }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .theme-toggle-btn {
       background: var(--toggle-bg);
       border: none;
@@ -171,12 +195,14 @@
       align-items: center;
       justify-content: center;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
       flex: 1;
     }
+
     .badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
@@ -189,6 +215,7 @@
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
     }
+
     h1 {
       font-size: 2.25rem;
       font-weight: 800;
@@ -197,18 +224,21 @@
       margin-bottom: 0.75rem;
       line-height: 1.2;
     }
+
     .subtitle {
       font-size: 1.15rem;
       color: var(--text-muted);
       margin-bottom: 2rem;
       line-height: 1.5;
     }
+
     .channels-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
+
     .channel-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -220,10 +250,12 @@
       text-decoration: none;
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
+
     .channel-card:hover {
       transform: translateY(-2px);
       border-color: var(--accent);
     }
+
     .channel-icon {
       width: 44px;
       height: 44px;
@@ -236,22 +268,26 @@
       color: var(--accent);
       flex-shrink: 0;
     }
+
     .channel-info h3 {
       font-size: 1rem;
       font-weight: 700;
       color: var(--heading);
       margin-bottom: 0.2rem;
     }
+
     .channel-info p.email {
       font-size: 0.92rem;
       font-weight: 600;
       color: var(--accent);
       margin-bottom: 0.2rem;
     }
+
     .channel-info p.desc {
       font-size: 0.82rem;
       color: var(--text-muted);
     }
+
     .contact-box {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -259,20 +295,24 @@
       padding: 2rem;
       margin-bottom: 2rem;
     }
+
     .contact-box h2 {
       font-size: 1.3rem;
       font-weight: 700;
       color: var(--heading);
       margin-bottom: 0.5rem;
     }
+
     .contact-box p {
       color: var(--text-muted);
       font-size: 0.95rem;
       margin-bottom: 1.5rem;
     }
+
     .form-group {
       margin-bottom: 1.25rem;
     }
+
     label {
       display: block;
       font-size: 0.88rem;
@@ -280,7 +320,11 @@
       color: var(--heading);
       margin-bottom: 0.4rem;
     }
-    input[type="text"], input[type="email"], select, textarea {
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
       width: 100%;
       padding: 0.75rem 1rem;
       border-radius: 8px;
@@ -292,9 +336,13 @@
       outline: none;
       transition: border-color 0.2s;
     }
-    input:focus, select:focus, textarea:focus {
+
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: var(--accent);
     }
+
     button.submit-btn {
       background-color: var(--accent);
       color: #ffffff;
@@ -309,9 +357,11 @@
       gap: 0.5rem;
       transition: background-color 0.2s;
     }
+
     button.submit-btn:hover {
       background-color: var(--accent-light);
     }
+
     .alert-success {
       display: none;
       background: rgba(16, 185, 129, 0.12);
@@ -322,12 +372,14 @@
       margin-top: 1rem;
       font-weight: 600;
     }
+
     footer {
       background: var(--footer-bg);
       border-top: 1px solid var(--border);
       padding: 3rem 2rem 2rem;
       margin-top: 4rem;
     }
+
     .footer-grid {
       max-width: 1100px;
       margin: 0 auto;
@@ -335,21 +387,33 @@
       grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 2rem;
     }
+
     .footer-col h3 {
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--heading);
       margin-bottom: 1rem;
     }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 0.5rem; }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 0.88rem;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--accent); }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
     .footer-bottom {
       max-width: 1100px;
       margin: 2rem auto 0;
@@ -359,11 +423,13 @@
       color: var(--text-muted);
       font-size: 0.82rem;
     }
+
     .social-row {
       display: flex;
       gap: 0.75rem;
       margin-top: 1rem;
     }
+
     .social-btn {
       display: flex;
       align-items: center;
@@ -377,9 +443,11 @@
       font-size: 0.9rem;
       transition: background 0.2s;
     }
+
     .social-btn:hover {
       background: rgba(99, 102, 241, 0.2);
     }
+
     .social-modal-overlay {
       position: fixed;
       top: 0;
@@ -393,6 +461,7 @@
       justify-content: center;
       z-index: 9999;
     }
+
     .social-modal-box {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -402,14 +471,28 @@
       width: 90%;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
     }
+
     @media (max-width: 768px) {
-      .channels-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      header { padding: 0.75rem 1rem; }
-      .container { padding: 1.5rem 1rem; }
+      .channels-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      header {
+        padding: 0.75rem 1rem;
+      }
+
+      .container {
+        padding: 1.5rem 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -422,7 +505,6 @@
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/knowledge-base">Knowledge Base</a>
-        <a href="/api-docs">API Docs</a>
         <a href="/contact" class="active">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
@@ -435,7 +517,8 @@
   <main class="container">
     <div class="badge">CONTACT & SUPPORT</div>
     <h1>Get in Touch with freeOCR.me</h1>
-    <p class="subtitle">Have questions about document OCR, encounter an issue, or need privacy compliance assistance? Our team is here to assist.</p>
+    <p class="subtitle">Have questions about document OCR, encounter an issue, or need privacy compliance assistance?
+      Our team is here to assist.</p>
 
     <div class="channels-grid">
       <a href="mailto:support@freeocr.me" class="channel-card">
@@ -460,7 +543,8 @@
       <h2>Send Us a Message</h2>
       <p>Submit your details below and our team will get back to you directly.</p>
 
-      <form id="contactForm" onsubmit="event.preventDefault(); document.getElementById('successMsg').style.display='block'; this.reset();">
+      <form id="contactForm"
+        onsubmit="event.preventDefault(); document.getElementById('successMsg').style.display='block'; this.reset();">
         <div class="form-group">
           <label for="name">Your Name</label>
           <input type="text" id="name" name="name" required placeholder="Enter your full name">
@@ -485,7 +569,8 @@
         </div>
         <div class="form-group">
           <label for="message">Your Message</label>
-          <textarea id="message" name="message" rows="5" required placeholder="Provide as much detail as possible..."></textarea>
+          <textarea id="message" name="message" rows="5" required
+            placeholder="Provide as much detail as possible..."></textarea>
         </div>
         <button type="submit" class="submit-btn">Send Message ✉️</button>
       </form>
@@ -506,11 +591,10 @@
         </p>
         <div class="social-row">
           <a href="https://x.com/freeocrme" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">𝕏</a>
-          <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank" rel="noopener">📷</a>
-          <!-- TODO: Unhide Facebook & YouTube tomorrow early morning PKT once profiles are registered
-          <a href="#facebook" onclick="openSocialModal('Facebook'); return false;" class="social-btn" title="Facebook">fb</a>
-          <a href="#youtube" onclick="openSocialModal('YouTube'); return false;" class="social-btn" title="YouTube">▶</a>
-          -->
+          <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank"
+            rel="noopener">📷</a>
+          <a href="https://facebook.com/freeOCRme" class="social-btn" title="Facebook" target="_blank"
+            rel="noopener">fb</a>
         </div>
       </div>
       <div class="footer-col">
@@ -519,7 +603,6 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about">About Us</a></li>
           <li><a href="/knowledge-base">Knowledge Base</a></li>
-          <li><a href="/api-docs">API Docs</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -545,23 +628,6 @@
     </div>
   </footer>
 
-  <!-- Social Launch Fallback Modal -->
-  <div id="socialModal" class="social-modal-overlay" style="display:none;" onclick="if(event.target === this) closeSocialModal()">
-    <div class="social-modal-box">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-        <span style="font-size:22px;">📢</span>
-        <h3 id="socialModalTitle" style="margin:0; font-size:1.18rem; font-weight:700; color:var(--heading);">Platform Channel</h3>
-      </div>
-      <p id="socialModalBody" style="color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin-bottom:20px;">
-        Our official presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.
-      </p>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button onclick="closeSocialModal()" style="padding:8px 16px; border-radius:8px; border:1px solid var(--border); background:var(--toggle-bg); color:var(--text); cursor:pointer; font-weight:500; font-size:0.9rem;">Close</button>
-        <a href="#contact-form" onclick="closeSocialModal()" style="display:inline-block; padding:8px 16px; border-radius:8px; background:var(--accent); color:white; text-decoration:none; font-weight:500; font-size:0.9rem;">Contact Support</a>
-      </div>
-    </div>
-  </div>
-
   <script>
     var toggleBtn = document.getElementById('themeToggleBtn');
     var sunIcon = document.getElementById('sunIcon');
@@ -580,24 +646,16 @@
     var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     updateIcons(currentTheme);
 
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', function () {
       var active = document.documentElement.getAttribute('data-theme') || 'light';
       var next = active === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try {
         localStorage.setItem('freeocr_theme', next);
-      } catch(e) {}
+      } catch (e) { }
       updateIcons(next);
     });
-
-    function openSocialModal(platform) {
-      document.getElementById('socialModalTitle').textContent = platform + ' Channel';
-      document.getElementById('socialModalBody').textContent = 'Our official ' + platform + ' presence is launching soon! For announcements, updates, or direct assistance, reach our team at support@freeocr.me.';
-      document.getElementById('socialModal').style.display = 'flex';
-    }
-    function closeSocialModal() {
-      document.getElementById('socialModal').style.display = 'none';
-    }
   </script>
 </body>
+
 </html>

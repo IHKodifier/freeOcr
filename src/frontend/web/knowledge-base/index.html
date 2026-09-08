@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -7,8 +8,10 @@
 
   <title>Knowledge Base &amp; Technical Architecture — freeOCR.me</title>
   <meta name="title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
-  <meta name="description" content="Comprehensive engineering guide on dual-layer searchable PDF synthesis (ISO 32000-1), Radon deskewing, Otsu binarization, neural OCR routing, and volatile RAM disk security.">
-  <meta name="keywords" content="dual-layer pdf, searchable pdf, ocr architecture, radon deskewing, otsu binarization, ram disk ocr, ephemeral security, baidu unlimited ocr, ocrmypdf">
+  <meta name="description"
+    content="Comprehensive engineering guide on dual-layer searchable PDF synthesis (ISO 32000-1), Radon deskewing, Otsu binarization, neural OCR routing, and volatile RAM disk security.">
+  <meta name="keywords"
+    content="dual-layer pdf, searchable pdf, ocr architecture, radon deskewing, otsu binarization, ram disk ocr, ephemeral security, baidu unlimited ocr, ocrmypdf">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freeocr.me/knowledge-base">
 
@@ -16,7 +19,8 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://freeocr.me/knowledge-base">
   <meta property="og:title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
-  <meta property="og:description" content="In-depth engineering whitepapers on AI optical character recognition, coordinate normalization, and zero-retention security.">
+  <meta property="og:description"
+    content="In-depth engineering whitepapers on AI optical character recognition, coordinate normalization, and zero-retention security.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -26,23 +30,24 @@
 
   <!-- Theme Script (Runs synchronously before render to prevent flash) -->
   <script>
-    (function() {
+    (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 
   <!-- Google AdSense Monetization Tag -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017"
+    crossorigin="anonymous"></script>
 
   <!-- Google Analytics 4 (GA4) Telemetry Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
   </script>
@@ -64,6 +69,7 @@
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
     }
+
     [data-theme="dark"] {
       --bg: #0b0f19;
       --card-bg: #111827;
@@ -81,7 +87,12 @@
       --toggle-color: #f3f4f6;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg);
@@ -92,6 +103,7 @@
       flex-direction: column;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -105,6 +117,7 @@
       top: 0;
       z-index: 100;
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -115,6 +128,7 @@
       color: var(--heading);
       text-decoration: none;
     }
+
     .logo-icon {
       width: 32px;
       height: 32px;
@@ -125,12 +139,17 @@
       align-items: center;
       justify-content: center;
     }
-    .logo span { color: var(--accent); }
+
+    .logo span {
+      color: var(--accent);
+    }
+
     .nav-wrapper {
       display: flex;
       align-items: center;
       gap: 1.25rem;
     }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
@@ -138,7 +157,13 @@
       font-weight: 500;
       transition: color 0.2s;
     }
-    nav a:hover, nav a.active { color: var(--accent); font-weight: 600; }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .theme-toggle-btn {
       background: var(--toggle-bg);
       color: var(--toggle-color);
@@ -151,13 +176,18 @@
       justify-content: center;
       transition: all 0.2s;
     }
-    .theme-toggle-btn:hover { transform: scale(1.05); }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.05);
+    }
+
     .container {
       max-width: 960px;
       margin: 2.5rem auto;
       padding: 0 1.5rem;
       flex: 1;
     }
+
     h1 {
       font-size: 2.5rem;
       font-weight: 800;
@@ -165,12 +195,14 @@
       color: var(--heading);
       letter-spacing: -0.5px;
     }
+
     .intro {
       font-size: 1.15rem;
       color: var(--text-muted);
       margin-bottom: 1.5rem;
       line-height: 1.7;
     }
+
     /* Seamless ad container: collapses completely when no ad is loaded */
     .ad-banner-slot {
       margin: 1rem 0 1.5rem;
@@ -178,6 +210,7 @@
       display: flex;
       justify-content: center;
     }
+
     .tabs-nav {
       display: flex;
       gap: 0.5rem;
@@ -185,6 +218,7 @@
       margin-bottom: 2rem;
       overflow-x: auto;
     }
+
     .tab-btn {
       background: none;
       border: none;
@@ -197,13 +231,24 @@
       white-space: nowrap;
       transition: all 0.2s;
     }
-    .tab-btn:hover { color: #fff; }
+
+    .tab-btn:hover {
+      color: #fff;
+    }
+
     .tab-btn.active {
       color: var(--accent-light);
       border-bottom-color: var(--accent);
     }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
     .article-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -211,12 +256,14 @@
       padding: 2.25rem;
       margin-bottom: 2rem;
     }
+
     h2 {
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
       color: var(--heading);
     }
+
     h3 {
       font-size: 1.15rem;
       font-weight: 600;
@@ -224,18 +271,24 @@
       margin-bottom: 0.5rem;
       color: var(--accent-light);
     }
+
     p {
       color: var(--text-muted);
       font-size: 1rem;
       line-height: 1.7;
       margin-bottom: 1rem;
     }
+
     ul {
       margin-left: 1.5rem;
       margin-bottom: 1.25rem;
       color: var(--text-muted);
     }
-    li { margin-bottom: 0.5rem; }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       background: var(--code-bg);
@@ -244,12 +297,14 @@
       border-radius: 4px;
       font-size: 0.9em;
     }
+
     footer {
       border-top: 1px solid var(--border);
       background: var(--footer-bg);
       padding: 3.5rem 2rem 2rem;
       margin-top: auto;
     }
+
     .footer-grid {
       max-width: 1100px;
       margin: 0 auto;
@@ -258,6 +313,7 @@
       gap: 2.5rem;
       margin-bottom: 2.5rem;
     }
+
     .footer-col h3 {
       color: var(--heading);
       font-size: 0.95rem;
@@ -266,11 +322,32 @@
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
     }
-    .footer-col ul { list-style: none; }
-    .footer-col li { margin-bottom: 0.6rem; }
-    .footer-col a { color: var(--text-muted); transition: color 0.2s; text-decoration: none; }
-    .footer-col a:hover { color: var(--accent); }
-    .footer-brand p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; margin-top: 0.5rem; }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col a {
+      color: var(--text-muted);
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+
     .footer-bottom {
       max-width: 1100px;
       margin: 0 auto;
@@ -280,18 +357,32 @@
       font-size: 0.85rem;
       color: var(--text-muted);
     }
+
     @media (max-width: 768px) {
-      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-      header { padding: 0.75rem 1rem; }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      header {
+        padding: 0.75rem 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
     <a href="/" class="logo">
       <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
           <polyline points="14 2 14 8 20 8"></polyline>
           <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -305,16 +396,20 @@
       <nav>
         <a href="/">Home</a>
         <a href="/knowledge-base" class="active">Knowledge Base</a>
-        <a href="/api-docs">API Docs</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <svg id="sunIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        <svg id="sunIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+          </path>
         </svg>
-        <svg id="moonIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        <svg id="moonIcon" style="width: 18px; height: 18px; display: none;" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
         </svg>
       </button>
     </div>
@@ -322,18 +417,16 @@
 
   <main class="container">
     <h1>Knowledge Base &amp; Technical Architecture</h1>
-    <p class="intro">In-depth technical whitepapers on high-fidelity optical character recognition, neural document layout decomposition, and Linux RAM disk ephemeral security.</p>
+    <p class="intro">In-depth technical whitepapers on high-fidelity optical character recognition, neural document
+      layout decomposition, and Linux RAM disk ephemeral security.</p>
 
     <!-- Native Google AdSense Display Unit -->
     <div class="ad-banner-slot">
-      <ins class="adsbygoogle"
-           style="display:block; width:100%; text-align:center;"
-           data-ad-client="ca-pub-6775900998665017"
-           data-ad-slot="1234567890"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
+        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
       <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
 
@@ -348,22 +441,35 @@
     <div class="tab-pane active" id="pane-0">
       <article class="article-card">
         <h2>Dual-Layer Searchable PDF Architecture (ISO 32000-1)</h2>
-        <p>A dual-layer PDF (commonly known as a "Searchable PDF") preserves the exact visual fidelity of the original scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan bitmap.</p>
-        
+        <p>A dual-layer PDF (commonly known as a "Searchable PDF") preserves the exact visual fidelity of the original
+          scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan
+          bitmap.</p>
+
         <h3>How freeOCR.me Synthesizes Dual-Layer PDFs:</h3>
         <ul>
-          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at its original resolution and DPI. Stamps, hand-written annotations, and signatures remain visually intact.</li>
-          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are mapped from pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
-            <br><code>scale_x = page.rect.width / pix.width</code>, <code>scale_y = page.rect.height / pix.height</code>.
+          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at
+            its original resolution and DPI. Stamps, hand-written annotations, and signatures remain visually intact.
           </li>
-          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font rendering mode 3, text is rendered in an invisible glyph layer positioned over each matching scanned word. Users can highlight, copy, and search (Ctrl+F) with 100% geometric accuracy.</li>
+          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are mapped from
+            pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
+            <br><code>scale_x = page.rect.width / pix.width</code>,
+            <code>scale_y = page.rect.height / pix.height</code>.
+          </li>
+          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font
+            rendering mode 3, text is rendered in an invisible glyph layer positioned over each matching scanned word.
+            Users can highlight, copy, and search (Ctrl+F) with 100% geometric accuracy.</li>
         </ul>
 
         <h3>Preprocessing &amp; Layout Heuristics:</h3>
         <ul>
-          <li><strong>Deskewing via Radon Transforms:</strong> Scanned pages frequently enter at slight tilt angles. Radon transform projections calculate horizontal skew (-15° to +15°) and automatically rotate pages prior to segmentation.</li>
-          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground text from aged paper textures, background bleed-through, and coffee stains.</li>
-          <li><strong>Dual Engine Routing:</strong> Clean, single-column documents route to OCRmyPDF/Tesseract on CPU for rapid &lt;1.5s completion. Complex multi-column documents, math formulas, and nested tables dynamically route to our Baidu Unlimited OCR neural model (~6 GB weights) running on Nvidia GPU instances.</li>
+          <li><strong>Deskewing via Radon Transforms:</strong> Scanned pages frequently enter at slight tilt angles.
+            Radon transform projections calculate horizontal skew (-15° to +15°) and automatically rotate pages prior to
+            segmentation.</li>
+          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground text from aged paper textures,
+            background bleed-through, and coffee stains.</li>
+          <li><strong>Dual Engine Routing:</strong> Clean, single-column documents route to OCRmyPDF/Tesseract on CPU
+            for rapid &lt;1.5s completion. Complex multi-column documents, math formulas, and nested tables dynamically
+            route to our Baidu Unlimited OCR neural model (~6 GB weights) running on Nvidia GPU instances.</li>
         </ul>
       </article>
     </div>
@@ -372,14 +478,21 @@
     <div class="tab-pane" id="pane-1">
       <article class="article-card">
         <h2>The Evolution of Portable Document Standards</h2>
-        <p>Before the Portable Document Format (PDF) was invented by Dr. John Warnock in 1991 (the "Camelot Project"), sharing formatted digital documents across different operating systems was notoriously fragmented.</p>
-        
+        <p>Before the Portable Document Format (PDF) was invented by Dr. John Warnock in 1991 (the "Camelot Project"),
+          sharing formatted digital documents across different operating systems was notoriously fragmented.</p>
+
         <h3>Key Milestones in Document Interchange:</h3>
         <ul>
-          <li><strong>PostScript (1984):</strong> A page-description programming language that allowed laser printers to rasterize vector glyphs. However, PostScript files required a full interpreter to execute, making fast screen previewing slow and resource-heavy.</li>
-          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary stream, allowing pages to render on-screen independently.</li>
-          <li><strong>ISO 32000-1 (2008):</strong> PDF was officially standardized by the International Organization for Standardization as an open format. Render mode 3 was codified to allow font characters to define bounding geometry and selection without coloring pixels.</li>
-          <li><strong>PDF/A (Archive Standard):</strong> Forbids external font dependencies and encryption, ensuring documents can still be opened and rendered accurately 100 years into the future.</li>
+          <li><strong>PostScript (1984):</strong> A page-description programming language that allowed laser printers to
+            rasterize vector glyphs. However, PostScript files required a full interpreter to execute, making fast
+            screen previewing slow and resource-heavy.</li>
+          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary
+            stream, allowing pages to render on-screen independently.</li>
+          <li><strong>ISO 32000-1 (2008):</strong> PDF was officially standardized by the International Organization for
+            Standardization as an open format. Render mode 3 was codified to allow font characters to define bounding
+            geometry and selection without coloring pixels.</li>
+          <li><strong>PDF/A (Archive Standard):</strong> Forbids external font dependencies and encryption, ensuring
+            documents can still be opened and rendered accurately 100 years into the future.</li>
         </ul>
       </article>
     </div>
@@ -388,14 +501,20 @@
     <div class="tab-pane" id="pane-2">
       <article class="article-card">
         <h2>Zero-Retention Ephemeral RAM-Disk Security (Linux tmpfs)</h2>
-        <p>Document privacy is the foundational design pillar of freeOCR.me. Traditional cloud converters save files to Amazon S3 or Google Cloud Storage buckets where they may persist indefinitely.</p>
+        <p>Document privacy is the foundational design pillar of freeOCR.me. Traditional cloud converters save files to
+          Amazon S3 or Google Cloud Storage buckets where they may persist indefinitely.</p>
 
         <h3>Our Kernel-Level Security Guarantees:</h3>
         <ul>
-          <li><strong>Volatile Memory Mount:</strong> Uploaded documents reside exclusively in a Linux <code>tmpfs</code> RAM disk mount. Files never touch physical non-volatile storage (NVMe, SSD, or HDD).</li>
-          <li><strong>Instant Cryptographic Unlink:</strong> As soon as the output PDF or text is assembled, input files are cryptographically unlinked from memory using standard POSIX <code>unlink()</code> calls. Once the active conversion session terminates or 24 hours expire, RAM pages are zeroed.</li>
-          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to fine-tune machine learning models.</li>
-          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to 0 instances when idle, completely clearing runtime memory.</li>
+          <li><strong>Volatile Memory Mount:</strong> Uploaded documents reside exclusively in a Linux
+            <code>tmpfs</code> RAM disk mount. Files never touch physical non-volatile storage (NVMe, SSD, or HDD).</li>
+          <li><strong>Instant Cryptographic Unlink:</strong> As soon as the output PDF or text is assembled, input files
+            are cryptographically unlinked from memory using standard POSIX <code>unlink()</code> calls. Once the active
+            conversion session terminates or 24 hours expire, RAM pages are zeroed.</li>
+          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to
+            fine-tune machine learning models.</li>
+          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to
+            0 instances when idle, completely clearing runtime memory.</li>
         </ul>
       </article>
     </div>
@@ -415,15 +534,16 @@
         <ul>
           <li><a href="/">PDF to Searchable PDF</a></li>
           <li><a href="/knowledge-base">Knowledge Base</a></li>
-          <li><a href="/api-docs">Developer API</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3>Engines</h3>
         <ul>
-          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR AI</a></li>
+          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR
+              AI</a></li>
           <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener noreferrer">OCRmyPDF</a></li>
-          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener noreferrer">Tesseract</a></li>
+          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank"
+              rel="noopener noreferrer">Tesseract</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -441,10 +561,10 @@
 
   <script>
     function switchTab(index) {
-      document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+      document.querySelectorAll('.tab-btn').forEach(function (b, i) {
         b.classList.toggle('active', i === index);
       });
-      document.querySelectorAll('.tab-pane').forEach(function(p, i) {
+      document.querySelectorAll('.tab-pane').forEach(function (p, i) {
         p.classList.toggle('active', i === index);
       });
     }
@@ -467,21 +587,22 @@
     var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     updateIcons(currentTheme);
 
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', function () {
       var active = document.documentElement.getAttribute('data-theme') || 'light';
       var next = active === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try {
         localStorage.setItem('freeocr_theme', next);
-      } catch(e) {}
+      } catch (e) { }
       updateIcons(next);
     });
 
     // Support deep linking via hash
-    window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('DOMContentLoaded', function () {
       if (window.location.hash === '#standards') switchTab(1);
       if (window.location.hash === '#security') switchTab(2);
     });
   </script>
 </body>
+
 </html>

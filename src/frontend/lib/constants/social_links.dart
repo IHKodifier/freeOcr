@@ -12,7 +12,7 @@ class SocialLinks {
   // YouTube:   https://youtube.com/@freeocrme
   static const String twitterUrl = 'https://x.com/freeocrme';
   static const String instagramUrl = 'https://instagram.com/freeocrme';
-  static const String facebookUrl = '';
+  static const String facebookUrl = 'https://facebook.com/freeOCRme';
   static const String youtubeUrl = '';
 
   // Support and privacy communication channels
@@ -22,7 +22,8 @@ class SocialLinks {
   // Open-source engine attribution URLs
   static const String baiduOcrUrl = 'https://github.com/PaddlePaddle/PaddleOCR';
   static const String ocrmypdfUrl = 'https://github.com/ocrmypdf/OCRmyPDF';
-  static const String tesseractUrl = 'https://github.com/tesseract-ocr/tesseract';
+  static const String tesseractUrl =
+      'https://github.com/tesseract-ocr/tesseract';
   static const String pymupdfUrl = 'https://github.com/pymupdf/PyMuPDF';
 
   /// Safely open a social channel or present an informational dialog if the handle is in launch phase.
@@ -42,12 +43,24 @@ class SocialLinks {
       builder: (ctx) {
         final theme = Theme.of(ctx);
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Row(
             children: [
-              const Icon(Icons.campaign_rounded, color: Color(0xFF6366F1), size: 24),
+              const Icon(
+                Icons.campaign_rounded,
+                color: Color(0xFF6366F1),
+                size: 24,
+              ),
               const SizedBox(width: 10),
-              Text('$platformName Channel', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              Text(
+                '$platformName Channel',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
             ],
           ),
           content: Text(
@@ -66,8 +79,13 @@ class SocialLinks {
               style: FilledButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 11,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 elevation: 0,
               ),
               onPressed: () {

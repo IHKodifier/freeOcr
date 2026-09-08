@@ -21,33 +21,38 @@ void main() {
     );
   }
 
-  testWidgets('AppHeader renders brand title, navigation buttons, and theme switcher', (WidgetTester tester) async {
-    bool toggled = false;
+  testWidgets(
+    'AppHeader renders brand title, navigation buttons, and theme switcher',
+    (WidgetTester tester) async {
+      bool toggled = false;
 
-    await tester.pumpWidget(buildTestWidget(
-      child: AppHeader(
-        currentRoute: '/',
-        onThemeToggle: () {
-          toggled = true;
-        },
-      ),
-    ));
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: AppHeader(
+            currentRoute: '/',
+            onThemeToggle: () {
+              toggled = true;
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // Verify Brand logo
-    expect(find.byKey(const Key('header_brand_logo')), findsOneWidget);
+      // Verify Brand logo
+      expect(find.byKey(const Key('header_brand_logo')), findsOneWidget);
 
-    // Verify Navigation Buttons
-    expect(find.byKey(const Key('header_home_btn')), findsOneWidget);
-    expect(find.byKey(const Key('header_kb_btn')), findsOneWidget);
-    expect(find.byKey(const Key('header_docs_btn')), findsOneWidget);
+      // Verify Navigation Buttons
+      expect(find.byKey(const Key('header_home_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_kb_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_docs_btn')), findsNothing);
 
-    // Verify Theme Switcher Button & tap action
-    final themeToggleBtn = find.byKey(const Key('header_theme_toggle_btn'));
-    expect(themeToggleBtn, findsOneWidget);
+      // Verify Theme Switcher Button & tap action
+      final themeToggleBtn = find.byKey(const Key('header_theme_toggle_btn'));
+      expect(themeToggleBtn, findsOneWidget);
 
-    await tester.tap(themeToggleBtn);
-    await tester.pumpAndSettle();
-    expect(toggled, isTrue);
-  });
+      await tester.tap(themeToggleBtn);
+      await tester.pumpAndSettle();
+      expect(toggled, isTrue);
+    },
+  );
 }

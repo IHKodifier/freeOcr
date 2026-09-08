@@ -160,10 +160,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                             value: '/kb',
                             child: Text('Knowledge Base'),
                           ),
-                          const PopupMenuItem(
-                            value: '/docs',
-                            child: Text('API Docs'),
-                          ),
                         ],
                       ),
                       const SizedBox(width: 4),
@@ -208,24 +204,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       child: Text(
                         'Knowledge Base',
                         style: currentRoute.startsWith('/kb') ? activeNavStyle : navTextStyle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    TextButton(
-                      key: const Key('header_docs_btn'),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        if (currentRoute != '/docs') {
-                          Navigator.of(context).pushNamed('/docs');
-                        }
-                      },
-                      child: Text(
-                        'API Docs',
-                        style: currentRoute == '/docs' ? activeNavStyle : navTextStyle,
                       ),
                     ),
                     const SizedBox(width: 8),
