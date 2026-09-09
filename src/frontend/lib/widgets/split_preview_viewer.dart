@@ -40,6 +40,9 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   Timer? _pollTimer;
   late TransformationController _transformationController;
   double _zoomScale = 1.0;
+  bool _isDownloading = false;
+  String? _downloadingFormat;
+  Timer? _downloadTimer;
 
   final GlobalKey _viewerKey = GlobalKey();
 
@@ -62,6 +65,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   @override
   void dispose() {
     _pollTimer?.cancel();
+    _downloadTimer?.cancel();
     _textEditingController.dispose();
     _transformationController.removeListener(_onTransformationChanged);
     _transformationController.dispose();
@@ -253,6 +257,13 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
   }
 
   void _downloadFile(String format) {
+    if (_isDownloading) return; // Absorbs all clicks while download is starting
+
+    setState(() {
+      _isDownloading = true;
+      _downloadingFormat = format;
+    });
+
     final url = ApiService.getDownloadUrl(widget.jobId, format);
     final dotIndex = widget.filename.lastIndexOf('.');
     final stem = dotIndex > 0 ? widget.filename.substring(0, dotIndex) : widget.filename;
@@ -267,11 +278,22 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Initiating direct download of $outFilename...'),
-        duration: const Duration(seconds: 2),
+        content: Text('Starting download of $outFilename... Check your browser downloads bar.'),
+        duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
       ),
     );
+
+    // Keep "Starting download" active to absorb all clicks while browser initiates stream
+    _downloadTimer?.cancel();
+    _downloadTimer = Timer(const Duration(seconds: 5), () {
+      if (mounted) {
+        setState(() {
+          _isDownloading = false;
+          _downloadingFormat = null;
+        });
+      }
+    });
   }
 
   @override
@@ -435,11 +457,22 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () => _downloadFile('pdf'),
-              icon: const Icon(Icons.picture_as_pdf_outlined, size: 20),
-              label: const Text(
-                'Download Searchable PDF',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              onPressed: _isDownloading ? null : () => _downloadFile('pdf'),
+              icon: _isDownloading && _downloadingFormat == 'pdf'
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.picture_as_pdf_outlined, size: 20),
+              label: Text(
+                _isDownloading && _downloadingFormat == 'pdf'
+                    ? 'Starting download...'
+                    : 'Download Searchable PDF',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.primary,
@@ -460,18 +493,30 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
             runSpacing: 8,
             children: [
               OutlinedButton.icon(
-                onPressed: () => _downloadFile('txt'),
-                icon: const Icon(Icons.description_outlined, size: 16),
-                label: const Text('Download .TXT'),
+                onPressed: _isDownloading ? null : () => _downloadFile('txt'),
+                icon: _isDownloading && _downloadingFormat == 'txt'
+                    ? const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.description_outlined, size: 16),
+                label: Text(_isDownloading && _downloadingFormat == 'txt' ? 'Starting...' : 'Download .TXT'),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
               ),
               OutlinedButton.icon(
-                onPressed: () => _downloadFile('md'),
-                icon: const Icon(Icons.code, size: 16),
-                label: const Text('Download .MD'),
+                onPressed: _isDownloading ? null : () => _downloadFile('md'),
+                icon: _isDownloading && _downloadingFormat == 'md'
+                    ? const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.code, size: 16),
+                label: Text(_isDownloading && _downloadingFormat == 'md' ? 'Starting...' : 'Download .MD'),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -668,7 +713,8 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
 
           // 1-Click Direct Multi-Format Download Menu Button
           PopupMenuButton<String>(
-            tooltip: 'Download Multi-Format Document',
+            tooltip: _isDownloading ? 'Starting download...' : 'Download Multi-Format Document',
+            enabled: !_isDownloading,
             onSelected: (value) {
               if (value == 'email') {
                 _showEmailDeliveryDialog(context);
@@ -682,7 +728,9 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: colorScheme.primary,
+                color: _isDownloading
+                    ? colorScheme.primary.withValues(alpha: 0.7)
+                    : colorScheme.primary,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -692,21 +740,41 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.download_rounded, color: Colors.white, size: 18),
-                  SizedBox(width: 6),
-                  Text(
-                    'Download',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                  if (_isDownloading) ...[
+                    const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 2),
-                  Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'Starting download...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ] else ...[
+                    const Icon(Icons.download_rounded, color: Colors.white, size: 18),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'Download',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    const Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
+                  ],
                 ],
               ),
             ),

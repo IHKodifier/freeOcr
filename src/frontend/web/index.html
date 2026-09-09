@@ -65,12 +65,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="freeOCR.me">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="/icons/Icon-512.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-  <link rel="shortcut icon" href="favicon.ico"/>
-  <link rel="manifest" href="manifest.json">
+  <!-- Favicon & Search Engine Icons (Compliant with Google Search multiple of 48px rule) -->
+  <link rel="icon" type="image/png" sizes="48x48" href="/icons/Icon-48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/Icon-96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/Icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
 
   <!-- Google AdSense Monetization Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
@@ -103,43 +107,27 @@
       console.log('[GA4 Telemetry PageView]', pagePath, title);
     };
 
-    // Robust file downloader that guarantees proper filename and extension in Chrome, Edge, Safari, Firefox
+    // Immediate synchronous stream downloader that preserves active user gesture,
+    // absorbs duplicate clicks, and delegates directly to browser's native download manager
+    var _isStartingDownload = false;
     window.downloadFileFromUrl = function(url, filename) {
-      fetch(url)
-        .then(function(res) {
-          if (!res.ok) throw new Error('Download failed: ' + res.status);
-          return res.blob();
-        })
-        .then(function(blob) {
-          var blobUrl = window.URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = blobUrl;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function() {
-            if (a.parentNode) {
-              a.parentNode.removeChild(a);
-            }
-            window.URL.revokeObjectURL(blobUrl);
-          }, 30000);
-        })
-        .catch(function(err) {
-          console.warn('[Download] Fallback to direct anchor:', err);
-          var a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = filename;
-          a.target = '_blank';
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function() {
-            if (a.parentNode) {
-              a.parentNode.removeChild(a);
-            }
-          }, 5000);
-        });
+      if (_isStartingDownload) {
+        console.log('[Download] Absorbed concurrent download request:', filename);
+        return;
+      }
+      _isStartingDownload = true;
+      var a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        if (a.parentNode) {
+          a.parentNode.removeChild(a);
+        }
+        _isStartingDownload = false;
+      }, 5000);
     };
   </script>
 
