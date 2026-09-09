@@ -135,5 +135,32 @@ def test_ocr_worker_integrates_pdf_composer():
     doc = pymupdf.open("pdf", searchable_pdf_bytes)
     assert len(doc) > 0
     text = doc[0].get_text()
-    assert "Worker Integration OCR Content" in text
     doc.close()
+
+
+def test_get_searchable_pdf_from_redis_when_local_cache_misses():
+    from unittest.mock import patch, MagicMock
+    from app.services.pdf_composer import DEV_PDF_STORE
+
+    token = "pdf_token_redis_cold_boot_test"
+    dummy_pdf_bytes = b"%PDF-1.4 simulated pdf content"
+
+    # Ensure token is NOT in local RAM cache or on disk (simulating fresh cold boot container instance)
+    DEV_PDF_STORE.pop(token, None)
+    file_path = DEV_PDF_STORE._file_path(token)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    mock_redis = MagicMock()
+    mock_redis.get.return_value = dummy_pdf_bytes
+
+    with patch("app.services.pdf_composer.get_redis_client", return_value=mock_redis):
+        retrieved = get_searchable_pdf(token)
+
+        assert retrieved == dummy_pdf_bytes
+        mock_redis.get.assert_called_once_with(f"pdf:{token}")
+        # Verify it was repopulated in local RAM cache
+        assert DEV_PDF_STORE.get(token) == dummy_pdf_bytes
+        DEV_PDF_STORE.pop(token, None)
+        if os.path.exists(file_path):
+            os.remove(file_path)

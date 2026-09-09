@@ -63,10 +63,12 @@ from app.redis_client import DEV_AD_PASS_STORE
 
 def test_upload_oversized_file():
     DEV_AD_PASS_STORE.clear()
+    from unittest.mock import patch
     # 101MB file content simulation (exceeds 100MB base limit)
     oversized_content = b"X" * (101 * 1024 * 1024)
     files = {"file": ("large.pdf", oversized_content, "application/pdf")}
-    response = client.post("/api/v1/ocr/convert", files=files)
+    with patch("app.api.v1.endpoints.ocr.get_ad_pass_metadata", return_value=None):
+        response = client.post("/api/v1/ocr/convert", files=files)
 
     assert response.status_code == 400
     assert "File size exceeds allowed limit" in response.json()["detail"]

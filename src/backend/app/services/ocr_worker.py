@@ -255,6 +255,8 @@ def process_ocr_job(
         )
 
         # Emit COMPLETED status and store final payload
+        now_utc = datetime.datetime.now(datetime.timezone.utc)
+        expires_utc = now_utc + datetime.timedelta(hours=24)
         completed_payload = {
             "job_id": job_id,
             "filename": filename,
@@ -265,7 +267,9 @@ def process_ocr_job(
             "queue_name": queue_name,
             "output_pdf_token": output_pdf_token,
             "pages": pages_data,
-            "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+            "created_at": now_utc.isoformat(),
+            "expires_at": expires_utc.isoformat(),
+            "updated_at": now_utc.isoformat()
         }
 
         _publish_event(job_id, completed_payload)

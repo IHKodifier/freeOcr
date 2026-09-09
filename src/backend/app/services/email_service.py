@@ -32,10 +32,11 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
         "pdf": f"{base_url}/api/v1/jobs/{job_id}/download/pdf",
         "txt": f"{base_url}/api/v1/jobs/{job_id}/download/txt",
         "md": f"{base_url}/api/v1/jobs/{job_id}/download/md",
+        "zip": f"{base_url}/api/v1/jobs/{job_id}/download/zip",
     }
 
-    resend_api_key = os.environ.get("RESEND_API_KEY")
-    resend_from = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+    resend_api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
+    resend_from = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev") or "onboarding@resend.dev"
 
     smtp_host = os.environ.get("SMTP_HOST")
     smtp_port = int(os.environ.get("SMTP_PORT", "587"))
@@ -58,9 +59,10 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
                 <h2>Your OCR Document Conversion is Ready</h2>
                 <p>Download your converted document files using the secure links below (Valid for 24 hours):</p>
                 <ul>
-                    <li><a href="{download_links['pdf']}">Searchable PDF Download</a></li>
+                    <li><a href="{download_links['pdf']}">Searchable PDF (.pdf) Download</a></li>
                     <li><a href="{download_links['txt']}">Plain Text (.txt) Download</a></li>
-                    <li><a href="{download_links['md']}">Markdown (.md) Download</a></li>
+                    <li><a href="{download_links['md']}">Structured Markdown (.md) Download</a></li>
+                    <li><a href="{download_links['zip']}">All Formats (.zip archive) Download</a></li>
                 </ul>
                 <p><em>Privacy Note: Your original uploaded input file has been permanently purged from RAM disk. Output download links will expire after 24 hours.</em></p>
                 """
@@ -95,9 +97,10 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
             <h2>Your OCR Document Conversion is Ready</h2>
             <p>Download your converted document files using the secure links below (Valid for 24 hours):</p>
             <ul>
-                <li><a href="{download_links['pdf']}">Searchable PDF Download</a></li>
+                <li><a href="{download_links['pdf']}">Searchable PDF (.pdf) Download</a></li>
                 <li><a href="{download_links['txt']}">Plain Text (.txt) Download</a></li>
-                <li><a href="{download_links['md']}">Markdown (.md) Download</a></li>
+                <li><a href="{download_links['md']}">Structured Markdown (.md) Download</a></li>
+                <li><a href="{download_links['zip']}">All Formats (.zip archive) Download</a></li>
             </ul>
             <p><em>Privacy Note: Your original uploaded input file has been permanently purged from RAM disk. Output download links will expire after 24 hours.</em></p>
             """
@@ -128,9 +131,10 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
             <h2>Your OCR Document Conversion is Ready</h2>
             <p>Download your converted document files using the secure links below (Valid for 24 hours):</p>
             <ul>
-                <li><a href="{download_links['pdf']}">Searchable PDF Download</a></li>
+                <li><a href="{download_links['pdf']}">Searchable PDF (.pdf) Download</a></li>
                 <li><a href="{download_links['txt']}">Plain Text (.txt) Download</a></li>
-                <li><a href="{download_links['md']}">Markdown (.md) Download</a></li>
+                <li><a href="{download_links['md']}">Structured Markdown (.md) Download</a></li>
+                <li><a href="{download_links['zip']}">All Formats (.zip archive) Download</a></li>
             </ul>
             <p><em>Privacy Note: Your original uploaded input file has been permanently purged from RAM disk. Output download links will expire after 24 hours.</em></p>
             """
@@ -153,6 +157,7 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
         print(f" PDF Link : {download_links['pdf']}")
         print(f" TXT Link : {download_links['txt']}")
         print(f" MD Link  : {download_links['md']}")
+        print(f" ZIP Link : {download_links['zip']}")
         print("=" * 75 + "\n")
 
     return {

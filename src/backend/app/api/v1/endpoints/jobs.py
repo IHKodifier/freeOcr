@@ -460,10 +460,10 @@ async def download_job_file(job_id: str, format: str):
     the original input file from RAM disk upon download stream initiation (AC-1).
     """
     fmt = format.lower().strip()
-    if fmt not in ("pdf", "txt", "md"):
+    if fmt not in ("pdf", "txt", "md", "zip"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unsupported format. Choose pdf, txt, or md."
+            detail="Unsupported format. Choose pdf, txt, md, or zip."
         )
 
     job_data_bytes = None
@@ -603,5 +603,34 @@ async def download_job_file(job_id: str, format: str):
                 "Content-Disposition": f'attachment; filename="{out_filename}"; filename*=UTF-8\'\'{safe_filename}'
             }
         )
+
+    elif fmt == "zip":
+        output_token = parsed.get("output_pdf_token")
+        pdf_bytes = get_searchable_pdf(output_token) if output_token else None
+
+        txt_parts = [p.get("text", "").strip() for p in pages if p.get("text", "").strip()]
+        compiled_txt = "\n\n".join(txt_parts).encode("utf-8")
+
+        md_parts = [f"# Page {p.get('page_number', 1)}\n\n{p.get('text', '').strip()}" for p in pages]
+        compiled_md = "\n\n---\n\n".join(md_parts).encode("utf-8")
+
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            if pdf_bytes:
+                zf.writestr(f"{filename_stem}_searchable.pdf", pdf_bytes)
+            zf.writestr(f"{filename_stem}_extracted.txt", compiled_txt)
+            zf.writestr(f"{filename_stem}_extracted.md", compiled_md)
+
+        zip_bytes = zip_buffer.getvalue()
+        out_filename = f"{filename_stem}_all_formats.zip"
+        safe_filename = urllib.parse.quote(out_filename)
+        return Response(
+            content=zip_bytes,
+            media_type="application/zip",
+            headers={
+                "Content-Disposition": f'attachment; filename="{out_filename}"; filename*=UTF-8\'\'{safe_filename}'
+            }
+        )
+
 
 

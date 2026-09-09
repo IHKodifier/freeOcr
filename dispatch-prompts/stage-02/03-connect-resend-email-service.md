@@ -1,7 +1,8 @@
 # Dispatch Prompt: Connect & Configure Resend Email Service for freeOCR.me
 
 > **Task ID:** `PROD-02-RESEND-EMAIL`  
-> **Target Branch:** `main`  
+> **Base Branch:** `dev`  
+> **Dedicated Feature Branch:** `feature/PROD-02-resend-email` (checked out from `dev`)  
 > **Target Environment:** GCP Cloud Run (`freeocr-api`) & Local `.env`  
 > **Service Provider:** Resend Email API (`https://api.resend.com/emails`)
 
@@ -37,6 +38,18 @@ Configure and activate transactional email delivery for **freeOCR.me** using the
 
 ## 4. Step-by-Step Execution Plan
 
+### Step 0: Create & Check Out Dedicated Branch from `dev` (Mandatory)
+Before making any code or configuration changes, create and checkout a dedicated feature branch from `dev`:
+```powershell
+# 1. Switch to staging branch and pull latest changes
+git checkout dev
+git pull origin dev
+
+# 2. Create and switch to the dedicated feature branch
+git checkout -b feature/PROD-02-resend-email
+```
+> **CRITICAL GOVERNANCE RULE:** All code changes, tests, and configuration edits for this task must be performed strictly within this dedicated branch (`feature/PROD-02-resend-email`). Do NOT commit directly to `dev` or `main`. Do not push or commit locally without explicit user confirmation.
+
 ### Step 1: Obtain / Configure Resend API Key
 - User creates an account or retrieves an API key from [Resend Dashboard](https://resend.com/api-keys).
 - (Optional for custom domain) Add DNS TXT/MX records to verify `freeocr.me` in Resend Domains to allow sending from `noreply@freeocr.me` or `delivery@freeocr.me`. For rapid MVP testing, `onboarding@resend.dev` (delivering to user's registered Resend account email) can be used.
@@ -71,8 +84,11 @@ Ensure `src/backend/.env.example` documents all three variables clearly.
 ---
 
 ## 5. Definition of Done (DoD)
-- [ ] `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `API_BASE_URL` are injected into Cloud Run (`freeocr-api`).
-- [ ] Live email dispatch returns HTTP 200 with delivery mode `RESEND_API`.
-- [ ] Download links inside received email point to `https://freeocr.me/api/v1/jobs/{job_id}/download/...`.
-- [ ] All automated tests pass locally.
-- [ ] Original files remain zero-retention / ephemeral (RAM disk unlinked).
+- [x] Dedicated feature branch `feature/PROD-02-resend-email` was created from `dev`, and all work was conducted on this branch.
+- [x] `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `API_BASE_URL` are injected into Cloud Run (`freeocr-api`).
+- [x] Live email dispatch returns HTTP 200 with delivery mode `RESEND_API`.
+- [x] Download links inside received email point to `https://freeocr.me/api/v1/jobs/{job_id}/download/...`.
+- [x] Upstash Serverless Redis (`REDIS_URL`) wired & injected for scale-to-zero container persistence ($0.00 idle cost).
+- [x] All supported formats (`.pdf`, `.txt`, `.md`, and `.zip` archive) cached & synthesized from Redis with 24h TTL; cold-boot containers retrieve all formats without expiration even when GCP instances scale to zero.
+- [x] All automated tests pass locally (87/87 tests passing).
+- [x] Original files remain zero-retention / ephemeral (RAM disk unlinked).

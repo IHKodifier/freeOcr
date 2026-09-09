@@ -3,7 +3,7 @@ import uuid
 import tempfile
 import pymupdf
 
-from app.redis_client import EphemeralRamStore
+from app.redis_client import EphemeralRamStore, get_redis_client
 
 DEV_PDF_STORE: EphemeralRamStore = EphemeralRamStore("pdf", is_bytes=True)
 
@@ -95,6 +95,13 @@ def compose_searchable_pdf(
         output_pdf_token = f"pdf_token_{uuid.uuid4().hex[:12]}"
         DEV_PDF_STORE[output_pdf_token] = pdf_bytes
 
+        # Persist PDF bytes in Redis for serverless scale-to-zero container survival (24-hour TTL)
+        try:
+            redis_client = get_redis_client()
+            redis_client.set(f"pdf:{output_pdf_token}", pdf_bytes, ex=86400)
+        except Exception:
+            pass
+
         return pdf_bytes, output_pdf_token
 
     finally:
@@ -107,6 +114,21 @@ def compose_searchable_pdf(
 
 def get_searchable_pdf(token: str) -> bytes | None:
     """
-    Retrieves compiled searchable PDF bytes by token from ephemeral dev store.
+    Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Redis.
     """
-    return DEV_PDF_STORE.get(token)
+    # 1. Check local RAM store
+    pdf_bytes = DEV_PDF_STORE.get(token)
+    if pdf_bytes:
+        return pdf_bytes
+
+    # 2. Check Redis (persists across cold starts and container scale-downs)
+    try:
+        redis_client = get_redis_client()
+        redis_bytes = redis_client.get(f"pdf:{token}")
+        if redis_bytes:
+            DEV_PDF_STORE[token] = redis_bytes
+            return redis_bytes
+    except Exception:
+        pass
+
+    return None

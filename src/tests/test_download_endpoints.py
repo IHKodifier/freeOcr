@@ -160,3 +160,143 @@ def test_batch_download_zip_invalid_format():
     assert response.status_code == 400
     assert "Unsupported format" in response.json()["detail"]
 
+
+def test_download_all_formats_from_redis_on_cold_boot():
+    """
+    Verify that ALL supported download formats (pdf, txt, md, and zip)
+    can be downloaded successfully when the local container RAM disk is 100% empty
+    (simulating scale-to-zero cold boot from powered off instance).
+    """
+    from unittest.mock import patch, MagicMock
+    import zipfile
+    import io
+
+    job_id = "cold_boot_job_all_formats"
+    output_token = "cold_boot_token_789"
+    pdf_bytes = b"%PDF-1.4 cold boot test pdf content"
+
+    job_metadata = {
+        "job_id": job_id,
+        "filename": "test_document.pdf",
+        "status": "COMPLETED",
+        "total_pages": 2,
+        "output_pdf_token": output_token,
+        "pages": [
+            {"page_number": 1, "text": "First page text content"},
+            {"page_number": 2, "text": "Second page text content"}
+        ]
+    }
+    job_json = json.dumps(job_metadata)
+
+    # 1. Ensure local RAM stores are completely empty (container powered off / fresh instance)
+    DEV_JOB_STORE.pop(job_id, None)
+    DEV_PDF_STORE.pop(output_token, None)
+
+    # 2. Mock Redis holding the persistent data
+    mock_redis = MagicMock()
+    def mock_get(key):
+        if key == f"job:{job_id}":
+            return job_json
+        if key == f"pdf:{output_token}":
+            return pdf_bytes
+        return None
+
+    mock_redis.get.side_effect = mock_get
+
+    with patch("app.redis_client.get_redis_client", return_value=mock_redis), \
+         patch("app.api.v1.endpoints.jobs.get_redis_client", return_value=mock_redis):
+
+        # A) Test Searchable PDF download on cold boot
+        resp_pdf = client.get(f"/api/v1/jobs/{job_id}/download/pdf")
+        assert resp_pdf.status_code == 200
+        assert resp_pdf.headers["content-type"] == "application/pdf"
+        assert resp_pdf.content == pdf_bytes
+        assert "test_document_searchable.pdf" in resp_pdf.headers["content-disposition"]
+
+        # Ensure local store is cleared again for txt test
+        DEV_JOB_STORE.pop(job_id, None)
+
+        # B) Test Plain Text (.txt) download on cold boot
+        resp_txt = client.get(f"/api/v1/jobs/{job_id}/download/txt")
+        assert resp_txt.status_code == 200
+        assert "text/plain" in resp_txt.headers["content-type"]
+        assert "First page text content\n\nSecond page text content" in resp_txt.text
+        assert "test_document_extracted.txt" in resp_txt.headers["content-disposition"]
+
+        DEV_JOB_STORE.pop(job_id, None)
+
+        # C) Test Markdown (.md) download on cold boot
+        resp_md = client.get(f"/api/v1/jobs/{job_id}/download/md")
+        assert resp_md.status_code == 200
+        assert "text/markdown" in resp_md.headers["content-type"]
+        assert "# Page 1\n\nFirst page text content" in resp_md.text
+        assert "# Page 2\n\nSecond page text content" in resp_md.text
+        assert "test_document_extracted.md" in resp_md.headers["content-disposition"]
+
+        DEV_JOB_STORE.pop(job_id, None)
+
+        # D) Test Batch ZIP download (txt format) on cold boot
+        resp_zip = client.get(f"/api/v1/jobs/batch-download/zip?job_ids={job_id}&format=txt")
+        assert resp_zip.status_code == 200
+        assert resp_zip.headers["content-type"] == "application/zip"
+        with zipfile.ZipFile(io.BytesIO(resp_zip.content), "r") as zf:
+            assert "test_document_extracted.txt" in zf.namelist()
+            content = zf.read("test_document_extracted.txt").decode("utf-8")
+            assert "First page text content" in content
+
+        DEV_JOB_STORE.pop(job_id, None)
+
+        # E) Test Single-Job All-Formats ZIP download on cold boot
+        resp_job_zip = client.get(f"/api/v1/jobs/{job_id}/download/zip")
+        assert resp_job_zip.status_code == 200
+        assert resp_job_zip.headers["content-type"] == "application/zip"
+        assert "test_document_all_formats.zip" in resp_job_zip.headers["content-disposition"]
+        with zipfile.ZipFile(io.BytesIO(resp_job_zip.content), "r") as zf:
+            namelist = zf.namelist()
+            assert "test_document_searchable.pdf" in namelist
+            assert "test_document_extracted.txt" in namelist
+            assert "test_document_extracted.md" in namelist
+            assert zf.read("test_document_searchable.pdf") == pdf_bytes
+            assert "First page text content" in zf.read("test_document_extracted.txt").decode("utf-8")
+            assert "# Page 1" in zf.read("test_document_extracted.md").decode("utf-8")
+
+    # Clean up
+    DEV_JOB_STORE.pop(job_id, None)
+    DEV_PDF_STORE.pop(output_token, None)
+
+
+def test_download_zip_single_job_success():
+    """Verify downloading zip format for a single job packages PDF, TXT, and MD into an archive."""
+    import io
+    import zipfile
+
+    job_id = "test_download_job_single_zip"
+    output_token = "token_pdf_single_zip"
+    pdf_bytes = b"%PDF-1.4 single job pdf content"
+    DEV_PDF_STORE[output_token] = pdf_bytes
+
+    completed_job = {
+        "job_id": job_id,
+        "filename": "my_notes.pdf",
+        "status": "COMPLETED",
+        "total_pages": 1,
+        "output_pdf_token": output_token,
+        "pages": [{"page_number": 1, "text": "Notes page text"}]
+    }
+    DEV_JOB_STORE[job_id] = json.dumps(completed_job)
+
+    response = client.get(f"/api/v1/jobs/{job_id}/download/zip")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/zip"
+    assert 'attachment; filename="my_notes_all_formats.zip"' in response.headers["content-disposition"]
+
+    with zipfile.ZipFile(io.BytesIO(response.content), "r") as zf:
+        namelist = zf.namelist()
+        assert "my_notes_searchable.pdf" in namelist
+        assert "my_notes_extracted.txt" in namelist
+        assert "my_notes_extracted.md" in namelist
+        assert zf.read("my_notes_searchable.pdf") == pdf_bytes
+        assert "Notes page text" in zf.read("my_notes_extracted.txt").decode("utf-8")
+        assert "# Page 1" in zf.read("my_notes_extracted.md").decode("utf-8")
+
+
