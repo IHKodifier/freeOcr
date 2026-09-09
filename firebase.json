@@ -23,7 +23,16 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(js|css|wasm|png|jpg|jpeg|gif|ico|svg|woff2)",
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "assets/**",
         "headers": [
           {
             "key": "Cache-Control",
@@ -32,7 +41,25 @@
         ]
       },
       {
-        "source": "@(**/*.html|index.html|main.dart.js|flutter.js|flutter_service_worker.js|version.json)",
+        "source": "**/*.@(css|wasm|png|jpg|jpeg|gif|ico|svg|woff2|ttf|otf|webp)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000, public"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|json|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/@(main.dart.js|flutter.js|flutter_bootstrap.js|flutter_service_worker.js|version.json|index.html)",
         "headers": [
           {
             "key": "Cache-Control",
