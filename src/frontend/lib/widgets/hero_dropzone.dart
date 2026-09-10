@@ -12,7 +12,7 @@ import 'rewarded_video_ad_modal.dart';
 
 
 class HeroDropzone extends StatefulWidget {
-  final Function(String jobId, String filename, int sizeInBytes)? onUploadSuccess;
+  final Function(String jobId, String filename, int sizeInBytes, {String? layoutComplexity, bool coldStartActive})? onUploadSuccess;
   final Function(List<BatchFileItem> batchItems)? onBatchUploadSuccess;
 
   const HeroDropzone({
@@ -252,6 +252,14 @@ class _HeroDropzoneState extends State<HeroDropzone> {
             setState(() {
               item.sentBytes = sent;
               item.totalBytes = total > 0 ? total : item.sizeInBytes;
+              item.status = 'UPLOADING';
+            });
+          }
+        },
+        onAnalyzing: () {
+          if (mounted) {
+            setState(() {
+              item.status = 'ANALYZING';
             });
           }
         },
@@ -262,6 +270,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           if (result.isSuccess && result.jobId != null) {
             item.jobId = result.jobId;
             item.status = 'QUEUED';
+            item.layoutComplexity = result.layoutComplexity;
+            item.targetEngine = result.targetEngine;
+            item.coldStartActive = result.coldStartActive;
           } else {
             item.status = 'FAILED';
             item.errorMessage = result.errorMessage ?? 'Upload failed.';
@@ -322,6 +333,14 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           setState(() {
             item.sentBytes = sent;
             item.totalBytes = total > 0 ? total : sizeInBytes;
+            item.status = 'UPLOADING';
+          });
+        }
+      },
+      onAnalyzing: () {
+        if (mounted) {
+          setState(() {
+            item.status = 'ANALYZING';
           });
         }
       },
@@ -348,7 +367,13 @@ class _HeroDropzoneState extends State<HeroDropzone> {
         source: 'single_upload',
       );
       if (widget.onUploadSuccess != null) {
-        widget.onUploadSuccess!(result.jobId!, filename, sizeInBytes);
+        widget.onUploadSuccess!(
+          result.jobId!,
+          filename,
+          sizeInBytes,
+          layoutComplexity: result.layoutComplexity,
+          coldStartActive: result.coldStartActive,
+        );
       }
 
     } else if (result.isPasswordRequired) {
@@ -710,7 +735,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Uploading to OCR Engine... ${(_batchItems.first.uploadProgress * 100).round()}%',
+                    (_batchItems.first.status == 'ANALYZING' || _batchItems.first.uploadProgress >= 1.0)
+                        ? 'Analyzing layout...'
+                        : 'Uploading... ${(_batchItems.first.uploadProgress * 100).round()}%',
                     style: theme.textTheme.titleSmall?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w600,
@@ -718,7 +745,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${formatBytes(_batchItems.first.sentBytes)} / ${formatBytes(_batchItems.first.totalBytes)}',
+                    (_batchItems.first.status == 'ANALYZING' || _batchItems.first.uploadProgress >= 1.0)
+                        ? 'Inspecting document complexity & structure...'
+                        : '${formatBytes(_batchItems.first.sentBytes)} / ${formatBytes(_batchItems.first.totalBytes)}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -729,7 +758,9 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: LinearProgressIndicator(
-                        value: _batchItems.first.uploadProgress,
+                        value: (_batchItems.first.status == 'ANALYZING' || _batchItems.first.uploadProgress >= 1.0)
+                            ? null
+                            : _batchItems.first.uploadProgress,
                         minHeight: 10,
                         backgroundColor: colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),

@@ -10,6 +10,9 @@ class JobEvent {
   final int totalPages;
   final String? outputPdfToken;
   final String? errorMessage;
+  final String? layoutComplexity;
+  final String? targetEngine;
+  final bool coldStartActive;
 
   JobEvent({
     required this.jobId,
@@ -18,6 +21,9 @@ class JobEvent {
     required this.totalPages,
     this.outputPdfToken,
     this.errorMessage,
+    this.layoutComplexity,
+    this.targetEngine,
+    this.coldStartActive = false,
   });
 
   factory JobEvent.fromJson(Map<String, dynamic> json) {
@@ -32,6 +38,9 @@ class JobEvent {
           : (json['total_pages'] != null ? int.tryParse(json['total_pages'].toString()) ?? 1 : 1),
       outputPdfToken: json['output_pdf_token'] as String?,
       errorMessage: json['error_message'] as String?,
+      layoutComplexity: json['layout_complexity'] as String?,
+      targetEngine: json['target_engine'] as String?,
+      coldStartActive: json['cold_start_active'] == true,
     );
   }
 

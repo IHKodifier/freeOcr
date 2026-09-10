@@ -3,6 +3,7 @@ import json
 import uuid
 import tempfile
 import datetime
+import httpx
 import pymupdf
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.pdf_composer import compose_searchable_pdf
@@ -141,62 +142,43 @@ def process_ocr_job(
             if not has_meaningful_text:
                 lines_data = []
 
-                # Engine 1: OCRmyPDF / Tesseract Engine (Designated Engine for Simple Layout Scanned PDFs)
-                try:
-                    tess_dir = _get_tessdata_dir()
-                    textpage = page.get_textpage_ocr(tessdata=tess_dir, dpi=300, full=True)
-                    ocr_dict = textpage.extractDICT()
-                    for b in ocr_dict.get("blocks", []):
-                        if b.get("type") == 0 or "lines" in b:
-                            for l in b.get("lines", []):
-                                line_bbox = list(l.get("bbox", []))
-                                spans = l.get("spans", [])
-                                line_text = " ".join([s.get("text", "").strip() for s in spans if s.get("text", "").strip()])
-                                if line_text:
-                                    font_size = spans[0].get("size") if spans else None
-                                    origin = list(spans[0].get("origin")) if (spans and spans[0].get("origin")) else None
-                                    lines_data.append({
-                                        "bbox": [round(float(x), 2) for x in line_bbox],
-                                        "text": line_text,
-                                        "size": round(float(font_size), 2) if font_size else None,
-                                        "origin": [round(float(x), 2) for x in origin] if origin else None
-                                    })
-                    if lines_data:
-                        page_text = "\n".join([line["text"] for line in lines_data])
-
-                except Exception as tess_err:
-                    print(f"[OCRmyPDF / Tesseract Engine Warning] {tess_err}")
-
-                # Engine 2: Baidu Unlimited OCR Engine (Designated AI Engine for Complex Layouts / Multi-Column OCR)
-                if not lines_data and target_engine == "Baidu_Unlimited_OCR":
+                # Path A: Baidu Unlimited OCR Engine (Designated AI Engine for Complex Layouts)
+                if target_engine == "Baidu_Unlimited_OCR":
                     try:
-                        print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout at 300 DPI...")
-                        try:
-                            from paddleocr import PaddleOCR
-                            _baidu_engine = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
-                            target_dpi = 300
-                            pix = page.get_pixmap(dpi=target_dpi)
-                            scale_x = page.rect.width / max(1.0, float(pix.width))
-                            scale_y = page.rect.height / max(1.0, float(pix.height))
-                            img_bytes = pix.tobytes("png")
+                        print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout at 200 DPI...", flush=True)
+                        target_dpi = 200
+                        pix = page.get_pixmap(dpi=target_dpi)
+                        scale_x = page.rect.width / max(1.0, float(pix.width))
+                        scale_y = page.rect.height / max(1.0, float(pix.height))
+                        img_bytes = pix.tobytes("png")
 
-                            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_img:
-                                tmp_img.write(img_bytes)
-                                tmp_img_path = tmp_img.name
+                        gpu_worker_url = os.environ.get("BAIDU_GPU_WORKER_URL")
+                        internal_secret = os.environ.get("INTERNAL_SECRET")
+                        timeout_sec = float(os.environ.get("BAIDU_GPU_TIMEOUT", "75.0"))
 
+                        # 1. Dispatch to remote Cloud Run GPU worker if configured
+                        if gpu_worker_url:
                             try:
-                                ocr_results = _baidu_engine.ocr(tmp_img_path, cls=True)
-                                if ocr_results and ocr_results[0]:
+                                url = f"{gpu_worker_url.rstrip('/')}/ocr/complex-page"
+                                headers = {}
+                                if internal_secret:
+                                    headers["X-Internal-Secret"] = internal_secret
+
+                                resp = httpx.post(
+                                    url,
+                                    headers=headers,
+                                    files={"file": (f"page_{page_num}.png", img_bytes, "image/png")},
+                                    timeout=timeout_sec
+                                )
+                                if resp.status_code == 200:
+                                    gpu_data = resp.json()
                                     font = pymupdf.Font("helv")
                                     font_height_ratio = max(0.5, font.ascender - font.descender)
-                                    for res in ocr_results[0]:
-                                        bbox_coords = res[0]
-                                        text_tuple = res[1]
-                                        if text_tuple and text_tuple[0]:
-                                            x_coords = [pt[0] for pt in bbox_coords]
-                                            y_coords = [pt[1] for pt in bbox_coords]
-                                            x0, y0, x1, y1 = min(x_coords), min(y_coords), max(x_coords), max(y_coords)
-                                            # Scale 300 DPI pixel coordinates to PDF point canvas
+                                    for item in gpu_data.get("lines", []):
+                                        bbox = item.get("bbox", [])
+                                        text = item.get("text", "").strip()
+                                        if len(bbox) == 4 and text:
+                                            x0, y0, x1, y1 = bbox
                                             x0_scaled = float(x0) * scale_x
                                             y0_scaled = float(y0) * scale_y
                                             x1_scaled = float(x1) * scale_x
@@ -208,19 +190,47 @@ def process_ocr_job(
 
                                             lines_data.append({
                                                 "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
-                                                "text": text_tuple[0].strip(),
+                                                "text": text,
                                                 "size": round(est_font_size, 2),
                                                 "origin": [round(x0_scaled, 2), round(origin_y, 2)]
                                             })
                                     if lines_data:
                                         page_text = "\n".join([line["text"] for line in lines_data])
-                            finally:
-                                if os.path.exists(tmp_img_path):
-                                    os.remove(tmp_img_path)
-                        except ImportError:
-                            print("[Baidu Unlimited OCR] PaddleOCR library not present in local dev env; falling back to PyMuPDF/Tesseract.")
+                                else:
+                                    print(f"[Baidu Unlimited OCR] GPU Worker returned status {resp.status_code}. Silent fallback to CPU engine.")
+                            except Exception as gpu_err:
+                                print(f"[Baidu Unlimited OCR] Remote GPU worker unavailable or timed out ({gpu_err}). Silent fallback to CPU engine.")
+
+                        if not lines_data and not gpu_worker_url:
+                            print("[Baidu Unlimited OCR] Remote GPU worker URL not configured. Silent fallback to CPU engine.")
                     except Exception as baidu_err:
-                        print(f"[Baidu Unlimited OCR Worker Error] {baidu_err}")
+                        print(f"[Baidu Unlimited OCR Worker Error] {baidu_err}. Silent fallback to CPU engine.")
+
+                # Path B: CPU OCRmyPDF / Tesseract Engine (Primary for Simple Layouts + Resilient Fallback for Complex Layouts)
+                if not lines_data:
+                    try:
+                        tess_dir = _get_tessdata_dir()
+                        textpage = page.get_textpage_ocr(tessdata=tess_dir, dpi=300, full=True)
+                        ocr_dict = textpage.extractDICT()
+                        for b in ocr_dict.get("blocks", []):
+                            if b.get("type") == 0 or "lines" in b:
+                                for l in b.get("lines", []):
+                                    line_bbox = list(l.get("bbox", []))
+                                    spans = l.get("spans", [])
+                                    line_text = " ".join([s.get("text", "").strip() for s in spans if s.get("text", "").strip()])
+                                    if line_text:
+                                        font_size = spans[0].get("size") if spans else None
+                                        origin = list(spans[0].get("origin")) if (spans and spans[0].get("origin")) else None
+                                        lines_data.append({
+                                            "bbox": [round(float(x), 2) for x in line_bbox],
+                                            "text": line_text,
+                                            "size": round(float(font_size), 2) if font_size else None,
+                                            "origin": [round(float(x), 2) for x in origin] if origin else None
+                                        })
+                        if lines_data:
+                            page_text = "\n".join([line["text"] for line in lines_data])
+                    except Exception as tess_err:
+                        print(f"[OCRmyPDF / Tesseract Engine Warning] {tess_err}")
 
 
             pages_data.append({
@@ -238,6 +248,7 @@ def process_ocr_job(
                 "status": "PROCESSING",
                 "current_page": page_num,
                 "total_pages": total_pages,
+                "layout_complexity": "COMPLEX" if target_engine == "Baidu_Unlimited_OCR" else "SIMPLE",
                 "target_engine": target_engine,
                 "queue_name": queue_name,
                 "pages": pages_data,
@@ -263,6 +274,7 @@ def process_ocr_job(
             "status": "COMPLETED",
             "current_page": total_pages,
             "total_pages": total_pages,
+            "layout_complexity": "COMPLEX" if target_engine == "Baidu_Unlimited_OCR" else "SIMPLE",
             "target_engine": target_engine,
             "queue_name": queue_name,
             "output_pdf_token": output_pdf_token,
@@ -283,6 +295,7 @@ def process_ocr_job(
             "job_id": job_id,
             "filename": filename,
             "status": "FAILED",
+            "layout_complexity": "COMPLEX" if target_engine == "Baidu_Unlimited_OCR" else "SIMPLE",
             "target_engine": target_engine,
             "queue_name": queue_name,
             "error_message": error_msg,

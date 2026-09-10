@@ -22,6 +22,8 @@ class OcrProgressView extends StatefulWidget {
   final String status;
   final String? outputPdfToken;
   final String? errorMessage;
+  final String? layoutComplexity;
+  final bool coldStartActive;
   final VoidCallback? onReset;
 
   const OcrProgressView({
@@ -35,6 +37,8 @@ class OcrProgressView extends StatefulWidget {
     this.status = 'QUEUED',
     this.outputPdfToken,
     this.errorMessage,
+    this.layoutComplexity,
+    this.coldStartActive = false,
     this.onReset,
   });
 
@@ -48,6 +52,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   late int _currentPage;
   late int _totalPages;
   late String _status;
+  String? _layoutComplexity;
+  bool _coldStartActive = false;
   String? _outputPdfToken;
   String? _errorMessage;
   List<BatchFileItem> _batchItems = [];
@@ -169,6 +175,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
     _currentPage = widget.currentPage;
     _totalPages = widget.totalPages;
     _status = widget.status;
+    _layoutComplexity = widget.layoutComplexity;
+    _coldStartActive = widget.coldStartActive;
     _outputPdfToken = widget.outputPdfToken;
     _errorMessage = widget.errorMessage;
     _batchItems = widget.batchItems != null ? List.from(widget.batchItems!) : [];
@@ -196,6 +204,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         final jobData = await ApiService.fetchJobStatus(singleJobId);
         if (mounted && jobData != null) {
           final status = jobData['status']?.toString();
+          final layoutComp = jobData['layout_complexity']?.toString();
+          final coldStart = jobData['cold_start_active'] == true;
           final currPage = jobData['current_page'] is int
               ? jobData['current_page'] as int
               : int.tryParse(jobData['current_page']?.toString() ?? '0') ?? 0;
@@ -205,11 +215,17 @@ class _OcrProgressViewState extends State<OcrProgressView> {
           final token = jobData['output_pdf_token']?.toString();
           final error = jobData['error']?.toString();
 
-          if (currPage > _currentPage || status != _status) {
+          if (currPage > _currentPage || status != _status || (layoutComp != null && layoutComp != _layoutComplexity)) {
             setState(() {
               if (currPage > _currentPage) _currentPage = currPage;
               if (totalPages > 0) _totalPages = totalPages;
               if (status != null) _status = status;
+              if (layoutComp != null) _layoutComplexity = layoutComp;
+              if (currPage > 0 || status == 'PROCESSING' || status == 'COMPLETED') {
+                _coldStartActive = false;
+              } else {
+                _coldStartActive = coldStart;
+              }
               if (token != null) _outputPdfToken = token;
               if (error != null) _errorMessage = error;
             });
@@ -234,6 +250,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             final jobData = await ApiService.fetchJobStatus(item.jobId!);
             if (mounted && jobData != null) {
               final status = jobData['status']?.toString();
+              final layoutComp = jobData['layout_complexity']?.toString();
+              final coldStart = jobData['cold_start_active'] == true;
               final currPage = jobData['current_page'] is int ? jobData['current_page'] as int : 0;
               final totalPages = jobData['total_pages'] is int ? jobData['total_pages'] as int : 0;
               final token = jobData['output_pdf_token']?.toString();
@@ -242,6 +260,12 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                 if (currPage > item.currentPage) item.currentPage = currPage;
                 if (totalPages > 0) item.totalPages = totalPages;
                 if (status != null) item.status = status;
+                if (layoutComp != null) item.layoutComplexity = layoutComp;
+                if (currPage > 0 || status == 'PROCESSING' || status == 'COMPLETED') {
+                  item.coldStartActive = false;
+                } else {
+                  item.coldStartActive = coldStart;
+                }
                 if (token != null) item.outputPdfToken = token;
                 if (error != null) item.errorMessage = error;
               });
@@ -275,6 +299,14 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             _currentPage = event.currentPage;
             _totalPages = event.totalPages;
             _status = event.status;
+            if (event.layoutComplexity != null) {
+              _layoutComplexity = event.layoutComplexity;
+            }
+            if (event.currentPage > 0 || event.status == 'PROCESSING' || event.status == 'COMPLETED') {
+              _coldStartActive = false;
+            } else {
+              _coldStartActive = event.coldStartActive;
+            }
             if (event.outputPdfToken != null) {
               _outputPdfToken = event.outputPdfToken;
             }
@@ -291,15 +323,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
           }
         }
       },
-
-
       onError: (error) {
-        if (mounted) {
-          setState(() {
-            _status = 'FAILED';
-            _errorMessage = 'Stream error: $error';
-          });
-        }
+        debugPrint('[SSE Single Stream Notice] Transient stream reconnect: $error. Polling maintaining UI.');
       },
     );
   }
@@ -315,6 +340,14 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                 item.currentPage = event.currentPage;
                 item.totalPages = event.totalPages;
                 item.status = event.status;
+                if (event.layoutComplexity != null) {
+                  item.layoutComplexity = event.layoutComplexity;
+                }
+                if (event.currentPage > 0 || event.status == 'PROCESSING' || event.status == 'COMPLETED') {
+                  item.coldStartActive = false;
+                } else {
+                  item.coldStartActive = event.coldStartActive;
+                }
                 if (event.outputPdfToken != null) {
                   item.outputPdfToken = event.outputPdfToken;
                 }
@@ -324,15 +357,8 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               });
             }
           },
-
-
           onError: (error) {
-            if (mounted) {
-              setState(() {
-                item.status = 'FAILED';
-                item.errorMessage = 'Stream error: $error';
-              });
-            }
+            debugPrint('[SSE Batch Stream Notice] Transient stream reconnect: $error. Polling maintaining UI.');
           },
         );
       }
@@ -469,6 +495,53 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               ],
             ),
           ),
+          // Single Layout Badge
+          if (_layoutComplexity != null) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+              decoration: BoxDecoration(
+                color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                    ? Colors.amber.shade900.withValues(alpha: 0.12)
+                    : colorScheme.primary.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                      ? Colors.amber.shade600
+                      : colorScheme.primary.withValues(alpha: 0.4),
+                  width: 1.2,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                        ? Icons.auto_awesome
+                        : Icons.bolt,
+                    size: 14,
+                    color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                        ? Colors.amber.shade700
+                        : colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                        ? 'Complex Layout'
+                        : 'Simple Layout',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
+                          ? Colors.amber.shade700
+                          : colorScheme.primary,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 24),
 
           if (isCompleted) ...[
@@ -541,20 +614,30 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Processing Document...',
+              (_coldStartActive && _currentPage == 0)
+                  ? 'Getting things ready...'
+                  : (_currentPage == 0 || _status == 'QUEUED')
+                      ? 'Your document is in queue for conversion...'
+                      : 'Processing Document...',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              _totalPages > 0
-                  ? 'Page $_currentPage of $_totalPages ($percentInt%)'
-                  : 'Queued in OCR pipeline...',
+              (_coldStartActive && _currentPage == 0)
+                  ? 'Warming up dedicated processing pipeline...'
+                  : (_currentPage == 0 || _status == 'QUEUED')
+                      ? 'Preparing pages for extraction...'
+                      : (_totalPages > 0
+                          ? 'Page $_currentPage of $_totalPages ($percentInt%)'
+                          : 'Running OCR pipeline...'),
               style: theme.textTheme.titleMedium?.copyWith(
                 color: colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             SizedBox(

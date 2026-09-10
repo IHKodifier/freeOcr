@@ -118,6 +118,8 @@ class _HomePageState extends State<HomePage> {
   String? _activeJobId;
   String? _activeFilename;
   int? _activeFileSize;
+  String? _activeLayoutComplexity;
+  bool _activeColdStart = false;
   List<BatchFileItem> _batchItems = [];
   bool _showExpiredDevPreview = false;
 
@@ -128,11 +130,13 @@ class _HomePageState extends State<HomePage> {
     TelemetryService.trackPageView('/', pageTitle: 'freeOCR.me — Home');
   }
 
-  void _onUploadSuccess(String jobId, String filename, int sizeInBytes) {
+  void _onUploadSuccess(String jobId, String filename, int sizeInBytes, {String? layoutComplexity, bool coldStartActive = false}) {
     setState(() {
       _activeJobId = jobId;
       _activeFilename = filename;
       _activeFileSize = sizeInBytes;
+      _activeLayoutComplexity = layoutComplexity;
+      _activeColdStart = coldStartActive;
       _batchItems = [];
       _showExpiredDevPreview = false;
     });
@@ -144,6 +148,8 @@ class _HomePageState extends State<HomePage> {
       _activeJobId = null;
       _activeFilename = null;
       _activeFileSize = null;
+      _activeLayoutComplexity = null;
+      _activeColdStart = false;
       _showExpiredDevPreview = false;
     });
   }
@@ -153,6 +159,8 @@ class _HomePageState extends State<HomePage> {
       _activeJobId = null;
       _activeFilename = null;
       _activeFileSize = null;
+      _activeLayoutComplexity = null;
+      _activeColdStart = false;
       _batchItems = [];
       _showExpiredDevPreview = false;
     });
@@ -195,6 +203,8 @@ class _HomePageState extends State<HomePage> {
                               jobId: _activeJobId,
                               filename: _activeFilename,
                               fileSize: _activeFileSize,
+                              layoutComplexity: _activeLayoutComplexity,
+                              coldStartActive: _activeColdStart,
                               batchItems: _batchItems.isNotEmpty ? _batchItems : null,
                               onReset: _resetConversion,
                             ),

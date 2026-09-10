@@ -53,3 +53,4 @@ scratch/
 .firebase/
 test_*.pdf
 *.pdf
+tessdata/*.pdf

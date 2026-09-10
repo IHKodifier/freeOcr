@@ -1,12 +1,11 @@
 # Community 33
 
-> 3 nodes · cohesion 0.67
+> 2 nodes · cohesion 1.00
 
 ## Key Concepts
 
-- [web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (2 connections)
-- [logToBrowserConsole](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
-- [web_console_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
+- [gam_js_interop_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart) (1 connections)
+- [triggerGamAdSlotRefresh](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart) (1 connections)
 
 ## Relationships
 
@@ -14,11 +13,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\gam_js_interop_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 4 (100%)
+- EXTRACTED: 2 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -1,0 +1,36 @@
+{
+  "hotspots": [
+    {
+      "label": "process_ocr_job()",
+      "risk": 0.667,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "download_job_file()",
+      "risk": 0.423,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "stream_job_events()",
+      "risk": 0.407,
+      "type": "FUNCTION"
+    },
+    {
+      "label": "EphemeralRamStore",
+      "risk": 0.364,
+      "type": "CLASS"
+    },
+    {
+      "label": "convert_document()",
+      "risk": 0.361,
+      "type": "FUNCTION"
+    }
+  ],
+  "blast_radius": {
+    "get_redis_client()": 19,
+    "EphemeralRamStore": 18,
+    "convert_document()": 9,
+    "rewarded_ad_callback()": 8,
+    "process_ocr_job()": 8
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "projectName": "backend",
+  "communityLabels": {
+    "0": "Community 0",
+    "1": "Community 1",
+    "2": "Community 2",
+    "3": "Community 3",
+    "4": "Community 4",
+    "5": "Community 5",
+    "6": "Community 6",
+    "7": "Community 7",
+    "8": "unknown",
+    "9": "Community 9",
+    "10": "unknown",
+    "11": "unknown",
+    "12": "unknown",
+    "13": "unknown",
+    "14": "Community 14"
+  },
+  "communitySummaries": {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "7": "",
+    "8": "Unable to determine domain due to missing code entities.",
+    "9": "",
+    "10": "Unable to determine domain due to missing code entities.",
+    "11": "Unable to determine domain due to missing code entities.",
+    "12": "Unable to determine domain due to missing code entities.",
+    "13": "Unable to determine domain due to missing code entities.",
+    "14": ""
+  },
+  "communityLinks": {
+    "5": {
+      "6": 1,
+      "2": 1,
+      "0": 2
+    },
+    "6": {
+      "2": 2
+    },
+    "2": {
+      "1": 5,
+      "0": 6,
+      "4": 2
+    },
+    "0": {
+      "2": 6,
+      "1": 4,
+      "3": 2,
+      "4": 1,
+      "9": 1,
+      "7": 2
+    },
+    "1": {
+      "0": 2,
+      "2": 7
+    },
+    "3": {},
+    "4": {
+      "2": 1
+    },
+    "9": {},
+    "7": {
+      "0": 2
+    }
+  }
+}

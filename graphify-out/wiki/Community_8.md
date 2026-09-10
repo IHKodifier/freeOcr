@@ -1,35 +1,35 @@
 # Community 8
 
-> 29 nodes · cohesion 0.07
+> 37 nodes · cohesion 0.06
 
 ## Key Concepts
 
-- [hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (24 connections)
-- [package:flutter/foundation.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (6 connections)
-- [telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (4 connections)
+- [rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (22 connections)
+- [app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (13 connections)
+- [package:flutter/foundation.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (12 connections)
+- [glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart) (6 connections)
+- [dart:ui](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (4 connections)
 - [telemetry_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (3 connections)
-- [dart:js](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_web.dart) (2 connections)
-- [gam_js_interop_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_web.dart) (2 connections)
 - [trackGa4Event](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (1 connections)
 - [trackGa4PageView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (1 connections)
-- [trackGa4Event](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (1 connections)
-- [trackGa4PageView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (1 connections)
-- [triggerGamAdSlotRefresh](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_web.dart) (1 connections)
-- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [DropTarget](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [Function](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [HeroDropzone](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [_HeroDropzoneState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [Icon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [_processMultipleFiles](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [_processSingleUpload](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [_showToast](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- [_startBoostTicker](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (1 connections)
-- *... and 4 more nodes in this community*
+- [AppHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [_buildThemeToggleButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [IconButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [PopupMenuItem](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Row](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Spacer](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart) (1 connections)
+- [GlassCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart) (1 connections)
+- [InkWell](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (1 connections)
+- [_buildSuccessDetailRow](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (1 connections)
+- [CircularProgressIndicator](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (1 connections)
+- [ClipRRect](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (1 connections)
+- [Color](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (1 connections)
+- *... and 12 more nodes in this community*
 
 ## Relationships
 
@@ -38,13 +38,14 @@
 ## Source Files
 
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\gam_js_interop_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 64 (100%)
+- EXTRACTED: 91 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -1,19 +1,19 @@
-# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr (2026-09-04)
+# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr (2026-09-10)
 
 > [!NOTE]
 > This is a token-optimized summary. For deep logic, see GRAPH_REPORT.md.
 
 ## Core Abstractions (God Nodes)
-1. `package:flutter/material.dart` (32 edges)
-2. `get_redis_client()` (16 edges)
-3. `process_ocr_job()` (14 edges)
-4. `package:flutter_test/flutter_test.dart` (14 edges)
-5. `load_canonical_config()` (9 edges)
-6. `../services/telemetry_service.dart` (9 edges)
-7. `convert_document()` (8 edges)
-8. `rewarded_ad_callback()` (7 edges)
-9. `compose_searchable_pdf()` (7 edges)
-10. `dart:async` (7 edges)
+1. `package:flutter/material.dart` (42 edges)
+2. `get_redis_client()` (20 edges)
+3. `EphemeralRamStore` (18 edges)
+4. `process_ocr_job()` (17 edges)
+5. `package:flutter_test/flutter_test.dart` (16 edges)
+6. `package:flutter/foundation.dart` (12 edges)
+7. `compose_searchable_pdf()` (11 edges)
+8. `../services/telemetry_service.dart` (11 edges)
+9. `get_searchable_pdf()` (10 edges)
+10. `dart:async` (10 edges)
 
 ## System Layers
 - **L0: Global/Entry**: 

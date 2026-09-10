@@ -1,20 +1,26 @@
 # Community 15
 
-> 11 nodes · cohesion 0.18
+> 17 nodes · cohesion 0.12
 
 ## Key Concepts
 
-- [test_download_endpoints.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L1) (5 connections)
-- [test_download_invalid_format_returns_400()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L13) (2 connections)
-- [test_download_md_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L90) (2 connections)
-- [test_download_non_existent_job_returns_410_gone()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L21) (2 connections)
-- [test_download_pdf_success_and_purges_ram_disk()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L29) (2 connections)
-- [test_download_txt_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L64) (2 connections)
-- [Verify that requesting an unsupported format returns HTTP 400 Bad Request.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L14) (1 connections)
-- [Verify that requesting a download for a non-existent/expired job returns HTTP 41](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L22) (1 connections)
-- [Verify downloading searchable PDF streams file bytes and immediately unlinks RAM](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L30) (1 connections)
-- [Verify downloading plain text streams compiled pages text.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L65) (1 connections)
-- [Verify downloading markdown format streams formatted markdown text with page hea](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L91) (1 connections)
+- [landing_faq_section.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (17 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [_buildFaqItem](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [_buildFeatureTile](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [_buildSectionHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [_buildStepCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Center](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Column](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Divider](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [GlassCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [LandingFaqSection](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [_LandingFaqSectionState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Row](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [Wrap](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
+- [glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart) (1 connections)
 
 ## Relationships
 
@@ -22,11 +28,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_download_endpoints.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\landing_faq_section.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/landing_faq_section.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 20 (100%)
+- EXTRACTED: 33 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

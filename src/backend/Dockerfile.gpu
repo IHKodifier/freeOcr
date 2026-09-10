@@ -1,0 +1,74 @@
+# Multi-stage GPU container for freeOCR.me Baidu Unlimited OCR Microservice
+# Powered by authentic Baidu Unlimited OCR (baidu/Unlimited-OCR, PyTorch, Transformers, CUDA 12)
+# Optimized for GCP Cloud Run GPU (NVIDIA L4, Scale-to-Zero, Pre-baked Weights)
+
+FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PORT=8080 \
+    DEBIAN_FRONTEND=noninteractive \
+    MPLCONFIGDIR=/tmp/matplotlib \
+    HF_HOME=/home/appuser/.cache/huggingface
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-dev \
+    libgl1 \
+    libglib2.0-0 \
+    libgomp1 \
+    curl \
+    ca-certificates \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Upgrade pip
+RUN python3 -m pip install --no-cache-dir --upgrade pip
+
+# Install PyTorch with CUDA 12 support
+RUN pip3 install --no-cache-dir \
+    torch \
+    torchvision \
+    --index-url https://download.pytorch.org/whl/cu121
+
+# Install Baidu Unlimited OCR dependencies (PyTorch & Hugging Face ecosystem)
+RUN pip3 install --no-cache-dir \
+    "transformers==4.46.3" \
+    einops \
+    addict \
+    easydict \
+    "pymupdf>=1.24.0" \
+    psutil \
+    accelerate \
+    safetensors \
+    Pillow \
+    matplotlib \
+    requests \
+    fastapi \
+    uvicorn \
+    httpx \
+    python-multipart
+
+# Copy backend application source code
+COPY . /app
+
+# Pre-bake Baidu Unlimited OCR (baidu/Unlimited-OCR) model weights during build
+# Eliminates cold-start model download delays at runtime
+RUN python3 -c "from transformers import AutoTokenizer, AutoModel; m='baidu/Unlimited-OCR'; AutoTokenizer.from_pretrained(m, trust_remote_code=True); AutoModel.from_pretrained(m, trust_remote_code=True, use_safetensors=True)" || true
+
+# Setup non-root execution
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app && \
+    mkdir -p /home/appuser/.cache && \
+    cp -r /root/.cache/* /home/appuser/.cache/ 2>/dev/null || true && \
+    chown -R appuser:appuser /home/appuser/.cache 2>/dev/null || true
+
+USER appuser
+
+EXPOSE 8080
+
+CMD exec uvicorn app.services.baidu_gpu_service:app --host 0.0.0.0 --port ${PORT:-8080} --workers 1

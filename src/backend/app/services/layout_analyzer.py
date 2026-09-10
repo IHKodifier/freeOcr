@@ -21,9 +21,20 @@ class LayoutAnalyzer:
             is_complex = False
             reasons = []
 
+            has_any_digital_text = False
+
             for page_num in range(min(total_pages, 5)):  # Sample up to first 5 pages
                 page = doc[page_num]
                 blocks = page.get_text("blocks")
+                images = page.get_images()
+
+                # Check 1: Orientation & Aspect Ratio (Landscape / Rotated scans)
+                if page.rotation in (90, 180, 270) or page.rect.width > page.rect.height:
+                    is_complex = True
+                    reasons.append(f"Landscape or rotated page orientation detected on page {page_num + 1}")
+
+                if blocks:
+                    has_any_digital_text = True
                 
                 # Check column layout by examining block horizontal coordinates
                 x_centers = []
@@ -67,6 +78,11 @@ class LayoutAnalyzer:
                 if any(sym in text for sym in math_symbols):
                     is_complex = True
                     reasons.append(f"Math formulas detected on page {page_num + 1}")
+
+            # Check 2: Pure image scans with multiple pages (e.g. multi-page financial statements/books)
+            if not has_any_digital_text and total_pages > 1:
+                is_complex = True
+                reasons.append(f"Multi-page pure scanned image document detected ({total_pages} pages)")
 
             complexity = "COMPLEX" if is_complex else "SIMPLE"
             target_engine = "Baidu_Unlimited_OCR" if is_complex else "OCRmyPDF"

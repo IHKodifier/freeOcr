@@ -1,29 +1,26 @@
 # Community 22
 
-> 7 nodes · cohesion 0.29
+> 4 nodes · cohesion 0.67
 
 ## Key Concepts
 
-- [test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L1) (3 connections)
-- [test_adsense_config_interval_loaded()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L10) (3 connections)
-- [test_adsense_config_api_endpoint()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L20) (2 connections)
-- [test_dynamic_config_file_reload()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L31) (2 connections)
-- [Verify that monetization parameters are present in backend configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L11) (1 connections)
-- [Verify that GET /api/v1/config endpoint returns monetization configuration.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L21) (1 connections)
-- [Verify that modifying monetization parameters in config file is reflected dynami](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py#L32) (1 connections)
+- [markdown_to_simple_html()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L16) (3 connections)
+- [main()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L84) (2 connections)
+- [build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L1) (2 connections)
+- [Converts basic markdown formatting into clean semantic HTML structure.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py#L17) (1 connections)
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 28]] (1 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_adsense_config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_adsense_config.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\scripts\build_seo_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/build_seo_pages.py)
 
 ## Audit Trail
 
-- EXTRACTED: 12 (92%)
-- INFERRED: 1 (8%)
+- EXTRACTED: 8 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

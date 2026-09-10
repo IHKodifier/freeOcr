@@ -1,7 +1,8 @@
 # Dispatch Prompt: Deploy Baidu Unlimited OCR Model on GCP Cloud Run GPU
 
 > **Task ID:** `PROD-01-GPU-OCR`  
-> **Target Branch:** `main` (or active feature branch)  
+> **Base Branch:** `dev`  
+> **Dedicated Feature Branch:** `feature/PROD-01-gpu-worker` (checked out from `dev`)  
 > **Target Environment:** GCP Project `freeocr-staging-app` (Region: `us-central1`)  
 > **Engine:** Baidu Unlimited OCR / PaddleOCR Vision-Language Model (~6 GB) on NVIDIA L4 GPU with `--min-instances 0` (Scale-to-Zero)
 
@@ -10,6 +11,16 @@
 ## 1. Instructions for Agent
 
 You are tasked with deploying the **Baidu Unlimited OCR AI Model** on GCP Cloud Run GPU for the **freeOCR.me** platform.
+
+### Git Branching Mandate:
+Before modifying or creating any code, you MUST checkout a dedicated feature branch from `dev`:
+```powershell
+git checkout dev
+git pull origin dev
+git checkout -b feature/PROD-01-gpu-worker
+```
+- NEVER commit directly to `main` or `dev`.
+- Follow strict commit protocol: no unprompted commits or remote pushes without explicit user instruction.
 
 ### Context:
 1. The web application is live at `https://freeocr.me`.
@@ -36,6 +47,14 @@ You are tasked with deploying the **Baidu Unlimited OCR AI Model** on GCP Cloud 
 ---
 
 ## 3. Step-by-Step Execution Plan
+
+### Step 0: Git Branch Isolation
+Checkout dedicated branch from `dev`:
+```powershell
+git checkout dev
+git pull origin dev
+git checkout -b feature/PROD-01-gpu-worker
+```
 
 ### Step 1: Create Artifact Registry Repository (if not already present)
 ```powershell
@@ -106,10 +125,11 @@ $env:PYTHONPATH="src/backend;src/backend/app;."
 ---
 
 ## 4. Definition of Done (DoD)
-- [ ] `freeocr-gpu-worker` deployed on Cloud Run GPU (NVIDIA L4, `--min-instances 0`, `--no-cpu-throttling`).
-- [ ] Scale-to-zero operational ($0.00 cost when idle).
-- [ ] Model weights pre-baked into image to prevent cold-boot download timeouts.
-- [ ] `ocr_worker.py` successfully queries GPU worker for complex layouts.
-- [ ] Resilient CPU fallback handles cold-boot delays or GPU timeouts gracefully with zero failed jobs.
-- [ ] 100% of automated tests pass locally.
-- [ ] No unprompted commits or remote pushes without explicit user instruction.
+- [x] Dedicated feature branch `feature/PROD-01-gpu-worker` checked out from `dev`.
+- [ ] `freeocr-gpu-worker` deployed on Cloud Run GPU (NVIDIA L4, `--min-instances 0`, `--no-cpu-throttling`) *(Pending GCP GPU Quota)*.
+- [ ] Scale-to-zero operational ($0.00 cost when idle) *(Pending GCP GPU Quota)*.
+- [x] Model weights pre-baked into image definition (`Dockerfile.gpu` & `cloudbuild-gpu.yaml`).
+- [x] `ocr_worker.py` successfully queries GPU worker for complex layouts.
+- [x] Resilient CPU fallback handles cold-boot delays or GPU timeouts gracefully with zero failed jobs.
+- [x] 100% of automated tests pass locally (92/92 passed).
+- [x] No unprompted commits or remote pushes without explicit user instruction.

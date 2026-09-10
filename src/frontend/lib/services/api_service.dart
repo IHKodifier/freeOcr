@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'api_uploader_stub.dart'
+    if (dart.library.html) 'api_uploader_web.dart' as uploader;
 
 class UploadResult {
   final bool isSuccess;
@@ -11,6 +13,9 @@ class UploadResult {
   final String? status;
   final String? errorMessage;
   final bool isPasswordRequired;
+  final String? layoutComplexity;
+  final String? targetEngine;
+  final bool coldStartActive;
 
   UploadResult({
     required this.isSuccess,
@@ -18,6 +23,9 @@ class UploadResult {
     this.status,
     this.errorMessage,
     this.isPasswordRequired = false,
+    this.layoutComplexity,
+    this.targetEngine,
+    this.coldStartActive = false,
   });
 }
 
@@ -27,13 +35,16 @@ class BatchFileItem {
   final int sizeInBytes;
   final Uint8List bytes;
   String? jobId;
-  String status; // 'QUEUED', 'UPLOADING', 'PROCESSING', 'COMPLETED', 'FAILED'
+  String status; // 'QUEUED', 'UPLOADING', 'ANALYZING', 'PROCESSING', 'COMPLETED', 'FAILED'
   int sentBytes;
   int totalBytes;
   int currentPage;
   int totalPages;
   String? outputPdfToken;
   String? errorMessage;
+  String? layoutComplexity;
+  String? targetEngine;
+  bool coldStartActive;
 
   BatchFileItem({
     required this.id,
@@ -48,6 +59,9 @@ class BatchFileItem {
     this.totalPages = 0,
     this.outputPdfToken,
     this.errorMessage,
+    this.layoutComplexity,
+    this.targetEngine,
+    this.coldStartActive = false,
   }) : totalBytes = totalBytes ?? sizeInBytes;
 
   double get uploadProgress {
@@ -141,64 +155,49 @@ class ApiService {
     required Uint8List bytes,
     String? password,
     Function(int sentBytes, int totalBytes)? onProgress,
+    Function()? onAnalyzing,
   }) async {
     try {
       debugPrint('[API Upload] Starting upload of $filename (${formatBytes(bytes.length)})...');
-      final uri = Uri.parse('$baseUrl/ocr/convert');
+      final uri = '$baseUrl/ocr/convert';
 
-      final request = MultipartRequestWithProgress(
-        'POST',
-        uri,
-        onProgress: (sent, total) {
-          final percentage = total > 0 ? ((sent / total) * 100).round() : 0;
-          debugPrint(
-            '[API Upload Progress] $filename: $percentage% (${formatBytes(sent)} / ${formatBytes(total)})',
-          );
-          if (onProgress != null) {
-            onProgress(sent, total);
-          }
-        },
-      );
-      request.headers.addAll(defaultHeaders);
-
-      if (password != null && password.isNotEmpty) {
-        request.fields['password'] = password;
-      }
-
-      request.files.add(
-        http.MultipartFile.fromBytes(
-          'file',
-          bytes,
-          filename: filename,
-        ),
+      final res = await uploader.uploadWithRealSocketProgress(
+        url: uri,
+        filename: filename,
+        bytes: bytes,
+        headers: defaultHeaders,
+        password: password,
+        onProgress: onProgress,
+        onAnalyzing: onAnalyzing,
       );
 
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
+      final statusCode = res['statusCode'] as int? ?? 0;
+      final data = (res['data'] is Map<String, dynamic>)
+          ? res['data'] as Map<String, dynamic>
+          : <String, dynamic>{};
 
-      if (response.statusCode == 202) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (statusCode == 202) {
         final jobId = data['job_id'] as String?;
         final jobStatus = data['status'] as String?;
-        debugPrint('[API Upload Success] Job ID: $jobId, Status: $jobStatus');
+        final layoutComplexity = data['layout_complexity'] as String?;
+        final targetEngine = data['target_engine'] as String?;
+        final coldStartActive = data['cold_start_active'] == true;
+        debugPrint('[API Upload Success] Job ID: $jobId, Complexity: $layoutComplexity, Engine: $targetEngine');
         return UploadResult(
           isSuccess: true,
           jobId: jobId,
           status: jobStatus,
+          layoutComplexity: layoutComplexity,
+          targetEngine: targetEngine,
+          coldStartActive: coldStartActive,
         );
       } else {
-        String detail = 'Upload failed with status code ${response.statusCode}';
+        String detail = data['detail'] as String? ?? 'Upload failed with status code $statusCode';
         bool isPasswordReq = false;
-        try {
-          final data = jsonDecode(response.body) as Map<String, dynamic>;
-          if (data.containsKey('error') && data['error'] == 'PASSWORD_REQUIRED') {
-            isPasswordReq = true;
-            detail = data['message'] as String? ?? 'Password Protected PDF. Please provide password to unlock.';
-          } else if (data.containsKey('detail')) {
-            detail = data['detail'] as String;
-          }
-        } catch (_) {}
-
+        if (data.containsKey('error') && data['error'] == 'PASSWORD_REQUIRED') {
+          isPasswordReq = true;
+          detail = data['message'] as String? ?? 'Password Protected PDF. Please provide password to unlock.';
+        }
         debugPrint('[API Upload Error] $detail');
         return UploadResult(
           isSuccess: false,
@@ -210,7 +209,7 @@ class ApiService {
       debugPrint('[API Upload Exception] $e');
       return UploadResult(
         isSuccess: false,
-        errorMessage: 'Network error connecting to OCR server: $e',
+        errorMessage: 'Network exception during upload: $e',
       );
     }
   }
