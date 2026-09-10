@@ -442,7 +442,8 @@ class _HeroDropzoneState extends State<HeroDropzone> {
 
     int totalBatchBytes = _batchItems.fold(0, (sum, item) => sum + item.sizeInBytes);
 
-    return DropTarget(
+    return SelectionContainer.disabled(
+      child: DropTarget(
       onDragEntered: (_) => setState(() => _isDragging = true),
       onDragExited: (_) => setState(() => _isDragging = false),
       onDragDone: (details) async {
@@ -939,6 +940,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

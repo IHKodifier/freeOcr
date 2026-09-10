@@ -164,3 +164,33 @@ def test_get_searchable_pdf_from_redis_when_local_cache_misses():
         DEV_PDF_STORE.pop(token, None)
         if os.path.exists(file_path):
             os.remove(file_path)
+
+
+def test_compose_searchable_pdf_with_rotation_and_morph_scaling():
+    job_id = "test_job_rot_morph_007"
+    pdf_bytes = _create_sample_pdf_bytes("Original Page")
+    pages_data = [
+        {
+            "page_number": 1,
+            "text": "Rotated Precision Text",
+            "rotation": 90,
+            "lines": [
+                {
+                    "bbox": [50.0, 100.0, 350.0, 125.0],
+                    "text": "Rotated Precision Text"
+                }
+            ]
+        }
+    ]
+
+    out_bytes, token = compose_searchable_pdf(job_id, pages_data, pdf_bytes)
+    assert out_bytes is not None
+    assert len(out_bytes) > 0
+
+    doc = pymupdf.open("pdf", out_bytes)
+    assert len(doc) == 1
+    # Verify page rotation was applied
+    assert doc[0].rotation == 90
+    extracted_text = doc[0].get_text()
+    assert "Rotated Precision Text" in extracted_text
+    doc.close()

@@ -40,6 +40,12 @@ def compose_searchable_pdf(
         for page_idx, page_info in enumerate(pages_data):
             if page_idx < len(doc):
                 page = doc[page_idx]
+
+                # Apply page auto-orientation if rotation is detected
+                detected_rotation = page_info.get("rotation")
+                if detected_rotation in (90, 180, 270) and page.rotation != detected_rotation:
+                    page.set_rotation(detected_rotation)
+
                 lines = page_info.get("lines", [])
                 for line in lines:
                     bbox = line.get("bbox")
@@ -51,36 +57,45 @@ def compose_searchable_pdf(
                         page_w, page_h = float(page.rect.width), float(page.rect.height)
                         x0 = max(0.0, min(raw_x0, page_w - 1.0))
                         y0 = max(0.0, min(raw_y0, page_h - 1.0))
-                        x1 = max(x0 + 1.0, min(raw_x1, page_w - 2.0))
+                        x1 = max(x0 + 1.0, min(raw_x1, page_w - 1.0))
                         y1 = max(y0 + 1.0, min(raw_y1, page_h - 1.0))
 
                         h = max(1.0, y1 - y0)
                         w = max(1.0, x1 - x0)
                         font = pymupdf.Font("helv")
                         font_height_ratio = max(0.5, font.ascender - font.descender)
-                        h_font_size = h / font_height_ratio
-
-                        nat_w = font.text_length(text, fontsize=1.0)
-                        w_font_size = (w / nat_w) if nat_w > 0 else h_font_size
-
-                        # Use width-matched font size so line spans completely to x1 without early cutoff,
-                        # but cap against line height if line is short or indented to prevent tall vertical text.
-                        if w_font_size > h_font_size * 1.5:
-                            font_size = max(4.0, h_font_size)
-                        else:
-                            font_size = max(4.0, w_font_size)
+                        font_size = max(4.0, h / font_height_ratio)
 
                         descender_depth = abs(font.descender) * font_size
                         baseline = y1 - descender_depth
+                        origin = pymupdf.Point(x0, baseline)
 
-                        page.insert_text(
-                            pymupdf.Point(x0, baseline),
-                            text,
-                            fontsize=font_size,
-                            fontname="helv",
-                            render_mode=3,
-                            overlay=True
-                        )
+                        nat_w = font.text_length(text, fontsize=font_size)
+                        if nat_w > 0 and w > 0:
+                            # Precision single-string horizontal morphing:
+                            # sx stretches or condenses the line proportionally so it starts exactly at x0
+                            # and spans cleanly to x1 without fragmenting words or showing whitespace gaps.
+                            sx = w / nat_w
+                            sx = max(0.2, min(sx, 4.0))
+                            morph_matrix = pymupdf.Matrix(sx, 1.0)
+                            page.insert_text(
+                                origin,
+                                text,
+                                fontsize=font_size,
+                                fontname="helv",
+                                render_mode=3,
+                                morph=(origin, morph_matrix),
+                                overlay=True
+                            )
+                        else:
+                            page.insert_text(
+                                origin,
+                                text,
+                                fontsize=font_size,
+                                fontname="helv",
+                                render_mode=3,
+                                overlay=True
+                            )
 
 
 

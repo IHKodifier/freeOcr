@@ -46,6 +46,17 @@ class FreeOcrApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: currentMode,
+          builder: (context, child) {
+            return Overlay(
+              initialEntries: [
+                OverlayEntry(
+                  builder: (context) => SelectionArea(
+                    child: child ?? const SizedBox.shrink(),
+                  ),
+                ),
+              ],
+            );
+          },
           onGenerateRoute: (settings) {
             final name = settings.name;
             if (name != null && name.startsWith('/result/')) {

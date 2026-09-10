@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
-from app.services.email_service import validate_email_address
+from app.services.email_service import validate_email_address, send_contact_inquiry_email
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,8 @@ class ContactRequest(BaseModel):
 @router.post("", status_code=status.HTTP_200_OK)
 async def submit_contact_form(payload: ContactRequest):
     """
-    Submits a contact inquiry. Validates input and logs contact submission.
+    Submits a contact inquiry. Validates input, logs contact submission,
+    and dispatches an email notification to support@freeocr.me via SMTP or Resend API.
     """
     clean_name = payload.name.strip()
     clean_email = payload.email.strip()
@@ -48,9 +49,18 @@ async def submit_contact_form(payload: ContactRequest):
             detail="Message cannot be empty."
         )
 
+    # Dispatch email notification to support inbox (support@freeocr.me)
+    dispatch_result = send_contact_inquiry_email(
+        name=clean_name,
+        email=clean_email,
+        category=clean_category,
+        subject=clean_subject,
+        message=clean_message
+    )
+
     logger.info(
         f"[Contact Form Received] From: {clean_name} <{clean_email}> | "
-        f"Category: {clean_category} | Subject: {clean_subject}"
+        f"Category: {clean_category} | Subject: {clean_subject} | Dispatch: {dispatch_result.get('delivery_mode')}"
     )
 
     return {
@@ -61,5 +71,6 @@ async def submit_contact_form(payload: ContactRequest):
             "email": clean_email,
             "category": clean_category,
             "subject": clean_subject,
+            "dispatch_mode": dispatch_result.get("delivery_mode", "LOG")
         }
     }

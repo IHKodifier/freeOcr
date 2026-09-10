@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import uuid
 import tempfile
@@ -8,6 +9,92 @@ import pymupdf
 from app.redis_client import get_redis_client, DEV_JOB_STORE
 from app.services.pdf_composer import compose_searchable_pdf
 from app.services.pdf_repair import repair_pdf
+
+COMMON_ENGLISH_WORDS = {
+    'the', 'of', 'and', 'to', 'in', 'is', 'you', 'that', 'it', 'he', 'was', 'for', 'on', 'are', 'as', 'with', 'his', 'they',
+    'at', 'be', 'this', 'have', 'from', 'or', 'one', 'had', 'by', 'word', 'but', 'not', 'what', 'all', 'were', 'we', 'when',
+    'your', 'can', 'said', 'there', 'use', 'an', 'each', 'which', 'she', 'do', 'how', 'their', 'if', 'will', 'up', 'other',
+    'about', 'out', 'many', 'then', 'them', 'these', 'so', 'some', 'her', 'would', 'make', 'like', 'him', 'into', 'time',
+    'has', 'look', 'two', 'more', 'write', 'go', 'see', 'number', 'no', 'way', 'could', 'people', 'my', 'than', 'first',
+    'water', 'been', 'call', 'who', 'oil', 'its', 'now', 'find', 'long', 'down', 'day', 'did', 'get', 'come', 'made', 'may',
+    'part', 'balance', 'total', 'year', 'date', 'cost', 'assets', 'office', 'rate', 'value', 'charge', 'note', 'page', 'bank',
+    'rupees', 'december', 'january', 'written', 'depreciation', 'operating', 'furniture', 'motor', 'cash', 'tax', 'income',
+    'loss', 'profit', 'report', 'amount', 'amounts', 'financial', 'statement', 'statements', 'audit', 'auditor', 'limited'
+}
+
+
+def detect_page_orientation(page: pymupdf.Page, tess_dir: str = None) -> int:
+    """
+    Quickly checks whether the page has rotated text (90, 180, 270 deg)
+    using dictionary-based scoring on low-DPI OCR sample.
+    Returns the best rotation angle (0, 90, 180, or 270).
+    """
+    try:
+        orig_rot = page.rotation
+
+        def _score_rotation(rot: int) -> int:
+            page.set_rotation(rot)
+            try:
+                tp = page.get_textpage_ocr(tessdata=tess_dir, dpi=72, full=False)
+                txt = tp.extractTEXT().lower()
+                words = [w.strip(".,;:()[]\"'") for w in txt.split() if w.isalpha()]
+                return sum(1 for w in words if w in COMMON_ENGLISH_WORDS)
+            except Exception:
+                return 0
+
+        # 1. Fast check: rotation 0 (already upright in PDF)
+        score_0 = _score_rotation(0)
+        if score_0 >= 5:
+            page.set_rotation(orig_rot)
+            return 0
+
+        # 2. If score_0 < 5, evaluate 90, 180, 270 degrees
+        best_rot = 0
+        best_score = score_0
+        for rot in [90, 180, 270]:
+            score = _score_rotation(rot)
+            if score > best_score:
+                best_score = score
+                best_rot = rot
+
+        page.set_rotation(orig_rot)
+        if best_score >= 3 and best_rot != 0:
+            return best_rot
+        return 0
+    except Exception as e:
+        print(f"[Orientation Detection Warning] {e}")
+        return 0
+
+
+def parse_html_table_to_lines(html_str: str, bbox: list) -> list:
+    """
+    Parses an HTML table string into structured lines with computed bboxes.
+    Decomposes multi-row financial tables into bounded horizontal text lines.
+    """
+    row_pattern = re.compile(r"<tr>(.*?)</tr>", re.DOTALL)
+    cell_pattern = re.compile(r"<td[^>]*>(.*?)</td>", re.DOTALL)
+    rows = row_pattern.findall(html_str)
+    if not rows:
+        clean = re.sub(r"<[^>]+>", " ", html_str).strip()
+        return [{"bbox": bbox, "text": clean}] if clean else []
+
+    x0, y0, x1, y1 = float(bbox[0]), float(bbox[1]), float(bbox[2]), float(bbox[3])
+    total_h = max(1.0, y1 - y0)
+    row_h = total_h / len(rows)
+    lines = []
+
+    for r_idx, r in enumerate(rows):
+        cells = [re.sub(r"<[^>]+>", "", c).strip() for c in cell_pattern.findall(r)]
+        row_text = "   ".join([c for c in cells if c])
+        if row_text:
+            ry0 = y0 + (r_idx * row_h)
+            ry1 = ry0 + row_h
+            lines.append({
+                "bbox": [round(x0, 2), round(ry0, 2), round(x1, 2), round(ry1, 2)],
+                "text": row_text
+            })
+    return lines
+
 
 
 def _publish_event(job_id: str, payload: dict) -> None:
@@ -142,10 +229,16 @@ def process_ocr_job(
             if not has_meaningful_text:
                 lines_data = []
 
+                # Detect physical page orientation (0, 90, 180, 270) to prevent sideways scanning corruption
+                tess_dir = _get_tessdata_dir()
+                detected_rot = detect_page_orientation(page, tess_dir=tess_dir)
+                if detected_rot != page.rotation:
+                    page.set_rotation(detected_rot)
+
                 # Path A: Baidu Unlimited OCR Engine (Designated AI Engine for Complex Layouts)
                 if target_engine == "Baidu_Unlimited_OCR":
                     try:
-                        print("[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout at 200 DPI...", flush=True)
+                        print(f"[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout (rot={page.rotation}) at 200 DPI...", flush=True)
                         target_dpi = 200
                         pix = page.get_pixmap(dpi=target_dpi)
                         scale_x = page.rect.width / max(1.0, float(pix.width))
@@ -154,7 +247,7 @@ def process_ocr_job(
 
                         gpu_worker_url = os.environ.get("BAIDU_GPU_WORKER_URL")
                         internal_secret = os.environ.get("INTERNAL_SECRET")
-                        timeout_sec = float(os.environ.get("BAIDU_GPU_TIMEOUT", "75.0"))
+                        timeout_sec = float(os.environ.get("BAIDU_GPU_TIMEOUT", "120.0"))
 
                         # 1. Dispatch to remote Cloud Run GPU worker if configured
                         if gpu_worker_url:
@@ -178,22 +271,45 @@ def process_ocr_job(
                                         bbox = item.get("bbox", [])
                                         text = item.get("text", "").strip()
                                         if len(bbox) == 4 and text:
-                                            x0, y0, x1, y1 = bbox
-                                            x0_scaled = float(x0) * scale_x
-                                            y0_scaled = float(y0) * scale_y
-                                            x1_scaled = float(x1) * scale_x
-                                            y1_scaled = float(y1) * scale_y
-                                            h_scaled = max(1.0, y1_scaled - y0_scaled)
-                                            est_font_size = max(5.0, h_scaled / font_height_ratio)
-                                            descender_depth = abs(font.descender) * est_font_size
-                                            origin_y = y1_scaled - descender_depth
+                                            # If text contains an HTML table, decompose into structured rows
+                                            if "<table" in text:
+                                                sub_lines = parse_html_table_to_lines(text, bbox)
+                                                for sl in sub_lines:
+                                                    sb = sl.get("bbox", bbox)
+                                                    st = sl.get("text", "").strip()
+                                                    if st and len(sb) == 4:
+                                                        x0, y0, x1, y1 = sb
+                                                        x0_scaled = float(x0) * scale_x
+                                                        y0_scaled = float(y0) * scale_y
+                                                        x1_scaled = float(x1) * scale_x
+                                                        y1_scaled = float(y1) * scale_y
+                                                        h_scaled = max(1.0, y1_scaled - y0_scaled)
+                                                        est_font_size = max(5.0, h_scaled / font_height_ratio)
+                                                        descender_depth = abs(font.descender) * est_font_size
+                                                        origin_y = y1_scaled - descender_depth
+                                                        lines_data.append({
+                                                            "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
+                                                            "text": st,
+                                                            "size": round(est_font_size, 2),
+                                                            "origin": [round(x0_scaled, 2), round(origin_y, 2)]
+                                                        })
+                                            else:
+                                                x0, y0, x1, y1 = bbox
+                                                x0_scaled = float(x0) * scale_x
+                                                y0_scaled = float(y0) * scale_y
+                                                x1_scaled = float(x1) * scale_x
+                                                y1_scaled = float(y1) * scale_y
+                                                h_scaled = max(1.0, y1_scaled - y0_scaled)
+                                                est_font_size = max(5.0, h_scaled / font_height_ratio)
+                                                descender_depth = abs(font.descender) * est_font_size
+                                                origin_y = y1_scaled - descender_depth
 
-                                            lines_data.append({
-                                                "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
-                                                "text": text,
-                                                "size": round(est_font_size, 2),
-                                                "origin": [round(x0_scaled, 2), round(origin_y, 2)]
-                                            })
+                                                lines_data.append({
+                                                    "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
+                                                    "text": text,
+                                                    "size": round(est_font_size, 2),
+                                                    "origin": [round(x0_scaled, 2), round(origin_y, 2)]
+                                                })
                                     if lines_data:
                                         page_text = "\n".join([line["text"] for line in lines_data])
                                 else:
@@ -236,7 +352,8 @@ def process_ocr_job(
             pages_data.append({
                 "page_number": page_num,
                 "text": page_text,
-                "lines": lines_data
+                "lines": lines_data,
+                "rotation": page.rotation
             })
 
 

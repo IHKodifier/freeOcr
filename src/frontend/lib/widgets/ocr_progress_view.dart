@@ -607,8 +607,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               textAlign: TextAlign.center,
             ),
           ] else ...[
-            Icon(
-              Icons.hourglass_top_rounded,
+            AnimatedHourglassIcon(
               size: 56,
               color: colorScheme.primary,
             ),
@@ -933,6 +932,58 @@ class _OcrProgressViewState extends State<OcrProgressView> {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class AnimatedHourglassIcon extends StatefulWidget {
+  final Color color;
+  final double size;
+
+  const AnimatedHourglassIcon({
+    super.key,
+    required this.color,
+    this.size = 56,
+  });
+
+  @override
+  State<AnimatedHourglassIcon> createState() => _AnimatedHourglassIconState();
+}
+
+class _AnimatedHourglassIconState extends State<AnimatedHourglassIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOutCubic,
+    );
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: _animation,
+      child: Icon(
+        Icons.hourglass_top_rounded,
+        size: widget.size,
+        color: widget.color,
       ),
     );
   }

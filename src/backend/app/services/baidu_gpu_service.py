@@ -87,39 +87,100 @@ def parse_grounding_output(raw_text: str, default_width: float = 1024.0, default
     """
     lines: List[Dict[str, Any]] = []
 
+    # Pattern 0: Structured JSON output from model results
+    try:
+        data = json.loads(raw_text.strip())
+        items = data if isinstance(data, list) else data.get("result", data.get("lines", data.get("elements", [])))
+        if isinstance(items, list):
+            for item in items:
+                if isinstance(item, dict):
+                    t = item.get("text", item.get("content", "")).strip()
+                    box = item.get("box", item.get("bbox", item.get("polygon", item.get("points", []))))
+                    if t and box:
+                        # 4-point polygon [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]
+                        if isinstance(box, list) and len(box) == 4 and isinstance(box[0], (list, tuple)):
+                            xs = [pt[0] for pt in box]
+                            ys = [pt[1] for pt in box]
+                            lines.append({
+                                "bbox": [round(min(xs), 2), round(min(ys), 2), round(max(xs), 2), round(max(ys), 2)],
+                                "text": t,
+                                "confidence": float(item.get("confidence", item.get("score", 0.99)))
+                            })
+                        elif isinstance(box, list) and len(box) == 4 and all(isinstance(c, (int, float)) for c in box):
+                            lines.append({
+                                "bbox": [round(box[0], 2), round(box[1], 2), round(box[2], 2), round(box[3], 2)],
+                                "text": t,
+                                "confidence": float(item.get("confidence", item.get("score", 0.99)))
+                            })
+    except Exception:
+        pass
+
     # Pattern 1: Grounding tags <|det|>...[x0, y0, x1, y1]...<|/det|>text
-    pattern = re.compile(r"<\|det\|>.*?\[([0-9.,\s]+)\].*?<\|/det\|>\s*([^\n<]+)", re.DOTALL)
-    matches = pattern.findall(raw_text)
+    if not lines:
+        pattern = re.compile(r"<\|det\|>.*?\[([0-9.,\s]+)\].*?<\|/det\|>\s*([^\n<]+)", re.DOTALL)
+        matches = pattern.findall(raw_text)
 
-    if matches:
-        for bbox_str, text in matches:
-            cleaned_text = text.strip()
-            if not cleaned_text:
-                continue
-            coords = [float(c.strip()) for c in bbox_str.split(",") if c.strip()]
-            if len(coords) == 4:
-                lines.append({
-                    "bbox": [round(coords[0], 2), round(coords[1], 2), round(coords[2], 2), round(coords[3], 2)],
-                    "text": cleaned_text,
-                    "confidence": 0.99
-                })
+        if matches:
+            for bbox_str, text in matches:
+                cleaned_text = text.strip()
+                if not cleaned_text:
+                    continue
+                coords = [float(c.strip()) for c in bbox_str.split(",") if c.strip()]
+                if len(coords) == 4:
+                    lines.append({
+                        "bbox": [round(coords[0], 2), round(coords[1], 2), round(coords[2], 2), round(coords[3], 2)],
+                        "text": cleaned_text,
+                        "confidence": 0.99
+                    })
 
-    # Pattern 2: Fallback to plain text line segmentation if no grounding tags found
+    # Pattern 2: Bounded line segmentation if no explicit coordinates were generated
     if not lines:
         raw_lines = [l.strip() for l in raw_text.splitlines() if l.strip()]
-        total_lines = max(1, len(raw_lines))
-        line_height = default_height / total_lines
-        for idx, line_text in enumerate(raw_lines):
-            # Clean special model tokens
-            clean_line = re.sub(r"<\|[^>]+\|>", "", line_text).strip()
-            if clean_line:
-                y0 = idx * line_height
-                y1 = y0 + line_height
-                lines.append({
-                    "bbox": [0.0, round(y0, 2), round(default_width, 2), round(y1, 2)],
-                    "text": clean_line,
-                    "confidence": 0.95
-                })
+        # Strip model tags
+        clean_lines = [re.sub(r"<\|[^>]+\|>", "", l).strip() for l in raw_lines]
+        clean_lines = [l for l in clean_lines if l]
+        total_lines = max(1, len(clean_lines))
+
+        top_margin = default_height * 0.08
+        bottom_margin = default_height * 0.08
+        available_height = max(100.0, default_height - top_margin - bottom_margin)
+        line_height = available_height / total_lines
+
+        for idx, line_text in enumerate(clean_lines):
+            y0 = top_margin + (idx * line_height)
+            y1 = y0 + line_height
+            est_char_width = max(6.0, default_width / 80.0)
+            x0 = default_width * 0.08
+
+            # If line is an HTML table, decompose into structured rows
+            if "<table" in line_text:
+                row_pattern = re.compile(r"<tr>(.*?)</tr>", re.DOTALL)
+                cell_pattern = re.compile(r"<td[^>]*>(.*?)</td>", re.DOTALL)
+                rows = row_pattern.findall(line_text)
+                if rows:
+                    sub_h = line_height / len(rows)
+                    for r_idx, r in enumerate(rows):
+                        cells = [re.sub(r"<[^>]+>", "", c).strip() for c in cell_pattern.findall(r)]
+                        row_text = "   ".join([c for c in cells if c])
+                        if row_text:
+                            ry0 = y0 + (r_idx * sub_h)
+                            ry1 = ry0 + sub_h
+                            est_w = min(default_width * 0.84, max(40.0, len(row_text) * est_char_width))
+                            lines.append({
+                                "bbox": [round(x0, 2), round(ry0, 2), round(x0 + est_w, 2), round(ry1, 2)],
+                                "text": row_text,
+                                "confidence": 0.95
+                            })
+                    continue
+
+            # Estimate reasonable line width from character count to prevent full-width covering of margins
+            est_width = min(default_width * 0.84, max(40.0, len(line_text) * est_char_width))
+            x1 = min(default_width * 0.92, x0 + est_width)
+            lines.append({
+                "bbox": [round(x0, 2), round(y0, 2), round(x1, 2), round(y1, 2)],
+                "text": line_text,
+                "confidence": 0.95
+            })
 
     return lines
 

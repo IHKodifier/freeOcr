@@ -134,3 +134,36 @@ def test_convert_endpoint_triggers_background_ocr_worker():
         # Check job_id was passed to process_ocr_job
         passed_job_id = call_kwargs.get("job_id") if "job_id" in call_kwargs else call_args[0]
         assert passed_job_id == data["job_id"]
+
+
+def test_parse_html_table_to_lines():
+    from app.services.ocr_worker import parse_html_table_to_lines
+
+    sample_html = "<table><tr><td>Office equipment</td><td>Computers</td></tr><tr><td>1,594,836</td><td>4,737,344</td></tr></table>"
+    bbox = [50.0, 100.0, 500.0, 200.0]
+    lines = parse_html_table_to_lines(sample_html, bbox)
+
+    assert len(lines) == 2
+    assert "Office equipment" in lines[0]["text"]
+    assert "Computers" in lines[0]["text"]
+    assert "1,594,836" in lines[1]["text"]
+    assert lines[0]["bbox"][1] == 100.0
+    assert lines[0]["bbox"][3] == 150.0
+    assert lines[1]["bbox"][1] == 150.0
+    assert lines[1]["bbox"][3] == 200.0
+
+
+def test_detect_page_orientation():
+    from app.services.ocr_worker import detect_page_orientation, _get_tessdata_dir
+
+    tess_dir = _get_tessdata_dir()
+    doc = pymupdf.open()
+    page = doc.new_page(width=600, height=800)
+    # Insert common words
+    page.insert_text((50, 100), "The financial statements for the year ended December 31 report total assets and balance.", fontsize=14)
+
+    # Test upright page
+    assert detect_page_orientation(page, tess_dir=tess_dir) == 0
+
+    doc.close()
+

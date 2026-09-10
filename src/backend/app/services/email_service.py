@@ -170,3 +170,105 @@ def send_download_links_email(email: str, job_id: str, base_url: str = None) -> 
         "download_links": download_links,
         "expires_in_hours": 24
     }
+
+
+def send_contact_inquiry_email(
+    name: str,
+    email: str,
+    category: str,
+    subject: str,
+    message: str
+) -> Dict[str, Any]:
+    """
+    Dispatches a website contact inquiry to the support inbox (support@freeocr.me).
+    Uses Resend API (if RESEND_API_KEY is configured) or SMTP relay (if SMTP_HOST is configured),
+    or falls back to terminal console / Cloud Logging catcher in dev/staging mode.
+    """
+    target_inbox = os.environ.get("SUPPORT_EMAIL_INBOX", "support@freeocr.me")
+    resend_api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
+    resend_from = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev") or "onboarding@resend.dev"
+
+    smtp_host = os.environ.get("SMTP_HOST")
+    smtp_port = int(os.environ.get("SMTP_PORT", "587"))
+    smtp_user = os.environ.get("SMTP_USER")
+    smtp_pass = os.environ.get("SMTP_PASSWORD")
+
+    delivery_mode = "MOCK_DEV"
+    email_sent = False
+    error_detail = None
+
+    html_content = f"""
+    <h2>New freeOCR.me Contact Inquiry</h2>
+    <p><strong>From:</strong> {name} (&lt;{email}&gt;)</p>
+    <p><strong>Category:</strong> {category}</p>
+    <p><strong>Subject:</strong> {subject}</p>
+    <hr/>
+    <h3>Message:</h3>
+    <p style="white-space: pre-wrap;">{message}</p>
+    """
+
+    if resend_api_key:
+        delivery_mode = "RESEND_API"
+        try:
+            import httpx
+            payload = {
+                "from": resend_from,
+                "to": [target_inbox],
+                "reply_to": email,
+                "subject": f"[{category}] {subject} - From {name}",
+                "html": html_content
+            }
+            headers = {
+                "Authorization": f"Bearer {resend_api_key.strip()}",
+                "Content-Type": "application/json",
+            }
+            res = httpx.post("https://api.resend.com/emails", json=payload, headers=headers, timeout=10.0)
+            if res.status_code in (200, 201):
+                email_sent = True
+            else:
+                error_detail = f"Resend API returned {res.status_code}: {res.text}"
+                logger.warning(error_detail)
+        except Exception as e:
+            error_detail = f"Resend API connection error: {e}"
+            logger.error(error_detail)
+
+    elif smtp_host and smtp_user and smtp_pass:
+        delivery_mode = "SMTP"
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            from email.mime.multipart import MIMEMultipart
+
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = f"[{category}] {subject} - From {name}"
+            msg["From"] = smtp_user
+            msg["To"] = target_inbox
+            msg["Reply-To"] = email
+            msg.attach(MIMEText(html_content, "html"))
+
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=10.0) as server:
+                server.starttls()
+                server.login(smtp_user, smtp_pass)
+                server.sendmail(smtp_user, [target_inbox], msg.as_string())
+            email_sent = True
+        except Exception as e:
+            error_detail = f"SMTP connection error: {e}"
+            logger.error(error_detail)
+
+    else:
+        delivery_mode = "TERMINAL_CONSOLE_LOG"
+        email_sent = True
+        logger.info(
+            f"[Contact Inquiry Received] From: {name} <{email}> | "
+            f"Category: {category} | Subject: {subject} | Target: {target_inbox}"
+        )
+
+    return {
+        "status": "SUCCESS" if email_sent else "ERROR",
+        "name": name,
+        "email": email,
+        "target_inbox": target_inbox,
+        "delivery_mode": delivery_mode,
+        "email_sent": email_sent,
+        "error_detail": error_detail
+    }
