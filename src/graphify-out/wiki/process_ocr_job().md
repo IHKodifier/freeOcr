@@ -75,25 +75,29 @@ sequenceDiagram
     participant P66 as test_encrypted_pdf_rejected_without_password()
     participant P67 as test_encrypted_pdf_rejected_with_invalid_password()
     participant P68 as test_encrypted_pdf_accepted_with_correct_password()
-    participant P69 as .__init__()
-    participant P70 as test_get_config_endpoint()
-    participant P71 as test_health_check()
-    participant P72 as test_sse_endpoint_returns_event_stream_headers()
-    participant P73 as test_sse_stream_emits_page_progress_and_completed_events()
-    participant P74 as test_sse_stream_emits_failed_event()
-    participant P75 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P76 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P77 as test_sse_endpoint_streams_redis_events()
-    participant P78 as repair_pdf()
-    participant P79 as _get_tessdata_dir()
-    participant P80 as detect_page_orientation()
-    participant P81 as parse_html_table_to_lines()
-    participant P82 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
-    participant P83 as _publish_event()
-    participant P84 as _store_job()
-    participant P85 as test_process_ocr_job_success()
-    participant P86 as test_ocr_worker_unrepairable_pdf_integration()
-    participant P87 as test_process_ocr_job_image_file()
+    participant P69 as test_get_tools_catalog()
+    participant P70 as test_get_tool_categories()
+    participant P71 as test_get_single_tool_detail()
+    participant P72 as test_get_nonexistent_tool_returns_404()
+    participant P73 as .__init__()
+    participant P74 as test_get_config_endpoint()
+    participant P75 as test_health_check()
+    participant P76 as test_sse_endpoint_returns_event_stream_headers()
+    participant P77 as test_sse_stream_emits_page_progress_and_completed_events()
+    participant P78 as test_sse_stream_emits_failed_event()
+    participant P79 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P80 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P81 as test_sse_endpoint_streams_redis_events()
+    participant P82 as repair_pdf()
+    participant P83 as _get_tessdata_dir()
+    participant P84 as detect_page_orientation()
+    participant P85 as parse_html_table_to_lines()
+    participant P86 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
+    participant P87 as _publish_event()
+    participant P88 as _store_job()
+    participant P89 as test_process_ocr_job_success()
+    participant P90 as test_ocr_worker_unrepairable_pdf_integration()
+    participant P91 as test_process_ocr_job_image_file()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P0: calls
@@ -270,28 +274,22 @@ sequenceDiagram
     P76-->>- P1: return
     P1->>+ P77: calls
     P77-->>- P1: return
+    P1->>+ P78: calls
+    P78-->>- P1: return
+    P1->>+ P79: calls
+    P79-->>- P1: return
+    P1->>+ P80: calls
+    P80-->>- P1: return
+    P1->>+ P81: calls
+    P81-->>- P1: return
     P0->>+ P2: calls
     P2-->>- P0: return
-    P0->>+ P78: calls
-    P78-->>- P0: return
+    P0->>+ P82: calls
+    P82-->>- P0: return
     P0->>+ P28: calls
     P28-->>- P0: return
     P0->>+ P29: calls
     P29-->>- P0: return
-    P0->>+ P79: calls
-    P79-->>- P0: return
-    P0->>+ P80: calls
-    P80-->>- P0: return
-    P0->>+ P81: calls
-    P81-->>- P0: return
-    P0->>+ P82: calls
-    P82-->>- P0: return
-    P0->>+ P39: calls
-    P39-->>- P0: return
-    P0->>+ P15: calls
-    P15-->>- P0: return
-    P0->>+ P40: calls
-    P40-->>- P0: return
     P0->>+ P83: calls
     P83-->>- P0: return
     P0->>+ P84: calls
@@ -300,8 +298,22 @@ sequenceDiagram
     P85-->>- P0: return
     P0->>+ P86: calls
     P86-->>- P0: return
+    P0->>+ P39: calls
+    P39-->>- P0: return
+    P0->>+ P15: calls
+    P15-->>- P0: return
+    P0->>+ P40: calls
+    P40-->>- P0: return
     P0->>+ P87: calls
     P87-->>- P0: return
+    P0->>+ P88: calls
+    P88-->>- P0: return
+    P0->>+ P89: calls
+    P89-->>- P0: return
+    P0->>+ P90: calls
+    P90-->>- P0: return
+    P0->>+ P91: calls
+    P91-->>- P0: return
 ```
 
 ## Connections by Relation

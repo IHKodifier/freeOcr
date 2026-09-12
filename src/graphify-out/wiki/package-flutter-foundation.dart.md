@@ -9,10 +9,10 @@
 - [[main.dart]] `EXTRACTED`
 - [[hero_dropzone.dart]] `EXTRACTED`
 - [[rewarded_video_ad_modal.dart]] `EXTRACTED`
-- [[gam_banner.dart]] `EXTRACTED`
 - [[api_service.dart]] `EXTRACTED`
 - [[app_footer.dart]] `EXTRACTED`
 - [[app_header.dart]] `EXTRACTED`
+- [[host_resolver.dart]] `EXTRACTED`
 - [[sse_service.dart]] `EXTRACTED`
 - [[glass_card.dart]] `EXTRACTED`
 - [[telemetry_helper_web.dart]] `EXTRACTED`

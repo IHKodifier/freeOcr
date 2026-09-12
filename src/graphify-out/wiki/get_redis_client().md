@@ -68,26 +68,30 @@ sequenceDiagram
     participant P59 as test_encrypted_pdf_rejected_without_password()
     participant P60 as test_encrypted_pdf_rejected_with_invalid_password()
     participant P61 as test_encrypted_pdf_accepted_with_correct_password()
-    participant P62 as .__init__()
-    participant P63 as test_get_config_endpoint()
-    participant P64 as test_health_check()
-    participant P65 as test_sse_endpoint_returns_event_stream_headers()
-    participant P66 as test_sse_stream_emits_page_progress_and_completed_events()
-    participant P67 as test_sse_stream_emits_failed_event()
-    participant P68 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P69 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P70 as test_sse_endpoint_streams_redis_events()
-    participant P71 as test_get_searchable_pdf_retrieval()
-    participant P72 as test_complex_two_column_pdf_reconstruction()
-    participant P73 as test_word_level_highlight_alignment_and_space_distribution()
-    participant P74 as test_compose_searchable_pdf_from_pdf()
-    participant P75 as test_compose_searchable_pdf_from_image()
-    participant P76 as test_compose_searchable_pdf_with_rotation_and_morph_scaling()
-    participant P77 as check_redis_connection()
-    participant P78 as store_ad_pass_metadata()
-    participant P79 as _publish_event()
-    participant P80 as _store_job()
-    participant P81 as test_redis_client_configuration()
+    participant P62 as test_get_tools_catalog()
+    participant P63 as test_get_tool_categories()
+    participant P64 as test_get_single_tool_detail()
+    participant P65 as test_get_nonexistent_tool_returns_404()
+    participant P66 as .__init__()
+    participant P67 as test_get_config_endpoint()
+    participant P68 as test_health_check()
+    participant P69 as test_sse_endpoint_returns_event_stream_headers()
+    participant P70 as test_sse_stream_emits_page_progress_and_completed_events()
+    participant P71 as test_sse_stream_emits_failed_event()
+    participant P72 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P73 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P74 as test_sse_endpoint_streams_redis_events()
+    participant P75 as test_get_searchable_pdf_retrieval()
+    participant P76 as test_complex_two_column_pdf_reconstruction()
+    participant P77 as test_word_level_highlight_alignment_and_space_distribution()
+    participant P78 as test_compose_searchable_pdf_from_pdf()
+    participant P79 as test_compose_searchable_pdf_from_image()
+    participant P80 as test_compose_searchable_pdf_with_rotation_and_morph_scaling()
+    participant P81 as check_redis_connection()
+    participant P82 as store_ad_pass_metadata()
+    participant P83 as _publish_event()
+    participant P84 as _store_job()
+    participant P85 as test_redis_client_configuration()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P2: calls
@@ -230,24 +234,32 @@ sequenceDiagram
     P69-->>- P2: return
     P2->>+ P70: calls
     P70-->>- P2: return
+    P2->>+ P71: calls
+    P71-->>- P2: return
+    P2->>+ P72: calls
+    P72-->>- P2: return
+    P2->>+ P73: calls
+    P73-->>- P2: return
+    P2->>+ P74: calls
+    P74-->>- P2: return
     P1->>+ P0: calls
     P0-->>- P1: return
     P1->>+ P3: calls
     P3-->>- P1: return
-    P1->>+ P71: calls
-    P71-->>- P1: return
-    P1->>+ P31: calls
-    P31-->>- P1: return
-    P1->>+ P72: calls
-    P72-->>- P1: return
-    P1->>+ P73: calls
-    P73-->>- P1: return
-    P1->>+ P74: calls
-    P74-->>- P1: return
     P1->>+ P75: calls
     P75-->>- P1: return
+    P1->>+ P31: calls
+    P31-->>- P1: return
     P1->>+ P76: calls
     P76-->>- P1: return
+    P1->>+ P77: calls
+    P77-->>- P1: return
+    P1->>+ P78: calls
+    P78-->>- P1: return
+    P1->>+ P79: calls
+    P79-->>- P1: return
+    P1->>+ P80: calls
+    P80-->>- P1: return
     P0->>+ P4: calls
     P4-->>- P0: return
     P0->>+ P5: calls
@@ -258,8 +270,8 @@ sequenceDiagram
     P9-->>- P0: return
     P0->>+ P10: calls
     P10-->>- P0: return
-    P0->>+ P77: calls
-    P77-->>- P0: return
+    P0->>+ P81: calls
+    P81-->>- P0: return
     P0->>+ P12: calls
     P12-->>- P0: return
     P0->>+ P13: calls
@@ -270,20 +282,20 @@ sequenceDiagram
     P21-->>- P0: return
     P0->>+ P22: calls
     P22-->>- P0: return
-    P0->>+ P78: calls
-    P78-->>- P0: return
+    P0->>+ P82: calls
+    P82-->>- P0: return
     P0->>+ P23: calls
     P23-->>- P0: return
     P0->>+ P24: calls
     P24-->>- P0: return
     P0->>+ P25: calls
     P25-->>- P0: return
-    P0->>+ P79: calls
-    P79-->>- P0: return
-    P0->>+ P80: calls
-    P80-->>- P0: return
-    P0->>+ P81: calls
-    P81-->>- P0: return
+    P0->>+ P83: calls
+    P83-->>- P0: return
+    P0->>+ P84: calls
+    P84-->>- P0: return
+    P0->>+ P85: calls
+    P85-->>- P0: return
 ```
 
 ## Connections by Relation

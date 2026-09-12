@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'services/telemetry_service.dart';
+import 'services/host_resolver.dart';
 import 'widgets/hero_dropzone.dart';
 import 'widgets/adsense_banner.dart';
 import 'widgets/app_header.dart';
@@ -18,6 +19,8 @@ import 'pages/privacy_page.dart';
 import 'pages/terms_page.dart';
 import 'pages/about_page.dart';
 import 'pages/contact_page.dart';
+import 'pages/pdf_tools_hub_page.dart';
+import 'pages/tool_placeholder_page.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
 
@@ -40,7 +43,7 @@ class FreeOcrApp extends StatelessWidget {
       valueListenable: themeNotifier,
       builder: (context, currentMode, _) {
         return MaterialApp(
-          title: 'freeOCR.me',
+          title: HostResolver.getBrandTitle(),
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
@@ -58,6 +61,40 @@ class FreeOcrApp extends StatelessWidget {
           },
           onGenerateRoute: (settings) {
             final name = settings.name;
+
+            // FreePDFToolz Hub route
+            if (name == '/hub') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfToolsHubPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated OCR route
+            if (name == '/ocr') {
+              return MaterialPageRoute(
+                builder: (context) => const HomePage(),
+                settings: settings,
+              );
+            }
+
+            // Specific PDF tools route matching
+            if (name != null && name.startsWith('/')) {
+              for (final tool in kPdfToolsCatalog) {
+                if (tool.route == name && tool.id != 'ocr') {
+                  return MaterialPageRoute(
+                    builder: (context) => ToolPlaceholderPage(
+                      toolId: tool.id,
+                      toolTitle: tool.name,
+                      description: tool.description,
+                      icon: tool.icon,
+                    ),
+                    settings: settings,
+                  );
+                }
+              }
+            }
+
             if (name != null && (name == '/process' || name.startsWith('/process/'))) {
               final jobId = name.startsWith('/process/') ? name.replaceFirst('/process/', '') : null;
               final args = settings.arguments;
@@ -138,6 +175,15 @@ class FreeOcrApp extends StatelessWidget {
                 settings: settings,
               );
             }
+
+            // Root route '/': host-aware fallback
+            if (HostResolver.isFreePdfToolsDomain()) {
+              return MaterialPageRoute(
+                builder: (context) => const PdfToolsHubPage(),
+                settings: settings,
+              );
+            }
+
             return MaterialPageRoute(
               builder: (context) => const HomePage(),
               settings: settings,

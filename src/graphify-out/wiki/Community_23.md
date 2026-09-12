@@ -1,13 +1,14 @@
 # Community 23
 
-> 4 nodes · cohesion 0.50
+> 5 nodes · cohesion 0.40
 
 ## Key Concepts
 
-- [limit_evaluator.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (3 connections)
-- [evaluate](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
-- [LimitEvaluationResult](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
-- [LimitEvaluator](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart) (1 connections)
+- [url_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart) (4 connections)
+- [navigateToPath](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart) (1 connections)
+- [openUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart) (1 connections)
+- [UrlHelper](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart) (1 connections)
+- [url_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart) (1 connections)
 
 ## Relationships
 
@@ -15,11 +16,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\limit_evaluator.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/limit_evaluator.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 6 (100%)
+- EXTRACTED: 8 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

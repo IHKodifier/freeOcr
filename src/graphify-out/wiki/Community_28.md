@@ -4,9 +4,9 @@
 
 ## Key Concepts
 
-- [web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (2 connections)
-- [logToBrowserConsole](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
-- [web_console_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart) (1 connections)
+- [url_strategy_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (2 connections)
+- [configureAppUrlStrategy](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (1 connections)
+- [package:flutter_web_plugins/url_strategy.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (1 connections)
 
 ## Relationships
 
@@ -14,7 +14,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\web_console.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/web_console.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_strategy_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart)
 
 ## Audit Trail
 

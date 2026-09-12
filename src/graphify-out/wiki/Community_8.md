@@ -33,7 +33,7 @@
 
 ## Relationships
 
-- [[Community 7]] (11 shared connections)
+- No strong cross-community connections detected
 
 ## Source Files
 

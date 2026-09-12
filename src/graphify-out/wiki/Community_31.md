@@ -1,11 +1,10 @@
 # Community 31
 
-> 2 nodes · cohesion 1.00
+> 1 nodes · cohesion 1.00
 
 ## Key Concepts
 
-- [gam_js_interop_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart) (1 connections)
-- [triggerGamAdSlotRefresh](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart) (1 connections)
+- [__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/__init__.py#L1) (0 connections)
 
 ## Relationships
 
@@ -13,11 +12,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\gam_js_interop_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/gam_js_interop_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/__init__.py)
 
 ## Audit Trail
 
-- EXTRACTED: 2 (100%)
+- EXTRACTED: 0 (0%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Inspects PDF layout structure and returns complexity classification.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L15) (0 connections)
+- [url_strategy_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_helper.dart) (0 connections)
 
 ## Relationships
 
@@ -12,7 +12,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_strategy_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_helper.dart)
 
 ## Audit Trail
 
