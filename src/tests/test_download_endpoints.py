@@ -204,7 +204,8 @@ def test_download_all_formats_from_redis_on_cold_boot():
     mock_redis.get.side_effect = mock_get
 
     with patch("app.redis_client.get_redis_client", return_value=mock_redis), \
-         patch("app.api.v1.endpoints.jobs.get_redis_client", return_value=mock_redis):
+         patch("app.api.v1.endpoints.jobs.get_redis_client", return_value=mock_redis), \
+         patch("app.services.pdf_composer.get_redis_client", return_value=mock_redis):
 
         # A) Test Searchable PDF download on cold boot
         resp_pdf = client.get(f"/api/v1/jobs/{job_id}/download/pdf")
