@@ -24,4 +24,16 @@ class LimitEvaluator {
       maxAllowedMb: currentLimitMb,
     );
   }
+
+  /// Calculates how many rewarded video ads are required to boost the limit enough to accommodate the file.
+  static int calculateAdsRequired({
+    required int fileSizeInBytes,
+    required double currentLimitMb,
+    double boostPerAdMb = 50.0,
+  }) {
+    final double fileSizeMb = fileSizeInBytes / (1024 * 1024);
+    final double deficitMb = fileSizeMb - currentLimitMb;
+    if (deficitMb <= 0) return 0;
+    return (deficitMb / boostPerAdMb).ceil();
+  }
 }

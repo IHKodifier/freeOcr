@@ -17,6 +17,8 @@ class OcrProgressView extends StatefulWidget {
   final String? filename;
   final int? fileSize;
   final List<BatchFileItem>? batchItems;
+  final int uploadSentBytes;
+  final int uploadTotalBytes;
   final int currentPage;
   final int totalPages;
   final String status;
@@ -32,6 +34,8 @@ class OcrProgressView extends StatefulWidget {
     this.filename,
     this.fileSize,
     this.batchItems,
+    this.uploadSentBytes = 0,
+    this.uploadTotalBytes = 0,
     this.currentPage = 0,
     this.totalPages = 0,
     this.status = 'QUEUED',
@@ -84,7 +88,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
         _isLoadingPreview = false;
         if (data != null && (data.containsKey('pages') || data['is_expired'] == true)) {
           _previewData = data;
-          AdSenseBanner.rotateAd();
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -106,7 +109,6 @@ class _OcrProgressViewState extends State<OcrProgressView> {
   }
 
   Future<void> _openResultPage(String jobId, String filename) async {
-    AdSenseBanner.rotateAd();
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -166,6 +168,35 @@ class _OcrProgressViewState extends State<OcrProgressView> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant OcrProgressView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.status != oldWidget.status) {
+      setState(() {
+        _status = widget.status;
+      });
+    }
+    if (widget.layoutComplexity != oldWidget.layoutComplexity && widget.layoutComplexity != null) {
+      setState(() {
+        _layoutComplexity = widget.layoutComplexity;
+      });
+    }
+    if (widget.coldStartActive != oldWidget.coldStartActive) {
+      setState(() {
+        _coldStartActive = widget.coldStartActive;
+      });
+    }
+    if (widget.errorMessage != oldWidget.errorMessage && widget.errorMessage != null) {
+      setState(() {
+        _errorMessage = widget.errorMessage;
+      });
+    }
+    if (widget.jobId != oldWidget.jobId && widget.jobId != null && widget.jobId!.isNotEmpty) {
+      _subscribeToSingleSse(widget.jobId!);
+      _startPollingFallback();
     }
   }
 
@@ -415,6 +446,7 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
 
   Widget _buildSingleProgressUI(ThemeData theme, ColorScheme colorScheme) {
+    final isUploading = _status == 'UPLOADING';
     final isCompleted = _status == 'COMPLETED';
     final isFailed = _status == 'FAILED';
     final double progress = _totalPages > 0 ? (_currentPage / _totalPages).clamp(0.0, 1.0) : 0.0;
@@ -425,19 +457,19 @@ class _OcrProgressViewState extends State<OcrProgressView> {
 
     return Container(
       width: double.infinity,
-      constraints: const BoxConstraints(maxWidth: 680, minHeight: 300),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      padding: const EdgeInsets.all(32),
+      constraints: const BoxConstraints(maxWidth: 680),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isCompleted
               ? Colors.green.shade400
               : isFailed
                   ? colorScheme.error
                   : colorScheme.primary,
-          width: 2.0,
+          width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
@@ -446,22 +478,23 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                     : isFailed
                         ? colorScheme.error
                         : colorScheme.primary)
-                .withValues(alpha: 0.12),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+                .withValues(alpha: 0.10),
+            blurRadius: 14,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // File Metadata Card
+          // Compact File Metadata Card
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Row(
@@ -472,44 +505,50 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                       ? Icons.picture_as_pdf
                       : Icons.image,
                   color: colorScheme.primary,
-                  size: 28,
+                  size: 22,
                 ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      displayName,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        displayName,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Text(
-                      '${getFileTypeDescription(displayName)} • ${formatBytes(displaySize)}',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
+                      Text(
+                        '${getFileTypeDescription(displayName)} • ${formatBytes(displaySize)}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 11,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
           // Single Layout Badge
           if (_layoutComplexity != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
               decoration: BoxDecoration(
                 color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
                     ? Colors.amber.shade900.withValues(alpha: 0.12)
                     : colorScheme.primary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
                       ? Colors.amber.shade600
                       : colorScheme.primary.withValues(alpha: 0.4),
-                  width: 1.2,
+                  width: 1.0,
                 ),
               ),
               child: Row(
@@ -519,18 +558,18 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                     _layoutComplexity!.toUpperCase() == 'COMPLEX'
                         ? Icons.auto_awesome
                         : Icons.bolt,
-                    size: 14,
+                    size: 12,
                     color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
                         ? Colors.amber.shade700
                         : colorScheme.primary,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 5),
                   Text(
                     _layoutComplexity!.toUpperCase() == 'COMPLEX'
                         ? 'Complex Layout'
                         : 'Simple Layout',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.bold,
                       color: _layoutComplexity!.toUpperCase() == 'COMPLEX'
                           ? Colors.amber.shade700
@@ -542,88 +581,133 @@ class _OcrProgressViewState extends State<OcrProgressView> {
               ),
             ),
           ],
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
 
           if (isCompleted) ...[
             Icon(
               Icons.check_circle_outline,
-              size: 64,
+              size: 44,
               color: Colors.green.shade600,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             Text(
               'Conversion Complete!',
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.green.shade700,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             Text(
               'Searchable PDF ready for preview & download',
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: theme.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
             if (_outputPdfToken != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               SelectableText(
                 'Token: $_outputPdfToken',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.tertiary,
                   fontFamily: 'monospace',
+                  fontSize: 10,
                 ),
               ),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             FilledButton.icon(
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
               onPressed: _isLoadingPreview ? null : _toggleSplitPreview,
               icon: _isLoadingPreview
-                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                  : const Icon(Icons.vertical_split_rounded),
-              label: const Text('Proceed to My File'),
+                  ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.vertical_split_rounded, size: 18),
+              label: const Text('Proceed to My File', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
 
           ] else if (isFailed) ...[
             Icon(
               Icons.error_outline,
-              size: 64,
+              size: 44,
               color: colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             Text(
               'Conversion Failed',
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.error,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             Text(
               _errorMessage ?? 'An error occurred during OCR processing.',
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: theme.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
-          ] else ...[
-            AnimatedHourglassIcon(
-              size: 56,
+          ] else if (isUploading) ...[
+            Icon(
+              Icons.cloud_upload_outlined,
+              size: 40,
               color: colorScheme.primary,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
+            Text(
+              'Uploading Document...',
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              widget.uploadTotalBytes > 0
+                  ? '${formatBytes(widget.uploadSentBytes)} of ${formatBytes(widget.uploadTotalBytes)} (${(widget.uploadSentBytes / widget.uploadTotalBytes * 100).clamp(0, 100).toInt()}%)'
+                  : 'Streaming document to RAM-disk...',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: 360,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: widget.uploadTotalBytes > 0
+                      ? (widget.uploadSentBytes / widget.uploadTotalBytes).clamp(0.0, 1.0)
+                      : null,
+                  minHeight: 8,
+                  backgroundColor: colorScheme.surfaceContainerHighest,
+                  valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                ),
+              ),
+            ),
+          ] else ...[
+            AnimatedHourglassIcon(
+              size: 40,
+              color: colorScheme.primary,
+            ),
+            const SizedBox(height: 8),
             Text(
               (_coldStartActive && _currentPage == 0)
                   ? 'Getting things ready...'
                   : (_currentPage == 0 || _status == 'QUEUED')
                       ? 'Your document is in queue for conversion...'
                       : 'Processing Document...',
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             Text(
               (_coldStartActive && _currentPage == 0)
                   ? 'Warming up dedicated processing pipeline...'
@@ -632,20 +716,20 @@ class _OcrProgressViewState extends State<OcrProgressView> {
                       : (_totalPages > 0
                           ? 'Page $_currentPage of $_totalPages ($percentInt%)'
                           : 'Running OCR pipeline...'),
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             SizedBox(
-              width: 380,
+              width: 360,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: LinearProgressIndicator(
                   value: _totalPages > 0 ? progress : null,
-                  minHeight: 10,
+                  minHeight: 8,
                   backgroundColor: colorScheme.surfaceContainerHighest,
                   valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
                 ),
@@ -654,11 +738,15 @@ class _OcrProgressViewState extends State<OcrProgressView> {
           ],
 
           if (widget.onReset != null) ...[
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
               onPressed: widget.onReset,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Convert Another File'),
+              icon: const Icon(Icons.refresh, size: 15),
+              label: const Text('Convert Another File', style: TextStyle(fontSize: 12)),
             ),
           ],
         ],

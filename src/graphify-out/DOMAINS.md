@@ -42,3 +42,8 @@
 | 37 | Community 37 | Unable to determine domain due to missing code entities. |
 | 38 | Community 38 | Unable to determine domain due to missing code entities. |
 | 39 | Community 39 | Unable to determine domain due to missing code entities. |
+| 40 | Community 40 |  |
+| 41 | Community 41 |  |
+| 42 | Community 42 |  |
+| 43 | Community 43 |  |
+| 44 | Community 44 |  |

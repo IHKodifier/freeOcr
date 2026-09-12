@@ -24,6 +24,9 @@
 | CF-GOV-012 | Governance | Strict Test-Driven Development (TDD) Mandate | Governance | Stage 7a (Charter) | Automated tests in `./src/tests/unit/` or `./src/tests/integration/` MUST be created before writing implementation code for any ticket |
 | CF-GOV-013 | Governance | Graphify MCP Cognitive Burden Reduction | Governance | Stage 7a (Charter) | Incrementally update Graphify MCP graph during build to maintain code relationships and lower agent context load |
 | CF-ARC-014 | Architecture | Dual Engine Layout Pre-Processing & CPU/GPU Scale-to-Zero | Stage 2 | Stage 2 (Architecture) | Post-upload layout complexity analyzer routes to CPU (OCRmyPDF) or GPU (Baidu Unlimited OCR); both CPU & GPU instances scale to 0 when idle |
+| CF-ARC-015 | Architecture | freepdftoolz.me 15-Tool Suite Expansion & Unified Cloud Run Host Routing | Post-MVP | Sprint F1 (UC-016) | FreeOCR.me expands into broader FreePDFToolz.me suite. Single Cloud Run container serves both domains with Flutter client-side host-aware root routing. |
+| CF-ARC-016 | Architecture | PyMuPDF & pdf2docx Core Engine Integration | Post-MVP | Sprint F1-F3 | Use PyMuPDF for page manipulation, visual redaction, watermark, crop, annotations; use pdf2docx for high-fidelity Word docx reconstruction. |
+| CF-ARC-017 | Architecture | Dual-Mode Summarizer Engine (Local Extractive TextRank + Production Gemini Flash) | Post-MVP | Sprint F3 (UC-031) | Local-first CPU TextRank ensures 100% green tests with 0 cloud dependencies; optional Gemini Flash API produces deep synthesis when configured. |
 
 ---
 

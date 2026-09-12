@@ -1,6 +1,6 @@
 # compose_searchable_pdf()
 
-> God node · 11 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\pdf_composer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_composer.py#L12)
+> God node · 12 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\pdf_composer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_composer.py#L12)
 
 ## Call Trace Diagram
 
@@ -12,82 +12,88 @@ sequenceDiagram
     participant P3 as repair_pdf()
     participant P4 as test_ocr_worker_dispatches_to_baidu_gpu_service()
     participant P5 as test_ocr_worker_corrupted_pdf_repair_integration()
-    participant P6 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
-    participant P7 as test_process_ocr_job_ephemeral_file_cleanup_on_exception()
-    participant P8 as test_ocr_worker_integrates_pdf_composer()
-    participant P9 as test_ocr_worker_decryption_process()
-    participant P10 as _publish_event()
-    participant P11 as _store_job()
-    participant P12 as _get_tessdata_dir()
-    participant P13 as test_process_ocr_job_success()
-    participant P14 as test_ocr_worker_unrepairable_pdf_integration()
-    participant P15 as test_process_ocr_job_image_file()
-    participant P16 as get_searchable_pdf()
-    participant P17 as convert_document()
-    participant P18 as rewarded_ad_callback()
-    participant P19 as send_download_links_email()
-    participant P20 as analyze_pdf_bytes()
-    participant P21 as get_ad_pass_metadata()
-    participant P22 as email_download_links()
-    participant P23 as get_job_page_image()
-    participant P24 as batch_download_zip()
-    participant P25 as download_job_file()
-    participant P26 as _get_session_keys()
-    participant P27 as get_baidu_ocr_engine()
-    participant P28 as purge_ephemeral_ram_disk()
-    participant P29 as store_job_metadata()
-    participant P30 as get_job_metadata()
-    participant P31 as get_job_status()
-    participant P32 as stream_job_events()
-    participant P33 as get_job_preview()
-    participant P34 as _get_normalized_client_ip()
-    participant P35 as test_page_image_valid_completed_job_returns_png()
-    participant P36 as test_page_image_out_of_range_page_returns_404()
-    participant P37 as test_ephemeral_file_cleanup_pdf_composer()
-    participant P38 as test_get_searchable_pdf_from_redis_when_local_cache_misses()
-    participant P39 as verify_internal_secret()
-    participant P40 as test_adsense_config_api_endpoint()
-    participant P41 as test_dynamic_config_file_reload()
-    participant P42 as test_baidu_gpu_service_health()
-    participant P43 as test_download_invalid_format_returns_400()
-    participant P44 as test_download_non_existent_job_returns_410_gone()
-    participant P45 as test_download_pdf_success_and_purges_ram_disk()
-    participant P46 as test_download_txt_success()
-    participant P47 as test_download_md_success()
-    participant P48 as test_batch_download_zip_success()
-    participant P49 as test_batch_download_zip_invalid_format()
-    participant P50 as test_download_all_formats_from_redis_on_cold_boot()
-    participant P51 as test_download_zip_single_job_success()
-    participant P52 as test_healthz_endpoint_healthy()
-    participant P53 as test_healthz_endpoint_unhealthy_redis()
-    participant P54 as test_healthz_endpoint_unhealthy_database()
-    participant P55 as test_page_image_non_existent_job_returns_404_or_410()
-    participant P56 as test_page_image_zero_or_negative_page_returns_422_or_400()
-    participant P57 as test_get_config_limits_endpoint()
-    participant P58 as test_dynamic_limit_config_reload()
-    participant P59 as test_download_expired_job_returns_410_gone()
-    participant P60 as test_download_non_existent_job_returns_410_gone()
-    participant P61 as test_preview_non_existent_job_returns_410_gone()
-    participant P62 as test_preview_completed_job_returns_pages_data()
-    participant P63 as test_convert_endpoint_triggers_background_ocr_worker()
-    participant P64 as test_encrypted_pdf_rejected_without_password()
-    participant P65 as test_encrypted_pdf_rejected_with_invalid_password()
-    participant P66 as test_encrypted_pdf_accepted_with_correct_password()
-    participant P67 as .__init__()
-    participant P68 as test_get_config_endpoint()
-    participant P69 as test_health_check()
-    participant P70 as test_sse_endpoint_returns_event_stream_headers()
-    participant P71 as test_sse_stream_emits_page_progress_and_completed_events()
-    participant P72 as test_sse_stream_emits_failed_event()
-    participant P73 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P74 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P75 as test_sse_endpoint_streams_redis_events()
-    participant P76 as get_redis_client()
-    participant P77 as test_get_searchable_pdf_retrieval()
-    participant P78 as test_complex_two_column_pdf_reconstruction()
-    participant P79 as test_word_level_highlight_alignment_and_space_distribution()
-    participant P80 as test_compose_searchable_pdf_from_pdf()
-    participant P81 as test_compose_searchable_pdf_from_image()
+    participant P6 as _get_tessdata_dir()
+    participant P7 as detect_page_orientation()
+    participant P8 as parse_html_table_to_lines()
+    participant P9 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
+    participant P10 as test_process_ocr_job_ephemeral_file_cleanup_on_exception()
+    participant P11 as test_ocr_worker_integrates_pdf_composer()
+    participant P12 as test_ocr_worker_decryption_process()
+    participant P13 as _publish_event()
+    participant P14 as _store_job()
+    participant P15 as test_process_ocr_job_success()
+    participant P16 as test_ocr_worker_unrepairable_pdf_integration()
+    participant P17 as test_process_ocr_job_image_file()
+    participant P18 as get_searchable_pdf()
+    participant P19 as convert_document()
+    participant P20 as rewarded_ad_callback()
+    participant P21 as send_download_links_email()
+    participant P22 as analyze_pdf_bytes()
+    participant P23 as get_ad_pass_metadata()
+    participant P24 as email_download_links()
+    participant P25 as submit_contact_form()
+    participant P26 as get_job_page_image()
+    participant P27 as batch_download_zip()
+    participant P28 as download_job_file()
+    participant P29 as _get_session_keys()
+    participant P30 as get_baidu_ocr_engine()
+    participant P31 as parse_grounding_output()
+    participant P32 as purge_ephemeral_ram_disk()
+    participant P33 as store_job_metadata()
+    participant P34 as get_job_metadata()
+    participant P35 as get_job_status()
+    participant P36 as stream_job_events()
+    participant P37 as get_job_preview()
+    participant P38 as _get_normalized_client_ip()
+    participant P39 as send_contact_inquiry_email()
+    participant P40 as test_page_image_valid_completed_job_returns_png()
+    participant P41 as test_page_image_out_of_range_page_returns_404()
+    participant P42 as test_ephemeral_file_cleanup_pdf_composer()
+    participant P43 as test_get_searchable_pdf_from_redis_when_local_cache_misses()
+    participant P44 as verify_internal_secret()
+    participant P45 as test_adsense_config_api_endpoint()
+    participant P46 as test_dynamic_config_file_reload()
+    participant P47 as test_baidu_gpu_service_health()
+    participant P48 as test_download_invalid_format_returns_400()
+    participant P49 as test_download_non_existent_job_returns_410_gone()
+    participant P50 as test_download_pdf_success_and_purges_ram_disk()
+    participant P51 as test_download_txt_success()
+    participant P52 as test_download_md_success()
+    participant P53 as test_batch_download_zip_success()
+    participant P54 as test_batch_download_zip_invalid_format()
+    participant P55 as test_download_all_formats_from_redis_on_cold_boot()
+    participant P56 as test_download_zip_single_job_success()
+    participant P57 as test_healthz_endpoint_healthy()
+    participant P58 as test_healthz_endpoint_unhealthy_redis()
+    participant P59 as test_healthz_endpoint_unhealthy_database()
+    participant P60 as test_page_image_non_existent_job_returns_404_or_410()
+    participant P61 as test_page_image_zero_or_negative_page_returns_422_or_400()
+    participant P62 as test_get_config_limits_endpoint()
+    participant P63 as test_dynamic_limit_config_reload()
+    participant P64 as test_download_expired_job_returns_410_gone()
+    participant P65 as test_download_non_existent_job_returns_410_gone()
+    participant P66 as test_preview_non_existent_job_returns_410_gone()
+    participant P67 as test_preview_completed_job_returns_pages_data()
+    participant P68 as test_convert_endpoint_triggers_background_ocr_worker()
+    participant P69 as test_encrypted_pdf_rejected_without_password()
+    participant P70 as test_encrypted_pdf_rejected_with_invalid_password()
+    participant P71 as test_encrypted_pdf_accepted_with_correct_password()
+    participant P72 as .__init__()
+    participant P73 as test_get_config_endpoint()
+    participant P74 as test_health_check()
+    participant P75 as test_sse_endpoint_returns_event_stream_headers()
+    participant P76 as test_sse_stream_emits_page_progress_and_completed_events()
+    participant P77 as test_sse_stream_emits_failed_event()
+    participant P78 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P79 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P80 as test_sse_endpoint_streams_redis_events()
+    participant P81 as get_redis_client()
+    participant P82 as test_get_searchable_pdf_retrieval()
+    participant P83 as test_complex_two_column_pdf_reconstruction()
+    participant P84 as test_word_level_highlight_alignment_and_space_distribution()
+    participant P85 as test_compose_searchable_pdf_from_pdf()
+    participant P86 as test_compose_searchable_pdf_from_image()
+    participant P87 as test_compose_searchable_pdf_with_rotation_and_morph_scaling()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P2: calls
@@ -122,12 +128,12 @@ sequenceDiagram
     P14-->>- P2: return
     P2->>+ P15: calls
     P15-->>- P2: return
+    P2->>+ P16: calls
+    P16-->>- P2: return
+    P2->>+ P17: calls
+    P17-->>- P2: return
     P1->>+ P0: calls
     P0-->>- P1: return
-    P1->>+ P16: calls
-    P16-->>- P1: return
-    P1->>+ P17: calls
-    P17-->>- P1: return
     P1->>+ P18: calls
     P18-->>- P1: return
     P1->>+ P19: calls
@@ -150,10 +156,6 @@ sequenceDiagram
     P27-->>- P1: return
     P1->>+ P28: calls
     P28-->>- P1: return
-    P1->>+ P4: calls
-    P4-->>- P1: return
-    P1->>+ P5: calls
-    P5-->>- P1: return
     P1->>+ P29: calls
     P29-->>- P1: return
     P1->>+ P30: calls
@@ -162,6 +164,10 @@ sequenceDiagram
     P31-->>- P1: return
     P1->>+ P32: calls
     P32-->>- P1: return
+    P1->>+ P4: calls
+    P4-->>- P1: return
+    P1->>+ P5: calls
+    P5-->>- P1: return
     P1->>+ P33: calls
     P33-->>- P1: return
     P1->>+ P34: calls
@@ -170,24 +176,24 @@ sequenceDiagram
     P35-->>- P1: return
     P1->>+ P36: calls
     P36-->>- P1: return
-    P1->>+ P7: calls
-    P7-->>- P1: return
     P1->>+ P37: calls
     P37-->>- P1: return
     P1->>+ P38: calls
     P38-->>- P1: return
-    P1->>+ P9: calls
-    P9-->>- P1: return
     P1->>+ P39: calls
     P39-->>- P1: return
     P1->>+ P40: calls
     P40-->>- P1: return
     P1->>+ P41: calls
     P41-->>- P1: return
+    P1->>+ P10: calls
+    P10-->>- P1: return
     P1->>+ P42: calls
     P42-->>- P1: return
     P1->>+ P43: calls
     P43-->>- P1: return
+    P1->>+ P12: calls
+    P12-->>- P1: return
     P1->>+ P44: calls
     P44-->>- P1: return
     P1->>+ P45: calls
@@ -252,22 +258,34 @@ sequenceDiagram
     P74-->>- P1: return
     P1->>+ P75: calls
     P75-->>- P1: return
-    P0->>+ P76: calls
-    P76-->>- P0: return
-    P0->>+ P2: calls
-    P2-->>- P0: return
-    P0->>+ P77: calls
-    P77-->>- P0: return
-    P0->>+ P37: calls
-    P37-->>- P0: return
-    P0->>+ P78: calls
-    P78-->>- P0: return
-    P0->>+ P79: calls
-    P79-->>- P0: return
-    P0->>+ P80: calls
-    P80-->>- P0: return
+    P1->>+ P76: calls
+    P76-->>- P1: return
+    P1->>+ P77: calls
+    P77-->>- P1: return
+    P1->>+ P78: calls
+    P78-->>- P1: return
+    P1->>+ P79: calls
+    P79-->>- P1: return
+    P1->>+ P80: calls
+    P80-->>- P1: return
     P0->>+ P81: calls
     P81-->>- P0: return
+    P0->>+ P2: calls
+    P2-->>- P0: return
+    P0->>+ P82: calls
+    P82-->>- P0: return
+    P0->>+ P42: calls
+    P42-->>- P0: return
+    P0->>+ P83: calls
+    P83-->>- P0: return
+    P0->>+ P84: calls
+    P84-->>- P0: return
+    P0->>+ P85: calls
+    P85-->>- P0: return
+    P0->>+ P86: calls
+    P86-->>- P0: return
+    P0->>+ P87: calls
+    P87-->>- P0: return
 ```
 
 ## Connections by Relation
@@ -282,6 +300,7 @@ sequenceDiagram
 - [[test_word_level_highlight_alignment_and_space_distribution()]] `INFERRED`
 - [[test_compose_searchable_pdf_from_pdf()]] `INFERRED`
 - [[test_compose_searchable_pdf_from_image()]] `INFERRED`
+- [[test_compose_searchable_pdf_with_rotation_and_morph_scaling()]] `INFERRED`
 
 ### contains
 - [[pdf_composer.py]] `EXTRACTED`

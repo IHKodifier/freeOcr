@@ -1,6 +1,6 @@
 # Community 10
 
-> 35 nodes · cohesion 0.08
+> 37 nodes · cohesion 0.08
 
 ## Key Concepts
 
@@ -10,6 +10,7 @@
 - [ocr.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L1) (7 connections)
 - [analyze_pdf_bytes()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L14) (7 connections)
 - [LayoutAnalyzer](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L12) (6 connections)
+- [email_download_links()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L48) (6 connections)
 - [test_layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py#L1) (5 connections)
 - [_get_session_keys()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L37) (5 connections)
 - [config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py#L1) (4 connections)
@@ -28,8 +29,7 @@
 - [Endpoint for uploading PDF/image files for OCR conversion.     Validates extens](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L146) (2 connections)
 - [Validates rewarded ad view and stacks user limits (+50MB, +15 pages).     Reset](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L302) (2 connections)
 - [Server-Sent Events (SSE) stream for real-time progress updates on a job.     Su](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L360) (2 connections)
-- [test_canonical_config_loader()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_config_and_quotas.py#L9) (2 connections)
-- *... and 10 more nodes in this community*
+- *... and 12 more nodes in this community*
 
 ## Class Diagram
 
@@ -51,7 +51,7 @@ classDiagram
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 15]] (2 shared connections)
 
 ## Source Files
 
@@ -65,8 +65,8 @@ classDiagram
 
 ## Audit Trail
 
-- EXTRACTED: 77 (66%)
-- INFERRED: 40 (34%)
+- EXTRACTED: 80 (64%)
+- INFERRED: 45 (36%)
 - AMBIGUOUS: 0 (0%)
 
 ---

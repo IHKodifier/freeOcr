@@ -74,14 +74,24 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
   bool _isPlayingAd = false;
   bool _isSyncing = false;
   bool _isUnlockedSuccess = false;
+  bool _isIntermediateMilestone = false;
   double _newLimitMb = 50.0;
+  late double _currentActiveLimitMb;
   int _secondsRemaining = 15;
+  int _completedAds = 0;
+  late int _totalAdsRequired;
   Timer? _adTimer;
 
   @override
   void initState() {
     super.initState();
     _secondsRemaining = widget.adDurationSeconds;
+    _currentActiveLimitMb = widget.currentLimitMb;
+    _newLimitMb = widget.currentLimitMb;
+    final double fileSizeMb = widget.fileSizeInBytes / (1024 * 1024);
+    final double deficitMb = fileSizeMb - widget.currentLimitMb;
+    _totalAdsRequired = deficitMb > 0 ? (deficitMb / widget.boostPerAdMb).ceil() : 1;
+    if (_totalAdsRequired < 1) _totalAdsRequired = 1;
   }
 
   @override
@@ -95,6 +105,7 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
       _isPlayingAd = true;
       _isSyncing = false;
       _isUnlockedSuccess = false;
+      _isIntermediateMilestone = false;
       _secondsRemaining = widget.adDurationSeconds;
     });
     _resumeAdPlayback();
@@ -119,14 +130,23 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
         }
 
         // Negotiate boost pass with backend Redis
+        _completedAds++;
         final res = await ApiService.notifyRewardedAdWatched();
-        final double newLimit = (res['boosted_max_file_mb'] as num?)?.toDouble() ?? (widget.currentLimitMb + widget.boostPerAdMb);
+        final double? returnedLimit = (res['boosted_max_file_mb'] as num?)?.toDouble();
+        final double newLimit = (returnedLimit != null && returnedLimit > _currentActiveLimitMb)
+            ? returnedLimit
+            : (_currentActiveLimitMb + widget.boostPerAdMb);
+        final double clampedLimit = newLimit > widget.maxStackMb ? widget.maxStackMb : newLimit;
+        final double fileSizeMb = widget.fileSizeInBytes / (1024 * 1024);
+        final bool isFullyUnlocked = clampedLimit >= fileSizeMb || clampedLimit >= widget.maxStackMb || _completedAds >= _totalAdsRequired;
 
         if (mounted) {
           setState(() {
             _isSyncing = false;
-            _isUnlockedSuccess = true;
-            _newLimitMb = newLimit > widget.maxStackMb ? widget.maxStackMb : newLimit;
+            _currentActiveLimitMb = clampedLimit;
+            _newLimitMb = clampedLimit;
+            _isUnlockedSuccess = isFullyUnlocked;
+            _isIntermediateMilestone = !isFullyUnlocked;
           });
         }
       }
@@ -150,9 +170,11 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
             Text('Forfeit Limit Boost?', style: TextStyle(color: Colors.white, fontSize: 18)),
           ],
         ),
-        content: const Text(
-          'Closing before completion forfeits your limit boost reward. Are you sure you want to exit?',
-          style: TextStyle(color: Color(0xFFCBD5E1), fontSize: 14),
+        content: Text(
+          _completedAds > 0
+              ? 'Closing before completion forfeits this next boost (+${widget.boostPerAdMb.toInt()} MB). Your previously earned limit of ${_currentActiveLimitMb.toInt()} MB will remain active for your session.'
+              : 'Closing before completion forfeits your limit boost reward. Are you sure you want to exit?',
+          style: const TextStyle(color: Color(0xFFCBD5E1), fontSize: 14),
         ),
         actions: [
           TextButton(
@@ -166,7 +188,11 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
             onPressed: () {
               Navigator.of(ctx).pop(); // Close confirmation dialog
               _adTimer?.cancel();
-              widget.onCancel?.call();
+              if (_completedAds > 0) {
+                widget.onWatchAd(_currentActiveLimitMb);
+              } else {
+                widget.onCancel?.call();
+              }
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
             child: const Text('Quit & Forfeit', style: TextStyle(color: Colors.white)),
@@ -272,7 +298,7 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          '⚡ Session Boost Unlocked!',
+                          '⚡ All Quotas Unlocked!',
                           style: TextStyle(
                             color: isDark ? Colors.white : const Color(0xFF064E3B),
                             fontWeight: FontWeight.bold,
@@ -361,6 +387,126 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                       ],
                     ),
                   ),
+                ] else if (_isIntermediateMilestone) ...[
+                  // Intermediate Milestone Card: Ad X of Y Completed!
+                  Container(
+                    padding: const EdgeInsets.all(22),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? const Color(0xFF1E293B).withValues(alpha: 0.9)
+                          : const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isDark ? Colors.amber.shade400.withValues(alpha: 0.4) : Colors.amber.shade600,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.playlist_add_check_circle_rounded,
+                              size: 32,
+                              color: isDark ? Colors.amber.shade400 : Colors.amber.shade700,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '⚡ Ad $_completedAds of $_totalAdsRequired Complete!',
+                                    style: TextStyle(
+                                      color: primaryText,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Limit boosted to ${_currentActiveLimitMb.toInt()} MB',
+                                    style: TextStyle(
+                                      color: isDark ? Colors.greenAccent : const Color(0xFF059669),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // Progress indicator
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LinearProgressIndicator(
+                            value: _completedAds / _totalAdsRequired,
+                            minHeight: 8,
+                            backgroundColor: isDark ? Colors.white12 : const Color(0xFFCBD5E1),
+                            valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Progress: $_completedAds of $_totalAdsRequired Ads Completed (${((_completedAds / _totalAdsRequired) * 100).toInt()}%)',
+                          style: TextStyle(color: secondaryText, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark ? Colors.black.withValues(alpha: 0.3) : const Color(0xFFFEF3C7),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isDark ? Colors.amber.withValues(alpha: 0.2) : Colors.amber.shade300,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.info_outline_rounded, color: Colors.amber, size: 20),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'Active limit boosted to ${_currentActiveLimitMb.toInt()} MB. Your file is ${fileSizeMb.toStringAsFixed(1)} MB, so ${_totalAdsRequired - _completedAds} more ad needed to unlock this file.',
+                                  style: TextStyle(
+                                    color: isDark ? Colors.white70 : const Color(0xFF78350F),
+                                    fontSize: 12,
+                                    height: 1.3,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton.icon(
+                          onPressed: _startAdPlayback,
+                          icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+                          label: Text(
+                            _totalAdsRequired - _completedAds == 1
+                                ? 'Watch Final Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)'
+                                : 'Watch Next Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)',
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isDark ? Colors.amber.shade500 : const Color(0xFFD97706),
+                            foregroundColor: isDark ? Colors.black : Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () => widget.onWatchAd(_currentActiveLimitMb),
+                          style: TextButton.styleFrom(foregroundColor: secondaryText),
+                          child: Text('Keep ${_currentActiveLimitMb.toInt()} MB Limit & Exit'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ] else if (_isPlayingAd) ...[
                   // Video Ad Simulation View with Dismiss Warning
                   Container(
@@ -386,7 +532,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                                 const Icon(Icons.play_circle_fill_rounded, color: Colors.amber, size: 22),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Sponsor Ad',
+                                  _totalAdsRequired > 1
+                                      ? 'Sponsor Ad • Ad ${_completedAds + 1} of $_totalAdsRequired'
+                                      : 'Sponsor Ad',
                                   style: TextStyle(
                                     color: isDark ? Colors.white70 : const Color(0xFF334155),
                                     fontSize: 13,
@@ -410,7 +558,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Rewarded Video Sponsor Ad',
+                          _totalAdsRequired > 1
+                              ? 'Rewarded Video Sponsor Ad (Ad ${_completedAds + 1} of $_totalAdsRequired)'
+                              : 'Rewarded Video Sponsor Ad',
                           style: TextStyle(
                             color: primaryText,
                             fontWeight: FontWeight.bold,
@@ -419,7 +569,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Unlocking Limit Boost in $_secondsRemaining seconds...',
+                          _totalAdsRequired > 1
+                              ? 'Ad ${_completedAds + 1} of $_totalAdsRequired • Unlocking in $_secondsRemaining seconds...'
+                              : 'Unlocking Limit Boost in $_secondsRemaining seconds...',
                           style: TextStyle(
                             color: isDark ? Colors.cyan.shade200 : const Color(0xFF0284C7),
                             fontSize: 13,
@@ -452,14 +604,38 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                       ),
                       const SizedBox(width: 14),
                       Expanded(
-                        child: Text(
-                          'File Size Limit Exceeded',
-                          style: TextStyle(
-                            color: primaryText,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.5,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'File Size Limit Exceeded',
+                              style: TextStyle(
+                                color: primaryText,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                            if (_totalAdsRequired > 1) ...[
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
+                                ),
+                                child: Text(
+                                  '${fileSizeMb.toStringAsFixed(1)} MB File • $_totalAdsRequired Short Ads Required to Unlock (Ad 1 of $_totalAdsRequired)',
+                                  style: TextStyle(
+                                    color: isDark ? Colors.amber.shade300 : const Color(0xFFB45309),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     ],
@@ -588,7 +764,11 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                   ElevatedButton.icon(
                     onPressed: _startAdPlayback,
                     icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
-                    label: Text('Watch ${widget.adDurationSeconds}s Ad to Stack Boost (+${widget.boostPerAdMb.toInt()} MB)'),
+                    label: Text(
+                      _totalAdsRequired > 1
+                          ? 'Watch Ad 1 of $_totalAdsRequired (+${widget.boostPerAdMb.toInt()} MB Boost)'
+                          : 'Watch ${widget.adDurationSeconds}s Ad to Stack Boost (+${widget.boostPerAdMb.toInt()} MB)',
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? Colors.amber.shade500 : const Color(0xFFD97706),
                       foregroundColor: isDark ? Colors.black : Colors.white,

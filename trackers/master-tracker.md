@@ -7,10 +7,10 @@
 
 ## Overall Progress
 
-- **Total Backlog Tickets:** 20 Tickets (`UC-000a`, `UC-000b`, `UC-000c`, `UC-001` through `UC-015`, `UC-005b`, `UC-009-GAM`)
-- **Completed:** 20 / 20 (100%)
-- **Current Active Sprint:** Production Launch — v1.0.0-prod (100% Verified, Merged to `main`, Tagged `v1.0.0-prod`)
-- **Last Updated:** 2026-09-06 — Production Launch Gate: 115 Automated Tests PASS (75 Backend Pytest + 40 Flutter Tests). Fast-forward merge `dev` -> `main` completed locally. Release tagged `v1.0.0-prod`. Web release and static SEO HTML generated.
+- **Total Backlog Tickets:** 37 Tickets (`UC-000a`..`UC-015`, `UC-005b`, `UC-009-GAM`, `UC-016`..`UC-032`)
+- **Completed:** 20 / 37 (54%)
+- **Current Active Sprint:** Sprint F1 — FreePDFToolz Core Foundation & Page Operations (`UC-016`..`UC-022`)
+- **Last Updated:** 2026-09-13 — Added FreePDFToolz 15-tool suite expansion (Sprint F1, F2, F3). Launch target: Monday, September 21, 2026.
 
 ---
 
@@ -23,6 +23,9 @@
 | **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 6 / 6 | 100% | Completed |
 | **Phase 1** | **Sprint 3: Ad Monetization, GA4 & AdSense Content** | UC-009, UC-010, UC-011, UC-014, UC-015 | 5 / 5 | 100% | Completed |
 | **Phase 2** | **Stage 02: GAM GPT & 31s Auto-Refresh** | UC-009-GAM | 1 / 1 | 100% | Completed |
+| **Phase 3** | **Sprint F1: Page Operations Hub** | UC-016, UC-017, UC-018, UC-019, UC-020, UC-021, UC-022 | 0 / 7 | 0% | In Progress |
+| **Phase 3** | **Sprint F2: Transformation & Security** | UC-023, UC-024, UC-025, UC-026, UC-027 | 0 / 5 | 0% | Queued |
+| **Phase 3** | **Sprint F3: AI, Conversions & AdSense Launch** | UC-028, UC-029, UC-030, UC-031, UC-032 | 0 / 5 | 0% | Queued |
 
 ---
 
@@ -33,6 +36,7 @@
 - [x] **[PRE-PROD FLAG 03]:** Verify AdSense-qualifying original educational content pages (`/kb`, `/docs`) and GitHub repository footer (`UC-015`) in Sprint 3.
 - [x] **[PRE-PROD FLAG 04]:** Google Ad Manager (GAM / AdX) GPT Integration & Declared Server-Side Auto-Refresh ([`UC-009-GAM`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06b-carry-forward-tickets.md)) for production AdX deployment.
 - [x] **[LAUNCH READY GATE]:** All 108 tests passing locally (69 Pytest + 39 Flutter), staging merged & pushed to `dev`, Flutter Web production release bundle built with static SEO pages. Target launch Monday, September 7, 2026 confirmed.
+- [ ] **[FREEPDFTOOLZ LAUNCH GATE]:** Target launch Monday, September 21, 2026 for `freepdftoolz.me` 15-tool suite.
 
 ---
 
@@ -60,3 +64,21 @@
 | **UC-014** | Google Analytics 4 (GA4) Telemetry & SEO Meta-Tags | Sprint 3 | P1 | Completed | PASS |
 | **UC-015** | AdSense-Qualifying Content KB, Docs & GitHub Footer | Sprint 3 | P1 | Completed | PASS |
 | **UC-009-GAM** | Google Ad Manager (GAM / AdX) GPT Integration & 31s Declared Auto-Refresh | Stage 02 | P0 | Completed | PASS |
+| **UC-016** | Multi-Tool Routing Hub & Host-Aware Navigation Shell | Sprint F1 | P0 | Ready | Pending |
+| **UC-017** | Merge PDF Engine & Multi-File Drag-and-Drop Reorder UI | Sprint F1 | P0 | Queued | Pending |
+| **UC-018** | Split PDF Engine & Page Range Selector UI | Sprint F1 | P0 | Queued | Pending |
+| **UC-019** | Rotate PDF Engine & Visual Page Rotation Grid | Sprint F1 | P1 | Queued | Pending |
+| **UC-020** | Delete Pages Engine & Visual Page Deletion Grid | Sprint F1 | P1 | Queued | Pending |
+| **UC-021** | Extract Pages Engine & Multi-Page Extractor UI | Sprint F1 | P1 | Queued | Pending |
+| **UC-022** | Number Pages Engine & Position/Format Selector UI | Sprint F1 | P1 | Queued | Pending |
+| **UC-023** | Compress PDF Engine (Stream Optimization & DPI Downsampling) | Sprint F2 | P0 | Queued | Pending |
+| **UC-024** | Watermark PDF Engine (Text Angle/Opacity & Image Logo Overlay) | Sprint F2 | P1 | Queued | Pending |
+| **UC-025** | Crop PDF Engine & Visual Bounding Box Trimmer | Sprint F2 | P1 | Queued | Pending |
+| **UC-026** | Redact PDF Engine (True Cryptographic Glyph Sanitization) | Sprint F2 | P0 | Queued | Pending |
+| **UC-027** | Sign PDF Engine & Flutter Signature Canvas Pad | Sprint F2 | P0 | Queued | Pending |
+| **UC-028** | Annotate PDF Engine (Highlights, Rectangles, Sticky Notes) | Sprint F3 | P1 | Queued | Pending |
+| **UC-029** | Edit Text in PDF Engine (Visual Redact-and-Replace & Overlays) | Sprint F3 | P1 | Queued | Pending |
+| **UC-030** | Convert PDF to Word (.docx) via `pdf2docx` Engine | Sprint F3 | P0 | Queued | Pending |
+| **UC-031** | Summarize PDF Engine (Dual: Local TextRank CPU + Gemini Flash API) | Sprint F3 | P0 | Queued | Pending |
+| **UC-032** | Original Educational SEO Content Hub & AdSense Indexation | Sprint F3 | P0 | Queued | Pending |
+

@@ -1,16 +1,15 @@
 # Community 20
 
-> 7 nodes · cohesion 0.29
+> 6 nodes · cohesion 0.33
 
 ## Key Concepts
 
-- [test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L1) (5 connections)
-- [.clear()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L71) (2 connections)
-- [test_upload_oversized_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L64) (2 connections)
-- [test_upload_empty_0byte_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L54) (1 connections)
-- [test_upload_unsupported_file_extension()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L46) (1 connections)
-- [test_upload_valid_image_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L33) (1 connections)
-- [test_upload_valid_pdf_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L11) (1 connections)
+- [expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (6 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (1 connections)
+- [ExpiredLinkView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (1 connections)
+- [_formatLocalExpirationTime](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (1 connections)
 
 ## Relationships
 
@@ -18,13 +17,12 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 11 (85%)
-- INFERRED: 2 (15%)
+- EXTRACTED: 11 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

@@ -7,7 +7,7 @@ void main() {
     AdSenseBanner.resetSessionCount();
   });
 
-  testWidgets('AdSenseBanner renders banner layout correctly', (WidgetTester tester) async {
+  testWidgets('AdSenseBanner renders static compliant banner layout correctly', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
@@ -17,13 +17,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // Verify banner container and sponsored text exists
+    // Verify banner container, AD badge, and sponsored text exists
     expect(find.byKey(const Key('adsense_banner_container')), findsOneWidget);
+    expect(find.text('AD'), findsOneWidget);
     expect(find.text('Sponsored Advertisement'), findsOneWidget);
-    expect(find.textContaining('Stage Rotation'), findsOneWidget);
+    expect(find.textContaining('Google AdSense'), findsOneWidget);
   });
 
-  testWidgets('AdSenseBanner.rotateAd() triggers immediate rotation on conversion stage change', (WidgetTester tester) async {
+  testWidgets('AdSenseBanner methods execute safely as no-ops without error', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
@@ -33,19 +34,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final AdSenseBannerState state = tester.state(find.byType(AdSenseBanner));
-    expect(state.adRefreshCount, equals(0));
-
-    // Trigger explicit rotation on drop/stage change
-    AdSenseBanner.rotateAd();
+    // Verify calling rotateAd or resetSessionCount does not throw and preserves static UI
+    expect(() => AdSenseBanner.rotateAd(), returnsNormally);
+    expect(() => AdSenseBanner.resetSessionCount(), returnsNormally);
     await tester.pump();
 
-    expect(state.adRefreshCount, equals(1));
-
-    // Trigger second stage rotation (e.g. processing started)
-    AdSenseBanner.rotateAd();
-    await tester.pump();
-
-    expect(state.adRefreshCount, equals(2));
+    expect(find.byKey(const Key('adsense_banner_container')), findsOneWidget);
   });
 }
