@@ -28,6 +28,7 @@ void main() {
       expect(find.byKey(const Key('footer_privacy_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_terms_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_contact_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_source_code_btn')), findsOneWidget);
 
       // Verify Live Social Media Handles (Twitter/X, Instagram, Facebook)
       expect(find.byKey(const Key('footer_social_twitter')), findsOneWidget);

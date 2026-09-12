@@ -23,6 +23,8 @@ wheels/
 htmlcov/
 .venv/
 venv/
+.env
+.env.example
 ENV/
 
 # Flutter & Dart

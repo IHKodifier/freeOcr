@@ -236,13 +236,15 @@ def process_ocr_job(
                     page.set_rotation(detected_rot)
 
                 # Path A: Baidu Unlimited OCR Engine (Designated AI Engine for Complex Layouts)
+                clean_gpu_lines = []
                 if target_engine == "Baidu_Unlimited_OCR":
                     try:
                         print(f"[Baidu Unlimited OCR] Executing Baidu Unlimited OCR Model on complex layout (rot={page.rotation}) at 200 DPI...", flush=True)
                         target_dpi = 200
                         pix = page.get_pixmap(dpi=target_dpi)
-                        scale_x = page.rect.width / max(1.0, float(pix.width))
-                        scale_y = page.rect.height / max(1.0, float(pix.height))
+                        # Baidu Unlimited-OCR GPU worker normalizes all bounding boxes to 1024x1024 space
+                        scale_x = page.rect.width / 1024.0
+                        scale_y = page.rect.height / 1024.0
                         img_bytes = pix.tobytes("png")
 
                         gpu_worker_url = os.environ.get("BAIDU_GPU_WORKER_URL")
@@ -265,53 +267,70 @@ def process_ocr_job(
                                 )
                                 if resp.status_code == 200:
                                     gpu_data = resp.json()
-                                    font = pymupdf.Font("helv")
-                                    font_height_ratio = max(0.5, font.ascender - font.descender)
-                                    for item in gpu_data.get("lines", []):
-                                        bbox = item.get("bbox", [])
-                                        text = item.get("text", "").strip()
-                                        if len(bbox) == 4 and text:
-                                            # If text contains an HTML table, decompose into structured rows
-                                            if "<table" in text:
-                                                sub_lines = parse_html_table_to_lines(text, bbox)
-                                                for sl in sub_lines:
-                                                    sb = sl.get("bbox", bbox)
-                                                    st = sl.get("text", "").strip()
-                                                    if st and len(sb) == 4:
-                                                        x0, y0, x1, y1 = sb
-                                                        x0_scaled = float(x0) * scale_x
-                                                        y0_scaled = float(y0) * scale_y
-                                                        x1_scaled = float(x1) * scale_x
-                                                        y1_scaled = float(y1) * scale_y
-                                                        h_scaled = max(1.0, y1_scaled - y0_scaled)
-                                                        est_font_size = max(5.0, h_scaled / font_height_ratio)
-                                                        descender_depth = abs(font.descender) * est_font_size
-                                                        origin_y = y1_scaled - descender_depth
-                                                        lines_data.append({
-                                                            "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
-                                                            "text": st,
-                                                            "size": round(est_font_size, 2),
-                                                            "origin": [round(x0_scaled, 2), round(origin_y, 2)]
-                                                        })
-                                            else:
-                                                x0, y0, x1, y1 = bbox
-                                                x0_scaled = float(x0) * scale_x
-                                                y0_scaled = float(y0) * scale_y
-                                                x1_scaled = float(x1) * scale_x
-                                                y1_scaled = float(y1) * scale_y
-                                                h_scaled = max(1.0, y1_scaled - y0_scaled)
-                                                est_font_size = max(5.0, h_scaled / font_height_ratio)
-                                                descender_depth = abs(font.descender) * est_font_size
-                                                origin_y = y1_scaled - descender_depth
+                                    raw_lines = gpu_data.get("lines", [])
+                                    # Strip vision model markdown artifacts
+                                    for item in raw_lines:
+                                        t = item.get("text", "").strip()
+                                        if t.startswith("[Non-Text]") or t.startswith("![") or t.startswith("![](images/"):
+                                            continue
+                                        clean_gpu_lines.append(item)
 
-                                                lines_data.append({
-                                                    "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
-                                                    "text": text,
-                                                    "size": round(est_font_size, 2),
-                                                    "origin": [round(x0_scaled, 2), round(origin_y, 2)]
-                                                })
-                                    if lines_data:
-                                        page_text = "\n".join([line["text"] for line in lines_data])
+                                    # Check if GPU lines have authentic grounded bounding boxes or table structures
+                                    has_grounded_boxes = any(
+                                        item.get("confidence", 1.0) >= 0.98 or "<table" in item.get("text", "")
+                                        for item in clean_gpu_lines
+                                    )
+
+                                    if not has_grounded_boxes:
+                                        print("[Baidu Unlimited OCR] GPU model emitted ungrounded markdown without real bounding box tags. Yielding to Tesseract OCR for pixel-accurate layout grounding.", flush=True)
+                                    else:
+                                        font = pymupdf.Font("helv")
+                                        font_height_ratio = max(0.5, font.ascender - font.descender)
+                                        for item in clean_gpu_lines:
+                                            bbox = item.get("bbox", [])
+                                            text = item.get("text", "").strip()
+                                            if len(bbox) == 4 and text:
+                                                # If text contains an HTML table, decompose into structured rows
+                                                if "<table" in text:
+                                                    sub_lines = parse_html_table_to_lines(text, bbox)
+                                                    for sl in sub_lines:
+                                                        sb = sl.get("bbox", bbox)
+                                                        st = sl.get("text", "").strip()
+                                                        if st and len(sb) == 4:
+                                                            x0, y0, x1, y1 = sb
+                                                            x0_scaled = float(x0) * scale_x
+                                                            y0_scaled = float(y0) * scale_y
+                                                            x1_scaled = float(x1) * scale_x
+                                                            y1_scaled = float(y1) * scale_y
+                                                            h_scaled = max(1.0, y1_scaled - y0_scaled)
+                                                            est_font_size = max(5.0, h_scaled / font_height_ratio)
+                                                            descender_depth = abs(font.descender) * est_font_size
+                                                            origin_y = y1_scaled - descender_depth
+                                                            lines_data.append({
+                                                                "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
+                                                                "text": st,
+                                                                "size": round(est_font_size, 2),
+                                                                "origin": [round(x0_scaled, 2), round(origin_y, 2)]
+                                                            })
+                                                else:
+                                                    x0, y0, x1, y1 = bbox
+                                                    x0_scaled = float(x0) * scale_x
+                                                    y0_scaled = float(y0) * scale_y
+                                                    x1_scaled = float(x1) * scale_x
+                                                    y1_scaled = float(y1) * scale_y
+                                                    h_scaled = max(1.0, y1_scaled - y0_scaled)
+                                                    est_font_size = max(5.0, h_scaled / font_height_ratio)
+                                                    descender_depth = abs(font.descender) * est_font_size
+                                                    origin_y = y1_scaled - descender_depth
+
+                                                    lines_data.append({
+                                                        "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
+                                                        "text": text,
+                                                        "size": round(est_font_size, 2),
+                                                        "origin": [round(x0_scaled, 2), round(origin_y, 2)]
+                                                    })
+                                        if lines_data:
+                                            page_text = "\n".join([line["text"] for line in lines_data])
                                 else:
                                     print(f"[Baidu Unlimited OCR] GPU Worker returned status {resp.status_code}. Silent fallback to CPU engine.")
                             except Exception as gpu_err:
@@ -347,6 +366,32 @@ def process_ocr_job(
                             page_text = "\n".join([line["text"] for line in lines_data])
                     except Exception as tess_err:
                         print(f"[OCRmyPDF / Tesseract Engine Warning] {tess_err}")
+
+                # Path C: Last-resort fallback to GPU text if Tesseract also yielded no text
+                if not lines_data and clean_gpu_lines:
+                    font = pymupdf.Font("helv")
+                    font_height_ratio = max(0.5, font.ascender - font.descender)
+                    for item in clean_gpu_lines:
+                        bbox = item.get("bbox", [])
+                        text = item.get("text", "").strip()
+                        if len(bbox) == 4 and text:
+                            x0, y0, x1, y1 = bbox
+                            x0_scaled = float(x0) * scale_x
+                            y0_scaled = float(y0) * scale_y
+                            x1_scaled = float(x1) * scale_x
+                            y1_scaled = float(y1) * scale_y
+                            h_scaled = max(1.0, y1_scaled - y0_scaled)
+                            est_font_size = max(5.0, h_scaled / font_height_ratio)
+                            descender_depth = abs(font.descender) * est_font_size
+                            origin_y = y1_scaled - descender_depth
+                            lines_data.append({
+                                "bbox": [round(x0_scaled, 2), round(y0_scaled, 2), round(x1_scaled, 2), round(y1_scaled, 2)],
+                                "text": text,
+                                "size": round(est_font_size, 2),
+                                "origin": [round(x0_scaled, 2), round(origin_y, 2)]
+                            })
+                    if lines_data:
+                        page_text = "\n".join([line["text"] for line in lines_data])
 
 
             pages_data.append({

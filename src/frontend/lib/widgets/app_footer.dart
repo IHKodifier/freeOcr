@@ -398,6 +398,14 @@ class AppFooter extends StatelessWidget {
             child: Text('Contact Us', style: linkStyle),
           ),
         ),
+        InkWell(
+          key: const Key('footer_source_code_btn'),
+          onTap: () => UrlHelper.openUrl(SocialLinks.githubRepoUrl),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('Source Code (GitHub)', style: linkStyle),
+          ),
+        ),
       ],
     );
   }

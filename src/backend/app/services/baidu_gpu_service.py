@@ -136,9 +136,11 @@ def parse_grounding_output(raw_text: str, default_width: float = 1024.0, default
     # Pattern 2: Bounded line segmentation if no explicit coordinates were generated
     if not lines:
         raw_lines = [l.strip() for l in raw_text.splitlines() if l.strip()]
-        # Strip model tags
-        clean_lines = [re.sub(r"<\|[^>]+\|>", "", l).strip() for l in raw_lines]
-        clean_lines = [l for l in clean_lines if l]
+        # Strip model tags and image placeholders
+        clean_lines = [re.sub(r"<\|[^>]+\|>", "", l).strip() for l in raw_lines if l.strip()]
+        clean_lines = [re.sub(r"^\[Non-Text\]\s*", "", l) for l in clean_lines if not l.startswith("![")]
+        clean_lines = [re.sub(r"^!\[\]\(.*?\)\s*", "", l) for l in clean_lines]
+        clean_lines = [l.strip() for l in clean_lines if l.strip()]
         total_lines = max(1, len(clean_lines))
 
         top_margin = default_height * 0.08
@@ -169,7 +171,7 @@ def parse_grounding_output(raw_text: str, default_width: float = 1024.0, default
                             lines.append({
                                 "bbox": [round(x0, 2), round(ry0, 2), round(x0 + est_w, 2), round(ry1, 2)],
                                 "text": row_text,
-                                "confidence": 0.95
+                                "confidence": 0.90
                             })
                     continue
 
@@ -179,7 +181,7 @@ def parse_grounding_output(raw_text: str, default_width: float = 1024.0, default
             lines.append({
                 "bbox": [round(x0, 2), round(y0, 2), round(x1, 2), round(y1, 2)],
                 "text": line_text,
-                "confidence": 0.95
+                "confidence": 0.90
             })
 
     return lines

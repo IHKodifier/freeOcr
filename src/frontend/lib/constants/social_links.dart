@@ -25,6 +25,7 @@ class SocialLinks {
   static const String tesseractUrl =
       'https://github.com/tesseract-ocr/tesseract';
   static const String pymupdfUrl = 'https://github.com/pymupdf/PyMuPDF';
+  static const String githubRepoUrl = 'https://github.com/IHKodifier/freeOcr';
 
   /// Safely open a social channel or present an informational dialog if the handle is in launch phase.
   static void openSocialChannel(
