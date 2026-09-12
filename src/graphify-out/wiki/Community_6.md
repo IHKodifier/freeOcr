@@ -1,10 +1,10 @@
 # Community 6
 
-> 49 nodes · cohesion 0.04
+> 50 nodes · cohesion 0.04
 
 ## Key Concepts
 
-- [ocr_progress_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (33 connections)
+- [ocr_progress_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (34 connections)
 - [hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (24 connections)
 - [adsense_banner.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (2 connections)
 - [../pages/result_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (2 connections)
@@ -29,7 +29,7 @@
 - [_buildBatchProgressUI](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
 - [_buildSingleProgressUI](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
 - [Column](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/ocr_progress_view.dart) (1 connections)
-- *... and 24 more nodes in this community*
+- *... and 25 more nodes in this community*
 
 ## Relationships
 
@@ -43,7 +43,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 107 (100%)
+- EXTRACTED: 109 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

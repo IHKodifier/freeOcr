@@ -55,4 +55,30 @@ void main() {
       expect(toggled, isTrue);
     },
   );
+
+  testWidgets(
+    'AppHeader renders Tools dropdown button and displays tool list on tap',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: const AppHeader(
+            currentRoute: '/',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final toolsBtn = find.byKey(const Key('header_tools_btn'));
+      expect(toolsBtn, findsOneWidget);
+
+      await tester.tap(toolsBtn);
+      await tester.pumpAndSettle();
+
+      // Should show tools menu items
+      expect(find.text('All PDF Tools (16)'), findsOneWidget);
+      expect(find.text('Merge PDF'), findsOneWidget);
+      expect(find.text('Compress PDF'), findsOneWidget);
+      expect(find.text('OCR PDF'), findsOneWidget);
+    },
+  );
 }

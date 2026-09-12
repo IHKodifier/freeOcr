@@ -1,72 +1,57 @@
 # Community 10
 
-> 37 nodes · cohesion 0.08
+> 39 nodes · cohesion 0.06
 
 ## Key Concepts
 
-- [load_canonical_config()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py#L10) (9 connections)
-- [convert_document()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L140) (9 connections)
-- [rewarded_ad_callback()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L301) (8 connections)
-- [ocr.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L1) (7 connections)
-- [analyze_pdf_bytes()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L14) (7 connections)
-- [LayoutAnalyzer](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L12) (6 connections)
-- [email_download_links()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L48) (6 connections)
-- [test_layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py#L1) (5 connections)
-- [_get_session_keys()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L37) (5 connections)
-- [config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py#L1) (4 connections)
-- [database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py#L1) (4 connections)
-- [_get_normalized_client_ip()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L26) (4 connections)
-- [get_runtime_config()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/config.py#L9) (3 connections)
-- [Settings](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py#L40) (3 connections)
-- [layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py#L1) (3 connections)
-- [test_config_and_quotas.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_config_and_quotas.py#L1) (3 connections)
-- [EmailDeliveryRequest](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L21) (3 connections)
-- [create_sample_pdf()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py#L6) (3 connections)
-- [test_complex_layout_math_formula()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py#L23) (3 connections)
-- [test_simple_layout_classification()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py#L15) (3 connections)
-- [.get_canonical_config()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py#L53) (2 connections)
-- [job_events_stream()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L359) (2 connections)
-- [Endpoint for uploading PDF/image files for OCR conversion.     Validates extens](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L146) (2 connections)
-- [Validates rewarded ad view and stacks user limits (+50MB, +15 pages).     Reset](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L302) (2 connections)
-- [Server-Sent Events (SSE) stream for real-time progress updates on a job.     Su](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py#L360) (2 connections)
-- *... and 12 more nodes in this community*
-
-## Class Diagram
-
-```mermaid
-classDiagram
-    class Settings {
-        +config.py()
-        +.get_canonical_config()
-    }
-    class LayoutAnalyzer {
-        +layout_analyzer.py()
-    }
-    class EmailDeliveryRequest {
-        +ocr.py()
-    }
-    LayoutAnalyzer --> EmailDeliveryRequest
-    EmailDeliveryRequest --> LayoutAnalyzer
-```
+- [api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (18 connections)
+- [dart:async](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (9 connections)
+- [sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (6 connections)
+- [dart:typed_data](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart) (5 connections)
+- [download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart) (5 connections)
+- [theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart) (5 connections)
+- [dart:convert](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (4 connections)
+- [dart:html](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (4 connections)
+- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart) (4 connections)
+- [api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart) (4 connections)
+- [telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (4 connections)
+- [url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (3 connections)
+- [package:http/http.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (3 connections)
+- [dart:js](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (2 connections)
+- [package:flutter/services.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (2 connections)
+- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [dart:math](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [ApiService](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [BatchFileItem](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [formatBytes](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [Function](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [getBatchDownloadZipUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [getDownloadUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [getFileTypeDescription](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- [getPageImageUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
+- *... and 14 more nodes in this community*
 
 ## Relationships
 
-- [[Community 15]] (2 shared connections)
+- No strong cross-community connections detected
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/config.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\ocr.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/ocr.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\config.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/config.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/layout_analyzer.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_config_and_quotas.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_config_and_quotas.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_layout_analyzer.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_layout_analyzer.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\process_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 80 (64%)
-- INFERRED: 45 (36%)
+- EXTRACTED: 102 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

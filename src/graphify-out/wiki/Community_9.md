@@ -1,10 +1,10 @@
 # Community 9
 
-> 38 nodes · cohesion 0.05
+> 40 nodes · cohesion 0.05
 
 ## Key Concepts
 
-- [main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (46 connections)
+- [main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (48 connections)
 - [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
@@ -19,17 +19,17 @@
 - [HomePage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [_HomePageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [LandingFaqSection](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [main](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [MaterialApp](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [MaterialPageRoute](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [_onBatchUploadSuccess](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [_onUploadSuccess](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [Overlay](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
-- [_resetConversion](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [RichText](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [Scaffold](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
 - [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
-- *... and 13 more nodes in this community*
+- *... and 15 more nodes in this community*
 
 ## Relationships
 
@@ -41,7 +41,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 83 (100%)
+- EXTRACTED: 87 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
