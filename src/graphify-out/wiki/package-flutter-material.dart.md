@@ -8,10 +8,10 @@
 - [[split_preview_viewer.dart]] `EXTRACTED`
 - [[main.dart]] `EXTRACTED`
 - [[kb_page.dart]] `EXTRACTED`
-- [[docs_page.dart]] `EXTRACTED`
 - [[ocr_progress_view.dart]] `EXTRACTED`
-- [[hero_dropzone.dart]] `EXTRACTED`
+- [[docs_page.dart]] `EXTRACTED`
 - [[contact_page.dart]] `EXTRACTED`
+- [[hero_dropzone.dart]] `EXTRACTED`
 - [[rewarded_video_ad_modal.dart]] `EXTRACTED`
 - [[gam_banner.dart]] `EXTRACTED`
 - [[result_page.dart]] `EXTRACTED`

@@ -5,9 +5,9 @@
 > **Approved:** [x] approved  
 > **Reads from:** [`04-feature-stories.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/04-feature-stories.md), [`04b-mvp-scope.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/04b-mvp-scope.md), [`06-data-model.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/product-specs/06-data-model.md)  
 > **Governance:** **Test-Driven Development (TDD) Mandate** — Automated unit/integration tests must be created BEFORE writing implementation code for any ticket. Acceptance criteria map 1:1 to test assertions. **Graphify MCP** is incrementally updated to maintain the code graph and reduce cognitive load for AI agents.  
-> **Scope:** MVP Implementation Backlog  
-> **Ticket Count:** 16 Tickets (UC-000a, UC-000b, UC-000c, UC-001 through UC-013)  
-> **Last Updated:** 2026-08-23  
+> **Scope:** MVP Implementation Backlog & FreePDFToolz Suite Expansion  
+> **Ticket Count:** 33 Tickets (UC-000a, UC-000b, UC-000c, UC-001 through UC-015, UC-016 through UC-032)  
+> **Last Updated:** 2026-09-13  
 
 ---
 
@@ -507,4 +507,430 @@
 - WHEN search engines index `/kb` pages THE SYSTEM SHALL provide valid OpenGraph and structured schema markup.
 
 **Estimate:** M | **Depends on:** UC-001
+
+---
+
+## Epic 6: FreePDFToolz Core Foundation & Page Operations (Sprint F1)
+
+### UC-016: Multi-Tool Routing Hub & Host-Aware Navigation Shell
+
+**Linked Story:** FreePDFToolz Foundation  
+**Actor:** Anonymous Web Visitor / Flutter Web Shell  
+**Trigger:** Visitor navigates to root domain (`freeocr.me` or `freepdftoolz.me`) or tool deep-link.  
+
+**Preconditions**
+- [ ] Staging and production deployment pointing to unified Cloud Run container.
+
+**Main Flow**
+1. Flutter Web inspects `window.location.hostname`.
+2. If hostname contains `freeocr.me`: Root route `/` renders dedicated `freeOCR.me` interface directly.
+3. If hostname contains `freepdftoolz.me`: Root route `/` renders the `FreePDFToolz` Hub — responsive Material 3 card grid featuring all 15 tools categorized into Page Ops, Security & Transformation, and AI/Conversions, with a featured badge for Free OCR.
+4. Top Navigation Bar provides brand switcher, tool search modal/palette, dark/light theme toggle, and fast category filter tabs.
+5. All direct deep links (`/merge`, `/split`, `/rotate`, `/delete-pages`, `/extract-pages`, `/number-pages`, `/compress`, `/watermark`, `/crop`, `/redact`, `/sign`, `/annotate`, `/edit-text`, `/pdf-to-word`, `/summarize`, `/ocr`) function identically across both domains.
+
+**Acceptance Criteria (Testable)**
+- WHEN hostname matches `freeocr.me` THE SYSTEM SHALL mount the dedicated OCR dropzone at root path `/`.
+- WHEN hostname matches `freepdftoolz.me` THE SYSTEM SHALL mount the multi-tool hub grid at root path `/`.
+- WHEN navigating to any direct tool route (e.g. `/merge`) THE SYSTEM SHALL load the requested tool regardless of host domain.
+
+**Estimate:** M | **Depends on:** UC-000a
+
+---
+
+### UC-017: Merge PDF Engine & Multi-File Drag-and-Drop Reorder UI
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads 2 or more PDF files to `/merge`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-017-pdf-merge`.
+- [ ] PyMuPDF (`fitz`) installed in backend environment.
+
+**Main Flow**
+1. User drops 2+ PDF files onto the Merge dropzone.
+2. Flutter UI renders a visual reorderable card list displaying filename, file size, page count, and drag handles, with options to add more files or remove items.
+3. User clicks "Merge PDFs".
+4. Flutter dispatches `POST /api/v1/tools/merge` with `multipart/form-data` files ordered by user's list.
+5. FastAPI verifies file formats, checks size against free tier (100MB cumulative) or session boost passes, streams files into `tmpfs` RAM disk.
+6. PyMuPDF instantiates output document, appends each document with `doc.insert_pdf()`, and writes merged stream with deflate compression and garbage collection.
+7. Backend returns one-click direct download link and purges input temp files.
+
+**Acceptance Criteria (Testable)**
+- WHEN uploading fewer than 2 PDF files THE SYSTEM SHALL reject merge with HTTP 400 error.
+- WHEN uploading 2+ valid PDF files in a specific order THE SYSTEM SHALL output a single valid PDF preserving the exact page order.
+- WHEN merged PDF is created THE SYSTEM SHALL purge all input files from RAM disk within 60 seconds.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-018: Split PDF Engine & Page Range Selector UI
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads a PDF to `/split`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-018-pdf-split`.
+
+**Main Flow**
+1. User drops a multi-page PDF onto `/split`.
+2. UI displays total detected page count and mode selector:
+   - Mode A: Custom Ranges (e.g. `1-3, 5, 8-12`).
+   - Mode B: Split every N pages.
+   - Mode C: Extract each page as an individual PDF.
+3. User submits split parameters; UI sends `POST /api/v1/tools/split`.
+4. Backend parses range strings, creates split PDFs via PyMuPDF in `tmpfs`.
+5. If split results in a single PDF, returns `.pdf`; if multiple files, packages into a clean `.zip` archive.
+
+**Acceptance Criteria (Testable)**
+- WHEN splitting a 10-page document with range `1-2, 5` THE SYSTEM SHALL generate a ZIP containing Document_1-2.pdf and Document_5.pdf.
+- WHEN invalid or out-of-bounds page range is requested THE SYSTEM SHALL return HTTP 422 with descriptive error.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-019: Rotate PDF Engine & Visual Page Rotation Grid
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads a PDF to `/rotate`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-019-pdf-rotate`.
+
+**Main Flow**
+1. User uploads PDF; UI generates/displays page preview thumbnails in a responsive grid.
+2. User can click individual page rotate icons (90° CW / 90° CCW) or global action "Rotate All Right / Left".
+3. User clicks "Apply Rotation"; sends `POST /api/v1/tools/rotate` with rotation mapping `{page_index: angle_deg}`.
+4. PyMuPDF applies `page.set_rotation((page.rotation + angle) % 360)` on target pages.
+5. Returns rotated PDF for instant download.
+
+**Acceptance Criteria (Testable)**
+- WHEN rotating page 1 by 90° CW and page 2 by 180° THE SYSTEM SHALL update PDF dictionary rotation properties accurately.
+- WHEN downloading rotated PDF THE SYSTEM SHALL verify output PDF opens without visual distortion.
+
+**Estimate:** S | **Depends on:** UC-016
+
+---
+
+### UC-020: Delete Pages Engine & Visual Page Deletion Grid
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/delete-pages`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-020-delete-pages`.
+
+**Main Flow**
+1. User uploads PDF; UI renders page thumbnail grid with selection toggles.
+2. Clicking a page marks it with a red "Delete" badge and strikethrough.
+3. User confirms deletion; UI calls `POST /api/v1/tools/delete-pages` with `pages_to_delete: [int]`.
+4. PyMuPDF executes `doc.delete_pages(pages_to_delete)` in reverse order.
+5. Returns pruned PDF for download.
+
+**Acceptance Criteria (Testable)**
+- WHEN user attempts to delete 100% of pages in a PDF THE SYSTEM SHALL return HTTP 400 preventing empty document generation.
+- WHEN deleting specified pages THE SYSTEM SHALL verify remaining pages match exact sequence without index shift errors.
+
+**Estimate:** S | **Depends on:** UC-016
+
+---
+
+### UC-021: Extract Pages Engine & Multi-Page Extractor UI
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/extract-pages`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-021-extract-pages`.
+
+**Main Flow**
+1. User uploads PDF; selects pages to extract via checkbox grid or comma-separated range input.
+2. Selects output format: Single Merged PDF or Separate PDFs (ZIP).
+3. Backend invokes PyMuPDF `doc.select(pages_to_extract)` and saves output in `tmpfs`.
+4. Returns download payload.
+
+**Acceptance Criteria (Testable)**
+- WHEN extracting pages 2 and 4 to a single PDF THE SYSTEM SHALL produce a 2-page document containing only original pages 2 and 4.
+- WHEN extracting pages to separate files THE SYSTEM SHALL package outputs into a `.zip` archive.
+
+**Estimate:** S | **Depends on:** UC-016
+
+---
+
+### UC-022: Number Pages Engine & Position/Format Selector UI
+
+**Linked Story:** Page Operations  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/number-pages`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-022-number-pages`.
+
+**Main Flow**
+1. User uploads PDF; configures page number overlay:
+   - Position: 3x3 alignment matrix (Top-Left, Top-Center, Top-Right, Bottom-Left, Bottom-Center, Bottom-Right).
+   - Format: `"Page {n} of {total}"`, `"{n}"`, `"Page {n}"`.
+   - Margin offset, font size, font color.
+   - Page range filter (e.g. skip cover page / start from page 2).
+2. Sends `POST /api/v1/tools/number-pages`.
+3. PyMuPDF calculates bounding rect based on page dimensions, inserts formatted text overlay on requested pages.
+4. Returns numbered PDF.
+
+**Acceptance Criteria (Testable)**
+- WHEN numbering pages with skip cover enabled THE SYSTEM SHALL leave page 1 unaltered and begin numbering on page 2.
+- WHEN applying bottom-center numbering THE SYSTEM SHALL center text horizontally at specified bottom margin across all page sizes (Letter/A4).
+
+**Estimate:** S | **Depends on:** UC-016
+
+---
+
+## Epic 7: FreePDFToolz Transformation, Optimization & Security (Sprint F2)
+
+### UC-023: Compress PDF Engine (Stream Optimization & DPI Downsampling)
+
+**Linked Story:** Optimization  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/compress`.  
+
+**Preconditions**
+- [ ] `pikepdf` and `PyMuPDF` available in backend.
+
+**Main Flow**
+1. User uploads PDF and selects compression level:
+   - Recommended (150 DPI downsampling + deflate stream compression).
+   - Extreme (72 DPI downsampling + aggressive font deduplication).
+   - Low / Lossless (Deflate streams, remove duplicate objects, zero image downsampling).
+2. Backend processes document in `tmpfs` using `pikepdf` object stream compression and PyMuPDF image stream optimization.
+3. UI displays comparison banner: Original Size, New Compressed Size, and Percentage Saved (e.g. *"Compressed from 24.2 MB to 3.8 MB (-84%)"*).
+
+**Acceptance Criteria (Testable)**
+- WHEN compressed file is produced THE SYSTEM SHALL verify byte size is less than or equal to original size.
+- WHEN compression level is Extreme THE SYSTEM SHALL downsample high-res embedded raster images to 72 DPI.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-024: Watermark PDF Engine (Text Angle/Opacity & Image Logo Overlay)
+
+**Linked Story:** Transformation  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/watermark`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-024-watermark`.
+
+**Main Flow**
+1. User uploads PDF; selects Watermark Type (Text or Image).
+2. For Text: Configures text string (e.g. "CONFIDENTIAL"), rotation angle (-45°, 0°, 45°), opacity (10% - 100%), font size, color.
+3. For Image: Uploads logo PNG/JPG, sets scale and opacity.
+4. Sends `POST /api/v1/tools/watermark`.
+5. PyMuPDF draws watermark overlay stream on all pages with specified alpha transparency.
+6. Returns watermarked PDF.
+
+**Acceptance Criteria (Testable)**
+- WHEN applying text watermark at 30% opacity THE SYSTEM SHALL render semi-transparent text overlay without corrupting existing text layers.
+- WHEN applying image logo watermark THE SYSTEM SHALL preserve PNG alpha transparency over background content.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-025: Crop PDF Engine & Visual Bounding Box Trimmer
+
+**Linked Story:** Transformation  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/crop`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-025-crop`.
+
+**Main Flow**
+1. User uploads PDF; UI renders interactive first-page preview with draggable crop bounding handles.
+2. User adjusts crop box (Left, Top, Right, Bottom margins).
+3. Chooses whether to apply crop to current page or all pages.
+4. PyMuPDF updates `page.set_cropbox(fitz.Rect(x0, y0, x1, y1))`.
+5. Returns cropped document.
+
+**Acceptance Criteria (Testable)**
+- WHEN crop box is applied THE SYSTEM SHALL update PDF `/CropBox` attributes without deleting underlying vectors.
+- WHEN viewing cropped PDF in viewer THE SYSTEM SHALL display viewport bounded strictly by requested coordinates.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-026: Redact PDF Engine (True Cryptographic Glyph Sanitization)
+
+**Linked Story:** Security & Privacy  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/redact`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-026-redact`.
+
+**Main Flow**
+1. User uploads PDF; selects text or draws black bounding boxes over sensitive areas (SSN, names, numbers) on page preview.
+2. User clicks "Apply Redactions"; sends coordinate array to `POST /api/v1/tools/redact`.
+3. PyMuPDF creates redaction annotations (`page.add_redact_annot()`) and applies permanent redactions (`page.apply_redactions()`).
+4. Underlying glyphs, vector text, and raster pixel data beneath redaction rects are permanently sanitized and scrubbed from PDF binary stream.
+5. Returns cryptographically redacted PDF.
+
+**Acceptance Criteria (Testable)**
+- WHEN redactions are applied THE SYSTEM SHALL ensure extracted text search (`pdftotext` / `get_text()`) returns 0 matches for redacted content.
+- THE SYSTEM SHALL permanently remove raster pixels beneath redaction areas rather than drawing superficial black boxes.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-027: Sign PDF Engine & Flutter Signature Canvas Pad
+
+**Linked Story:** Security & Workflow  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/sign`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-027-sign`.
+
+**Main Flow**
+1. User uploads PDF; clicks "Add Signature".
+2. Signature Modal offers 3 input methods: Draw (finger/mouse canvas pad), Type (signature script fonts), or Upload (PNG image).
+3. User places signature on document preview, drags to desired position, and resizes.
+4. Sends `POST /api/v1/tools/sign` with signature PNG data and page coordinates `(page, x, y, width, height)`.
+5. PyMuPDF stamps transparent signature image at target rect.
+6. Returns signed PDF for instant download.
+
+**Acceptance Criteria (Testable)**
+- WHEN signature is placed on page 3 THE SYSTEM SHALL insert signature stream strictly on page 3 without altering other pages.
+- WHEN signature PNG is drawn on transparent canvas THE SYSTEM SHALL stamp image with transparent background.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+## Epic 8: FreePDFToolz Advanced Conversions, AI & AdSense Launch (Sprint F3)
+
+### UC-028: Annotate PDF Engine (Highlights, Rectangles, Sticky Notes)
+
+**Linked Story:** Document Collaboration  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/annotate`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-028-annotate`.
+
+**Main Flow**
+1. User selects annotation tool: Text Highlight, Freehand Drawing, Rectangular Border, or Sticky Note.
+2. Annotates page on interactive Flutter canvas.
+3. Sends annotation payload to `POST /api/v1/tools/annotate`.
+4. PyMuPDF creates standard PDF annotation dictionaries (`Highlight`, `Square`, `Text`, `Ink`).
+5. Returns standard-compliant annotated PDF.
+
+**Acceptance Criteria (Testable)**
+- WHEN annotations are added THE SYSTEM SHALL write standard ISO 32000 PDF annotation objects compatible with Adobe Acrobat and Apple Preview.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-029: Edit Text in PDF Engine (Visual Redact-and-Replace & Overlays)
+
+**Linked Story:** Document Editing  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/edit-text`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-029-edit-text`.
+
+**Main Flow**
+1. User uploads PDF; clicks on an existing text block to edit or clicks to insert new text block.
+2. UI presents font size, color, and alignment controls.
+3. On save, backend applies background match redaction to previous text and renders new text string with matching typography.
+4. Returns edited PDF.
+
+**Acceptance Criteria (Testable)**
+- WHEN editing existing text block THE SYSTEM SHALL cleanly redact target bounding box and insert replacement string.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-030: Convert PDF to Word (.docx) via `pdf2docx` Engine
+
+**Linked Story:** Conversion Engine  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/pdf-to-word`.  
+
+**Preconditions**
+- [ ] `pdf2docx` and `python-docx` installed in backend.
+
+**Main Flow**
+1. User drops PDF onto `/pdf-to-word`.
+2. Backend streams file into `tmpfs` RAM disk.
+3. Invokes `pdf2docx.Converter(input_pdf)` to extract paragraphs, font styles, tables, and embedded images.
+4. Reconstructs and writes native `.docx` document in `tmpfs`.
+5. Returns download link for `.docx` Word document and purges temp files.
+
+**Acceptance Criteria (Testable)**
+- WHEN converting a multi-page table and text PDF THE SYSTEM SHALL output a valid `.docx` file containing structured editable tables and text paragraphs.
+- WHEN conversion finishes THE SYSTEM SHALL remove input PDF and output DOCX from RAM disk within 60 seconds.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-031: Summarize PDF Engine (Dual: Local TextRank CPU + Gemini Flash API)
+
+**Linked Story:** AI Intelligence  
+**Actor:** Anonymous Web Visitor / FastAPI Engine  
+**Trigger:** User uploads PDF to `/summarize`.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-031-summarize`.
+- [ ] Local extractive engine (`sumy` / `nltk` / `ONNX`) configured for zero-cloud local testing.
+
+**Main Flow**
+1. User uploads PDF to `/summarize`; selects summary depth (Executive Brief, Key Takeaways, Bullet Points, or Chapter Breakdown).
+2. Backend uses PyMuPDF to extract text stream, cleaning headers/footers.
+3. Engine Router selects summarization mode:
+   - Mode 1 (Local Zero-Cloud / Default): Extractive TextRank algorithm identifies top informative sentences and scores key bullet points with zero external API calls.
+   - Mode 2 (Production AI): If `GEMINI_API_KEY` is present, dispatches text to Gemini 2.0 / 1.5 Flash for deep abstractive synthesis.
+4. UI renders clean Apple-style summary card view with copy-to-clipboard, export to Markdown/TXT, and page reference chips.
+
+**Acceptance Criteria (Testable)**
+- WHEN running locally without external API keys THE SYSTEM SHALL execute local extractive summarization and pass automated tests with 0 cloud dependencies.
+- WHEN provided with a 20-page document THE SYSTEM SHALL produce structured Executive Summary and bulleted Takeaways.
+
+**Estimate:** M | **Depends on:** UC-016
+
+---
+
+### UC-032: Original Educational SEO Content Hub & AdSense Indexation
+
+**Linked Story:** AdSense & SEO  
+**Actor:** Google AdSense Crawler / Web Visitor  
+**Trigger:** Visitor navigates to `/kb/pdf-tools` or search engine crawls site.  
+
+**Preconditions**
+- [ ] Active branch `freepdftoolz/UC-032-adsense-hub`.
+
+**Main Flow**
+1. Author comprehensive, high-value educational guides for each of the 15 PDF tools under `/kb/pdf-tools/*` (e.g. *“PDF Merging: Object Streams & Cross-Reference Tables”*, *“True Cryptographic Redaction vs Black Box Overlays”*, *“Lossless vs Lossy PDF Compression”*).
+2. Embed authoritative GitHub reference links (PyMuPDF, pdf2docx, qpdf) and ISO 32000 specification diagrams.
+3. Generate valid Schema.org `SoftwareApplication` and `FAQPage` JSON-LD markup.
+4. Update `sitemap.xml` and `robots.txt` ensuring full search engine discovery and Google AdSense site approval qualification.
+
+**Acceptance Criteria (Testable)**
+- WHEN crawler requests `/kb/pdf-tools` THE SYSTEM SHALL return original educational articles containing valid schema markup and external open-source references.
+- WHEN sitemap.xml is parsed THE SYSTEM SHALL list canonical URLs for all 15 tool landing pages.
+
+**Estimate:** M | **Depends on:** UC-016
+
 

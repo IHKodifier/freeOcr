@@ -2,35 +2,35 @@
   "hotspots": [
     {
       "label": "process_ocr_job()",
-      "risk": 0.651,
+      "risk": 0.654,
       "type": "FUNCTION"
     },
     {
       "label": "download_job_file()",
-      "risk": 0.396,
+      "risk": 0.318,
       "type": "FUNCTION"
     },
     {
       "label": "stream_job_events()",
-      "risk": 0.386,
+      "risk": 0.31,
       "type": "FUNCTION"
     },
     {
       "label": "convert_document()",
-      "risk": 0.313,
+      "risk": 0.253,
       "type": "FUNCTION"
     },
     {
       "label": "analyze_pdf_bytes()",
-      "risk": 0.286,
+      "risk": 0.231,
       "type": "FUNCTION"
     }
   ],
   "blast_radius": {
     "package:flutter/material.dart": 42,
     "get_redis_client()": 20,
-    "EphemeralRamStore": 18,
-    "process_ocr_job()": 17,
+    "EphemeralRamStore": 19,
+    "process_ocr_job()": 19,
     "package:flutter_test/flutter_test.dart": 16
   }
 }

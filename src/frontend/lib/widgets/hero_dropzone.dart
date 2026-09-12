@@ -176,16 +176,6 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                 setState(() {
                   _activeLimitMb = boostedLimit > maxStackMb ? maxStackMb : boostedLimit;
                   _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
-                  _isUploading = true;
-                  _batchItems = [
-                    BatchFileItem(
-                      id: 'file_${DateTime.now().millisecondsSinceEpoch}_$i',
-                      filename: filename,
-                      sizeInBytes: size,
-                      bytes: bytes,
-                      status: 'UPLOADING',
-                    )
-                  ];
                 });
               }
             },
@@ -205,6 +195,13 @@ class _HeroDropzoneState extends State<HeroDropzone> {
             _activeLimitMb = boostedLimitFromModal! > maxStackMb ? maxStackMb : boostedLimitFromModal!;
             _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
           });
+          if (boostedLimitFromModal! < (size / (1024 * 1024))) {
+            _showToast(
+              'Active limit boosted to ${boostedLimitFromModal!.toInt()}MB. File $filename requires ${(size / (1024 * 1024)).toStringAsFixed(0)}MB.',
+              isError: false,
+            );
+            break;
+          }
         }
       }
     }
@@ -219,87 +216,34 @@ class _HeroDropzoneState extends State<HeroDropzone> {
       return;
     }
 
-    // Trigger immediate AdSense rotation on file drop / upload start
-    AdSenseBanner.rotateAd();
-
     if (validItems.length == 1) {
-      // Single file upload path
+      // Single file: immediate gesture-driven navigation to /process
       final item = validItems.first;
-      await _processSingleUpload(item.filename, item.sizeInBytes, item.bytes);
+      if (mounted) {
+        Navigator.pushNamed(
+          context,
+          '/process',
+          arguments: {
+            'filename': item.filename,
+            'fileSize': item.sizeInBytes,
+            'bytes': item.bytes,
+          },
+        );
+      }
       return;
     }
 
-    // Multi-file batch queue upload path
-    setState(() {
-      _isUploading = true;
-      _batchItems = validItems;
-      _currentProcessingIndex = 0;
-    });
-
-
-    for (int i = 0; i < _batchItems.length; i++) {
-      setState(() {
-        _currentProcessingIndex = i;
-        _batchItems[i].status = 'UPLOADING';
-      });
-
-      final item = _batchItems[i];
-      final result = await ApiService.uploadDocument(
-        filename: item.filename,
-        bytes: item.bytes,
-        onProgress: (sent, total) {
-          if (mounted) {
-            setState(() {
-              item.sentBytes = sent;
-              item.totalBytes = total > 0 ? total : item.sizeInBytes;
-              item.status = 'UPLOADING';
-            });
-          }
-        },
-        onAnalyzing: () {
-          if (mounted) {
-            setState(() {
-              item.status = 'ANALYZING';
-            });
-          }
+    // Multi-file batch: immediate gesture-driven navigation to /process
+    if (mounted) {
+      Navigator.pushNamed(
+        context,
+        '/process',
+        arguments: {
+          'filename': validItems.first.filename,
+          'fileSize': validItems.first.sizeInBytes,
+          'batchItems': validItems,
         },
       );
-
-      if (mounted) {
-        setState(() {
-          if (result.isSuccess && result.jobId != null) {
-            item.jobId = result.jobId;
-            item.status = 'QUEUED';
-            item.layoutComplexity = result.layoutComplexity;
-            item.targetEngine = result.targetEngine;
-            item.coldStartActive = result.coldStartActive;
-          } else {
-            item.status = 'FAILED';
-            item.errorMessage = result.errorMessage ?? 'Upload failed.';
-          }
-        });
-      }
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _isUploading = false;
-    });
-
-    _showToast('Batch upload completed (${_batchItems.length} files queued)!');
-    for (final bItem in _batchItems) {
-      if (bItem.status == 'QUEUED') {
-        TelemetryService.trackDocumentUploaded(
-          filename: bItem.filename,
-          fileSizeInBytes: bItem.sizeInBytes,
-          source: 'batch_upload',
-        );
-      }
-    }
-
-    if (widget.onBatchUploadSuccess != null) {
-      widget.onBatchUploadSuccess!(_batchItems);
     }
   }
 
@@ -373,6 +317,17 @@ class _HeroDropzoneState extends State<HeroDropzone> {
           sizeInBytes,
           layoutComplexity: result.layoutComplexity,
           coldStartActive: result.coldStartActive,
+        );
+      } else if (mounted) {
+        Navigator.pushNamed(
+          context,
+          '/process/${result.jobId}',
+          arguments: {
+            'filename': filename,
+            'fileSize': sizeInBytes,
+            'layoutComplexity': result.layoutComplexity,
+            'coldStartActive': result.coldStartActive,
+          },
         );
       }
 

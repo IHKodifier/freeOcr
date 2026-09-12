@@ -4,14 +4,13 @@ import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'services/telemetry_service.dart';
 import 'widgets/hero_dropzone.dart';
-import 'widgets/ocr_progress_view.dart';
 import 'widgets/adsense_banner.dart';
-import 'widgets/expired_link_view.dart';
 import 'widgets/app_header.dart';
 import 'widgets/app_footer.dart';
 import 'widgets/landing_faq_section.dart';
 import 'widgets/hero_scanner_showcase.dart';
 
+import 'pages/process_page.dart';
 import 'pages/result_page.dart';
 import 'pages/kb_page.dart';
 import 'pages/docs_page.dart';
@@ -59,6 +58,38 @@ class FreeOcrApp extends StatelessWidget {
           },
           onGenerateRoute: (settings) {
             final name = settings.name;
+            if (name != null && (name == '/process' || name.startsWith('/process/'))) {
+              final jobId = name.startsWith('/process/') ? name.replaceFirst('/process/', '') : null;
+              final args = settings.arguments;
+              String? filename;
+              int? fileSize;
+              Uint8List? bytes;
+              String? layoutComplexity;
+              bool coldStartActive = false;
+              List<BatchFileItem>? batchItems;
+
+              if (args is Map<String, dynamic>) {
+                filename = args['filename'] as String?;
+                fileSize = args['fileSize'] as int?;
+                bytes = args['bytes'] as Uint8List?;
+                layoutComplexity = args['layoutComplexity'] as String?;
+                coldStartActive = args['coldStartActive'] as bool? ?? false;
+                batchItems = args['batchItems'] as List<BatchFileItem>?;
+              }
+
+              return MaterialPageRoute(
+                builder: (context) => ProcessPage(
+                  jobId: jobId,
+                  filename: filename,
+                  fileSize: fileSize,
+                  bytes: bytes,
+                  layoutComplexity: layoutComplexity,
+                  coldStartActive: coldStartActive,
+                  batchItems: batchItems,
+                ),
+                settings: settings,
+              );
+            }
             if (name != null && name.startsWith('/result/')) {
               final jobId = name.replaceFirst('/result/', '');
               return MaterialPageRoute(
@@ -126,14 +157,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _activeJobId;
-  String? _activeFilename;
-  int? _activeFileSize;
-  String? _activeLayoutComplexity;
-  bool _activeColdStart = false;
-  List<BatchFileItem> _batchItems = [];
-  bool _showExpiredDevPreview = false;
-
   @override
   void initState() {
     super.initState();
@@ -142,52 +165,39 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onUploadSuccess(String jobId, String filename, int sizeInBytes, {String? layoutComplexity, bool coldStartActive = false}) {
-    setState(() {
-      _activeJobId = jobId;
-      _activeFilename = filename;
-      _activeFileSize = sizeInBytes;
-      _activeLayoutComplexity = layoutComplexity;
-      _activeColdStart = coldStartActive;
-      _batchItems = [];
-      _showExpiredDevPreview = false;
-    });
+    Navigator.pushNamed(
+      context,
+      '/process/$jobId',
+      arguments: {
+        'filename': filename,
+        'fileSize': sizeInBytes,
+        'layoutComplexity': layoutComplexity,
+        'coldStartActive': coldStartActive,
+      },
+    );
   }
 
   void _onBatchUploadSuccess(List<BatchFileItem> items) {
-    setState(() {
-      _batchItems = items;
-      _activeJobId = null;
-      _activeFilename = null;
-      _activeFileSize = null;
-      _activeLayoutComplexity = null;
-      _activeColdStart = false;
-      _showExpiredDevPreview = false;
-    });
-  }
-
-  void _resetConversion() {
-    setState(() {
-      _activeJobId = null;
-      _activeFilename = null;
-      _activeFileSize = null;
-      _activeLayoutComplexity = null;
-      _activeColdStart = false;
-      _batchItems = [];
-      _showExpiredDevPreview = false;
-    });
+    if (items.isEmpty) return;
+    final primaryJobId = items.first.jobId ?? 'batch';
+    Navigator.pushNamed(
+      context,
+      '/process/$primaryJobId',
+      arguments: {
+        'batchItems': items,
+        'filename': items.first.filename,
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final bool hasActiveItems = _activeJobId != null || _batchItems.isNotEmpty;
-    final bool isDark = theme.brightness == Brightness.dark;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppHeader(
-
         currentRoute: '/',
         onThemeToggle: () {
           if (isDark) {
@@ -203,112 +213,79 @@ class _HomePageState extends State<HomePage> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: hasActiveItems
-                    ? ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 900),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final bool isDesktop = constraints.maxWidth >= 992;
+                    if (isDesktop) {
+                      return ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1200),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             const AdSenseBanner(),
-                            const SizedBox(height: 16),
-                            OcrProgressView(
-                              jobId: _activeJobId,
-                              filename: _activeFilename,
-                              fileSize: _activeFileSize,
-                              layoutComplexity: _activeLayoutComplexity,
-                              coldStartActive: _activeColdStart,
-                              batchItems: _batchItems.isNotEmpty ? _batchItems : null,
-                              onReset: _resetConversion,
-                            ),
-                          ],
-                        ),
-                      )
-                    : (kDebugMode && _showExpiredDevPreview)
-                        ? ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 900),
-                            child: Column(
+                            const SizedBox(height: 14),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const AdSenseBanner(),
-                                const SizedBox(height: 16),
-                                ExpiredLinkView(
-                                  expiredAt: DateTime.now().subtract(const Duration(hours: 25)),
-                                  onUploadNew: _resetConversion,
-                                ),
-                              ],
-                            ),
-                          )
-                        : LayoutBuilder(
-                            builder: (context, constraints) {
-                              final bool isDesktop = constraints.maxWidth >= 992;
-                              if (isDesktop) {
-                                return ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: 1200),
+                                // Left Column (flex 7)
+                                Expanded(
+                                  flex: 7,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const AdSenseBanner(),
-                                      const SizedBox(height: 14),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          // Left Column (flex 7)
-                                          Expanded(
-                                            flex: 7,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                _buildPulseBadge(isDark),
-                                                const SizedBox(height: 8),
-                                                _buildHeadline(theme, textAlign: TextAlign.left),
-                                                const SizedBox(height: 6),
-                                                _buildSubtitle(theme, textAlign: TextAlign.left),
-                                                const SizedBox(height: 12),
-                                                HeroDropzone(
-                                                  onUploadSuccess: _onUploadSuccess,
-                                                  onBatchUploadSuccess: _onBatchUploadSuccess,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(width: 28),
-                                          // Right Column (flex 5)
-                                          const Expanded(
-                                            flex: 5,
-                                            child: HeroScannerShowcase(),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: 640),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const AdSenseBanner(),
-                                      const SizedBox(height: 12),
                                       _buildPulseBadge(isDark),
                                       const SizedBox(height: 8),
-                                      _buildHeadline(theme, textAlign: TextAlign.center, fontSize: 32),
+                                      _buildHeadline(theme, textAlign: TextAlign.left),
                                       const SizedBox(height: 6),
-                                      _buildSubtitle(theme, textAlign: TextAlign.center),
+                                      _buildSubtitle(theme, textAlign: TextAlign.left),
                                       const SizedBox(height: 12),
                                       HeroDropzone(
                                         onUploadSuccess: _onUploadSuccess,
                                         onBatchUploadSuccess: _onBatchUploadSuccess,
                                       ),
-                                      const SizedBox(height: 20),
-                                      const HeroScannerShowcase(),
                                     ],
                                   ),
-                                );
-                              }
-                            },
-                          ),
+                                ),
+                                const SizedBox(width: 28),
+                                // Right Column (flex 5)
+                                const Expanded(
+                                  flex: 5,
+                                  child: HeroScannerShowcase(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 640),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const AdSenseBanner(),
+                            const SizedBox(height: 12),
+                            _buildPulseBadge(isDark),
+                            const SizedBox(height: 8),
+                            _buildHeadline(theme, textAlign: TextAlign.center, fontSize: 32),
+                            const SizedBox(height: 6),
+                            _buildSubtitle(theme, textAlign: TextAlign.center),
+                            const SizedBox(height: 12),
+                            HeroDropzone(
+                              onUploadSuccess: _onUploadSuccess,
+                              onBatchUploadSuccess: _onBatchUploadSuccess,
+                            ),
+                            const SizedBox(height: 20),
+                            const HeroScannerShowcase(),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
-            if (!hasActiveItems) const LandingFaqSection(),
+            const LandingFaqSection(),
             const SizedBox(height: 32),
             const AppFooter(),
           ],

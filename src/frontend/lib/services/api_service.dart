@@ -362,7 +362,7 @@ class ApiService {
     }
     return {
       'status': 'SUCCESS',
-      'boosted_max_file_mb': 30.0,
+      'boosted_max_file_mb': 150.0,
       'ttl_seconds': 3600,
     };
   }

@@ -1,6 +1,6 @@
 # EphemeralRamStore
 
-> God node · 18 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
+> God node · 19 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
 
 ## Call Trace Diagram
 
@@ -15,6 +15,7 @@ sequenceDiagram
     participant P6 as 1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).     Streams r
     participant P7 as Overlays invisible text (render_mode=3) onto PDF or image pages using bounding b
     participant P8 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
+    participant P9 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
     P0->>+ P1: uses
     P1-->>- P0: return
     P1->>+ P0: uses
@@ -45,6 +46,8 @@ sequenceDiagram
     P0-->>- P7: return
     P0->>+ P8: uses
     P8-->>- P0: return
+    P0->>+ P9: uses
+    P9-->>- P0: return
 ```
 
 ## Connections by Relation
@@ -75,6 +78,7 @@ sequenceDiagram
 - [[Streams a single ZIP archive containing all completed documents in the batch.]] `INFERRED`
 - [[1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).     Streams r]] `INFERRED`
 - [[Overlays invisible text (render_mode=3) onto PDF or image pages using bounding b]] `INFERRED`
+- [[Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red]] `INFERRED`
 - [[Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red]] `INFERRED`
 
 ---

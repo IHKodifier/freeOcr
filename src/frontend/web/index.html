@@ -131,50 +131,6 @@
     };
   </script>
 
-  <!-- Google Publisher Tag (GPT) for Google Ad Manager (GAM / AdX) -->
-  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-  <script>
-    window.googletag = window.googletag || {cmd: []};
-    window.gamSlots = window.gamSlots || {};
-
-    googletag.cmd.push(function() {
-      // Define leaderboard slot for GAM / AdX 60s declared auto-refresh inventory
-      window.gamSlots.leaderboard = googletag.defineSlot(
-        '/1234567/freeocr_leaderboard_728x90',
-        [[728, 90], [320, 50]],
-        'div-gpt-ad-1234567-0'
-      ).addService(googletag.pubads());
-
-      googletag.pubads().enableSingleRequest();
-      googletag.pubads().collapseEmptyDivs();
-      googletag.enableServices();
-    });
-
-    // Custom window event listener to trigger GAM slot refresh (with viewability guard)
-    window.addEventListener('refresh_gam_ad', function() {
-      if (document.hidden) {
-        console.log('[GAM / AdX] Document hidden/inactive — skipping refresh.');
-        return;
-      }
-      if (window.googletag && window.googletag.pubadsReady && window.gamSlots.leaderboard) {
-        console.log('[GAM / AdX] 🔄 Refreshing GPT ad slot /1234567/freeocr_leaderboard_728x90');
-        googletag.pubads().refresh([window.gamSlots.leaderboard]);
-      } else if (window.googletag && typeof window.googletag.cmd !== 'undefined') {
-        googletag.cmd.push(function() {
-          if (window.gamSlots.leaderboard) {
-            console.log('[GAM / AdX] 🔄 Refreshing GPT ad slot /1234567/freeocr_leaderboard_728x90');
-            googletag.pubads().refresh([window.gamSlots.leaderboard]);
-          }
-        });
-      }
-    });
-
-    // JS Interop helper callable from Flutter web
-    window.refreshGamAdSlot = function() {
-      window.dispatchEvent(new CustomEvent('refresh_gam_ad'));
-    };
-  </script>
-
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
   {
