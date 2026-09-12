@@ -55,4 +55,9 @@ scratch/
 .firebase/
 test_*.pdf
 *.pdf
-tessdata/*.pdf
+# Credentials & Service Account Keys
+gcp-key.json
+*key*.json
+credentials*.json
+*.pem
+
