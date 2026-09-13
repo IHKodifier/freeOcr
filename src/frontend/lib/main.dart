@@ -14,7 +14,6 @@ import 'widgets/hero_scanner_showcase.dart';
 import 'pages/process_page.dart';
 import 'pages/result_page.dart';
 import 'pages/kb_page.dart';
-import 'pages/docs_page.dart';
 import 'pages/privacy_page.dart';
 import 'pages/terms_page.dart';
 import 'pages/about_page.dart';
@@ -166,12 +165,6 @@ class FreeOcrApp extends StatelessWidget {
                       : name.replaceFirst('/knowledge-base/', ''));
               return MaterialPageRoute(
                 builder: (context) => KbPage(initialArticleSlug: slug),
-                settings: settings,
-              );
-            }
-            if (name == '/docs' || name == '/api-docs') {
-              return MaterialPageRoute(
-                builder: (context) => const DocsPage(),
                 settings: settings,
               );
             }

@@ -82,11 +82,11 @@ def markdown_to_simple_html(md_text: str, title: str) -> str:
 """
 
 def main():
-    docs_dir = os.path.join(os.path.dirname(__file__), "..", "docs")
+    docs_dir = os.path.join(os.path.dirname(__file__), "..", "docs", "blog")
     target_dir = os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web")
 
     if not os.path.exists(docs_dir):
-        print(f"[SEO Build] No docs directory found at {docs_dir}. Skipping.")
+        print(f"[SEO Build] No docs/blog directory found at {docs_dir}. Skipping.")
         return
 
     md_files = glob.glob(os.path.join(docs_dir, "**", "*.md"), recursive=True)
