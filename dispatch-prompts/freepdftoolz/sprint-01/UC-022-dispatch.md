@@ -59,19 +59,32 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
 2. Create `src/backend/app/api/v1/endpoints/tools_number_pages.py`:
    - Endpoint `POST /api/v1/tools/number-pages`:
      - Accepts `file: UploadFile`, `position: str`, `format: str`, `skip_cover: bool = False`, `start_page: int = 1`, `font_size: float = 10.0`.
+     - Validates PDF format and file size limit against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable to `max_stack_file_mb: 1024` with session boost).
      - Returns numbered PDF stream (`FileResponse`).
      - Cleans up temporary files in background.
 3. Register router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Number Pages UI (`src/frontend/lib/pages/pdf_number_pages_page.dart`)
-1. Replace placeholder route for `/number-pages` with dedicated `PdfNumberPagesPage`:
-   - Upload dropzone for a single PDF.
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/number-pages` in `src/frontend/lib/pages/pdf_number_pages_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade dropzone with file picker button.
+   - **Action-Driven Navigation:** When user drops a PDF or picks a file:
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/number-pages/process`** passing the selected file in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/number-pages/process` in `src/frontend/lib/pages/pdf_number_pages_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/number-pages/process', pageTitle: 'FreePDFToolz — Number Pages')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
    - Interactive Numbering Configurator:
      - **3x3 Position Grid Selector**: Interactive visual matrix with 6 selectable placement anchors (Top: L, C, R; Bottom: L, C, R).
      - **Format Selector**: Segmented buttons or dropdown (`Page {n} of {total}`, `{n}`, `Page {n}`, `- {n} -`).
      - **Cover Page Toggle**: Switch for "Skip First Page / Cover Page".
      - **Live Document Preview Box**: Simulated page showing where the number will appear based on selected position and format.
-   - Action Button: "Apply Page Numbers & Download".
+   - Primary Action: "Apply Page Numbers" button with live progress spinner.
+   - Download Result Card (with Ad #3): Prominent button to download numbered PDF and "Number Another PDF" reset button.
 
 ---
 

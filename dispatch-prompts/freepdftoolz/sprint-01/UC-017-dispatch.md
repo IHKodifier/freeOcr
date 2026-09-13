@@ -58,31 +58,31 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
      - Receives `files: list[UploadFile]` as `multipart/form-data`.
      - Rejection: if `len(files) < 2`, returns HTTP 400 Bad Request (`"At least 2 PDF files are required to merge"`).
      - File validation: ensures content type is `application/pdf` or extension is `.pdf`.
-     - Tier size validation: cumulative file size <= 100MB (or 1GB if boost pass provided). Returns HTTP 413 if exceeded.
+     - Tier size validation: cumulative file size validated against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable up to `max_stack_file_mb: 1024`). Returns HTTP 413 if exceeded.
      - Stream input files to temporary directory / RAM disk.
      - Execute merge with PyMuPDF.
      - Returns `FileResponse` with `application/pdf` and `Content-Disposition: attachment; filename="merged_document.pdf"`, or JSON job payload for streaming download.
      - Uses FastAPI `BackgroundTasks` to purge temporary input files immediately upon completion.
 3. Register merge router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Drag-and-Drop Reorder UI (`src/frontend/lib/pages/pdf_merge_page.dart`)
-1. Replace placeholder route for `/merge` with dedicated `PdfMergePage`:
-   - Apple-grade multi-file dropzone with file picker support (`FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.custom, allowedExtensions: ['pdf'])`).
-   - When 2+ files are added, displays visual `ReorderableListView`:
-     - Drag handle on the left / right.
-     - PDF icon with red accent.
-     - File name and formatted size (`1.2 MB`).
-     - Delete button to remove individual files from the merge list.
-   - "Add More Files" secondary button.
-   - Primary "Merge PDFs" action button (disabled when `< 2` files).
-   - Active status banner (e.g., "3 files ready • Total size 4.8 MB").
-2. Merging Execution & Result View:
-   - On click, sends multipart POST to `/api/v1/tools/merge`.
-   - Shows progress bar / spinning Apple-grade loading indicator.
-   - Upon completion, transitions to success state:
-     - Prominent "Download Merged PDF" button.
-     - Output file size and page count summary.
-     - "Merge Another Document" reset button.
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/merge` in `src/frontend/lib/pages/pdf_merge_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade multi-file dropzone with file picker support (`FilePicker.platform.pickFiles`).
+   - **Action-Driven Navigation:** When a user takes an action (dropping a file or picking files):
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/merge/process`** passing selected files in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/merge/process` in `src/frontend/lib/pages/pdf_merge_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/merge/process', pageTitle: 'FreePDFToolz — Merging PDF')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
+   - Visual `ReorderableListView`: drag handles, PDF icons, filenames, formatted sizes, and delete action.
+   - "Add More Files" secondary button and primary "Merge PDFs" action button.
+   - Real-time progress spinner / status messages during merge execution.
+   - Success State / Result Card (with Ad #3): Prominent "Download Merged PDF" button, output size/page summary, and "Merge Another PDF" button.
 
 ---
 

@@ -1,10 +1,11 @@
 # Community 31
 
-> 1 nodes · cohesion 1.00
+> 2 nodes · cohesion 1.00
 
 ## Key Concepts
 
-- [__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/__init__.py#L1) (0 connections)
+- [url_strategy_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_stub.dart) (1 connections)
+- [configureAppUrlStrategy](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_stub.dart) (1 connections)
 
 ## Relationships
 
@@ -12,11 +13,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\__init__.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/__init__.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_strategy_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_stub.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 0 (0%)
+- EXTRACTED: 2 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

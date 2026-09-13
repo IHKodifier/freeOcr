@@ -40,58 +40,59 @@ sequenceDiagram
     participant P31 as test_ephemeral_file_cleanup_pdf_composer()
     participant P32 as test_get_searchable_pdf_from_redis_when_local_cache_misses()
     participant P33 as test_ocr_worker_decryption_process()
-    participant P34 as verify_internal_secret()
-    participant P35 as test_adsense_config_api_endpoint()
-    participant P36 as test_dynamic_config_file_reload()
-    participant P37 as test_baidu_gpu_service_health()
-    participant P38 as test_download_invalid_format_returns_400()
-    participant P39 as test_download_non_existent_job_returns_410_gone()
-    participant P40 as test_download_pdf_success_and_purges_ram_disk()
-    participant P41 as test_download_txt_success()
-    participant P42 as test_download_md_success()
-    participant P43 as test_batch_download_zip_success()
-    participant P44 as test_batch_download_zip_invalid_format()
-    participant P45 as test_download_all_formats_from_redis_on_cold_boot()
-    participant P46 as test_download_zip_single_job_success()
-    participant P47 as test_healthz_endpoint_healthy()
-    participant P48 as test_healthz_endpoint_unhealthy_redis()
-    participant P49 as test_healthz_endpoint_unhealthy_database()
-    participant P50 as test_page_image_non_existent_job_returns_404_or_410()
-    participant P51 as test_page_image_zero_or_negative_page_returns_422_or_400()
-    participant P52 as test_get_config_limits_endpoint()
-    participant P53 as test_dynamic_limit_config_reload()
-    participant P54 as test_download_expired_job_returns_410_gone()
-    participant P55 as test_download_non_existent_job_returns_410_gone()
-    participant P56 as test_preview_non_existent_job_returns_410_gone()
-    participant P57 as test_preview_completed_job_returns_pages_data()
-    participant P58 as test_convert_endpoint_triggers_background_ocr_worker()
-    participant P59 as test_encrypted_pdf_rejected_without_password()
-    participant P60 as test_encrypted_pdf_rejected_with_invalid_password()
-    participant P61 as test_encrypted_pdf_accepted_with_correct_password()
-    participant P62 as test_get_tools_catalog()
-    participant P63 as test_get_tool_categories()
-    participant P64 as test_get_single_tool_detail()
-    participant P65 as test_get_nonexistent_tool_returns_404()
-    participant P66 as .__init__()
-    participant P67 as test_get_config_endpoint()
-    participant P68 as test_health_check()
-    participant P69 as test_sse_endpoint_returns_event_stream_headers()
-    participant P70 as test_sse_stream_emits_page_progress_and_completed_events()
-    participant P71 as test_sse_stream_emits_failed_event()
-    participant P72 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P34 as test_merge_two_valid_pdfs_combines_pages_correctly()
+    participant P35 as verify_internal_secret()
+    participant P36 as test_adsense_config_api_endpoint()
+    participant P37 as test_dynamic_config_file_reload()
+    participant P38 as test_baidu_gpu_service_health()
+    participant P39 as test_download_invalid_format_returns_400()
+    participant P40 as test_download_non_existent_job_returns_410_gone()
+    participant P41 as test_download_pdf_success_and_purges_ram_disk()
+    participant P42 as test_download_txt_success()
+    participant P43 as test_download_md_success()
+    participant P44 as test_batch_download_zip_success()
+    participant P45 as test_batch_download_zip_invalid_format()
+    participant P46 as test_download_all_formats_from_redis_on_cold_boot()
+    participant P47 as test_download_zip_single_job_success()
+    participant P48 as test_healthz_endpoint_healthy()
+    participant P49 as test_healthz_endpoint_unhealthy_redis()
+    participant P50 as test_healthz_endpoint_unhealthy_database()
+    participant P51 as test_page_image_non_existent_job_returns_404_or_410()
+    participant P52 as test_page_image_zero_or_negative_page_returns_422_or_400()
+    participant P53 as test_get_config_limits_endpoint()
+    participant P54 as test_dynamic_limit_config_reload()
+    participant P55 as test_download_expired_job_returns_410_gone()
+    participant P56 as test_download_non_existent_job_returns_410_gone()
+    participant P57 as test_preview_non_existent_job_returns_410_gone()
+    participant P58 as test_preview_completed_job_returns_pages_data()
+    participant P59 as test_convert_endpoint_triggers_background_ocr_worker()
+    participant P60 as test_encrypted_pdf_rejected_without_password()
+    participant P61 as test_encrypted_pdf_rejected_with_invalid_password()
+    participant P62 as test_encrypted_pdf_accepted_with_correct_password()
+    participant P63 as test_get_tools_catalog()
+    participant P64 as test_get_tool_categories()
+    participant P65 as test_get_single_tool_detail()
+    participant P66 as test_get_nonexistent_tool_returns_404()
+    participant P67 as .__init__()
+    participant P68 as test_get_config_endpoint()
+    participant P69 as test_health_check()
+    participant P70 as test_sse_endpoint_returns_event_stream_headers()
+    participant P71 as test_sse_stream_emits_page_progress_and_completed_events()
+    participant P72 as test_sse_stream_emits_failed_event()
     participant P73 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P74 as test_sse_endpoint_streams_redis_events()
-    participant P75 as test_get_searchable_pdf_retrieval()
-    participant P76 as test_complex_two_column_pdf_reconstruction()
-    participant P77 as test_word_level_highlight_alignment_and_space_distribution()
-    participant P78 as test_compose_searchable_pdf_from_pdf()
-    participant P79 as test_compose_searchable_pdf_from_image()
-    participant P80 as test_compose_searchable_pdf_with_rotation_and_morph_scaling()
-    participant P81 as check_redis_connection()
-    participant P82 as store_ad_pass_metadata()
-    participant P83 as _publish_event()
-    participant P84 as _store_job()
-    participant P85 as test_redis_client_configuration()
+    participant P74 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P75 as test_sse_endpoint_streams_redis_events()
+    participant P76 as test_get_searchable_pdf_retrieval()
+    participant P77 as test_complex_two_column_pdf_reconstruction()
+    participant P78 as test_word_level_highlight_alignment_and_space_distribution()
+    participant P79 as test_compose_searchable_pdf_from_pdf()
+    participant P80 as test_compose_searchable_pdf_from_image()
+    participant P81 as test_compose_searchable_pdf_with_rotation_and_morph_scaling()
+    participant P82 as check_redis_connection()
+    participant P83 as store_ad_pass_metadata()
+    participant P84 as _publish_event()
+    participant P85 as _store_job()
+    participant P86 as test_redis_client_configuration()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P2: calls
@@ -242,16 +243,16 @@ sequenceDiagram
     P73-->>- P2: return
     P2->>+ P74: calls
     P74-->>- P2: return
+    P2->>+ P75: calls
+    P75-->>- P2: return
     P1->>+ P0: calls
     P0-->>- P1: return
     P1->>+ P3: calls
     P3-->>- P1: return
-    P1->>+ P75: calls
-    P75-->>- P1: return
-    P1->>+ P31: calls
-    P31-->>- P1: return
     P1->>+ P76: calls
     P76-->>- P1: return
+    P1->>+ P31: calls
+    P31-->>- P1: return
     P1->>+ P77: calls
     P77-->>- P1: return
     P1->>+ P78: calls
@@ -260,6 +261,8 @@ sequenceDiagram
     P79-->>- P1: return
     P1->>+ P80: calls
     P80-->>- P1: return
+    P1->>+ P81: calls
+    P81-->>- P1: return
     P0->>+ P4: calls
     P4-->>- P0: return
     P0->>+ P5: calls
@@ -270,8 +273,8 @@ sequenceDiagram
     P9-->>- P0: return
     P0->>+ P10: calls
     P10-->>- P0: return
-    P0->>+ P81: calls
-    P81-->>- P0: return
+    P0->>+ P82: calls
+    P82-->>- P0: return
     P0->>+ P12: calls
     P12-->>- P0: return
     P0->>+ P13: calls
@@ -282,20 +285,20 @@ sequenceDiagram
     P21-->>- P0: return
     P0->>+ P22: calls
     P22-->>- P0: return
-    P0->>+ P82: calls
-    P82-->>- P0: return
+    P0->>+ P83: calls
+    P83-->>- P0: return
     P0->>+ P23: calls
     P23-->>- P0: return
     P0->>+ P24: calls
     P24-->>- P0: return
     P0->>+ P25: calls
     P25-->>- P0: return
-    P0->>+ P83: calls
-    P83-->>- P0: return
     P0->>+ P84: calls
     P84-->>- P0: return
     P0->>+ P85: calls
     P85-->>- P0: return
+    P0->>+ P86: calls
+    P86-->>- P0: return
 ```
 
 ## Connections by Relation

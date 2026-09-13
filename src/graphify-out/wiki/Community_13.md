@@ -1,49 +1,49 @@
 # Community 13
 
-> 26 nodes · cohesion 0.08
+> 30 nodes · cohesion 0.09
 
 ## Key Concepts
 
-- [docs_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (31 connections)
-- [../widgets/glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/kb_page.dart) (2 connections)
-- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildBentoCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildCheckBullet](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildCodeTeaserCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildEarlyAccessCta](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildHeroBadge](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildTeaserFeaturesList](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_buildTerminalCodeBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [Column](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [ConstrainedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [DocsPage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_DocsPageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [GlassCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [_handleSubscribe](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [Icon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [Row](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [Scaffold](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (1 connections)
-- *... and 1 more nodes in this community*
+- [baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (8 connections)
+- [test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L1) (6 connections)
+- [get_baidu_ocr_engine()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L55) (5 connections)
+- [parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L82) (5 connections)
+- [run_baidu_ocr_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L190) (5 connections)
+- **dict** (5 connections)
+- [test_ocr_worker_dispatches_to_baidu_gpu_service()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L91) (5 connections)
+- [is_gpu_available()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L46) (4 connections)
+- [test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L138) (4 connections)
+- [health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L236) (3 connections)
+- [ocr_complex_page()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L246) (3 connections)
+- [verify_internal_secret()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L37) (3 connections)
+- [test_baidu_gpu_service_auth_missing_or_invalid()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L21) (3 connections)
+- [test_baidu_gpu_service_complex_page_mock_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L57) (3 connections)
+- [test_baidu_gpu_service_health()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L9) (3 connections)
+- [test_parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L40) (3 connections)
+- [Baidu Unlimited OCR GPU Microservice.  Standalone FastAPI microservice running B](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (1 connections)
+- [Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L191) (1 connections)
+- [Health check verifying microservice readiness, engine name, and GPU status.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L237) (1 connections)
+- [Executes Baidu Unlimited OCR model inference on a 300 DPI complex document page.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L249) (1 connections)
+- [Validates the internal shared secret to protect GPU compute from unauthorized ac](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L38) (1 connections)
+- [Checks if CUDA GPU hardware is accessible for Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L47) (1 connections)
+- [Initializes or retrieves the cached Baidu Unlimited OCR (baidu/Unlimited-OCR) mo](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L56) (1 connections)
+- [Parses Baidu Unlimited OCR grounding output containing detection tags and boundi](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L83) (1 connections)
+- [Verifies that GET /health returns ready status and identifies Baidu_Unlimited_OC](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L10) (1 connections)
+- *... and 5 more nodes in this community*
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 12]] (14 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\docs_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\kb_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/kb_page.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py)
 
 ## Audit Trail
 
-- EXTRACTED: 57 (100%)
-- INFERRED: 0 (0%)
+- EXTRACTED: 65 (79%)
+- INFERRED: 17 (21%)
 - AMBIGUOUS: 0 (0%)
 
 ---

@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Executes Baidu Unlimited OCR model inference on a 300 DPI complex document page.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L186) (0 connections)
+- [Health check verifying microservice readiness, engine name, and GPU status.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L174) (0 connections)
 
 ## Relationships
 

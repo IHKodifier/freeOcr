@@ -60,4 +60,6 @@ gcp-key.json
 *key*.json
 credentials*.json
 *.pem
+*.offline.txt
+robots.offline.txt
 

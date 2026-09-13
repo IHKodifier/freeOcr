@@ -56,21 +56,32 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
 2. Create `src/backend/app/api/v1/endpoints/tools_rotate.py`:
    - Endpoint `POST /api/v1/tools/rotate`:
      - Receives `file: UploadFile`, `rotations_json: str` (or form field with JSON mapping e.g. `{"0": 90, "1": 180}`).
-     - Validates angles are multiples of 90 (0, 90, 180, 270).
+     - Validates PDF format and file size limit against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable to `max_stack_file_mb: 1024` with session boost).
      - Returns modified PDF stream (`FileResponse`).
      - Cleans up temporary files in background.
 3. Register router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Rotation Grid UI (`src/frontend/lib/pages/pdf_rotate_page.dart`)
-1. Replace placeholder route for `/rotate` with dedicated `PdfRotatePage`:
-   - Upload dropzone for a single PDF.
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/rotate` in `src/frontend/lib/pages/pdf_rotate_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade dropzone with file picker button.
+   - **Action-Driven Navigation:** When user drops a PDF or picks a file:
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/rotate/process`** passing the selected file in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/rotate/process` in `src/frontend/lib/pages/pdf_rotate_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/rotate/process', pageTitle: 'FreePDFToolz — Rotate PDF')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
    - Page Preview Grid:
      - Displays page thumbnail cards with page number badge (`Page 1`, `Page 2`...).
      - Individual rotate buttons on each card: Rotate Left (-90°) and Rotate Right (+90°).
      - Animated thumbnail rotation (Flutter `AnimatedRotation`) providing instant visual feedback.
-   - Global Toolbar:
-     - "Rotate All Right (90°)", "Rotate All Left (-90°)", "Reset".
-   - Primary Action: "Save and Download PDF" button.
+   - Global Toolbar: "Rotate All Right (90°)", "Rotate All Left (-90°)", "Reset".
+   - Primary Action: "Save and Apply Rotation" button with live progress spinner.
+   - Download Result Card (with Ad #3): Prominent button to download modified PDF and "Rotate Another PDF" reset button.
 
 ---
 

@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L128) (0 connections)
+- [Verify downloading zip format for a single job packages PDF, TXT, and MD into an](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L269) (0 connections)
 
 ## Relationships
 
@@ -12,7 +12,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_download_endpoints.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py)
 
 ## Audit Trail
 

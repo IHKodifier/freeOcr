@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Executes page-by-page OCR extraction on uploaded PDF or image file bytes.     S](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/ocr_worker.py#L55) (0 connections)
+- [Guarantees tessdata/eng.traineddata availability for fast 1-second Tesseract OCR](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/ocr_worker.py#L33) (0 connections)
 
 ## Relationships
 

@@ -212,43 +212,51 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppHeader(
-        currentRoute: '/hub',
-        onThemeToggle: () {
-          if (isDark) {
-            themeNotifier.value = ThemeMode.light;
-          } else {
-            themeNotifier.value = ThemeMode.dark;
-          }
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const AdSenseBanner(),
-                      const SizedBox(height: 24),
-                      _buildHeroHeader(theme, isDark),
-                      const SizedBox(height: 24),
-                      _buildSearchBarAndFilters(theme, isDark),
-                      const SizedBox(height: 32),
-                      _buildToolsGrid(theme, isDark),
-                    ],
+    return SelectionArea(
+      child: Scaffold(
+        appBar: AppHeader(
+          currentRoute: '/hub',
+          onThemeToggle: () {
+            if (isDark) {
+              themeNotifier.value = ThemeMode.light;
+            } else {
+              themeNotifier.value = ThemeMode.dark;
+            }
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const AdSenseBanner(),
+                        const SizedBox(height: 24),
+                        _buildHeroHeader(theme, isDark),
+                        const SizedBox(height: 24),
+                        _buildSearchBarAndFilters(theme, isDark),
+                        const SizedBox(height: 32),
+                        _buildToolsGrid(theme, isDark),
+                        const SizedBox(height: 48),
+                        _buildHowItWorksSection(theme, isDark),
+                        const SizedBox(height: 36),
+                        _buildZeroRetentionGuaranteeCard(theme, isDark),
+                        const SizedBox(height: 36),
+                        _buildEducationalFaqSection(theme, isDark),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 48),
-            const AppFooter(),
-          ],
+              const SizedBox(height: 48),
+              const AppFooter(currentRoute: '/hub'),
+            ],
+          ),
         ),
       ),
     );
@@ -530,4 +538,350 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       },
     );
   }
+
+  Widget _buildHowItWorksSection(ThemeData theme, bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: const Color(0xFF6366F1).withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.3)),
+              ),
+              child: const Text(
+                'ARCHITECTURE & WORKFLOW',
+                style: TextStyle(
+                  color: Color(0xFF6366F1),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'How FreePDFToolz Operates Ephemerally',
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Industrial-grade PDF document engineering running entirely in volatile Linux RAM disk mounts with zero persistent storage.',
+          style: TextStyle(
+            color: theme.colorScheme.onSurfaceVariant,
+            fontSize: 14,
+            height: 1.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 780;
+            final cards = [
+              _buildWorkflowStep(
+                step: '01',
+                title: 'Select & Stage',
+                description: 'Select your files or drag them into the dropzone. 100 MB free base upload limit, expandable up to 1 GB per file.',
+                isDark: isDark,
+                theme: theme,
+              ),
+              _buildWorkflowStep(
+                step: '02',
+                title: 'In-Memory Processing',
+                description: 'Document streams route to volatile Linux tmpfs RAM disk. High-speed C/Rust engines merge, split, or optimize bytes in milliseconds.',
+                isDark: isDark,
+                theme: theme,
+              ),
+              _buildWorkflowStep(
+                step: '03',
+                title: 'Instant Download',
+                description: 'Download the finalized document directly to your device, or request 24-hour expiring download links sent via email.',
+                isDark: isDark,
+                theme: theme,
+              ),
+              _buildWorkflowStep(
+                step: '04',
+                title: 'Instant Unlink & Purge',
+                description: 'All memory buffers are immediately unlinked and returned to the OS kernel. No document or email is ever saved to disk.',
+                isDark: isDark,
+                theme: theme,
+              ),
+            ];
+
+            if (isWide) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: cards.map((c) => Expanded(child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: c,
+                ))).toList(),
+              );
+            }
+            return Column(
+              children: cards.map((c) => Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: c,
+              )).toList(),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWorkflowStep({
+    required String step,
+    required String title,
+    required String description,
+    required bool isDark,
+    required ThemeData theme,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B).withOpacity(0.6) : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            step,
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w900,
+              color: Color(0xFF6366F1),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            description,
+            style: TextStyle(
+              fontSize: 13,
+              color: theme.colorScheme.onSurfaceVariant,
+              height: 1.45,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildZeroRetentionGuaranteeCard(ThemeData theme, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF0F172A), const Color(0xFF1E1B4B)]
+              : [const Color(0xFFF8FAFC), const Color(0xFFEEF2FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFF6366F1).withOpacity(0.35),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6366F1).withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF10B981).withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.verified_user_rounded,
+                  color: Color(0xFF10B981),
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Zero File & Zero Email Retention Policy',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Universal Privacy Guarantee Across freeOCR.me & FreePDFToolz',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
+            style: TextStyle(
+              fontSize: 14,
+              height: 1.6,
+              fontWeight: FontWeight.w500,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              const Icon(Icons.check_circle_outline, color: Color(0xFF10B981), size: 16),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '100% Volatile Linux tmpfs RAM disk • Zero hard drive retention • No marketing spam, ever.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEducationalFaqSection(ThemeData theme, bool isDark) {
+    final faqs = [
+      {
+        'q': 'What is FreePDFToolz and how does it relate to freeOCR.me?',
+        'a': 'FreePDFToolz is the comprehensive sister platform to freeOCR.me, extending its zero-retention ephemeral architecture to 16 essential PDF page manipulation, security, and conversion operations including Merge, Split, Rotate, Compress, and Sign.',
+      },
+      {
+        'q': 'Are my uploaded PDF documents stored on your servers or analyzed for AI training?',
+        'a': 'Never. Both FreePDFToolz and freeOCR.me operate under a strict Zero Persistent Storage Guarantee. Uploaded files, page vectors, and converted artifacts reside exclusively in volatile Linux RAM disk (tmpfs) mounts and are purged automatically immediately after processing.',
+      },
+      {
+        'q': 'How does the free upload size limit work, and can I process large files over 100 MB?',
+        'a': 'Every visitor receives an immediate 100 MB per-file upload allowance without registering or paying fees. For large archives, users can voluntarily view a 15-second sponsor video ad to boost their file limit by +50 MB, stackable all the way up to 1,024 MB (1 GB).',
+      },
+      {
+        'q': 'Will I receive marketing emails if I enter my email address on the results page?',
+        'a': 'No. We never store, retain, or even cache email addresses provided for download link delivery. The address is used solely for the single dispatch transaction and never persisted in any database, making marketing contact technically impossible.',
+      },
+      {
+        'q': 'How does FreePDFToolz Merge preserve font embeddings and vector quality?',
+        'a': 'Our merge engine operates directly at the PDF cross-reference stream layer using PyMuPDF / MuPDF C bindings, preserving original vector curves, embedded fonts, annotations, and metadata bookmarks without rasterizing pages or degrading visual clarity.',
+      },
+      {
+        'q': 'Is FreePDFToolz compliant with GDPR and CCPA privacy standards?',
+        'a': 'Yes. Because we operate on a zero-registration, zero-account, and zero-file-retention architecture, we collect no personal data, sell no user information, and store no document files.',
+      },
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.colorScheme.primary.withOpacity(0.25)),
+              ),
+              child: Text(
+                'FREQUENTLY ASKED QUESTIONS',
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Everything You Need to Know About FreePDFToolz',
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ...faqs.map((faq) => Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B).withOpacity(0.5) : Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
+            ),
+          ),
+          child: ExpansionTile(
+            title: Text(
+              faq['q']!,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            iconColor: theme.colorScheme.primary,
+            collapsedIconColor: theme.colorScheme.onSurfaceVariant,
+            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                faq['a']!,
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.5,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        )),
+      ],
+    );
+  }
 }
+

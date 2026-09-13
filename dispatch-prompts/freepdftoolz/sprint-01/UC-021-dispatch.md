@@ -55,21 +55,32 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
 2. Create `src/backend/app/api/v1/endpoints/tools_extract_pages.py`:
    - Endpoint `POST /api/v1/tools/extract-pages`:
      - Accepts `file: UploadFile`, `pages: str` (e.g. `"1, 3, 5"` or range `"2-4"`), `output_mode: str` (`"merged"` or `"separate"`).
+     - Validates PDF format and file size limit against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable to `max_stack_file_mb: 1024` with session boost).
      - Returns PDF (`FileResponse` as `.pdf`) or ZIP archive (`FileResponse` as `.zip`).
      - Cleans up temporary files in background.
 3. Register router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Extraction UI (`src/frontend/lib/pages/pdf_extract_pages_page.dart`)
-1. Replace placeholder route for `/extract-pages` with dedicated `PdfExtractPagesPage`:
-   - Upload dropzone for a single PDF.
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/extract-pages` in `src/frontend/lib/pages/pdf_extract_pages_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade dropzone with file picker button.
+   - **Action-Driven Navigation:** When user drops a PDF or picks a file:
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/extract-pages/process`** passing the selected file in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/extract-pages/process` in `src/frontend/lib/pages/pdf_extract_pages_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/extract-pages/process', pageTitle: 'FreePDFToolz — Extract Pages')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
    - Interactive Page Selector:
      - Checkbox thumbnail cards with page number badge.
      - Quick selection buttons: "Select All", "Deselect All", "Even Pages", "Odd Pages".
      - Text field fallback: "Or enter pages manually (e.g. 1, 3-5)".
-   - Output Mode Segmented Control:
-     - "Merge into one PDF"
-     - "Extract into separate PDFs (ZIP)"
-   - Action Button: "Extract Pages" with download trigger.
+   - Output Mode Segmented Control: "Merge into one PDF" vs "Extract into separate PDFs (ZIP)".
+   - Primary Action: "Extract Pages" button with live progress spinner.
+   - Download Result Card (with Ad #3): Prominent button to download extracted PDF or ZIP, and "Extract More Pages" reset button.
 
 ---
 

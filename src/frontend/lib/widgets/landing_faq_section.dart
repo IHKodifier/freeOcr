@@ -21,6 +21,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
     5: false,
     6: false,
     7: false,
+    8: false,
   };
 
   @override
@@ -184,6 +185,14 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 index: 7,
                 question: 'What document formats and resolutions yield the highest optical character recognition accuracy?',
                 answer: 'We recommend PDF documents or high-resolution PNG, JPG, or JPEG images scanned at 300 DPI. Documents with clear contrast between text and background yield near 100% character recognition accuracy. Password-protected PDFs are also supported via client-side decryption.',
+              ),
+              _buildFaqItem(
+                context,
+                theme,
+                colorScheme,
+                index: 8,
+                question: 'Do you store or retain my email address if I request download links via email?',
+                answer: 'No. Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
               ),
 
               const SizedBox(height: 32),

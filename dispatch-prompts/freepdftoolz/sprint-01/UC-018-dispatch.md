@@ -58,22 +58,33 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
 2. Create `src/backend/app/api/v1/endpoints/tools_split.py`:
    - Endpoint `POST /api/v1/tools/split`:
      - Accepts `file: UploadFile`, `mode: str` (`ranges`, `fixed`, `all`), `ranges: Optional[str]`, `split_every: Optional[int]`.
-     - Validates PDF format and file size limit (100MB free / 1GB boosted).
+     - Validates PDF format and file size limit against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable to `max_stack_file_mb: 1024` with session boost).
      - Returns HTTP 422 with descriptive error if range syntax is invalid or exceeds page count.
      - Returns single PDF (`FileResponse` as `.pdf`) if 1 range produced, or ZIP archive (`application/zip`) if multiple chunks produced.
      - Cleans up temporary files in background.
 3. Register router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Split View & Range Selector UI (`src/frontend/lib/pages/pdf_split_page.dart`)
-1. Replace placeholder route for `/split` with dedicated `PdfSplitPage`:
-   - Upload dropzone for a single PDF.
-   - Once file uploaded, displays detected document metadata (filename, size, total pages).
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/split` in `src/frontend/lib/pages/pdf_split_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade dropzone with file picker button.
+   - **Action-Driven Navigation:** When user drops a PDF or picks a file:
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/split/process`** passing the selected file in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/split/process` in `src/frontend/lib/pages/pdf_split_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/split/process', pageTitle: 'FreePDFToolz — Split PDF')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
+   - Document overview card (filename, size, total pages).
    - Mode Selector Tabs/Chips:
      - **Mode A: Custom Ranges** (Text field with helper syntax `e.g. 1-2, 5, 7-10`, dynamic range chips, "Add Range" button).
      - **Mode B: Split Every N Pages** (Numeric stepper `Split every [ 2 ] pages`).
      - **Mode C: Extract All Pages** ("Extract all pages into individual single-page PDFs").
-   - Action Button: "Split PDF" with loading spinner and progress state.
-   - Download Result Card: Prominent button to download resulting `.pdf` or `.zip`.
+   - Primary Action: "Split PDF" button with real-time loading spinner and progress state.
+   - Download Result Card (with Ad #3): Prominent button to download resulting `.pdf` or `.zip`, and "Split Another PDF" reset button.
 
 ---
 
