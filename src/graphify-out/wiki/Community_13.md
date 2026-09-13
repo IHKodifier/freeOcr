@@ -1,57 +1,49 @@
 # Community 13
 
-> 24 nodes · cohesion 0.10
+> 30 nodes · cohesion 0.09
 
 ## Key Concepts
 
-- [test_email_delivery.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L1) (11 connections)
-- [send_download_links_email()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L20) (8 connections)
-- [submit_contact_form()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/contact.py#L20) (5 connections)
-- [validate_email_address()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L11) (5 connections)
-- [send_contact_inquiry_email()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L175) (4 connections)
-- [email_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L1) (3 connections)
-- **BaseModel** (2 connections)
-- [ContactRequest](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/contact.py#L11) (2 connections)
-- [contact.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/contact.py#L1) (2 connections)
-- [test_send_download_links_email_formatting()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L22) (2 connections)
-- [test_send_download_links_via_resend_api_failure_response()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L188) (2 connections)
-- [test_send_download_links_via_resend_api_network_exception()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L211) (2 connections)
-- [test_send_download_links_via_resend_api_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L149) (2 connections)
-- [test_validate_email_address_valid_and_invalid()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L14) (2 connections)
-- [Submits a contact inquiry. Validates input and logs contact submission.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/contact.py#L21) (1 connections)
-- [Validates email format using regex.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L12) (1 connections)
-- [Dispatches a website contact inquiry to the support inbox (support@freeocr.me).](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L182) (1 connections)
-- [Dispatches 24-hour expiring download links to the target email.     Uses Resend](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py#L21) (1 connections)
-- [test_api_endpoint_resend_delivery_integration()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L229) (1 connections)
-- [test_send_email_links_custom_api_base_url_env_var()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L120) (1 connections)
-- [test_send_email_links_invalid_email_format()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L83) (1 connections)
-- [test_send_email_links_job_not_completed()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L101) (1 connections)
-- [test_send_email_links_job_not_found()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L92) (1 connections)
-- [test_send_email_links_success_and_purges_ram_disk()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py#L38) (1 connections)
-
-## Class Diagram
-
-```mermaid
-classDiagram
-    class ContactRequest {
-        +contact.py()
-    }
-```
+- [baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (8 connections)
+- [test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L1) (6 connections)
+- [get_baidu_ocr_engine()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L55) (5 connections)
+- [parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L82) (5 connections)
+- [run_baidu_ocr_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L190) (5 connections)
+- **dict** (5 connections)
+- [test_ocr_worker_dispatches_to_baidu_gpu_service()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L91) (5 connections)
+- [is_gpu_available()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L46) (4 connections)
+- [test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L138) (4 connections)
+- [health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L236) (3 connections)
+- [ocr_complex_page()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L246) (3 connections)
+- [verify_internal_secret()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L37) (3 connections)
+- [test_baidu_gpu_service_auth_missing_or_invalid()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L21) (3 connections)
+- [test_baidu_gpu_service_complex_page_mock_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L57) (3 connections)
+- [test_baidu_gpu_service_health()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L9) (3 connections)
+- [test_parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L40) (3 connections)
+- [Baidu Unlimited OCR GPU Microservice.  Standalone FastAPI microservice running B](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (1 connections)
+- [Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L191) (1 connections)
+- [Health check verifying microservice readiness, engine name, and GPU status.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L237) (1 connections)
+- [Executes Baidu Unlimited OCR model inference on a 300 DPI complex document page.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L249) (1 connections)
+- [Validates the internal shared secret to protect GPU compute from unauthorized ac](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L38) (1 connections)
+- [Checks if CUDA GPU hardware is accessible for Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L47) (1 connections)
+- [Initializes or retrieves the cached Baidu Unlimited OCR (baidu/Unlimited-OCR) mo](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L56) (1 connections)
+- [Parses Baidu Unlimited OCR grounding output containing detection tags and boundi](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L83) (1 connections)
+- [Verifies that GET /health returns ready status and identifies Baidu_Unlimited_OC](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L10) (1 connections)
+- *... and 5 more nodes in this community*
 
 ## Relationships
 
-- [[Community 15]] (3 shared connections)
+- [[Community 12]] (14 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\contact.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/contact.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\email_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/email_service.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_email_delivery.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_email_delivery.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py)
 
 ## Audit Trail
 
-- EXTRACTED: 43 (69%)
-- INFERRED: 19 (31%)
+- EXTRACTED: 65 (79%)
+- INFERRED: 17 (21%)
 - AMBIGUOUS: 0 (0%)
 
 ---

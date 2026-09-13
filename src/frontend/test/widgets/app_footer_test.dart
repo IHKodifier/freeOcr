@@ -90,4 +90,32 @@ void main() {
       expect(find.text('Facebook Channel'), findsNothing);
     },
   );
+
+  testWidgets(
+    'AppFooter renders FreePDFToolz brand title, copyright, and hub links when on PDF tools route',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(const AppFooter(currentRoute: '/merge')),
+      );
+      await tester.pumpAndSettle();
+
+      // Verify FreePDFToolz Brand title & Privacy commitment text
+      expect(find.text('FreePDFToolz'), findsOneWidget);
+      expect(find.textContaining('FreePDFToolz.me • 100% Free & Local-First PDF Platform'), findsOneWidget);
+      expect(find.textContaining('Zero retention & RAM disk privacy'), findsOneWidget);
+
+      // Verify Navigation Buttons for PDF Tools
+      expect(find.text('Tools Hub'), findsOneWidget);
+      expect(find.byKey(const Key('footer_home_btn')), findsOneWidget);
+      expect(find.text('OCR PDF'), findsOneWidget);
+      expect(find.byKey(const Key('footer_ocr_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_about_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_kb_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_privacy_btn')), findsOneWidget);
+
+      // Verify Engine Attribution Chips still present
+      expect(find.byKey(const Key('chip_pymupdf')), findsOneWidget);
+    },
+  );
 }
+

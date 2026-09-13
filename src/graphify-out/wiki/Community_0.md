@@ -1,35 +1,35 @@
 # Community 0
 
-> 93 nodes · cohesion 0.03
+> 124 nodes · cohesion 0.02
 
 ## Key Concepts
 
-- [docs_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart) (31 connections)
-- [contact_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/contact_page.dart) (24 connections)
-- [result_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/result_page.dart) (18 connections)
-- [about_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (16 connections)
-- [privacy_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/privacy_page.dart) (16 connections)
-- [terms_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart) (16 connections)
-- [../services/telemetry_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (11 connections)
-- [../widgets/adsense_banner.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart) (8 connections)
-- [../widgets/app_footer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart) (8 connections)
-- [../widgets/app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart) (8 connections)
-- [../main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart) (7 connections)
-- [../services/api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (7 connections)
-- [../widgets/expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/result_page.dart) (2 connections)
-- [../widgets/glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/kb_page.dart) (2 connections)
-- [AboutPage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [_AboutPageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [_buildCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [Scaffold](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
-- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/contact_page.dart) (1 connections)
-- *... and 68 more nodes in this community*
+- [package:flutter/material.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/split_preview_viewer_test.dart) (49 connections)
+- [package:flutter_test/flutter_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/split_preview_viewer_test.dart) (20 connections)
+- [tool_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/tool_card.dart) (11 connections)
+- [process_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart) (11 connections)
+- [pdf_merge_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/pdf_merge_page_test.dart) (8 connections)
+- [brand_icons.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/brand_icons.dart) (7 connections)
+- [hero_scanner_showcase.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_scanner_showcase.dart) (7 connections)
+- [pdf_tools_hub_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/pdf_tools_hub_page_test.dart) (7 connections)
+- [sse_progress_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/sse_progress_test.dart) (7 connections)
+- [app_footer_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/app_footer_test.dart) (7 connections)
+- [expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart) (6 connections)
+- [about_contact_pages_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/about_contact_pages_test.dart) (6 connections)
+- [app_header_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/app_header_test.dart) (6 connections)
+- [app_theme.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/theme/app_theme.dart) (5 connections)
+- [theme_storage_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_helper.dart) (5 connections)
+- [hero_dropzone_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/hero_dropzone_test.dart) (5 connections)
+- [progress_card_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/progress_card_test.dart) (5 connections)
+- [adsense_banner_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/adsense_banner_test.dart) (5 connections)
+- [hero_scanner_showcase_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/hero_scanner_showcase_test.dart) (5 connections)
+- [rewarded_video_ad_modal_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widgets/rewarded_video_ad_modal_test.dart) (5 connections)
+- [package:free_ocr_frontend/main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart) (5 connections)
+- [theme_storage_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_stub.dart) (4 connections)
+- [kb_docs_pages_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/kb_docs_pages_test.dart) (4 connections)
+- [theme_toggle_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/theme_toggle_test.dart) (4 connections)
+- [widget_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widget_test.dart) (4 connections)
+- *... and 99 more nodes in this community*
 
 ## Relationships
 
@@ -37,18 +37,30 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\about_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\contact_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/contact_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\docs_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/docs_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\kb_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/kb_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\privacy_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/privacy_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\result_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/result_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\terms_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\theme\app_theme.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/theme/app_theme.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\theme_storage_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_helper.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\theme_storage_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\brand_icons.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/brand_icons.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\expired_link_view.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/expired_link_view.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\hero_scanner_showcase.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_scanner_showcase.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\tool_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/tool_card.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\hero_dropzone_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/hero_dropzone_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\about_contact_pages_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/about_contact_pages_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\kb_docs_pages_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/kb_docs_pages_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\pdf_merge_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/pdf_merge_page_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\pdf_tools_hub_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/pdf_tools_hub_page_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\process_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\progress_card_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/progress_card_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\services\host_resolver_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/services/host_resolver_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\services\telemetry_service_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/services/telemetry_service_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\sse_progress_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/sse_progress_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\theme_toggle_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/theme_toggle_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\utils\app_limits_config_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/utils/app_limits_config_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\widget_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/widget_test.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 253 (100%)
+- EXTRACTED: 325 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

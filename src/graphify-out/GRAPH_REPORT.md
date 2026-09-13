@@ -1,12 +1,12 @@
-# Graph Report - E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src  (2026-09-12)
+# Graph Report - E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src  (2026-09-13)
 
 ## Corpus Check
-- 110 files · ~228,732 words
+- 120 files · ~255,296 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 870 nodes · 1122 edges · 45 communities detected
-- Extraction: 86% EXTRACTED · 14% INFERRED · 0% AMBIGUOUS · INFERRED: 162 edges (avg confidence: 0.77)
+- 1012 nodes · 1324 edges · 45 communities detected
+- Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 168 edges (avg confidence: 0.78)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -57,16 +57,16 @@
 - [[_COMMUNITY_Community 44|Community 44]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `package:flutter/material.dart` - 42 edges
+1. `package:flutter/material.dart` - 49 edges
 2. `get_redis_client()` - 20 edges
-3. `EphemeralRamStore` - 19 edges
-4. `process_ocr_job()` - 19 edges
-5. `package:flutter_test/flutter_test.dart` - 16 edges
-6. `compose_searchable_pdf()` - 12 edges
-7. `package:flutter/foundation.dart` - 12 edges
-8. `../services/telemetry_service.dart` - 11 edges
-9. `get_searchable_pdf()` - 10 edges
-10. `dart:async` - 10 edges
+3. `package:flutter_test/flutter_test.dart` - 20 edges
+4. `EphemeralRamStore` - 19 edges
+5. `process_ocr_job()` - 19 edges
+6. `../services/telemetry_service.dart` - 16 edges
+7. `package:flutter/foundation.dart` - 13 edges
+8. `../widgets/adsense_banner.dart` - 13 edges
+9. `../widgets/app_header.dart` - 13 edges
+10. `../widgets/app_footer.dart` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `load_canonical_config()` --calls--> `test_adsense_config_interval_loaded()`  [INFERRED]
@@ -84,18 +84,18 @@
 
 ### Community 0 - "Community 0"
 
-Cohesion: 0.03
-Nodes (86): AboutPage, _AboutPageState, AdSenseBanner, AppFooter, build, _buildCard, Container, initState (+78 more)
+Cohesion: 0.02
+Nodes (97): AppTheme, _buildTextTheme, codePreviewTextStyle, loadTheme, saveTheme, ThemeStorageHelper, loadTheme, saveTheme (+89 more)
 
 ### Community 1 - "Community 1"
 
-Cohesion: 0.03
-Nodes (69): AppTheme, _buildTextTheme, codePreviewTextStyle, loadTheme, saveTheme, ThemeStorageHelper, loadTheme, saveTheme (+61 more)
+Cohesion: 0.02
+Nodes (98): AboutPage, _AboutPageState, AdSenseBanner, AppFooter, build, _buildCard, Container, initState (+90 more)
 
 ### Community 2 - "Community 2"
 
-Cohesion: 0.04
-Nodes (69): Verify that monetization parameters are present in backend configuration., Verify that GET /api/v1/config endpoint returns monetization configuration., Verify that modifying monetization parameters in config file is reflected dynami, test_adsense_config_api_endpoint(), test_adsense_config_interval_loaded(), test_dynamic_config_file_reload(), Verify downloading batch zip produces a valid ZIP file containing all completed, Verify that requesting an unsupported format returns HTTP 400 Bad Request. (+61 more)
+Cohesion: 0.03
+Nodes (77): Verify that monetization parameters are present in backend configuration., Verify that GET /api/v1/config endpoint returns monetization configuration., Verify that modifying monetization parameters in config file is reflected dynami, test_adsense_config_api_endpoint(), test_adsense_config_interval_loaded(), test_dynamic_config_file_reload(), Verify downloading batch zip produces a valid ZIP file containing all completed, Verify that requesting an unsupported format returns HTTP 400 Bad Request. (+69 more)
 
 ### Community 3 - "Community 3"
 
@@ -104,58 +104,58 @@ Nodes (52): batch_download_zip(), download_job_file(), get_job_page_image(), get
 
 ### Community 4 - "Community 4"
 
-Cohesion: 0.04
-Nodes (49): dart:ui, trackGa4Event, trackGa4PageView, AppHeader, build, _buildThemeToggleButton, Container, IconButton (+41 more)
+Cohesion: 0.05
+Nodes (42): BaseModel, BaseSettings, get_runtime_config(), load_canonical_config(), Returns the single canonical global runtime configuration (limits, quotas, engin, Loads the single canonical configuration file., Settings, ContactRequest (+34 more)
 
 ### Community 5 - "Community 5"
 
-Cohesion: 0.04
-Nodes (49): check_database_connection(), AlertDialog, BackdropFilter, build, _buildDocumentPreviewPane, _buildMobileBody, _buildMobileHeader, _buildRightTextPane (+41 more)
+Cohesion: 0.03
+Nodes (57): AdSenseBanner, AppFooter, build, _buildBentoCard, _buildCheckBullet, _buildCodeTeaserCard, _buildEarlyAccessCta, _buildHeroBadge (+49 more)
 
 ### Community 6 - "Community 6"
 
 Cohesion: 0.04
-Nodes (46): adsense_banner.dart, build, Container, dispose, Function, HeroDropzone, _HeroDropzoneState, Icon (+38 more)
+Nodes (52): api_uploader_stub.dart, dart:async, dart:convert, dart:html, dart:math, dart:typed_data, AdSenseBanner, AppFooter (+44 more)
 
 ### Community 7 - "Community 7"
 
-Cohesion: 0.05
-Nodes (35): api_uploader_stub.dart, dart:async, dart:convert, dart:developer, dart:html, dart:js, dart:math, dart:typed_data (+27 more)
+Cohesion: 0.04
+Nodes (49): check_database_connection(), AlertDialog, BackdropFilter, build, _buildDocumentPreviewPane, _buildMobileBody, _buildMobileHeader, _buildRightTextPane (+41 more)
 
 ### Community 8 - "Community 8"
+
+Cohesion: 0.05
+Nodes (40): dart:js, dart:ui, getBrand, getBrandTitle, getDefaultHomeRoute, HostResolver, isFreeOcrDomain, isFreePdfToolsDomain (+32 more)
+
+### Community 9 - "Community 9"
 
 Cohesion: 0.07
 Nodes (39): detect_page_orientation(), _get_tessdata_dir(), parse_html_table_to_lines(), process_ocr_job(), _publish_event(), Guarantees tessdata/eng.traineddata availability for fast 1-second Tesseract OCR, Executes page-by-page OCR extraction on uploaded PDF or image file bytes.     S, Quickly checks whether the page has rotated text (90, 180, 270 deg)     using d (+31 more)
 
-### Community 9 - "Community 9"
-
-Cohesion: 0.05
-Nodes (37): AdSenseBanner, AppFooter, build, _buildHeadline, _buildPulseBadge, _buildSubtitle, ConstrainedBox, Container (+29 more)
-
 ### Community 10 - "Community 10"
 
-Cohesion: 0.08
-Nodes (27): BaseSettings, get_runtime_config(), load_canonical_config(), Returns the single canonical global runtime configuration (limits, quotas, engin, Loads the single canonical configuration file., Settings, analyze_pdf_bytes(), LayoutAnalyzer (+19 more)
+Cohesion: 0.05
+Nodes (40): adsense_banner.dart, AdSenseBanner, AppFooter, build, _buildActionButton, _buildDropzone, _buildFilesHeader, _buildReorderableList (+32 more)
 
 ### Community 11 - "Community 11"
 
-Cohesion: 0.06
-Nodes (32): AdSenseBanner, AppFooter, build, _buildBreadcrumbs, _buildBulletPoint, _buildDiagramStep, _buildGitHubRepoTile, _buildH2 (+24 more)
+Cohesion: 0.05
+Nodes (41): AdSenseBanner, AppFooter, build, _buildHeadline, _buildPulseBadge, _buildSubtitle, ConstrainedBox, Container (+33 more)
 
 ### Community 12 - "Community 12"
+
+Cohesion: 0.06
+Nodes (34): brand_icons.dart, ../constants/social_links.dart, AlertDialog, Icon, openSocialChannel, SizedBox, SocialLinks, ActionChip (+26 more)
+
+### Community 13 - "Community 13"
 
 Cohesion: 0.09
 Nodes (28): get_baidu_ocr_engine(), health_check(), is_gpu_available(), ocr_complex_page(), parse_grounding_output(), Baidu Unlimited OCR GPU Microservice.  Standalone FastAPI microservice running B, Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR., Health check verifying microservice readiness, engine name, and GPU status. (+20 more)
 
-### Community 13 - "Community 13"
-
-Cohesion: 0.1
-Nodes (15): BaseModel, ContactRequest, Submits a contact inquiry. Validates input and logs contact submission., submit_contact_form(), Validates email format using regex., Dispatches a website contact inquiry to the support inbox (support@freeocr.me)., Dispatches 24-hour expiring download links to the target email.     Uses Resend, send_contact_inquiry_email() (+7 more)
-
 ### Community 14 - "Community 14"
 
-Cohesion: 0.09
-Nodes (21): brand_icons.dart, ../constants/social_links.dart, AlertDialog, Icon, openSocialChannel, SizedBox, SocialLinks, ActionChip (+13 more)
+Cohesion: 0.07
+Nodes (28): AnimatedHourglassIcon, _AnimatedHourglassIconState, build, _buildBatchProgressUI, _buildSingleProgressUI, Column, Container, didUpdateWidget (+20 more)
 
 ### Community 15 - "Community 15"
 
@@ -164,8 +164,8 @@ Nodes (16): build, _buildFaqItem, _buildFeatureTile, _buildSectionHeader, _build
 
 ### Community 16 - "Community 16"
 
-Cohesion: 0.12
-Nodes (15): AdSenseBanner, AdSenseBannerState, AnimatedBuilder, build, Center, didChangeAppLifecycleState, dispose, initState (+7 more)
+Cohesion: 0.22
+Nodes (12): create_mock_pdf_bytes(), Helper to generate a minimal valid in-memory PDF with specified page text., AC: When uploading fewer than 2 PDF files, system rejects with HTTP 400., AC: System rejects non-PDF uploads with HTTP 400., AC: 2 valid PDFs merge into a single PDF with total combined page count., AC: Output PDF preserves the exact sequence of the files submitted., AC: System rejects more than 50 files with HTTP 400., test_merge_enforces_max_files_limit() (+4 more)
 
 ### Community 17 - "Community 17"
 
@@ -174,73 +174,73 @@ Nodes (8): TelemetryService, trackDocumentUploaded, trackDownloadClicked, trackE
 
 ### Community 18 - "Community 18"
 
-Cohesion: 0.29
-Nodes (6): BrandIcon, _BrandIconPainter, build, paint, shouldRepaint, SizedBox
+Cohesion: 0.25
+Nodes (6): merge_pdfs(), Merges multiple PDF files in the specified sequential order using PyMuPDF., cleanup_directory(), merge_pdf_files(), Removes temporary working directory and all intermediate files., Merges 2 to 50 uploaded PDF documents into a single document in sequential order
 
 ### Community 19 - "Community 19"
+
+Cohesion: 0.25
+Nodes (7): AdSenseBanner, build, Center, LayoutBuilder, resetSessionCount, rotateAd, SizedBox
+
+### Community 20 - "Community 20"
+
+Cohesion: 0.25
+Nodes (6): build, Card, _getStatusColor, _getStatusIcon, ProgressCard, SizedBox
+
+### Community 21 - "Community 21"
+
+Cohesion: 0.29
+Nodes (6): get_tool_categories(), get_tool_detail(), get_tools_catalog(), Returns the complete catalog of all 16 PDF tools with metadata,     routes, and, Returns the categorized breakdown of tools., Returns metadata for a specific tool by ID.     Raises 404 if tool does not exis
+
+### Community 22 - "Community 22"
 
 Cohesion: 0.29
 Nodes (1): test_upload_oversized_file()
 
-### Community 20 - "Community 20"
-
-Cohesion: 0.33
-Nodes (5): build, Container, ExpiredLinkView, _formatLocalExpirationTime, SizedBox
-
-### Community 21 - "Community 21"
-
-Cohesion: 0.4
-Nodes (4): navigateToPath, openUrl, UrlHelper, url_helper_stub.dart
-
-### Community 22 - "Community 22"
-
-Cohesion: 0.5
-Nodes (3): download_helper_stub.dart, DownloadHelper, triggerDownload
-
 ### Community 23 - "Community 23"
 
-Cohesion: 0.5
-Nodes (3): evaluate, LimitEvaluationResult, LimitEvaluator
+Cohesion: 0.4
+Nodes (4): download_helper_stub.dart, DownloadHelper, triggerDownload, triggerDownloadBytes
 
 ### Community 24 - "Community 24"
 _Unable to determine domain due to missing code entities._
-Cohesion: 0.5
-Nodes (0): 
+Cohesion: 0.4
+Nodes (4): calculateAdsRequired, evaluate, LimitEvaluationResult, LimitEvaluator
 
 ### Community 25 - "Community 25"
 _Unable to determine domain due to missing code entities._
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.4
+Nodes (4): navigateToPath, openUrl, UrlHelper, url_helper_stub.dart
 
 ### Community 26 - "Community 26"
 
-Cohesion: 0.67
-Nodes (2): navigateToPath, openUrl
+Cohesion: 0.5
+Nodes (0): 
 
 ### Community 27 - "Community 27"
 
 Cohesion: 0.67
-Nodes (2): configureAppUrlStrategy, package:flutter_web_plugins/url_strategy.dart
+Nodes (0): 
 
 ### Community 28 - "Community 28"
 
 Cohesion: 0.67
-Nodes (2): logToBrowserConsole, web_console_stub.dart
+Nodes (2): triggerDownload, triggerDownloadBytes
 
 ### Community 29 - "Community 29"
 
-Cohesion: 1.0
-Nodes (1): triggerDownload
+Cohesion: 0.67
+Nodes (2): navigateToPath, openUrl
 
 ### Community 30 - "Community 30"
 
-Cohesion: 1.0
-Nodes (1): configureAppUrlStrategy
+Cohesion: 0.67
+Nodes (2): configureAppUrlStrategy, package:flutter_web_plugins/url_strategy.dart
 
 ### Community 31 - "Community 31"
 
 Cohesion: 1.0
-Nodes (1): triggerGamAdSlotRefresh
+Nodes (1): configureAppUrlStrategy
 
 ### Community 32 - "Community 32"
 _Unable to determine domain due to missing code entities._
@@ -280,7 +280,7 @@ Nodes (0):
 ### Community 39 - "Community 39"
 _Unable to determine domain due to missing code entities._
 Cohesion: 1.0
-Nodes (0): 
+Nodes (1): Verify downloading zip format for a single job packages PDF, TXT, and MD into an
 
 ### Community 40 - "Community 40"
 
@@ -308,13 +308,9 @@ Cohesion: 1.0
 Nodes (1): Executes page-by-page OCR extraction on uploaded PDF or image file bytes.     S
 
 ## Knowledge Gaps
-- **546 isolated node(s):** `Loads the single canonical configuration file.`, `Health check endpoint returning service health status and API version.`, `Detailed healthz check endpoint for container orchestrators and monitoring tools`, `In-memory dict backed by Linux tmpfs / ephemeral RAM disk (/tmp or RAM_DISK_PATH`, `Stores job payload in Redis, with fallback to in-memory store when Redis is unav` (+541 more)
+- **654 isolated node(s):** `Loads the single canonical configuration file.`, `Health check endpoint returning service health status and API version.`, `Detailed healthz check endpoint for container orchestrators and monitoring tools`, `In-memory dict backed by Linux tmpfs / ephemeral RAM disk (/tmp or RAM_DISK_PATH`, `Stores job payload in Redis, with fallback to in-memory store when Redis is unav` (+649 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 29`** (2 nodes): `download_helper_stub.dart`, `triggerDownload`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (2 nodes): `url_strategy_stub.dart`, `configureAppUrlStrategy`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (2 nodes): `gam_js_interop_stub.dart`, `triggerGamAdSlotRefresh`
+- **Thin community `Community 31`** (2 nodes): `url_strategy_stub.dart`, `configureAppUrlStrategy`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 32`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -328,9 +324,9 @@ Nodes (1): Executes page-by-page OCR extraction on uploaded PDF or image file by
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 37`** (1 nodes): `url_strategy_helper.dart`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (1 nodes): `gam_js_interop.dart`
+- **Thin community `Community 38`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 39`** (1 nodes): `__init__.py`
+- **Thin community `Community 39`** (1 nodes): `Verify downloading zip format for a single job packages PDF, TXT, and MD into an`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 40`** (1 nodes): `Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.

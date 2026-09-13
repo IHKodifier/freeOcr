@@ -1,12 +1,13 @@
 # Community 26
 
-> 3 nodes · cohesion 0.67
+> 4 nodes · cohesion 0.50
 
 ## Key Concepts
 
-- [url_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (2 connections)
-- [navigateToPath](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (1 connections)
-- [openUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (1 connections)
+- [test_contact_api.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_contact_api.py#L1) (3 connections)
+- [test_contact_submit_empty_fields()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_contact_api.py#L41) (1 connections)
+- [test_contact_submit_invalid_email()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_contact_api.py#L26) (1 connections)
+- [test_contact_submit_valid()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_contact_api.py#L7) (1 connections)
 
 ## Relationships
 
@@ -14,11 +15,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_contact_api.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_contact_api.py)
 
 ## Audit Trail
 
-- EXTRACTED: 4 (100%)
+- EXTRACTED: 6 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

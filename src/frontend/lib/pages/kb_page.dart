@@ -45,13 +45,14 @@ class _KbPageState extends State<KbPage> {
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppHeader(
-        currentRoute: '/kb',
-        onThemeToggle: () {
-          themeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
-        },
-      ),
+    return SelectionArea(
+      child: Scaffold(
+        appBar: AppHeader(
+          currentRoute: '/kb',
+          onThemeToggle: () {
+            themeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
+          },
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -299,8 +300,9 @@ class _KbPageState extends State<KbPage> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // --- Breadcrumb Navigation Row ---
   Widget _buildBreadcrumbs(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
@@ -669,14 +671,15 @@ class _KbPageState extends State<KbPage> {
         const SizedBox(height: 10),
         _buildBulletPoint(context, 'Linux tmpfs In-Memory Processing:', 'Uploaded PDFs and intermediate image slices are written strictly to Linux RAM disk (`/tmp`), bypassing physical persistent storage SSDs/HDDs.'),
         _buildBulletPoint(context, 'Automatic 24-Hour Expiry & Purge:', 'Conversion outputs expire automatically after 24 hours. A background worker process routinely purges all expired artifacts.'),
-        _buildBulletPoint(context, 'Zero Registration & Telemetry Discretion:', 'Users are never required to create accounts or provide email addresses. Conversion content is never mined, stored, or sold.'),
+        _buildBulletPoint(context, 'Zero Registration & Telemetry Discretion:', 'Users are never required to create accounts. Conversion content is never mined, stored, or sold.'),
+        _buildBulletPoint(context, 'Zero Email Retention Guarantee:', 'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.'),
 
         const SizedBox(height: 20),
 
         _buildSecurityNoteBox(
           context,
-          title: 'Zero Persistent Document Storage Guarantee',
-          body: 'File data exists only in volatile memory during the active OCR rendering lifecycle and is completely non-recoverable upon process termination.',
+          title: 'Zero Persistent Document & Email Storage Guarantee',
+          body: 'File data exists only in volatile memory during the active processing lifecycle and is completely non-recoverable upon process termination. Email addresses provided for download delivery are never stored or cached.',
         ),
       ],
     );
