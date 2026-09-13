@@ -4,9 +4,9 @@
 
 ## Key Concepts
 
-- [url_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (2 connections)
-- [navigateToPath](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (1 connections)
-- [openUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart) (1 connections)
+- [env.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/alembic/env.py#L1) (2 connections)
+- [run_migrations_offline()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/alembic/env.py#L20) (1 connections)
+- [run_migrations_online()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/alembic/env.py#L33) (1 connections)
 
 ## Relationships
 
@@ -14,7 +14,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_stub.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\alembic\env.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/alembic/env.py)
 
 ## Audit Trail
 

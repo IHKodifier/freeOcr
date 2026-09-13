@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/app_header.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/adsense_banner.dart';
+import '../services/telemetry_service.dart';
 import '../main.dart';
 
 class ToolPlaceholderPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class ToolPlaceholderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TelemetryService.trackPageView('/$toolId', pageTitle: 'FreePDFToolz — $toolTitle');
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 

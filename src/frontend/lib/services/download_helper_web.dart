@@ -31,3 +31,13 @@ void _directAnchorDownload(String url, String filename) {
   });
 }
 
+void triggerDownloadBytes(List<int> bytes, String filename, [String mimeType = 'application/pdf']) {
+  final blob = html.Blob([bytes], mimeType);
+  final url = html.Url.createObjectUrlFromBlob(blob);
+  _directAnchorDownload(url, filename);
+  Timer(const Duration(seconds: 10), () {
+    html.Url.revokeObjectUrl(url);
+  });
+}
+
+

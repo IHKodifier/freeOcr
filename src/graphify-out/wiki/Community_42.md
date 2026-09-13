@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Guarantees tessdata/eng.traineddata availability for fast 1-second Tesseract OCR](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/ocr_worker.py#L33) (0 connections)
+- [Executes Baidu Unlimited OCR model inference on a 300 DPI complex document page.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L186) (0 connections)
 
 ## Relationships
 
@@ -12,7 +12,7 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\ocr_worker.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/ocr_worker.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py)
 
 ## Audit Trail
 

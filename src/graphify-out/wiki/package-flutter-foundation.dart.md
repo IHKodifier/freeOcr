@@ -1,6 +1,6 @@
 # package:flutter/foundation.dart
 
-> God node · 12 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
+> God node · 13 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
 
 ## Connections by Relation
 
@@ -12,6 +12,7 @@
 - [[api_service.dart]] `EXTRACTED`
 - [[app_footer.dart]] `EXTRACTED`
 - [[app_header.dart]] `EXTRACTED`
+- [[app_limits_config.dart]] `EXTRACTED`
 - [[host_resolver.dart]] `EXTRACTED`
 - [[sse_service.dart]] `EXTRACTED`
 - [[glass_card.dart]] `EXTRACTED`

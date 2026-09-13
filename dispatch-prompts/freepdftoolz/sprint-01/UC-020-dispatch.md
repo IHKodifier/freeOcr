@@ -56,15 +56,26 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
      - Returns summary with `remaining_pages` count.
 2. Create `src/backend/app/api/v1/endpoints/tools_delete_pages.py`:
    - Endpoint `POST /api/v1/tools/delete-pages`:
-     - Receives `file: UploadFile`, `pages: str` (comma-separated 1-based page numbers or JSON array e.g. `[1, 3]`).
+     - Validates PDF format and file size limit against canonical `app_limits_config.json` (`base_max_file_mb: 100`, expandable to `max_stack_file_mb: 1024` with session boost).
      - Returns HTTP 400 Bad Request if user requests deletion of all pages in the PDF.
      - Returns pruned PDF stream (`FileResponse`).
      - Cleans up temporary files in background.
 3. Register router in `src/backend/app/api/v1/router.py`.
 
-#### Step 2: Frontend Deletion Grid UI (`src/frontend/lib/pages/pdf_delete_pages_page.dart`)
-1. Replace placeholder route for `/delete-pages` with dedicated `PdfDeletePagesPage`:
-   - Upload dropzone for a single PDF.
+#### Step 2: Canonical Limits & Action-Driven Navigation Architecture (`src/frontend/`)
+1. **Canonical Limits Config (`AppLimitsConfig`):**
+   - Sourced from `assets/config/app_limits_config.json` / `GET /api/v1/config` (identical to freeOCR.me).
+   - Zero hardcoded limits anywhere in UI copy or validation.
+   - Stackable limit boost: +50MB per 15s video ad up to 1,024MB (1-hour session window).
+2. **Tool Landing Page (`/delete-pages` in `src/frontend/lib/pages/pdf_delete_pages_page.dart`):**
+   - Displays header, tool description, and **Ad #1 (`AdSenseBanner()`)**.
+   - Apple-grade dropzone with file picker button.
+   - **Action-Driven Navigation:** When user drops a PDF or picks a file:
+     - Evaluates file size against `AppLimitsConfig.activeLimitMb`. If exceeded, pops `RewardedVideoAdModal`.
+     - Once validated, **immediately navigates to `/delete-pages/process`** passing the selected file in route arguments. User does NOT stay on landing page.
+3. **Status / Progress Page (`/delete-pages/process` in `src/frontend/lib/pages/pdf_delete_pages_progress_page.dart`):**
+   - Telemetry: `TelemetryService.trackPageView('/delete-pages/process', pageTitle: 'FreePDFToolz — Delete Pages')`.
+   - Displays **Ad #2 (`AdSenseBanner()`) configured with Google Ad Manager (GAM) 60-second declared auto-refresh**.
    - Page Selection Grid:
      - Visual thumbnail cards showing page number badge.
      - Hover red trash icon.
@@ -74,7 +85,8 @@ You are an AI coding assistant working on **FreePDFToolz.me & freeOCR.me**. Befo
    - Status Bar:
      - E.g. "Selected 2 of 8 pages to remove (6 pages will remain)".
      - Guard: disables action button if all pages are selected with warning text: "A PDF must retain at least one page."
-   - Primary Action: "Delete Pages & Download" button.
+   - Primary Action: "Delete Pages & Generate PDF" button with live progress spinner.
+   - Download Result Card (with Ad #3): Prominent button to download pruned PDF and "Delete More Pages" reset button.
 
 ---
 

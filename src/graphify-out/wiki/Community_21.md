@@ -4,27 +4,26 @@
 
 ## Key Concepts
 
-- [test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L1) (5 connections)
-- [.clear()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L71) (2 connections)
-- [test_upload_oversized_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L64) (2 connections)
-- [test_upload_empty_0byte_file()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L54) (1 connections)
-- [test_upload_unsupported_file_extension()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L46) (1 connections)
-- [test_upload_valid_image_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L33) (1 connections)
-- [test_upload_valid_pdf_success()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py#L11) (1 connections)
+- [tools_info.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L1) (3 connections)
+- [get_tool_categories()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L217) (2 connections)
+- [get_tool_detail()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L233) (2 connections)
+- [get_tools_catalog()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L205) (2 connections)
+- [Returns the complete catalog of all 16 PDF tools with metadata,     routes, and](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L206) (1 connections)
+- [Returns the categorized breakdown of tools.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L218) (1 connections)
+- [Returns metadata for a specific tool by ID.     Raises 404 if tool does not exis](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py#L234) (1 connections)
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 20]] (3 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_ocr_upload.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_ocr_upload.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\tools_info.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_info.py)
 
 ## Audit Trail
 
-- EXTRACTED: 11 (85%)
-- INFERRED: 2 (15%)
+- EXTRACTED: 12 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

@@ -1,35 +1,35 @@
 # Community 10
 
-> 39 nodes · cohesion 0.06
+> 42 nodes · cohesion 0.05
 
 ## Key Concepts
 
-- [api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (18 connections)
-- [dart:async](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (9 connections)
-- [sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (6 connections)
-- [dart:typed_data](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart) (5 connections)
-- [download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart) (5 connections)
-- [theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart) (5 connections)
-- [dart:convert](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (4 connections)
-- [dart:html](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (4 connections)
-- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart) (4 connections)
-- [api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart) (4 connections)
-- [telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (4 connections)
-- [url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (3 connections)
-- [package:http/http.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (3 connections)
-- [dart:js](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (2 connections)
-- [package:flutter/services.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (2 connections)
-- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [dart:math](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [ApiService](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [BatchFileItem](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [formatBytes](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [Function](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [getBatchDownloadZipUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [getDownloadUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [getFileTypeDescription](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [getPageImageUrl](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- *... and 14 more nodes in this community*
+- [main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (50 connections)
+- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_buildHeadline](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_buildPulseBadge](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_buildSubtitle](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [ConstrainedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [Expanded](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [FreeOcrApp](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [HeroScannerShowcase](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [HomePage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_HomePageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [LandingFaqSection](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [main](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [MaterialApp](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [MaterialPageRoute](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_onBatchUploadSuccess](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [_onUploadSuccess](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [Overlay](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [RichText](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [Scaffold](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart) (1 connections)
+- *... and 17 more nodes in this community*
 
 ## Relationships
 
@@ -37,20 +37,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\process_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/main.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 102 (100%)
+- EXTRACTED: 91 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

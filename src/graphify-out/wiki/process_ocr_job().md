@@ -47,57 +47,58 @@ sequenceDiagram
     participant P38 as test_page_image_out_of_range_page_returns_404()
     participant P39 as test_process_ocr_job_ephemeral_file_cleanup_on_exception()
     participant P40 as test_ocr_worker_decryption_process()
-    participant P41 as verify_internal_secret()
-    participant P42 as test_adsense_config_api_endpoint()
-    participant P43 as test_dynamic_config_file_reload()
-    participant P44 as test_baidu_gpu_service_health()
-    participant P45 as test_download_invalid_format_returns_400()
-    participant P46 as test_download_non_existent_job_returns_410_gone()
-    participant P47 as test_download_pdf_success_and_purges_ram_disk()
-    participant P48 as test_download_txt_success()
-    participant P49 as test_download_md_success()
-    participant P50 as test_batch_download_zip_success()
-    participant P51 as test_batch_download_zip_invalid_format()
-    participant P52 as test_download_all_formats_from_redis_on_cold_boot()
-    participant P53 as test_download_zip_single_job_success()
-    participant P54 as test_healthz_endpoint_healthy()
-    participant P55 as test_healthz_endpoint_unhealthy_redis()
-    participant P56 as test_healthz_endpoint_unhealthy_database()
-    participant P57 as test_page_image_non_existent_job_returns_404_or_410()
-    participant P58 as test_page_image_zero_or_negative_page_returns_422_or_400()
-    participant P59 as test_get_config_limits_endpoint()
-    participant P60 as test_dynamic_limit_config_reload()
-    participant P61 as test_download_expired_job_returns_410_gone()
-    participant P62 as test_download_non_existent_job_returns_410_gone()
-    participant P63 as test_preview_non_existent_job_returns_410_gone()
-    participant P64 as test_preview_completed_job_returns_pages_data()
-    participant P65 as test_convert_endpoint_triggers_background_ocr_worker()
-    participant P66 as test_encrypted_pdf_rejected_without_password()
-    participant P67 as test_encrypted_pdf_rejected_with_invalid_password()
-    participant P68 as test_encrypted_pdf_accepted_with_correct_password()
-    participant P69 as test_get_tools_catalog()
-    participant P70 as test_get_tool_categories()
-    participant P71 as test_get_single_tool_detail()
-    participant P72 as test_get_nonexistent_tool_returns_404()
-    participant P73 as .__init__()
-    participant P74 as test_get_config_endpoint()
-    participant P75 as test_health_check()
-    participant P76 as test_sse_endpoint_returns_event_stream_headers()
-    participant P77 as test_sse_stream_emits_page_progress_and_completed_events()
-    participant P78 as test_sse_stream_emits_failed_event()
-    participant P79 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P41 as test_merge_two_valid_pdfs_combines_pages_correctly()
+    participant P42 as verify_internal_secret()
+    participant P43 as test_adsense_config_api_endpoint()
+    participant P44 as test_dynamic_config_file_reload()
+    participant P45 as test_baidu_gpu_service_health()
+    participant P46 as test_download_invalid_format_returns_400()
+    participant P47 as test_download_non_existent_job_returns_410_gone()
+    participant P48 as test_download_pdf_success_and_purges_ram_disk()
+    participant P49 as test_download_txt_success()
+    participant P50 as test_download_md_success()
+    participant P51 as test_batch_download_zip_success()
+    participant P52 as test_batch_download_zip_invalid_format()
+    participant P53 as test_download_all_formats_from_redis_on_cold_boot()
+    participant P54 as test_download_zip_single_job_success()
+    participant P55 as test_healthz_endpoint_healthy()
+    participant P56 as test_healthz_endpoint_unhealthy_redis()
+    participant P57 as test_healthz_endpoint_unhealthy_database()
+    participant P58 as test_page_image_non_existent_job_returns_404_or_410()
+    participant P59 as test_page_image_zero_or_negative_page_returns_422_or_400()
+    participant P60 as test_get_config_limits_endpoint()
+    participant P61 as test_dynamic_limit_config_reload()
+    participant P62 as test_download_expired_job_returns_410_gone()
+    participant P63 as test_download_non_existent_job_returns_410_gone()
+    participant P64 as test_preview_non_existent_job_returns_410_gone()
+    participant P65 as test_preview_completed_job_returns_pages_data()
+    participant P66 as test_convert_endpoint_triggers_background_ocr_worker()
+    participant P67 as test_encrypted_pdf_rejected_without_password()
+    participant P68 as test_encrypted_pdf_rejected_with_invalid_password()
+    participant P69 as test_encrypted_pdf_accepted_with_correct_password()
+    participant P70 as test_get_tools_catalog()
+    participant P71 as test_get_tool_categories()
+    participant P72 as test_get_single_tool_detail()
+    participant P73 as test_get_nonexistent_tool_returns_404()
+    participant P74 as .__init__()
+    participant P75 as test_get_config_endpoint()
+    participant P76 as test_health_check()
+    participant P77 as test_sse_endpoint_returns_event_stream_headers()
+    participant P78 as test_sse_stream_emits_page_progress_and_completed_events()
+    participant P79 as test_sse_stream_emits_failed_event()
     participant P80 as test_sse_endpoint_non_existent_job_returns_404()
-    participant P81 as test_sse_endpoint_streams_redis_events()
-    participant P82 as repair_pdf()
-    participant P83 as _get_tessdata_dir()
-    participant P84 as detect_page_orientation()
-    participant P85 as parse_html_table_to_lines()
-    participant P86 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
-    participant P87 as _publish_event()
-    participant P88 as _store_job()
-    participant P89 as test_process_ocr_job_success()
-    participant P90 as test_ocr_worker_unrepairable_pdf_integration()
-    participant P91 as test_process_ocr_job_image_file()
+    participant P81 as test_sse_endpoint_non_existent_job_returns_404()
+    participant P82 as test_sse_endpoint_streams_redis_events()
+    participant P83 as repair_pdf()
+    participant P84 as _get_tessdata_dir()
+    participant P85 as detect_page_orientation()
+    participant P86 as parse_html_table_to_lines()
+    participant P87 as test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()
+    participant P88 as _publish_event()
+    participant P89 as _store_job()
+    participant P90 as test_process_ocr_job_success()
+    participant P91 as test_ocr_worker_unrepairable_pdf_integration()
+    participant P92 as test_process_ocr_job_image_file()
     P0->>+ P1: calls
     P1-->>- P0: return
     P1->>+ P0: calls
@@ -282,30 +283,30 @@ sequenceDiagram
     P80-->>- P1: return
     P1->>+ P81: calls
     P81-->>- P1: return
+    P1->>+ P82: calls
+    P82-->>- P1: return
     P0->>+ P2: calls
     P2-->>- P0: return
-    P0->>+ P82: calls
-    P82-->>- P0: return
+    P0->>+ P83: calls
+    P83-->>- P0: return
     P0->>+ P28: calls
     P28-->>- P0: return
     P0->>+ P29: calls
     P29-->>- P0: return
-    P0->>+ P83: calls
-    P83-->>- P0: return
     P0->>+ P84: calls
     P84-->>- P0: return
     P0->>+ P85: calls
     P85-->>- P0: return
     P0->>+ P86: calls
     P86-->>- P0: return
+    P0->>+ P87: calls
+    P87-->>- P0: return
     P0->>+ P39: calls
     P39-->>- P0: return
     P0->>+ P15: calls
     P15-->>- P0: return
     P0->>+ P40: calls
     P40-->>- P0: return
-    P0->>+ P87: calls
-    P87-->>- P0: return
     P0->>+ P88: calls
     P88-->>- P0: return
     P0->>+ P89: calls
@@ -314,6 +315,8 @@ sequenceDiagram
     P90-->>- P0: return
     P0->>+ P91: calls
     P91-->>- P0: return
+    P0->>+ P92: calls
+    P92-->>- P0: return
 ```
 
 ## Connections by Relation

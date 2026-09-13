@@ -5,4 +5,9 @@ abstract class DownloadHelper {
   static void triggerDownload(String url, String filename) {
     helper.triggerDownload(url, filename);
   }
+
+  static void triggerDownloadBytes(List<int> bytes, String filename, [String mimeType = 'application/pdf']) {
+    helper.triggerDownloadBytes(bytes, filename, mimeType);
+  }
 }
+

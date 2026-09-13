@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import '../services/api_service.dart';
 import '../services/telemetry_service.dart';
 import '../utils/limit_evaluator.dart';
+import '../utils/app_limits_config.dart';
 import 'adsense_banner.dart';
 import 'rewarded_video_ad_modal.dart';
 
@@ -173,6 +174,7 @@ class _HeroDropzoneState extends State<HeroDropzone> {
               userWatchedAd = true;
               boostedLimitFromModal = boostedLimit;
               if (mounted) {
+                AppLimitsConfig.recordBoost(boostedLimit);
                 setState(() {
                   _activeLimitMb = boostedLimit > maxStackMb ? maxStackMb : boostedLimit;
                   _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));

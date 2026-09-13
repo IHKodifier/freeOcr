@@ -27,10 +27,10 @@
     }
   ],
   "blast_radius": {
-    "package:flutter/material.dart": 46,
+    "package:flutter/material.dart": 49,
     "get_redis_client()": 20,
+    "package:flutter_test/flutter_test.dart": 20,
     "EphemeralRamStore": 19,
-    "process_ocr_job()": 19,
-    "package:flutter_test/flutter_test.dart": 18
+    "process_ocr_job()": 19
   }
 }

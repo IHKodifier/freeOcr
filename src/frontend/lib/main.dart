@@ -22,6 +22,7 @@ import 'pages/contact_page.dart';
 import 'pages/pdf_tools_hub_page.dart';
 import 'pages/tool_placeholder_page.dart';
 import 'pages/pdf_merge_page.dart';
+import 'pages/pdf_merge_progress_page.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
 
@@ -86,6 +87,20 @@ class FreeOcrApp extends StatelessWidget {
                 settings: settings,
               );
             }
+
+            // Dedicated Merge PDF Status & Progress route (UC-017)
+            if (name == '/merge/process') {
+              final args = settings.arguments;
+              List<SelectedPdfFile> initialFiles = [];
+              if (args is Map<String, dynamic> && args['files'] is List<SelectedPdfFile>) {
+                initialFiles = args['files'] as List<SelectedPdfFile>;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfMergeProgressPage(initialFiles: initialFiles),
+                settings: settings,
+              );
+            }
+
 
             // Specific PDF tools route matching
             if (name != null && name.startsWith('/')) {

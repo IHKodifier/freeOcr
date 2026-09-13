@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [Health check verifying microservice readiness, engine name, and GPU status.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L174) (0 connections)
+- [Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L128) (0 connections)
 
 ## Relationships
 

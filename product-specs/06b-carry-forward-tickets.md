@@ -5,18 +5,18 @@
 
 ---
 
-## Carry-Forward Ticket UC-009-GAM: Google Ad Manager (GAM / AdX) GPT Integration & 31s Declared Auto-Refresh
+## Carry-Forward Ticket UC-009-GAM: Google Ad Manager (GAM / AdX) GPT Integration & 60s Declared Auto-Refresh
 
 **Linked Ticket:** UC-009 (AdSense Display Banner)  
 **Target Sprint:** Production Monetization Release / AdX Integration  
-**Policy Standard:** Google Ad Manager (GAM) AdX Auto-Refresh Guidelines (Minimum 30s)
+**Policy Standard:** Google Ad Manager (GAM) AdX Auto-Refresh Guidelines (60s Viewability Optimization for Premium RPM)
 
 ---
 
 ### 1. Overview & Business Justification
-Standard Google AdSense tags strictly prohibit custom JavaScript timers (`Timer.periodic`). To maintain 100% Google policy compliance while preserving continuous revenue generation from passive users, freeOCR.me will integrate **Google Ad Manager (GAM / AdX)** using **Google Publisher Tags (GPT `gpt.js`)**.
+Standard Google AdSense tags strictly prohibit custom JavaScript timers (`Timer.periodic`). To maintain 100% Google policy compliance while maximizing revenue, freeOCR.me and FreePDFToolz integrate **Google Ad Manager (GAM / AdX)** using **Google Publisher Tags (GPT `gpt.js`)**.
 
-Google Ad Manager officially permits server-side declared auto-refreshing inventory slots at 31-second intervals when coupled with viewability detection (browser tab focus observer).
+Google Ad Manager permits server-side declared auto-refreshing inventory slots at **60-second intervals** coupled with active viewability detection (browser tab focus observer). The 60s window guarantees high advertiser viewability (>70%) and attracts higher eCPM bids compared to shorter intervals.
 
 ---
 

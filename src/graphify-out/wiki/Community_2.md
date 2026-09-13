@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- [.get()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L65) (74 connections)
+- [.get()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L65) (75 connections)
 - [test_download_endpoints.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_download_endpoints.py#L1) (9 connections)
 - [test_pdf_decryption.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_pdf_decryption.py#L1) (7 connections)
 - [test_job_page_image.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_job_page_image.py#L1) (5 connections)
@@ -53,7 +53,7 @@
 ## Audit Trail
 
 - EXTRACTED: 173 (61%)
-- INFERRED: 111 (39%)
+- INFERRED: 112 (39%)
 - AMBIGUOUS: 0 (0%)
 
 ---
