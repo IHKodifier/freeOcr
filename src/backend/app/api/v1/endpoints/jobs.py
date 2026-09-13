@@ -10,7 +10,7 @@ import zipfile
 import urllib.parse
 import pymupdf
 from fastapi import APIRouter, Request, HTTPException, status, Query
-from fastapi.responses import StreamingResponse, Response, JSONResponse
+from fastapi.responses import StreamingResponse, Response, JSONResponse, RedirectResponse
 from app.redis_client import get_redis_client, DEV_JOB_STORE, EphemeralRamStore
 from app.services.pdf_composer import get_searchable_pdf
 
@@ -453,12 +453,29 @@ async def batch_download_zip(
 
 
 @router.get("/{job_id}/download/{format}")
-async def download_job_file(job_id: str, format: str):
+async def download_file(job_id: str, format: str, request: Request):
     """
-    1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).
-    Streams requested document format, and immediately unlinks/purges
-    the original input file from RAM disk upon download stream initiation (AC-1).
+    Streams the requested OCR output format (pdf, txt, md, zip) with Content-Disposition attachment.
+    Enforces 24-hour expiration TTL (returns HTTP 410 Gone if expired, or redirects browser requests
+    to frontend /result/{job_id} / ExpiredLinkView). Immediately purges the original input file
+    from RAM disk upon download stream initiation (AC-1).
     """
+    def _create_expired_response(expired_at=None):
+        accept_header = request.headers.get("accept", "")
+        if "text/html" in accept_header:
+            base_url = os.environ.get("API_BASE_URL", "https://freeocr.me").rstrip("/")
+            return RedirectResponse(
+                url=f"{base_url}/result/{job_id}",
+                status_code=status.HTTP_302_FOUND
+            )
+        return JSONResponse(
+            status_code=status.HTTP_410_GONE,
+            content={
+                "detail": "Download link expired.",
+                "expired_at": expired_at
+            }
+        )
+
     fmt = format.lower().strip()
     if fmt not in ("pdf", "txt", "md", "zip"):
         raise HTTPException(
@@ -478,13 +495,7 @@ async def download_job_file(job_id: str, format: str):
             job_data_bytes = None
 
     if not job_data_bytes:
-        return JSONResponse(
-            status_code=status.HTTP_410_GONE,
-            content={
-                "detail": "Download link expired.",
-                "expired_at": None
-            }
-        )
+        return _create_expired_response(None)
 
     try:
         data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
@@ -504,13 +515,7 @@ async def download_job_file(job_id: str, format: str):
             if exp_dt.tzinfo is None:
                 exp_dt = exp_dt.replace(tzinfo=datetime.timezone.utc)
             if now_utc > exp_dt:
-                return JSONResponse(
-                    status_code=status.HTTP_410_GONE,
-                    content={
-                        "detail": "Download link expired.",
-                        "expired_at": expires_at_str
-                    }
-                )
+                return _create_expired_response(expires_at_str)
         except Exception:
             pass
     elif parsed.get("created_at"):
@@ -520,24 +525,12 @@ async def download_job_file(job_id: str, format: str):
                 created_dt = created_dt.replace(tzinfo=datetime.timezone.utc)
             exp_dt = created_dt + datetime.timedelta(hours=24)
             if now_utc > exp_dt:
-                return JSONResponse(
-                    status_code=status.HTTP_410_GONE,
-                    content={
-                        "detail": "Download link expired.",
-                        "expired_at": exp_dt.isoformat()
-                    }
-                )
+                return _create_expired_response(exp_dt.isoformat())
         except Exception:
             pass
 
     if parsed.get("status") != "COMPLETED":
-        return JSONResponse(
-            status_code=status.HTTP_410_GONE,
-            content={
-                "detail": "Download link expired.",
-                "expired_at": expires_at_str
-            }
-        )
+        return _create_expired_response(expires_at_str)
 
     filename = parsed.get("filename", "document")
     filename_stem = os.path.splitext(filename)[0] or "document"

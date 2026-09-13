@@ -22,6 +22,7 @@ import 'pages/pdf_tools_hub_page.dart';
 import 'pages/tool_placeholder_page.dart';
 import 'pages/pdf_merge_page.dart';
 import 'pages/pdf_merge_progress_page.dart';
+import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
 
@@ -157,6 +158,32 @@ class FreeOcrApp extends StatelessWidget {
                 settings: settings,
               );
             }
+            if (name != null && (name == '/expired' || name.startsWith('/expired'))) {
+              return MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  appBar: const AppHeader(currentRoute: '/expired'),
+                  body: SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+                        child: Column(
+                          children: [
+                            const AdSenseBanner(),
+                            const SizedBox(height: 16),
+                            ExpiredLinkView(
+                              expiredAt: DateTime.now().subtract(const Duration(hours: 24, minutes: 15)),
+                              onUploadNew: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  bottomNavigationBar: const AppFooter(currentRoute: '/expired'),
+                ),
+                settings: settings,
+              );
+            }
             if (name != null && (name == '/kb' || name == '/knowledge-base' || name.startsWith('/kb/') || name.startsWith('/knowledge-base/'))) {
               final slug = (name == '/kb' || name == '/knowledge-base')
                   ? null
@@ -220,6 +247,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _showExpiredDevPreview = false;
+
   @override
   void initState() {
     super.initState();
@@ -260,6 +289,20 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton.extended(
+              key: const Key('dev_toggle_expired_fab'),
+              onPressed: () {
+                setState(() {
+                  _showExpiredDevPreview = !_showExpiredDevPreview;
+                });
+              },
+              icon: Icon(_showExpiredDevPreview ? Icons.timer_off : Icons.timer_outlined),
+              label: Text(_showExpiredDevPreview ? 'Hide Expired UI' : 'Preview Expired UI'),
+              backgroundColor: _showExpiredDevPreview ? Colors.redAccent : Colors.indigo,
+              foregroundColor: Colors.white,
+            )
+          : null,
       appBar: AppHeader(
         currentRoute: '/',
         onThemeToggle: () {
@@ -273,6 +316,14 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            if (kDebugMode && _showExpiredDevPreview)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                child: ExpiredLinkView(
+                  expiredAt: DateTime.now().subtract(const Duration(hours: 24, minutes: 30)),
+                  onUploadNew: () => setState(() => _showExpiredDevPreview = false),
+                ),
+              ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
