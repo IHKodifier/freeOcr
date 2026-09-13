@@ -32,11 +32,11 @@ void main() {
     expect(find.byType(ToolCard), findsNWidgets(16));
 
     // Verify key tool cards are visible
-    expect(find.text('Merge PDF'), findsOneWidget);
-    expect(find.text('Split PDF'), findsOneWidget);
-    expect(find.text('Compress PDF'), findsOneWidget);
-    expect(find.text('OCR PDF'), findsOneWidget);
-    expect(find.text('Summarize PDF'), findsOneWidget);
+    expect(find.widgetWithText(ToolCard, 'Merge PDF'), findsOneWidget);
+    expect(find.widgetWithText(ToolCard, 'Split PDF'), findsOneWidget);
+    expect(find.widgetWithText(ToolCard, 'Compress PDF'), findsOneWidget);
+    expect(find.widgetWithText(ToolCard, 'OCR PDF'), findsOneWidget);
+    expect(find.widgetWithText(ToolCard, 'Sign PDF'), findsOneWidget);
   });
 
   testWidgets('PdfToolsHubPage filters tools by search query in real time', (tester) async {
