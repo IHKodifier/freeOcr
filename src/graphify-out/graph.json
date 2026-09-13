@@ -64,7 +64,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_config_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "config.py"
     },
     {
@@ -80,7 +80,7 @@
       "heat": 0.055,
       "owner": "unowned",
       "id": "config_load_canonical_config",
-      "community": 5,
+      "community": 4,
       "norm_label": "load_canonical_config()"
     },
     {
@@ -96,7 +96,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "config_settings",
-      "community": 5,
+      "community": 4,
       "norm_label": "settings"
     },
     {
@@ -109,7 +109,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "basesettings",
-      "community": 5,
+      "community": 4,
       "norm_label": "basesettings"
     },
     {
@@ -125,7 +125,7 @@
       "heat": 0.014,
       "owner": "unowned",
       "id": "config_settings_get_canonical_config",
-      "community": 5,
+      "community": 4,
       "norm_label": ".get_canonical_config()"
     },
     {
@@ -137,7 +137,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "loads the single canonical configuration file.",
       "id": "config_rationale_11"
     },
@@ -154,7 +154,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_database_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "database.py"
     },
     {
@@ -170,7 +170,7 @@
       "heat": 0.02,
       "owner": "unowned",
       "id": "database_get_db",
-      "community": 5,
+      "community": 4,
       "norm_label": "get_db()"
     },
     {
@@ -186,7 +186,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "database_check_database_connection",
-      "community": 8,
+      "community": 7,
       "norm_label": "check_database_connection()"
     },
     {
@@ -202,7 +202,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_main_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "main.py"
     },
     {
@@ -218,7 +218,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "main_health_check",
-      "community": 4,
+      "community": 3,
       "norm_label": "health_check()"
     },
     {
@@ -234,7 +234,7 @@
       "heat": 0.06,
       "owner": "unowned",
       "id": "main_healthz",
-      "community": 4,
+      "community": 3,
       "norm_label": "healthz()"
     },
     {
@@ -246,7 +246,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "health check endpoint returning service health status and api version.",
       "id": "main_rationale_28"
     },
@@ -259,7 +259,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "detailed healthz check endpoint for container orchestrators and monitoring tools",
       "id": "main_rationale_40"
     },
@@ -276,7 +276,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_redis_client_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "redis_client.py"
     },
     {
@@ -292,7 +292,7 @@
       "heat": 0.222,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore",
-      "community": 4,
+      "community": 3,
       "norm_label": "ephemeralramstore"
     },
     {
@@ -305,7 +305,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "dict",
-      "community": 12,
+      "community": 13,
       "norm_label": "dict"
     },
     {
@@ -321,7 +321,7 @@
       "heat": 0.015,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore_init",
-      "community": 4,
+      "community": 3,
       "norm_label": ".__init__()"
     },
     {
@@ -337,7 +337,7 @@
       "heat": 0.029,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore_file_path",
-      "community": 4,
+      "community": 3,
       "norm_label": "._file_path()"
     },
     {
@@ -353,7 +353,7 @@
       "heat": 0.062,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore_getitem",
-      "community": 4,
+      "community": 3,
       "norm_label": ".__getitem__()"
     },
     {
@@ -369,7 +369,7 @@
       "heat": 0.042,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore_setitem",
-      "community": 4,
+      "community": 3,
       "norm_label": ".__setitem__()"
     },
     {
@@ -385,7 +385,7 @@
       "heat": 0.051,
       "owner": "unowned",
       "id": "redis_client_ephemeralramstore_contains",
-      "community": 4,
+      "community": 3,
       "norm_label": ".__contains__()"
     },
     {
@@ -433,7 +433,7 @@
       "heat": 0.062,
       "owner": "unowned",
       "id": "redis_client_get_redis_client",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_redis_client()"
     },
     {
@@ -449,7 +449,7 @@
       "heat": 0.031,
       "owner": "unowned",
       "id": "redis_client_check_redis_connection",
-      "community": 4,
+      "community": 3,
       "norm_label": "check_redis_connection()"
     },
     {
@@ -465,7 +465,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "redis_client_store_job_metadata",
-      "community": 4,
+      "community": 3,
       "norm_label": "store_job_metadata()"
     },
     {
@@ -481,7 +481,7 @@
       "heat": 0.046,
       "owner": "unowned",
       "id": "redis_client_get_job_metadata",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_job_metadata()"
     },
     {
@@ -497,7 +497,7 @@
       "heat": 0.031,
       "owner": "unowned",
       "id": "redis_client_store_ad_pass_metadata",
-      "community": 4,
+      "community": 3,
       "norm_label": "store_ad_pass_metadata()"
     },
     {
@@ -513,7 +513,7 @@
       "heat": 0.07,
       "owner": "unowned",
       "id": "redis_client_get_ad_pass_metadata",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_ad_pass_metadata()"
     },
     {
@@ -525,7 +525,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "in-memory dict backed by linux tmpfs / ephemeral ram disk (/tmp or ram_disk_path",
       "id": "redis_client_rationale_10"
     },
@@ -539,7 +539,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "stores job payload in redis, with fallback to in-memory store when redis is unav",
       "id": "redis_client_rationale_102"
     },
@@ -553,7 +553,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "retrieves job payload string from redis, falling back to in-memory store.",
       "id": "redis_client_rationale_116"
     },
@@ -567,7 +567,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "stores ad pass payload in redis, with fallback to in-memory store when redis is",
       "id": "redis_client_rationale_130"
     },
@@ -581,7 +581,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "retrieves ad pass payload dict from redis, falling back to in-memory store.",
       "id": "redis_client_rationale_143"
     },
@@ -630,7 +630,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_api_v1_router_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "router.py"
     },
     {
@@ -662,7 +662,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_api_v1_endpoints_config_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "config.py"
     },
     {
@@ -678,7 +678,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "config_get_runtime_config",
-      "community": 5,
+      "community": 4,
       "norm_label": "get_runtime_config()"
     },
     {
@@ -690,7 +690,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "returns the single canonical global runtime configuration (limits, quotas, engin",
       "id": "config_rationale_10"
     },
@@ -707,7 +707,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_api_v1_endpoints_contact_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "contact.py"
     },
     {
@@ -723,7 +723,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "contact_contactrequest",
-      "community": 5,
+      "community": 4,
       "norm_label": "contactrequest"
     },
     {
@@ -736,7 +736,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "basemodel",
-      "community": 5,
+      "community": 4,
       "norm_label": "basemodel"
     },
     {
@@ -752,7 +752,7 @@
       "heat": 0.089,
       "owner": "unowned",
       "id": "contact_submit_contact_form",
-      "community": 5,
+      "community": 4,
       "norm_label": "submit_contact_form()"
     },
     {
@@ -764,7 +764,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "submits a contact inquiry. validates input and logs contact submission.",
       "id": "contact_rationale_21"
     },
@@ -781,7 +781,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_api_v1_endpoints_jobs_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "jobs.py"
     },
     {
@@ -797,7 +797,7 @@
       "heat": 0.085,
       "owner": "unowned",
       "id": "jobs_get_job_status",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_job_status()"
     },
     {
@@ -813,7 +813,7 @@
       "heat": 0.309,
       "owner": "unowned",
       "id": "jobs_stream_job_events",
-      "community": 4,
+      "community": 3,
       "norm_label": "stream_job_events()"
     },
     {
@@ -829,7 +829,7 @@
       "heat": 0.094,
       "owner": "unowned",
       "id": "jobs_get_job_preview",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_job_preview()"
     },
     {
@@ -845,7 +845,7 @@
       "heat": 0.208,
       "owner": "unowned",
       "id": "jobs_get_job_page_image",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_job_page_image()"
     },
     {
@@ -861,7 +861,7 @@
       "heat": 0.227,
       "owner": "unowned",
       "id": "jobs_batch_download_zip",
-      "community": 4,
+      "community": 3,
       "norm_label": "batch_download_zip()"
     },
     {
@@ -877,7 +877,7 @@
       "heat": 0.317,
       "owner": "unowned",
       "id": "jobs_download_job_file",
-      "community": 4,
+      "community": 3,
       "norm_label": "download_job_file()"
     },
     {
@@ -889,7 +889,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "returns job status and progress for polling or verification.",
       "id": "jobs_rationale_23"
     },
@@ -902,7 +902,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "real-time server-sent events (sse) progress streaming endpoint.     subscribes",
       "id": "jobs_rationale_57"
     },
@@ -915,7 +915,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "returns extracted text blocks and page layout metadata for an ocr job.     retu",
       "id": "jobs_rationale_180"
     },
@@ -928,7 +928,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "renders and streams high-fidelity 150 dpi page preview image (png) for a given j",
       "id": "jobs_rationale_228"
     },
@@ -941,7 +941,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "streams a single zip archive containing all completed documents in the batch.",
       "id": "jobs_rationale_348"
     },
@@ -954,7 +954,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "1-click multi-format direct downloads endpoint (.pdf, .txt, .md).     streams r",
       "id": "jobs_rationale_457"
     },
@@ -971,7 +971,7 @@
       "heat": 0.026,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_api_v1_endpoints_ocr_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "ocr.py"
     },
     {
@@ -987,7 +987,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "ocr_emaildeliveryrequest",
-      "community": 5,
+      "community": 4,
       "norm_label": "emaildeliveryrequest"
     },
     {
@@ -1003,7 +1003,7 @@
       "heat": 0.037,
       "owner": "unowned",
       "id": "ocr_get_normalized_client_ip",
-      "community": 5,
+      "community": 4,
       "norm_label": "_get_normalized_client_ip()"
     },
     {
@@ -1019,7 +1019,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "ocr_get_session_keys",
-      "community": 5,
+      "community": 4,
       "norm_label": "_get_session_keys()"
     },
     {
@@ -1035,7 +1035,7 @@
       "heat": 0.175,
       "owner": "unowned",
       "id": "ocr_email_download_links",
-      "community": 5,
+      "community": 4,
       "norm_label": "email_download_links()"
     },
     {
@@ -1051,7 +1051,7 @@
       "heat": 0.252,
       "owner": "unowned",
       "id": "ocr_convert_document",
-      "community": 5,
+      "community": 4,
       "norm_label": "convert_document()"
     },
     {
@@ -1067,7 +1067,7 @@
       "heat": 0.096,
       "owner": "unowned",
       "id": "ocr_rewarded_ad_callback",
-      "community": 5,
+      "community": 4,
       "norm_label": "rewarded_ad_callback()"
     },
     {
@@ -1083,7 +1083,7 @@
       "heat": 0.186,
       "owner": "unowned",
       "id": "ocr_job_events_stream",
-      "community": 5,
+      "community": 4,
       "norm_label": "job_events_stream()"
     },
     {
@@ -1095,7 +1095,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "validates email, checks job completion, instantly purges original input file",
       "id": "ocr_rationale_49"
     },
@@ -1108,7 +1108,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "endpoint for uploading pdf/image files for ocr conversion.     validates extens",
       "id": "ocr_rationale_146"
     },
@@ -1121,7 +1121,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "validates rewarded ad view and stacks user limits (+50mb, +15 pages).     reset",
       "id": "ocr_rationale_302"
     },
@@ -1134,7 +1134,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "server-sent events (sse) stream for real-time progress updates on a job.     su",
       "id": "ocr_rationale_360"
     },
@@ -1298,9 +1298,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "tools_merge_rationale_21",
       "community": 18,
-      "norm_label": "removes temporary working directory and all intermediate files."
+      "norm_label": "removes temporary working directory and all intermediate files.",
+      "id": "tools_merge_rationale_21"
     },
     {
       "label": "Merges 2 to 50 uploaded PDF documents into a single document in sequential order",
@@ -1311,9 +1311,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "tools_merge_rationale_35",
       "community": 18,
-      "norm_label": "merges 2 to 50 uploaded pdf documents into a single document in sequential order"
+      "norm_label": "merges 2 to 50 uploaded pdf documents into a single document in sequential order",
+      "id": "tools_merge_rationale_35"
     },
     {
       "label": "__init__.py",
@@ -1344,7 +1344,7 @@
       "heat": 0.029,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_services_baidu_gpu_service_py",
-      "community": 12,
+      "community": 13,
       "norm_label": "baidu_gpu_service.py"
     },
     {
@@ -1360,7 +1360,7 @@
       "heat": 0.033,
       "owner": "unowned",
       "id": "baidu_gpu_service_verify_internal_secret",
-      "community": 12,
+      "community": 13,
       "norm_label": "verify_internal_secret()"
     },
     {
@@ -1376,7 +1376,7 @@
       "heat": 0.029,
       "owner": "unowned",
       "id": "baidu_gpu_service_is_gpu_available",
-      "community": 12,
+      "community": 13,
       "norm_label": "is_gpu_available()"
     },
     {
@@ -1392,7 +1392,7 @@
       "heat": 0.056,
       "owner": "unowned",
       "id": "baidu_gpu_service_get_baidu_ocr_engine",
-      "community": 12,
+      "community": 13,
       "norm_label": "get_baidu_ocr_engine()"
     },
     {
@@ -1408,7 +1408,7 @@
       "heat": 0.211,
       "owner": "unowned",
       "id": "baidu_gpu_service_parse_grounding_output",
-      "community": 12,
+      "community": 13,
       "norm_label": "parse_grounding_output()"
     },
     {
@@ -1424,7 +1424,7 @@
       "heat": 0.067,
       "owner": "unowned",
       "id": "baidu_gpu_service_run_baidu_ocr_inference",
-      "community": 12,
+      "community": 13,
       "norm_label": "run_baidu_ocr_inference()"
     },
     {
@@ -1440,7 +1440,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "baidu_gpu_service_health_check",
-      "community": 12,
+      "community": 13,
       "norm_label": "health_check()"
     },
     {
@@ -1456,7 +1456,7 @@
       "heat": 0.045,
       "owner": "unowned",
       "id": "baidu_gpu_service_ocr_complex_page",
-      "community": 12,
+      "community": 13,
       "norm_label": "ocr_complex_page()"
     },
     {
@@ -1468,7 +1468,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "baidu unlimited ocr gpu microservice.  standalone fastapi microservice running b",
       "id": "baidu_gpu_service_rationale_1"
     },
@@ -1482,7 +1482,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 12,
+      "community": 13,
       "norm_label": "validates the internal shared secret to protect gpu compute from unauthorized ac",
       "id": "baidu_gpu_service_rationale_38"
     },
@@ -1495,7 +1495,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "checks if cuda gpu hardware is accessible for baidu unlimited ocr.",
       "id": "baidu_gpu_service_rationale_47"
     },
@@ -1508,7 +1508,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "initializes or retrieves the cached baidu unlimited ocr (baidu/unlimited-ocr) mo",
       "id": "baidu_gpu_service_rationale_56"
     },
@@ -1521,7 +1521,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "parses baidu unlimited ocr grounding output containing detection tags and boundi",
       "id": "baidu_gpu_service_rationale_83"
     },
@@ -1535,7 +1535,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 12,
+      "community": 13,
       "norm_label": "runs inference on 300 dpi page image bytes using authentic baidu unlimited ocr.",
       "id": "baidu_gpu_service_rationale_191"
     },
@@ -1548,7 +1548,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "health check verifying microservice readiness, engine name, and gpu status.",
       "id": "baidu_gpu_service_rationale_237"
     },
@@ -1561,7 +1561,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "executes baidu unlimited ocr model inference on a 300 dpi complex document page.",
       "id": "baidu_gpu_service_rationale_249"
     },
@@ -1578,7 +1578,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_services_email_service_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "email_service.py"
     },
     {
@@ -1594,7 +1594,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "email_service_validate_email_address",
-      "community": 5,
+      "community": 4,
       "norm_label": "validate_email_address()"
     },
     {
@@ -1610,7 +1610,7 @@
       "heat": 0.167,
       "owner": "unowned",
       "id": "email_service_send_download_links_email",
-      "community": 5,
+      "community": 4,
       "norm_label": "send_download_links_email()"
     },
     {
@@ -1626,7 +1626,7 @@
       "heat": 0.112,
       "owner": "unowned",
       "id": "email_service_send_contact_inquiry_email",
-      "community": 5,
+      "community": 4,
       "norm_label": "send_contact_inquiry_email()"
     },
     {
@@ -1638,7 +1638,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "validates email format using regex.",
       "id": "email_service_rationale_12"
     },
@@ -1651,7 +1651,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "dispatches 24-hour expiring download links to the target email.     uses resend",
       "id": "email_service_rationale_21"
     },
@@ -1664,7 +1664,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "dispatches a website contact inquiry to the support inbox (support@freeocr.me).",
       "id": "email_service_rationale_182"
     },
@@ -1681,7 +1681,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_services_layout_analyzer_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "layout_analyzer.py"
     },
     {
@@ -1697,7 +1697,7 @@
       "heat": 0.228,
       "owner": "unowned",
       "id": "layout_analyzer_layoutanalyzer",
-      "community": 5,
+      "community": 4,
       "norm_label": "layoutanalyzer"
     },
     {
@@ -1713,7 +1713,7 @@
       "heat": 0.23,
       "owner": "unowned",
       "id": "layout_analyzer_analyze_pdf_bytes",
-      "community": 5,
+      "community": 4,
       "norm_label": "analyze_pdf_bytes()"
     },
     {
@@ -1725,7 +1725,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 5,
+      "community": 4,
       "norm_label": "document layout and complexity pre-processing analyzer.  analyzes uploaded pdf",
       "id": "layout_analyzer_rationale_1"
     },
@@ -1919,7 +1919,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_backend_app_services_pdf_composer_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "pdf_composer.py"
     },
     {
@@ -1935,7 +1935,7 @@
       "heat": 0.192,
       "owner": "unowned",
       "id": "pdf_composer_compose_searchable_pdf",
-      "community": 4,
+      "community": 3,
       "norm_label": "compose_searchable_pdf()"
     },
     {
@@ -1951,7 +1951,7 @@
       "heat": 0.067,
       "owner": "unowned",
       "id": "pdf_composer_get_searchable_pdf",
-      "community": 4,
+      "community": 3,
       "norm_label": "get_searchable_pdf()"
     },
     {
@@ -1963,7 +1963,7 @@
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "overlays invisible text (render_mode=3) onto pdf or image pages using bounding b",
       "id": "pdf_composer_rationale_19"
     },
@@ -1977,7 +1977,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "retrieves compiled searchable pdf bytes by token from ephemeral dev store or red",
       "id": "pdf_composer_rationale_131"
     },
@@ -2022,9 +2022,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "pdf_merge_service_rationale_6",
       "community": 18,
-      "norm_label": "merges multiple pdf files in the specified sequential order using pymupdf."
+      "norm_label": "merges multiple pdf files in the specified sequential order using pymupdf.",
+      "id": "pdf_merge_service_rationale_6"
     },
     {
       "label": "pdf_repair.py",
@@ -2126,7 +2126,7 @@
       "heat": 0.141,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "main.dart"
     },
     {
@@ -2139,7 +2139,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_freeocrapp",
-      "community": 10,
+      "community": 11,
       "norm_label": "freeocrapp"
     },
     {
@@ -2152,7 +2152,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_homepage",
-      "community": 10,
+      "community": 11,
       "norm_label": "homepage"
     },
     {
@@ -2165,7 +2165,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_homepagestate",
-      "community": 10,
+      "community": 11,
       "norm_label": "_homepagestate"
     },
     {
@@ -2178,7 +2178,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_main",
-      "community": 10,
+      "community": 11,
       "norm_label": "main"
     },
     {
@@ -2191,7 +2191,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_build",
-      "community": 10,
+      "community": 11,
       "norm_label": "build"
     },
     {
@@ -2204,7 +2204,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_materialapp",
-      "community": 10,
+      "community": 11,
       "norm_label": "materialapp"
     },
     {
@@ -2217,7 +2217,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_overlay",
-      "community": 10,
+      "community": 11,
       "norm_label": "overlay"
     },
     {
@@ -2230,7 +2230,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_materialpageroute",
-      "community": 10,
+      "community": 11,
       "norm_label": "materialpageroute"
     },
     {
@@ -2243,7 +2243,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_initstate",
-      "community": 10,
+      "community": 11,
       "norm_label": "initstate"
     },
     {
@@ -2256,7 +2256,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_onuploadsuccess",
-      "community": 10,
+      "community": 11,
       "norm_label": "_onuploadsuccess"
     },
     {
@@ -2269,7 +2269,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_onbatchuploadsuccess",
-      "community": 10,
+      "community": 11,
       "norm_label": "_onbatchuploadsuccess"
     },
     {
@@ -2282,7 +2282,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_scaffold",
-      "community": 10,
+      "community": 11,
       "norm_label": "scaffold"
     },
     {
@@ -2295,7 +2295,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_constrainedbox",
-      "community": 10,
+      "community": 11,
       "norm_label": "constrainedbox"
     },
     {
@@ -2308,7 +2308,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_adsensebanner",
-      "community": 10,
+      "community": 11,
       "norm_label": "adsensebanner"
     },
     {
@@ -2321,7 +2321,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_sizedbox",
-      "community": 10,
+      "community": 11,
       "norm_label": "sizedbox"
     },
     {
@@ -2334,7 +2334,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_expanded",
-      "community": 10,
+      "community": 11,
       "norm_label": "expanded"
     },
     {
@@ -2347,7 +2347,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_heroscannershowcase",
-      "community": 10,
+      "community": 11,
       "norm_label": "heroscannershowcase"
     },
     {
@@ -2360,7 +2360,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_landingfaqsection",
-      "community": 10,
+      "community": 11,
       "norm_label": "landingfaqsection"
     },
     {
@@ -2373,7 +2373,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_appfooter",
-      "community": 10,
+      "community": 11,
       "norm_label": "appfooter"
     },
     {
@@ -2386,7 +2386,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_buildpulsebadge",
-      "community": 10,
+      "community": 11,
       "norm_label": "_buildpulsebadge"
     },
     {
@@ -2399,7 +2399,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_container",
-      "community": 10,
+      "community": 11,
       "norm_label": "container"
     },
     {
@@ -2412,7 +2412,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_buildheadline",
-      "community": 10,
+      "community": 11,
       "norm_label": "_buildheadline"
     },
     {
@@ -2425,7 +2425,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_richtext",
-      "community": 10,
+      "community": 11,
       "norm_label": "richtext"
     },
     {
@@ -2438,7 +2438,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_main_dart_buildsubtitle",
-      "community": 10,
+      "community": 11,
       "norm_label": "_buildsubtitle"
     },
     {
@@ -2451,7 +2451,7 @@
       "heat": 0.042,
       "owner": "unowned",
       "id": "package_flutter_foundation_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "package:flutter/foundation.dart"
     },
     {
@@ -2477,7 +2477,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "theme_app_theme_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "theme/app_theme.dart"
     },
     {
@@ -2490,7 +2490,7 @@
       "heat": 0.034,
       "owner": "unowned",
       "id": "services_api_service_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "../services/api_service.dart"
     },
     {
@@ -2513,10 +2513,10 @@
       "source_location": null,
       "level": 1,
       "granularity": "low",
-      "heat": 0.013,
+      "heat": 0.016,
       "owner": "unowned",
       "id": "services_host_resolver_dart",
-      "community": 7,
+      "community": 12,
       "norm_label": "../services/host_resolver.dart"
     },
     {
@@ -2529,7 +2529,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "widgets_hero_dropzone_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "widgets/hero_dropzone.dart"
     },
     {
@@ -2581,7 +2581,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "widgets_landing_faq_section_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "widgets/landing_faq_section.dart"
     },
     {
@@ -2594,7 +2594,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "widgets_hero_scanner_showcase_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "widgets/hero_scanner_showcase.dart"
     },
     {
@@ -2607,7 +2607,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_process_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/process_page.dart"
     },
     {
@@ -2620,7 +2620,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "pages_result_page_dart",
-      "community": 13,
+      "community": 14,
       "norm_label": "../pages/result_page.dart"
     },
     {
@@ -2633,7 +2633,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_kb_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/kb_page.dart"
     },
     {
@@ -2646,7 +2646,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_docs_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/docs_page.dart"
     },
     {
@@ -2659,7 +2659,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_privacy_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/privacy_page.dart"
     },
     {
@@ -2672,7 +2672,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_terms_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/terms_page.dart"
     },
     {
@@ -2685,7 +2685,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_about_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/about_page.dart"
     },
     {
@@ -2698,7 +2698,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_contact_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/contact_page.dart"
     },
     {
@@ -2711,7 +2711,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_pdf_tools_hub_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/pdf_tools_hub_page.dart"
     },
     {
@@ -2724,7 +2724,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_tool_placeholder_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/tool_placeholder_page.dart"
     },
     {
@@ -2737,7 +2737,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_pdf_merge_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/pdf_merge_page.dart"
     },
     {
@@ -2750,7 +2750,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pages_pdf_merge_progress_page_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "pages/pdf_merge_progress_page.dart"
     },
     {
@@ -2763,7 +2763,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "utils_url_strategy_helper_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "utils/url_strategy_helper.dart"
     },
     {
@@ -2776,7 +2776,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "utils_theme_storage_helper_dart",
-      "community": 10,
+      "community": 11,
       "norm_label": "utils/theme_storage_helper.dart"
     },
     {
@@ -2789,7 +2789,7 @@
       "heat": 0.026,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart",
-      "community": 6,
+      "community": 12,
       "norm_label": "social_links.dart"
     },
     {
@@ -2802,7 +2802,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart_sociallinks",
-      "community": 6,
+      "community": 12,
       "norm_label": "sociallinks"
     },
     {
@@ -2815,7 +2815,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart_opensocialchannel",
-      "community": 6,
+      "community": 12,
       "norm_label": "opensocialchannel"
     },
     {
@@ -2828,7 +2828,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart_alertdialog",
-      "community": 6,
+      "community": 12,
       "norm_label": "alertdialog"
     },
     {
@@ -2841,7 +2841,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart_icon",
-      "community": 6,
+      "community": 12,
       "norm_label": "icon"
     },
     {
@@ -2854,7 +2854,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_constants_social_links_dart_sizedbox",
-      "community": 6,
+      "community": 12,
       "norm_label": "sizedbox"
     },
     {
@@ -2867,7 +2867,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "utils_url_helper_dart",
-      "community": 6,
+      "community": 12,
       "norm_label": "../utils/url_helper.dart"
     },
     {
@@ -3244,7 +3244,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "constants_social_links_dart",
-      "community": 6,
+      "community": 12,
       "norm_label": "../constants/social_links.dart"
     },
     {
@@ -3257,7 +3257,7 @@
       "heat": 0.09,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart",
-      "community": 14,
+      "community": 5,
       "norm_label": "docs_page.dart"
     },
     {
@@ -3270,7 +3270,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_docspage",
-      "community": 14,
+      "community": 5,
       "norm_label": "docspage"
     },
     {
@@ -3283,7 +3283,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_docspagestate",
-      "community": 14,
+      "community": 5,
       "norm_label": "_docspagestate"
     },
     {
@@ -3296,7 +3296,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_initstate",
-      "community": 14,
+      "community": 5,
       "norm_label": "initstate"
     },
     {
@@ -3309,7 +3309,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_dispose",
-      "community": 14,
+      "community": 5,
       "norm_label": "dispose"
     },
     {
@@ -3322,7 +3322,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_handlesubscribe",
-      "community": 14,
+      "community": 5,
       "norm_label": "_handlesubscribe"
     },
     {
@@ -3335,7 +3335,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_snackbar",
-      "community": 14,
+      "community": 5,
       "norm_label": "snackbar"
     },
     {
@@ -3348,7 +3348,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_build",
-      "community": 14,
+      "community": 5,
       "norm_label": "build"
     },
     {
@@ -3361,7 +3361,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_scaffold",
-      "community": 14,
+      "community": 5,
       "norm_label": "scaffold"
     },
     {
@@ -3374,7 +3374,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_sizedbox",
-      "community": 14,
+      "community": 5,
       "norm_label": "sizedbox"
     },
     {
@@ -3387,7 +3387,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_adsensebanner",
-      "community": 14,
+      "community": 5,
       "norm_label": "adsensebanner"
     },
     {
@@ -3400,7 +3400,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_appfooter",
-      "community": 14,
+      "community": 5,
       "norm_label": "appfooter"
     },
     {
@@ -3413,7 +3413,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildherobadge",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildherobadge"
     },
     {
@@ -3426,7 +3426,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_container",
-      "community": 14,
+      "community": 5,
       "norm_label": "container"
     },
     {
@@ -3439,7 +3439,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildcodeteasercard",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildcodeteasercard"
     },
     {
@@ -3452,7 +3452,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_glasscard",
-      "community": 14,
+      "community": 5,
       "norm_label": "glasscard"
     },
     {
@@ -3465,7 +3465,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_row",
-      "community": 14,
+      "community": 5,
       "norm_label": "row"
     },
     {
@@ -3478,7 +3478,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_column",
-      "community": 14,
+      "community": 5,
       "norm_label": "column"
     },
     {
@@ -3491,7 +3491,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildteaserfeatureslist",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildteaserfeatureslist"
     },
     {
@@ -3504,7 +3504,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildcheckbullet",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildcheckbullet"
     },
     {
@@ -3517,7 +3517,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_icon",
-      "community": 14,
+      "community": 5,
       "norm_label": "icon"
     },
     {
@@ -3530,7 +3530,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildterminalcodebox",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildterminalcodebox"
     },
     {
@@ -3543,7 +3543,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildbentocard",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildbentocard"
     },
     {
@@ -3556,7 +3556,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_buildearlyaccesscta",
-      "community": 14,
+      "community": 5,
       "norm_label": "_buildearlyaccesscta"
     },
     {
@@ -3569,7 +3569,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_docs_page_dart_constrainedbox",
-      "community": 14,
+      "community": 5,
       "norm_label": "constrainedbox"
     },
     {
@@ -3577,12 +3577,12 @@
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\kb_page.dart",
       "source_location": null,
-      "level": 1,
+      "level": 2,
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
       "id": "widgets_glass_card_dart",
-      "community": 14,
+      "community": 5,
       "norm_label": "../widgets/glass_card.dart"
     },
     {
@@ -3595,7 +3595,7 @@
       "heat": 0.117,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart",
-      "community": 6,
+      "community": 5,
       "norm_label": "kb_page.dart"
     },
     {
@@ -3608,7 +3608,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_kbpage",
-      "community": 6,
+      "community": 5,
       "norm_label": "kbpage"
     },
     {
@@ -3621,7 +3621,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_kbpagestate",
-      "community": 6,
+      "community": 5,
       "norm_label": "_kbpagestate"
     },
     {
@@ -3634,7 +3634,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_initstate",
-      "community": 6,
+      "community": 5,
       "norm_label": "initstate"
     },
     {
@@ -3647,7 +3647,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_slugtotab",
-      "community": 6,
+      "community": 5,
       "norm_label": "_slugtotab"
     },
     {
@@ -3660,7 +3660,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_build",
-      "community": 6,
+      "community": 5,
       "norm_label": "build"
     },
     {
@@ -3673,7 +3673,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_scaffold",
-      "community": 6,
+      "community": 5,
       "norm_label": "scaffold"
     },
     {
@@ -3686,7 +3686,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_sizedbox",
-      "community": 6,
+      "community": 5,
       "norm_label": "sizedbox"
     },
     {
@@ -3699,7 +3699,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_column",
-      "community": 6,
+      "community": 5,
       "norm_label": "column"
     },
     {
@@ -3712,7 +3712,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_adsensebanner",
-      "community": 6,
+      "community": 5,
       "norm_label": "adsensebanner"
     },
     {
@@ -3725,7 +3725,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_row",
-      "community": 6,
+      "community": 5,
       "norm_label": "row"
     },
     {
@@ -3738,7 +3738,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_divider",
-      "community": 6,
+      "community": 5,
       "norm_label": "divider"
     },
     {
@@ -3751,7 +3751,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_appfooter",
-      "community": 6,
+      "community": 5,
       "norm_label": "appfooter"
     },
     {
@@ -3764,7 +3764,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildbreadcrumbs",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildbreadcrumbs"
     },
     {
@@ -3777,7 +3777,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildsidebarnavitem",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildsidebarnavitem"
     },
     {
@@ -3790,7 +3790,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_inkwell",
-      "community": 6,
+      "community": 5,
       "norm_label": "inkwell"
     },
     {
@@ -3803,7 +3803,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildtoclink",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildtoclink"
     },
     {
@@ -3816,7 +3816,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_padding",
-      "community": 6,
+      "community": 5,
       "norm_label": "padding"
     },
     {
@@ -3829,7 +3829,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildrelatedlink",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildrelatedlink"
     },
     {
@@ -3842,7 +3842,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildselectedarticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildselectedarticle"
     },
     {
@@ -3855,7 +3855,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildpdfhistoryarticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildpdfhistoryarticle"
     },
     {
@@ -3868,7 +3868,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildprivacyarticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildprivacyarticle"
     },
     {
@@ -3881,7 +3881,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildscanrestorationarticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildscanrestorationarticle"
     },
     {
@@ -3894,7 +3894,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildmarkdownvstextarticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildmarkdownvstextarticle"
     },
     {
@@ -3907,7 +3907,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildocrguidearticle",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildocrguidearticle"
     },
     {
@@ -3920,7 +3920,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_icon",
-      "community": 6,
+      "community": 5,
       "norm_label": "icon"
     },
     {
@@ -3933,7 +3933,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildh2",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildh2"
     },
     {
@@ -3946,7 +3946,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_text",
-      "community": 6,
+      "community": 5,
       "norm_label": "text"
     },
     {
@@ -3959,7 +3959,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildtechnicaltipbox",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildtechnicaltipbox"
     },
     {
@@ -3972,7 +3972,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_container",
-      "community": 6,
+      "community": 5,
       "norm_label": "container"
     },
     {
@@ -3986,7 +3986,7 @@
       "owner": "unowned",
       "sensitivity": "HIGH",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildsecuritynotebox",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildsecuritynotebox"
     },
     {
@@ -3999,7 +3999,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_builddiagramstep",
-      "community": 6,
+      "community": 5,
       "norm_label": "_builddiagramstep"
     },
     {
@@ -4012,7 +4012,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildbulletpoint",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildbulletpoint"
     },
     {
@@ -4025,7 +4025,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_kb_page_dart_buildgithubrepotile",
-      "community": 6,
+      "community": 5,
       "norm_label": "_buildgithubrepotile"
     },
     {
@@ -4038,7 +4038,7 @@
       "heat": 0.093,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "pdf_merge_page.dart"
     },
     {
@@ -4051,7 +4051,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_selectedpdffile",
-      "community": 3,
+      "community": 10,
       "norm_label": "selectedpdffile"
     },
     {
@@ -4064,7 +4064,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_pdfmergepage",
-      "community": 3,
+      "community": 10,
       "norm_label": "pdfmergepage"
     },
     {
@@ -4077,7 +4077,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_pdfmergepagestate",
-      "community": 3,
+      "community": 10,
       "norm_label": "_pdfmergepagestate"
     },
     {
@@ -4090,7 +4090,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_initstate",
-      "community": 3,
+      "community": 10,
       "norm_label": "initstate"
     },
     {
@@ -4103,7 +4103,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_processincomingfiles",
-      "community": 3,
+      "community": 10,
       "norm_label": "_processincomingfiles"
     },
     {
@@ -4116,7 +4116,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_removefileat",
-      "community": 3,
+      "community": 10,
       "norm_label": "_removefileat"
     },
     {
@@ -4129,7 +4129,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_onreorder",
-      "community": 3,
+      "community": 10,
       "norm_label": "_onreorder"
     },
     {
@@ -4142,7 +4142,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_gotoprogresspage",
-      "community": 3,
+      "community": 10,
       "norm_label": "_gotoprogresspage"
     },
     {
@@ -4155,11 +4155,11 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_build",
-      "community": 3,
+      "community": 10,
       "norm_label": "build"
     },
     {
-      "label": "Scaffold",
+      "label": "SelectionArea",
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\pdf_merge_page.dart",
       "source_location": null,
@@ -4167,9 +4167,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_scaffold",
-      "community": 3,
-      "norm_label": "scaffold"
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_selectionarea",
+      "community": 10,
+      "norm_label": "selectionarea"
     },
     {
       "label": "AdSenseBanner",
@@ -4181,7 +4181,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_adsensebanner",
-      "community": 3,
+      "community": 10,
       "norm_label": "adsensebanner"
     },
     {
@@ -4194,7 +4194,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_sizedbox",
-      "community": 3,
+      "community": 10,
       "norm_label": "sizedbox"
     },
     {
@@ -4207,7 +4207,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_icon",
-      "community": 3,
+      "community": 10,
       "norm_label": "icon"
     },
     {
@@ -4220,7 +4220,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_appfooter",
-      "community": 3,
+      "community": 10,
       "norm_label": "appfooter"
     },
     {
@@ -4233,7 +4233,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_builddropzone",
-      "community": 3,
+      "community": 10,
       "norm_label": "_builddropzone"
     },
     {
@@ -4246,7 +4246,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_droptarget",
-      "community": 3,
+      "community": 10,
       "norm_label": "droptarget"
     },
     {
@@ -4259,7 +4259,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_buildfilesheader",
-      "community": 3,
+      "community": 10,
       "norm_label": "_buildfilesheader"
     },
     {
@@ -4272,7 +4272,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_row",
-      "community": 3,
+      "community": 10,
       "norm_label": "row"
     },
     {
@@ -4285,7 +4285,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_buildreorderablelist",
-      "community": 3,
+      "community": 10,
       "norm_label": "_buildreorderablelist"
     },
     {
@@ -4298,7 +4298,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_container",
-      "community": 3,
+      "community": 10,
       "norm_label": "container"
     },
     {
@@ -4311,7 +4311,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_buildactionbutton",
-      "community": 3,
+      "community": 10,
       "norm_label": "_buildactionbutton"
     },
     {
@@ -4324,7 +4324,7 @@
       "heat": 0.026,
       "owner": "unowned",
       "id": "dart_typed_data",
-      "community": 11,
+      "community": 6,
       "norm_label": "dart:typed_data"
     },
     {
@@ -4337,7 +4337,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "package_file_picker_file_picker_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "package:file_picker/file_picker.dart"
     },
     {
@@ -4350,7 +4350,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "package_desktop_drop_desktop_drop_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "package:desktop_drop/desktop_drop.dart"
     },
     {
@@ -4358,12 +4358,12 @@
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\pdf_merge_progress_page.dart",
       "source_location": null,
-      "level": 2,
+      "level": 1,
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
       "id": "widgets_rewarded_video_ad_modal_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "../widgets/rewarded_video_ad_modal.dart"
     },
     {
@@ -4373,10 +4373,10 @@
       "source_location": null,
       "level": 1,
       "granularity": "low",
-      "heat": 0.016,
+      "heat": 0.018,
       "owner": "unowned",
       "id": "utils_app_limits_config_dart",
-      "community": 3,
+      "community": 1,
       "norm_label": "../utils/app_limits_config.dart"
     },
     {
@@ -4389,7 +4389,7 @@
       "heat": 0.106,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart",
-      "community": 3,
+      "community": 6,
       "norm_label": "pdf_merge_progress_page.dart"
     },
     {
@@ -4402,7 +4402,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_pdfmergeprogresspage",
-      "community": 3,
+      "community": 6,
       "norm_label": "pdfmergeprogresspage"
     },
     {
@@ -4415,7 +4415,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_pdfmergeprogresspagestate",
-      "community": 3,
+      "community": 6,
       "norm_label": "_pdfmergeprogresspagestate"
     },
     {
@@ -4428,7 +4428,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_initstate",
-      "community": 3,
+      "community": 6,
       "norm_label": "initstate"
     },
     {
@@ -4441,7 +4441,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_processincomingfiles",
-      "community": 3,
+      "community": 6,
       "norm_label": "_processincomingfiles"
     },
     {
@@ -4454,7 +4454,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_removefileat",
-      "community": 3,
+      "community": 6,
       "norm_label": "_removefileat"
     },
     {
@@ -4467,7 +4467,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_onreorder",
-      "community": 3,
+      "community": 6,
       "norm_label": "_onreorder"
     },
     {
@@ -4480,7 +4480,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_downloadmergedpdf",
-      "community": 3,
+      "community": 6,
       "norm_label": "_downloadmergedpdf"
     },
     {
@@ -4493,7 +4493,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_resetandgoback",
-      "community": 3,
+      "community": 6,
       "norm_label": "_resetandgoback"
     },
     {
@@ -4506,11 +4506,11 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_build",
-      "community": 3,
+      "community": 6,
       "norm_label": "build"
     },
     {
-      "label": "Scaffold",
+      "label": "SelectionArea",
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\pdf_merge_progress_page.dart",
       "source_location": null,
@@ -4518,9 +4518,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_scaffold",
-      "community": 3,
-      "norm_label": "scaffold"
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_selectionarea",
+      "community": 6,
+      "norm_label": "selectionarea"
     },
     {
       "label": "AdSenseBanner",
@@ -4532,7 +4532,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_adsensebanner",
-      "community": 3,
+      "community": 6,
       "norm_label": "adsensebanner"
     },
     {
@@ -4545,7 +4545,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_sizedbox",
-      "community": 3,
+      "community": 6,
       "norm_label": "sizedbox"
     },
     {
@@ -4558,7 +4558,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_appfooter",
-      "community": 3,
+      "community": 6,
       "norm_label": "appfooter"
     },
     {
@@ -4571,7 +4571,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_buildstatusheader",
-      "community": 3,
+      "community": 6,
       "norm_label": "_buildstatusheader"
     },
     {
@@ -4584,7 +4584,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_row",
-      "community": 3,
+      "community": 6,
       "norm_label": "row"
     },
     {
@@ -4597,7 +4597,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_builderrorbanner",
-      "community": 3,
+      "community": 6,
       "norm_label": "_builderrorbanner"
     },
     {
@@ -4610,7 +4610,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_container",
-      "community": 3,
+      "community": 6,
       "norm_label": "container"
     },
     {
@@ -4623,7 +4623,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_icon",
-      "community": 3,
+      "community": 6,
       "norm_label": "icon"
     },
     {
@@ -4636,7 +4636,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_buildfilesmanagercard",
-      "community": 3,
+      "community": 6,
       "norm_label": "_buildfilesmanagercard"
     },
     {
@@ -4649,7 +4649,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_buildactionbutton",
-      "community": 3,
+      "community": 6,
       "norm_label": "_buildactionbutton"
     },
     {
@@ -4662,7 +4662,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_buildsuccesscard",
-      "community": 3,
+      "community": 6,
       "norm_label": "_buildsuccesscard"
     },
     {
@@ -4675,7 +4675,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "dart_convert",
-      "community": 11,
+      "community": 6,
       "norm_label": "dart:convert"
     },
     {
@@ -4688,7 +4688,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "package_http_http_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "package:http/http.dart"
     },
     {
@@ -4701,7 +4701,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "services_download_helper_dart",
-      "community": 3,
+      "community": 6,
       "norm_label": "../services/download_helper.dart"
     },
     {
@@ -4714,7 +4714,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "pdf_merge_page_dart",
-      "community": 3,
+      "community": 6,
       "norm_label": "pdf_merge_page.dart"
     },
     {
@@ -4809,7 +4809,7 @@
       "norm_label": "build"
     },
     {
-      "label": "Scaffold",
+      "label": "SelectionArea",
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\pdf_tools_hub_page.dart",
       "source_location": null,
@@ -4817,9 +4817,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_scaffold",
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_selectionarea",
       "community": 1,
-      "norm_label": "scaffold"
+      "norm_label": "selectionarea"
     },
     {
       "label": "AdSenseBanner",
@@ -5641,7 +5641,7 @@
       "norm_label": "build"
     },
     {
-      "label": "Scaffold",
+      "label": "SelectionArea",
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\tool_placeholder_page.dart",
       "source_location": null,
@@ -5649,9 +5649,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_scaffold",
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_selectionarea",
       "community": 1,
-      "norm_label": "scaffold"
+      "norm_label": "selectionarea"
     },
     {
       "label": "AdSenseBanner",
@@ -5680,19 +5680,6 @@
       "norm_label": "sizedbox"
     },
     {
-      "label": "AppFooter",
-      "file_type": "code",
-      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\tool_placeholder_page.dart",
-      "source_location": null,
-      "level": 3,
-      "granularity": "low",
-      "heat": 0.01,
-      "owner": "unowned",
-      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_appfooter",
-      "community": 1,
-      "norm_label": "appfooter"
-    },
-    {
       "label": "api_service.dart",
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\services\\api_service.dart",
@@ -5702,7 +5689,7 @@
       "heat": 0.056,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "api_service.dart"
     },
     {
@@ -5715,7 +5702,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_uploadresult",
-      "community": 11,
+      "community": 6,
       "norm_label": "uploadresult"
     },
     {
@@ -5728,7 +5715,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_batchfileitem",
-      "community": 11,
+      "community": 6,
       "norm_label": "batchfileitem"
     },
     {
@@ -5741,7 +5728,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_multipartrequestwithprogress",
-      "community": 11,
+      "community": 6,
       "norm_label": "multipartrequestwithprogress"
     },
     {
@@ -5754,7 +5741,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_apiservice",
-      "community": 11,
+      "community": 6,
       "norm_label": "apiservice"
     },
     {
@@ -5767,7 +5754,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_function",
-      "community": 11,
+      "community": 6,
       "norm_label": "function"
     },
     {
@@ -5780,7 +5767,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_formatbytes",
-      "community": 11,
+      "community": 6,
       "norm_label": "formatbytes"
     },
     {
@@ -5793,7 +5780,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_getfiletypedescription",
-      "community": 11,
+      "community": 6,
       "norm_label": "getfiletypedescription"
     },
     {
@@ -5806,7 +5793,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_jsondecode",
-      "community": 11,
+      "community": 6,
       "norm_label": "jsondecode"
     },
     {
@@ -5819,7 +5806,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_getdownloadurl",
-      "community": 11,
+      "community": 6,
       "norm_label": "getdownloadurl"
     },
     {
@@ -5832,7 +5819,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_getbatchdownloadzipurl",
-      "community": 11,
+      "community": 6,
       "norm_label": "getbatchdownloadzipurl"
     },
     {
@@ -5845,7 +5832,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_service_dart_getpageimageurl",
-      "community": 11,
+      "community": 6,
       "norm_label": "getpageimageurl"
     },
     {
@@ -5858,7 +5845,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "dart_async",
-      "community": 11,
+      "community": 6,
       "norm_label": "dart:async"
     },
     {
@@ -5871,7 +5858,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "dart_math",
-      "community": 11,
+      "community": 6,
       "norm_label": "dart:math"
     },
     {
@@ -5884,7 +5871,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "package_flutter_services_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "package:flutter/services.dart"
     },
     {
@@ -5897,7 +5884,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "api_uploader_stub_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "api_uploader_stub.dart"
     },
     {
@@ -5910,7 +5897,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_uploader_stub_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "api_uploader_stub.dart"
     },
     {
@@ -5923,7 +5910,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_api_uploader_web_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "api_uploader_web.dart"
     },
     {
@@ -5936,7 +5923,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "dart_html",
-      "community": 11,
+      "community": 6,
       "norm_label": "dart:html"
     },
     {
@@ -6053,7 +6040,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_download_helper_web_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "download_helper_web.dart"
     },
     {
@@ -6066,7 +6053,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_download_helper_web_dart_triggerdownload",
-      "community": 11,
+      "community": 6,
       "norm_label": "triggerdownload"
     },
     {
@@ -6079,7 +6066,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_download_helper_web_dart_directanchordownload",
-      "community": 11,
+      "community": 6,
       "norm_label": "_directanchordownload"
     },
     {
@@ -6092,7 +6079,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_download_helper_web_dart_triggerdownloadbytes",
-      "community": 11,
+      "community": 6,
       "norm_label": "triggerdownloadbytes"
     },
     {
@@ -6100,12 +6087,12 @@
       "file_type": "code",
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\services\\telemetry_helper_web.dart",
       "source_location": null,
-      "level": 2,
+      "level": 1,
       "granularity": "low",
       "heat": 0.013,
       "owner": "unowned",
       "id": "dart_js",
-      "community": 11,
+      "community": 8,
       "norm_label": "dart:js"
     },
     {
@@ -6118,7 +6105,7 @@
       "heat": 0.026,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "host_resolver.dart"
     },
     {
@@ -6131,7 +6118,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_hostresolver",
-      "community": 7,
+      "community": 8,
       "norm_label": "hostresolver"
     },
     {
@@ -6144,7 +6131,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_getbrand",
-      "community": 7,
+      "community": 8,
       "norm_label": "getbrand"
     },
     {
@@ -6157,7 +6144,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_isfreeocrdomain",
-      "community": 7,
+      "community": 8,
       "norm_label": "isfreeocrdomain"
     },
     {
@@ -6170,7 +6157,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_isfreepdftoolsdomain",
-      "community": 7,
+      "community": 8,
       "norm_label": "isfreepdftoolsdomain"
     },
     {
@@ -6183,7 +6170,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_getbrandtitle",
-      "community": 7,
+      "community": 8,
       "norm_label": "getbrandtitle"
     },
     {
@@ -6196,7 +6183,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_host_resolver_dart_getdefaulthomeroute",
-      "community": 7,
+      "community": 8,
       "norm_label": "getdefaulthomeroute"
     },
     {
@@ -6209,7 +6196,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_sse_service_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "sse_service.dart"
     },
     {
@@ -6222,7 +6209,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_sse_service_dart_jobevent",
-      "community": 11,
+      "community": 6,
       "norm_label": "jobevent"
     },
     {
@@ -6235,7 +6222,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_sse_service_dart_sseservice",
-      "community": 11,
+      "community": 6,
       "norm_label": "sseservice"
     },
     {
@@ -6248,7 +6235,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_stub_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "telemetry_helper_stub.dart"
     },
     {
@@ -6261,7 +6248,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_stub_dart_trackga4pageview",
-      "community": 7,
+      "community": 8,
       "norm_label": "trackga4pageview"
     },
     {
@@ -6274,7 +6261,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_stub_dart_trackga4event",
-      "community": 7,
+      "community": 8,
       "norm_label": "trackga4event"
     },
     {
@@ -6287,7 +6274,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_web_dart",
-      "community": 11,
+      "community": 8,
       "norm_label": "telemetry_helper_web.dart"
     },
     {
@@ -6300,7 +6287,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_web_dart_trackga4pageview",
-      "community": 11,
+      "community": 8,
       "norm_label": "trackga4pageview"
     },
     {
@@ -6313,7 +6300,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_services_telemetry_helper_web_dart_trackga4event",
-      "community": 11,
+      "community": 8,
       "norm_label": "trackga4event"
     },
     {
@@ -6508,7 +6495,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "app_limits_config.dart"
     },
     {
@@ -6521,7 +6508,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart_applimitsconfig",
-      "community": 7,
+      "community": 8,
       "norm_label": "applimitsconfig"
     },
     {
@@ -6534,7 +6521,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart_recordboost",
-      "community": 7,
+      "community": 8,
       "norm_label": "recordboost"
     },
     {
@@ -6547,7 +6534,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart_resetboost",
-      "community": 7,
+      "community": 8,
       "norm_label": "resetboost"
     },
     {
@@ -6560,7 +6547,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart_evaluate",
-      "community": 7,
+      "community": 8,
       "norm_label": "evaluate"
     },
     {
@@ -6573,7 +6560,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_app_limits_config_dart_calculateadsrequired",
-      "community": 7,
+      "community": 8,
       "norm_label": "calculateadsrequired"
     },
     {
@@ -6586,7 +6573,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "limit_evaluator_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "limit_evaluator.dart"
     },
     {
@@ -6781,7 +6768,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_theme_storage_web_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "theme_storage_web.dart"
     },
     {
@@ -6794,7 +6781,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_theme_storage_web_dart_themestorageplatform",
-      "community": 11,
+      "community": 6,
       "norm_label": "themestorageplatform"
     },
     {
@@ -6807,7 +6794,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_theme_storage_web_dart_savetheme",
-      "community": 11,
+      "community": 6,
       "norm_label": "savetheme"
     },
     {
@@ -6820,7 +6807,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_theme_storage_web_dart_loadtheme",
-      "community": 11,
+      "community": 6,
       "norm_label": "loadtheme"
     },
     {
@@ -6937,7 +6924,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_url_helper_web_dart",
-      "community": 11,
+      "community": 6,
       "norm_label": "url_helper_web.dart"
     },
     {
@@ -6950,7 +6937,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_url_helper_web_dart_openurl",
-      "community": 11,
+      "community": 6,
       "norm_label": "openurl"
     },
     {
@@ -6963,7 +6950,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_utils_url_helper_web_dart_navigatetopath",
-      "community": 11,
+      "community": 6,
       "norm_label": "navigatetopath"
     },
     {
@@ -7155,10 +7142,10 @@
       "source_location": null,
       "level": 0,
       "granularity": "low",
-      "heat": 0.056,
+      "heat": 0.064,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
-      "community": 6,
+      "community": 12,
       "norm_label": "app_footer.dart"
     },
     {
@@ -7171,7 +7158,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_appfooter",
-      "community": 6,
+      "community": 12,
       "norm_label": "appfooter"
     },
     {
@@ -7184,7 +7171,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_navigateto",
-      "community": 6,
+      "community": 12,
       "norm_label": "_navigateto"
     },
     {
@@ -7197,7 +7184,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_build",
-      "community": 6,
+      "community": 12,
       "norm_label": "build"
     },
     {
@@ -7210,7 +7197,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_container",
-      "community": 6,
+      "community": 12,
       "norm_label": "container"
     },
     {
@@ -7223,7 +7210,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_column",
-      "community": 6,
+      "community": 12,
       "norm_label": "column"
     },
     {
@@ -7236,7 +7223,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_sizedbox",
-      "community": 6,
+      "community": 12,
       "norm_label": "sizedbox"
     },
     {
@@ -7249,8 +7236,21 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_row",
-      "community": 6,
+      "community": 12,
       "norm_label": "row"
+    },
+    {
+      "label": "_isPdfTools",
+      "file_type": "code",
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_footer.dart",
+      "source_location": null,
+      "level": 3,
+      "granularity": "low",
+      "heat": 0.01,
+      "owner": "unowned",
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_ispdftools",
+      "community": 12,
+      "norm_label": "_ispdftools"
     },
     {
       "label": "_buildBrandColumn",
@@ -7262,7 +7262,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildbrandcolumn",
-      "community": 6,
+      "community": 12,
       "norm_label": "_buildbrandcolumn"
     },
     {
@@ -7275,8 +7275,21 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildnavcolumn",
-      "community": 6,
+      "community": 12,
       "norm_label": "_buildnavcolumn"
+    },
+    {
+      "label": "InkWell",
+      "file_type": "code",
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_footer.dart",
+      "source_location": null,
+      "level": 3,
+      "granularity": "low",
+      "heat": 0.01,
+      "owner": "unowned",
+      "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_inkwell",
+      "community": 12,
+      "norm_label": "inkwell"
     },
     {
       "label": "_buildEnginesColumn",
@@ -7288,7 +7301,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildenginescolumn",
-      "community": 6,
+      "community": 12,
       "norm_label": "_buildenginescolumn"
     },
     {
@@ -7301,7 +7314,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildenginechip",
-      "community": 6,
+      "community": 12,
       "norm_label": "_buildenginechip"
     },
     {
@@ -7314,7 +7327,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_actionchip",
-      "community": 6,
+      "community": 12,
       "norm_label": "actionchip"
     },
     {
@@ -7327,7 +7340,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildlegalcolumn",
-      "community": 6,
+      "community": 12,
       "norm_label": "_buildlegalcolumn"
     },
     {
@@ -7340,7 +7353,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "brand_icons_dart",
-      "community": 6,
+      "community": 12,
       "norm_label": "brand_icons.dart"
     },
     {
@@ -7353,7 +7366,7 @@
       "heat": 0.048,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart",
-      "community": 7,
+      "community": 12,
       "norm_label": "app_header.dart"
     },
     {
@@ -7366,7 +7379,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_appheader",
-      "community": 7,
+      "community": 12,
       "norm_label": "appheader"
     },
     {
@@ -7379,7 +7392,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_build",
-      "community": 7,
+      "community": 12,
       "norm_label": "build"
     },
     {
@@ -7392,7 +7405,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_sizedbox",
-      "community": 7,
+      "community": 12,
       "norm_label": "sizedbox"
     },
     {
@@ -7405,7 +7418,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_container",
-      "community": 7,
+      "community": 12,
       "norm_label": "container"
     },
     {
@@ -7418,7 +7431,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_spacer",
-      "community": 7,
+      "community": 12,
       "norm_label": "spacer"
     },
     {
@@ -7431,7 +7444,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_row",
-      "community": 7,
+      "community": 12,
       "norm_label": "row"
     },
     {
@@ -7444,7 +7457,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_popupmenuitem",
-      "community": 7,
+      "community": 12,
       "norm_label": "popupmenuitem"
     },
     {
@@ -7457,7 +7470,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_popupmenudivider",
-      "community": 7,
+      "community": 12,
       "norm_label": "popupmenudivider"
     },
     {
@@ -7470,7 +7483,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_buildthemetogglebutton",
-      "community": 7,
+      "community": 12,
       "norm_label": "_buildthemetogglebutton"
     },
     {
@@ -7483,7 +7496,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_header_dart_iconbutton",
-      "community": 7,
+      "community": 12,
       "norm_label": "iconbutton"
     },
     {
@@ -7496,7 +7509,7 @@
       "heat": 0.018,
       "owner": "unowned",
       "id": "dart_ui",
-      "community": 7,
+      "community": 8,
       "norm_label": "dart:ui"
     },
     {
@@ -7678,7 +7691,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_glass_card_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "glass_card.dart"
     },
     {
@@ -7691,7 +7704,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_glass_card_dart_glasscard",
-      "community": 7,
+      "community": 8,
       "norm_label": "glasscard"
     },
     {
@@ -7704,7 +7717,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_glass_card_dart_build",
-      "community": 7,
+      "community": 8,
       "norm_label": "build"
     },
     {
@@ -7717,7 +7730,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_glass_card_dart_inkwell",
-      "community": 7,
+      "community": 8,
       "norm_label": "inkwell"
     },
     {
@@ -7730,7 +7743,7 @@
       "heat": 0.074,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "hero_dropzone.dart"
     },
     {
@@ -7743,7 +7756,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_herodropzone",
-      "community": 3,
+      "community": 10,
       "norm_label": "herodropzone"
     },
     {
@@ -7756,7 +7769,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_herodropzonestate",
-      "community": 3,
+      "community": 10,
       "norm_label": "_herodropzonestate"
     },
     {
@@ -7769,7 +7782,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_function",
-      "community": 3,
+      "community": 10,
       "norm_label": "function"
     },
     {
@@ -7782,7 +7795,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_initstate",
-      "community": 3,
+      "community": 10,
       "norm_label": "initstate"
     },
     {
@@ -7795,7 +7808,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_startboostticker",
-      "community": 3,
+      "community": 10,
       "norm_label": "_startboostticker"
     },
     {
@@ -7808,7 +7821,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_dispose",
-      "community": 3,
+      "community": 10,
       "norm_label": "dispose"
     },
     {
@@ -7821,7 +7834,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_processmultiplefiles",
-      "community": 3,
+      "community": 10,
       "norm_label": "_processmultiplefiles"
     },
     {
@@ -7834,7 +7847,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_processsingleupload",
-      "community": 3,
+      "community": 10,
       "norm_label": "_processsingleupload"
     },
     {
@@ -7847,7 +7860,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_showtoast",
-      "community": 3,
+      "community": 10,
       "norm_label": "_showtoast"
     },
     {
@@ -7860,7 +7873,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_build",
-      "community": 3,
+      "community": 10,
       "norm_label": "build"
     },
     {
@@ -7873,7 +7886,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_sizedbox",
-      "community": 3,
+      "community": 10,
       "norm_label": "sizedbox"
     },
     {
@@ -7886,7 +7899,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_container",
-      "community": 3,
+      "community": 10,
       "norm_label": "container"
     },
     {
@@ -7899,7 +7912,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_icon",
-      "community": 3,
+      "community": 10,
       "norm_label": "icon"
     },
     {
@@ -7912,7 +7925,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_hero_dropzone_dart_text",
-      "community": 3,
+      "community": 10,
       "norm_label": "text"
     },
     {
@@ -7925,7 +7938,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "utils_limit_evaluator_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "../utils/limit_evaluator.dart"
     },
     {
@@ -7938,7 +7951,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "adsense_banner_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "adsense_banner.dart"
     },
     {
@@ -7951,7 +7964,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "rewarded_video_ad_modal_dart",
-      "community": 3,
+      "community": 10,
       "norm_label": "rewarded_video_ad_modal.dart"
     },
     {
@@ -8276,7 +8289,7 @@
       "heat": 0.098,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart",
-      "community": 13,
+      "community": 14,
       "norm_label": "ocr_progress_view.dart"
     },
     {
@@ -8289,7 +8302,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_ocrprogressview",
-      "community": 13,
+      "community": 14,
       "norm_label": "ocrprogressview"
     },
     {
@@ -8302,7 +8315,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_ocrprogressviewstate",
-      "community": 13,
+      "community": 14,
       "norm_label": "_ocrprogressviewstate"
     },
     {
@@ -8315,7 +8328,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_animatedhourglassicon",
-      "community": 13,
+      "community": 14,
       "norm_label": "animatedhourglassicon"
     },
     {
@@ -8328,7 +8341,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_animatedhourglassiconstate",
-      "community": 13,
+      "community": 14,
       "norm_label": "_animatedhourglassiconstate"
     },
     {
@@ -8341,7 +8354,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_snackbar",
-      "community": 13,
+      "community": 14,
       "norm_label": "snackbar"
     },
     {
@@ -8354,7 +8367,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_downloadbatchitemfile",
-      "community": 13,
+      "community": 14,
       "norm_label": "_downloadbatchitemfile"
     },
     {
@@ -8367,7 +8380,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_downloadallcompletedaszip",
-      "community": 13,
+      "community": 14,
       "norm_label": "_downloadallcompletedaszip"
     },
     {
@@ -8380,7 +8393,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_didupdatewidget",
-      "community": 13,
+      "community": 14,
       "norm_label": "didupdatewidget"
     },
     {
@@ -8393,7 +8406,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_initstate",
-      "community": 13,
+      "community": 14,
       "norm_label": "initstate"
     },
     {
@@ -8406,7 +8419,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_startpollingfallback",
-      "community": 13,
+      "community": 14,
       "norm_label": "_startpollingfallback"
     },
     {
@@ -8419,7 +8432,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_subscribetosinglesse",
-      "community": 13,
+      "community": 14,
       "norm_label": "_subscribetosinglesse"
     },
     {
@@ -8432,7 +8445,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_subscribetobatchsse",
-      "community": 13,
+      "community": 14,
       "norm_label": "_subscribetobatchsse"
     },
     {
@@ -8445,7 +8458,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_dispose",
-      "community": 13,
+      "community": 14,
       "norm_label": "dispose"
     },
     {
@@ -8458,7 +8471,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_build",
-      "community": 13,
+      "community": 14,
       "norm_label": "build"
     },
     {
@@ -8471,7 +8484,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_expiredlinkview",
-      "community": 13,
+      "community": 14,
       "norm_label": "expiredlinkview"
     },
     {
@@ -8484,7 +8497,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_column",
-      "community": 13,
+      "community": 14,
       "norm_label": "column"
     },
     {
@@ -8497,7 +8510,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_sizedbox",
-      "community": 13,
+      "community": 14,
       "norm_label": "sizedbox"
     },
     {
@@ -8510,7 +8523,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_buildbatchprogressui",
-      "community": 13,
+      "community": 14,
       "norm_label": "_buildbatchprogressui"
     },
     {
@@ -8523,7 +8536,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_buildsingleprogressui",
-      "community": 13,
+      "community": 14,
       "norm_label": "_buildsingleprogressui"
     },
     {
@@ -8536,7 +8549,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_container",
-      "community": 13,
+      "community": 14,
       "norm_label": "container"
     },
     {
@@ -8549,7 +8562,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_material",
-      "community": 13,
+      "community": 14,
       "norm_label": "material"
     },
     {
@@ -8562,7 +8575,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_row",
-      "community": 13,
+      "community": 14,
       "norm_label": "row"
     },
     {
@@ -8575,7 +8588,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_popupmenuitem",
-      "community": 13,
+      "community": 14,
       "norm_label": "popupmenuitem"
     },
     {
@@ -8588,7 +8601,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_ocr_progress_view_dart_rotationtransition",
-      "community": 13,
+      "community": 14,
       "norm_label": "rotationtransition"
     },
     {
@@ -8601,7 +8614,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "services_sse_service_dart",
-      "community": 13,
+      "community": 14,
       "norm_label": "../services/sse_service.dart"
     },
     {
@@ -8614,7 +8627,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "split_preview_viewer_dart",
-      "community": 13,
+      "community": 14,
       "norm_label": "split_preview_viewer.dart"
     },
     {
@@ -8627,7 +8640,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "expired_link_view_dart",
-      "community": 13,
+      "community": 14,
       "norm_label": "expired_link_view.dart"
     },
     {
@@ -8744,7 +8757,7 @@
       "heat": 0.066,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart",
-      "community": 7,
+      "community": 8,
       "norm_label": "rewarded_video_ad_modal.dart"
     },
     {
@@ -8757,7 +8770,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_rewardedvideoadmodal",
-      "community": 7,
+      "community": 8,
       "norm_label": "rewardedvideoadmodal"
     },
     {
@@ -8770,7 +8783,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_rewardedvideoadmodalstate",
-      "community": 7,
+      "community": 8,
       "norm_label": "_rewardedvideoadmodalstate"
     },
     {
@@ -8783,7 +8796,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_function",
-      "community": 7,
+      "community": 8,
       "norm_label": "function"
     },
     {
@@ -8796,7 +8809,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_dialog",
-      "community": 7,
+      "community": 8,
       "norm_label": "dialog"
     },
     {
@@ -8809,7 +8822,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_initstate",
-      "community": 7,
+      "community": 8,
       "norm_label": "initstate"
     },
     {
@@ -8822,7 +8835,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_dispose",
-      "community": 7,
+      "community": 8,
       "norm_label": "dispose"
     },
     {
@@ -8835,7 +8848,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_startadplayback",
-      "community": 7,
+      "community": 8,
       "norm_label": "_startadplayback"
     },
     {
@@ -8848,7 +8861,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_resumeadplayback",
-      "community": 7,
+      "community": 8,
       "norm_label": "_resumeadplayback"
     },
     {
@@ -8861,7 +8874,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_confirmearlycancel",
-      "community": 7,
+      "community": 8,
       "norm_label": "_confirmearlycancel"
     },
     {
@@ -8874,7 +8887,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_build",
-      "community": 7,
+      "community": 8,
       "norm_label": "build"
     },
     {
@@ -8887,7 +8900,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_circularprogressindicator",
-      "community": 7,
+      "community": 8,
       "norm_label": "circularprogressindicator"
     },
     {
@@ -8900,7 +8913,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_sizedbox",
-      "community": 7,
+      "community": 8,
       "norm_label": "sizedbox"
     },
     {
@@ -8913,7 +8926,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_icon",
-      "community": 7,
+      "community": 8,
       "norm_label": "icon"
     },
     {
@@ -8926,7 +8939,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_color",
-      "community": 7,
+      "community": 8,
       "norm_label": "color"
     },
     {
@@ -8939,7 +8952,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_cliprrect",
-      "community": 7,
+      "community": 8,
       "norm_label": "cliprrect"
     },
     {
@@ -8952,7 +8965,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_buildsuccessdetailrow",
-      "community": 7,
+      "community": 8,
       "norm_label": "_buildsuccessdetailrow"
     },
     {
@@ -8965,7 +8978,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_rewarded_video_ad_modal_dart_row",
-      "community": 7,
+      "community": 8,
       "norm_label": "row"
     },
     {
@@ -8978,7 +8991,7 @@
       "heat": 0.149,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart",
-      "community": 8,
+      "community": 7,
       "norm_label": "split_preview_viewer.dart"
     },
     {
@@ -8991,7 +9004,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_splitpreviewviewer",
-      "community": 8,
+      "community": 7,
       "norm_label": "splitpreviewviewer"
     },
     {
@@ -9004,7 +9017,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_splitpreviewviewerstate",
-      "community": 8,
+      "community": 7,
       "norm_label": "_splitpreviewviewerstate"
     },
     {
@@ -9017,7 +9030,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_initstate",
-      "community": 8,
+      "community": 7,
       "norm_label": "initstate"
     },
     {
@@ -9030,7 +9043,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_dispose",
-      "community": 8,
+      "community": 7,
       "norm_label": "dispose"
     },
     {
@@ -9043,7 +9056,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_ontransformationchanged",
-      "community": 8,
+      "community": 7,
       "norm_label": "_ontransformationchanged"
     },
     {
@@ -9056,7 +9069,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_zoomatfocalpoint",
-      "community": 8,
+      "community": 7,
       "norm_label": "_zoomatfocalpoint"
     },
     {
@@ -9069,7 +9082,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_zoomfromcenter",
-      "community": 8,
+      "community": 7,
       "norm_label": "_zoomfromcenter"
     },
     {
@@ -9082,7 +9095,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_setzoom",
-      "community": 8,
+      "community": 7,
       "norm_label": "_setzoom"
     },
     {
@@ -9095,7 +9108,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_zoomin",
-      "community": 8,
+      "community": 7,
       "norm_label": "_zoomin"
     },
     {
@@ -9108,7 +9121,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_zoomout",
-      "community": 8,
+      "community": 7,
       "norm_label": "_zoomout"
     },
     {
@@ -9121,7 +9134,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_resetzoom",
-      "community": 8,
+      "community": 7,
       "norm_label": "_resetzoom"
     },
     {
@@ -9134,7 +9147,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_handlepointersignal",
-      "community": 8,
+      "community": 7,
       "norm_label": "_handlepointersignal"
     },
     {
@@ -9147,7 +9160,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_startpollingforlines",
-      "community": 8,
+      "community": 7,
       "norm_label": "_startpollingforlines"
     },
     {
@@ -9160,7 +9173,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_reloadpreviewdata",
-      "community": 8,
+      "community": 7,
       "norm_label": "_reloadpreviewdata"
     },
     {
@@ -9173,7 +9186,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_hasemptylines",
-      "community": 8,
+      "community": 7,
       "norm_label": "_hasemptylines"
     },
     {
@@ -9186,7 +9199,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_didupdatewidget",
-      "community": 8,
+      "community": 7,
       "norm_label": "didupdatewidget"
     },
     {
@@ -9199,7 +9212,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_updatetextforcurrentpage",
-      "community": 8,
+      "community": 7,
       "norm_label": "_updatetextforcurrentpage"
     },
     {
@@ -9212,7 +9225,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_gotopreviouspage",
-      "community": 8,
+      "community": 7,
       "norm_label": "_gotopreviouspage"
     },
     {
@@ -9225,7 +9238,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_gotonextpage",
-      "community": 8,
+      "community": 7,
       "norm_label": "_gotonextpage"
     },
     {
@@ -9238,7 +9251,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_copytexttoclipboard",
-      "community": 8,
+      "community": 7,
       "norm_label": "_copytexttoclipboard"
     },
     {
@@ -9251,7 +9264,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_snackbar",
-      "community": 8,
+      "community": 7,
       "norm_label": "snackbar"
     },
     {
@@ -9264,7 +9277,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_downloadfile",
-      "community": 8,
+      "community": 7,
       "norm_label": "_downloadfile"
     },
     {
@@ -9277,7 +9290,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_build",
-      "community": 8,
+      "community": 7,
       "norm_label": "build"
     },
     {
@@ -9290,7 +9303,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_container",
-      "community": 8,
+      "community": 7,
       "norm_label": "container"
     },
     {
@@ -9303,7 +9316,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildtopheader",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildtopheader"
     },
     {
@@ -9316,7 +9329,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_backdropfilter",
-      "community": 8,
+      "community": 7,
       "norm_label": "backdropfilter"
     },
     {
@@ -9329,7 +9342,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildmobileheader",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildmobileheader"
     },
     {
@@ -9342,7 +9355,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_sizedbox",
-      "community": 8,
+      "community": 7,
       "norm_label": "sizedbox"
     },
     {
@@ -9355,7 +9368,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildmobilebody",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildmobilebody"
     },
     {
@@ -9368,7 +9381,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_text",
-      "community": 8,
+      "community": 7,
       "norm_label": "text"
     },
     {
@@ -9381,7 +9394,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_icon",
-      "community": 8,
+      "community": 7,
       "norm_label": "icon"
     },
     {
@@ -9394,7 +9407,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_popupmenudivider",
-      "community": 8,
+      "community": 7,
       "norm_label": "popupmenudivider"
     },
     {
@@ -9407,7 +9420,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_showemaildeliverydialog",
-      "community": 8,
+      "community": 7,
       "norm_label": "_showemaildeliverydialog"
     },
     {
@@ -9420,7 +9433,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_statefulbuilder",
-      "community": 8,
+      "community": 7,
       "norm_label": "statefulbuilder"
     },
     {
@@ -9433,7 +9446,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_alertdialog",
-      "community": 8,
+      "community": 7,
       "norm_label": "alertdialog"
     },
     {
@@ -9446,7 +9459,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildsplitview",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildsplitview"
     },
     {
@@ -9459,7 +9472,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_row",
-      "community": 8,
+      "community": 7,
       "norm_label": "row"
     },
     {
@@ -9472,7 +9485,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildstackedview",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildstackedview"
     },
     {
@@ -9485,7 +9498,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_singlechildscrollview",
-      "community": 8,
+      "community": 7,
       "norm_label": "singlechildscrollview"
     },
     {
@@ -9498,7 +9511,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_builddocumentpreviewpane",
-      "community": 8,
+      "community": 7,
       "norm_label": "_builddocumentpreviewpane"
     },
     {
@@ -9511,7 +9524,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_center",
-      "community": 8,
+      "community": 7,
       "norm_label": "center"
     },
     {
@@ -9524,7 +9537,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildrighttextpane",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildrighttextpane"
     },
     {
@@ -9537,7 +9550,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_buildtaboption",
-      "community": 8,
+      "community": 7,
       "norm_label": "_buildtaboption"
     },
     {
@@ -9550,7 +9563,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_split_preview_viewer_dart_gesturedetector",
-      "community": 8,
+      "community": 7,
       "norm_label": "gesturedetector"
     },
     {
@@ -9563,7 +9576,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "id": "package_flutter_gestures_dart",
-      "community": 8,
+      "community": 7,
       "norm_label": "package:flutter/gestures.dart"
     },
     {
@@ -10839,7 +10852,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_baidu_gpu_service_py",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_baidu_gpu_service.py"
     },
     {
@@ -10855,7 +10868,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "test_baidu_gpu_service_test_baidu_gpu_service_health",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_baidu_gpu_service_health()"
     },
     {
@@ -10872,7 +10885,7 @@
       "owner": "unowned",
       "sensitivity": "HIGH",
       "id": "test_baidu_gpu_service_test_baidu_gpu_service_auth_missing_or_invalid",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_baidu_gpu_service_auth_missing_or_invalid()"
     },
     {
@@ -10888,7 +10901,7 @@
       "heat": 0.024,
       "owner": "unowned",
       "id": "test_baidu_gpu_service_test_parse_grounding_output",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_parse_grounding_output()"
     },
     {
@@ -10904,7 +10917,7 @@
       "heat": 0.034,
       "owner": "unowned",
       "id": "test_baidu_gpu_service_test_baidu_gpu_service_complex_page_mock_inference",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_baidu_gpu_service_complex_page_mock_inference()"
     },
     {
@@ -10920,7 +10933,7 @@
       "heat": 0.047,
       "owner": "unowned",
       "id": "test_baidu_gpu_service_test_ocr_worker_dispatches_to_baidu_gpu_service",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_ocr_worker_dispatches_to_baidu_gpu_service()"
     },
     {
@@ -10936,7 +10949,7 @@
       "heat": 0.043,
       "owner": "unowned",
       "id": "test_baidu_gpu_service_test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()"
     },
     {
@@ -10948,7 +10961,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that get /health returns ready status and identifies baidu_unlimited_oc",
       "id": "test_baidu_gpu_service_rationale_10"
     },
@@ -10961,7 +10974,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that post /ocr/complex-page rejects requests without valid x-internal-s",
       "id": "test_baidu_gpu_service_rationale_22"
     },
@@ -10974,7 +10987,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that grounding tags and coordinates are accurately parsed into line obj",
       "id": "test_baidu_gpu_service_rationale_41"
     },
@@ -10987,7 +11000,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that post /ocr/complex-page returns properly formatted bounding boxes a",
       "id": "test_baidu_gpu_service_rationale_58"
     },
@@ -11000,7 +11013,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that ocr_worker queries baidu_gpu_worker_url when configured for comple",
       "id": "test_baidu_gpu_service_rationale_92"
     },
@@ -11013,7 +11026,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 12,
+      "community": 13,
       "norm_label": "verifies that when baidu_gpu_worker_url times out (>15s) or returns 500/connecti",
       "id": "test_baidu_gpu_service_rationale_139"
     },
@@ -11030,7 +11043,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_complex_pdf_reconstruction_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_complex_pdf_reconstruction.py"
     },
     {
@@ -11046,7 +11059,7 @@
       "heat": 0.062,
       "owner": "unowned",
       "id": "test_complex_pdf_reconstruction_test_complex_two_column_pdf_reconstruction",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_complex_two_column_pdf_reconstruction()"
     },
     {
@@ -11062,7 +11075,7 @@
       "heat": 0.049,
       "owner": "unowned",
       "id": "test_complex_pdf_reconstruction_test_word_level_highlight_alignment_and_space_distribution",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_word_level_highlight_alignment_and_space_distribution()"
     },
     {
@@ -11074,7 +11087,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "simulates a 2-column complex document where baidu unlimited ocr extracts     bo",
       "id": "test_complex_pdf_reconstruction_rationale_8"
     },
@@ -11087,7 +11100,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "verifies that the rightmost word of a line (e.g. 'writing') reaches the right ed",
       "id": "test_complex_pdf_reconstruction_rationale_91"
     },
@@ -11104,7 +11117,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_config_and_quotas_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_config_and_quotas.py"
     },
     {
@@ -11120,7 +11133,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "test_config_and_quotas_test_canonical_config_loader",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_canonical_config_loader()"
     },
     {
@@ -11136,7 +11149,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "test_config_and_quotas_test_get_config_endpoint",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_get_config_endpoint()"
     },
     {
@@ -11152,7 +11165,7 @@
       "heat": 0.014,
       "owner": "unowned",
       "id": "test_config_and_quotas_test_rewarded_ad_callback_stacking",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_rewarded_ad_callback_stacking()"
     },
     {
@@ -11232,7 +11245,7 @@
       "heat": 0.013,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_database_py",
-      "community": 8,
+      "community": 7,
       "norm_label": "test_database.py"
     },
     {
@@ -11248,7 +11261,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "test_database_test_database_connection",
-      "community": 8,
+      "community": 7,
       "norm_label": "test_database_connection()"
     },
     {
@@ -11264,7 +11277,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "test_database_test_database_metadata_create_all",
-      "community": 8,
+      "community": 7,
       "norm_label": "test_database_metadata_create_all()"
     },
     {
@@ -11276,7 +11289,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 8,
+      "community": 7,
       "norm_label": "verify that database connection check returns true for sqlite dev.db.",
       "id": "test_database_rationale_12"
     },
@@ -11289,7 +11302,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 8,
+      "community": 7,
       "norm_label": "verify metadata create_all executes cleanly on sqlite engine.",
       "id": "test_database_rationale_17"
     },
@@ -11583,7 +11596,7 @@
       "heat": 0.037,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_email_delivery_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_email_delivery.py"
     },
     {
@@ -11599,7 +11612,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "test_email_delivery_test_validate_email_address_valid_and_invalid",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_validate_email_address_valid_and_invalid()"
     },
     {
@@ -11615,7 +11628,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_download_links_email_formatting",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_download_links_email_formatting()"
     },
     {
@@ -11631,7 +11644,7 @@
       "heat": 0.049,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_email_links_success_and_purges_ram_disk",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_email_links_success_and_purges_ram_disk()"
     },
     {
@@ -11647,7 +11660,7 @@
       "heat": 0.014,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_email_links_invalid_email_format",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_email_links_invalid_email_format()"
     },
     {
@@ -11663,7 +11676,7 @@
       "heat": 0.014,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_email_links_job_not_found",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_email_links_job_not_found()"
     },
     {
@@ -11679,7 +11692,7 @@
       "heat": 0.027,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_email_links_job_not_completed",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_email_links_job_not_completed()"
     },
     {
@@ -11695,7 +11708,7 @@
       "heat": 0.033,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_email_links_custom_api_base_url_env_var",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_email_links_custom_api_base_url_env_var()"
     },
     {
@@ -11711,7 +11724,7 @@
       "heat": 0.041,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_download_links_via_resend_api_success",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_download_links_via_resend_api_success()"
     },
     {
@@ -11727,7 +11740,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_download_links_via_resend_api_failure_response",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_download_links_via_resend_api_failure_response()"
     },
     {
@@ -11743,7 +11756,7 @@
       "heat": 0.029,
       "owner": "unowned",
       "id": "test_email_delivery_test_send_download_links_via_resend_api_network_exception",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_send_download_links_via_resend_api_network_exception()"
     },
     {
@@ -11759,7 +11772,7 @@
       "heat": 0.037,
       "owner": "unowned",
       "id": "test_email_delivery_test_api_endpoint_resend_delivery_integration",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_api_endpoint_resend_delivery_integration()"
     },
     {
@@ -12042,7 +12055,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_layout_analyzer_py",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_layout_analyzer.py"
     },
     {
@@ -12058,7 +12071,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_layout_analyzer_create_sample_pdf",
-      "community": 5,
+      "community": 4,
       "norm_label": "create_sample_pdf()"
     },
     {
@@ -12074,7 +12087,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_layout_analyzer_test_simple_layout_classification",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_simple_layout_classification()"
     },
     {
@@ -12090,7 +12103,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_layout_analyzer_test_complex_layout_math_formula",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_complex_layout_math_formula()"
     },
     {
@@ -12106,7 +12119,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_layout_analyzer_test_complex_layout_landscape_orientation",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_complex_layout_landscape_orientation()"
     },
     {
@@ -12122,7 +12135,7 @@
       "heat": 0.021,
       "owner": "unowned",
       "id": "test_layout_analyzer_test_complex_layout_multipage_pure_scan",
-      "community": 5,
+      "community": 4,
       "norm_label": "test_complex_layout_multipage_pure_scan()"
     },
     {
@@ -12722,7 +12735,7 @@
       "heat": 0.032,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_pdf_composer_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_pdf_composer.py"
     },
     {
@@ -12738,7 +12751,7 @@
       "heat": 0.028,
       "owner": "unowned",
       "id": "test_pdf_composer_create_sample_pdf_bytes",
-      "community": 4,
+      "community": 3,
       "norm_label": "_create_sample_pdf_bytes()"
     },
     {
@@ -12754,7 +12767,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "test_pdf_composer_create_sample_image_bytes",
-      "community": 4,
+      "community": 3,
       "norm_label": "_create_sample_image_bytes()"
     },
     {
@@ -12770,7 +12783,7 @@
       "heat": 0.033,
       "owner": "unowned",
       "id": "test_pdf_composer_test_compose_searchable_pdf_from_pdf",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_compose_searchable_pdf_from_pdf()"
     },
     {
@@ -12786,7 +12799,7 @@
       "heat": 0.03,
       "owner": "unowned",
       "id": "test_pdf_composer_test_compose_searchable_pdf_from_image",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_compose_searchable_pdf_from_image()"
     },
     {
@@ -12802,7 +12815,7 @@
       "heat": 0.027,
       "owner": "unowned",
       "id": "test_pdf_composer_test_get_searchable_pdf_retrieval",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_get_searchable_pdf_retrieval()"
     },
     {
@@ -12818,7 +12831,7 @@
       "heat": 0.027,
       "owner": "unowned",
       "id": "test_pdf_composer_test_ephemeral_file_cleanup_pdf_composer",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_ephemeral_file_cleanup_pdf_composer()"
     },
     {
@@ -12834,7 +12847,7 @@
       "heat": 0.027,
       "owner": "unowned",
       "id": "test_pdf_composer_test_ocr_worker_integrates_pdf_composer",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_ocr_worker_integrates_pdf_composer()"
     },
     {
@@ -12850,7 +12863,7 @@
       "heat": 0.047,
       "owner": "unowned",
       "id": "test_pdf_composer_test_get_searchable_pdf_from_redis_when_local_cache_misses",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_get_searchable_pdf_from_redis_when_local_cache_misses()"
     },
     {
@@ -12866,7 +12879,7 @@
       "heat": 0.031,
       "owner": "unowned",
       "id": "test_pdf_composer_test_compose_searchable_pdf_with_rotation_and_morph_scaling",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_compose_searchable_pdf_with_rotation_and_morph_scaling()"
     },
     {
@@ -13290,7 +13303,7 @@
       "heat": 0.016,
       "owner": "unowned",
       "id": "e_non_office_dev_space_vibe_skool_freeocr_src_tests_test_redis_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_redis.py"
     },
     {
@@ -13306,7 +13319,7 @@
       "heat": 0.017,
       "owner": "unowned",
       "id": "test_redis_test_redis_client_configuration",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_redis_client_configuration()"
     },
     {
@@ -13322,7 +13335,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_redis_test_check_redis_connection_mocked_success",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_check_redis_connection_mocked_success()"
     },
     {
@@ -13338,7 +13351,7 @@
       "heat": 0.019,
       "owner": "unowned",
       "id": "test_redis_test_check_redis_connection_mocked_failure",
-      "community": 4,
+      "community": 3,
       "norm_label": "test_check_redis_connection_mocked_failure()"
     },
     {
@@ -13350,7 +13363,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "verify redis client initialization with expected configuration.",
       "id": "test_redis_rationale_13"
     },
@@ -13363,7 +13376,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "verify check_redis_connection returns true when redis ping succeeds.",
       "id": "test_redis_rationale_19"
     },
@@ -13376,7 +13389,7 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "community": 4,
+      "community": 3,
       "norm_label": "verify check_redis_connection returns false gracefully on connection exception.",
       "id": "test_redis_rationale_27"
     },
@@ -13681,9 +13694,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_11",
       "community": 16,
-      "norm_label": "helper to generate a minimal valid in-memory pdf with specified page text."
+      "norm_label": "helper to generate a minimal valid in-memory pdf with specified page text.",
+      "id": "test_tools_merge_rationale_11"
     },
     {
       "label": "AC: When uploading fewer than 2 PDF files, system rejects with HTTP 400.",
@@ -13694,9 +13707,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_22",
       "community": 16,
-      "norm_label": "ac: when uploading fewer than 2 pdf files, system rejects with http 400."
+      "norm_label": "ac: when uploading fewer than 2 pdf files, system rejects with http 400.",
+      "id": "test_tools_merge_rationale_22"
     },
     {
       "label": "AC: System rejects non-PDF uploads with HTTP 400.",
@@ -13707,9 +13720,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_33",
       "community": 16,
-      "norm_label": "ac: system rejects non-pdf uploads with http 400."
+      "norm_label": "ac: system rejects non-pdf uploads with http 400.",
+      "id": "test_tools_merge_rationale_33"
     },
     {
       "label": "AC: 2 valid PDFs merge into a single PDF with total combined page count.",
@@ -13720,9 +13733,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_46",
       "community": 16,
-      "norm_label": "ac: 2 valid pdfs merge into a single pdf with total combined page count."
+      "norm_label": "ac: 2 valid pdfs merge into a single pdf with total combined page count.",
+      "id": "test_tools_merge_rationale_46"
     },
     {
       "label": "AC: Output PDF preserves the exact sequence of the files submitted.",
@@ -13733,9 +13746,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_69",
       "community": 16,
-      "norm_label": "ac: output pdf preserves the exact sequence of the files submitted."
+      "norm_label": "ac: output pdf preserves the exact sequence of the files submitted.",
+      "id": "test_tools_merge_rationale_69"
     },
     {
       "label": "AC: System rejects more than 50 files with HTTP 400.",
@@ -13746,9 +13759,9 @@
       "granularity": "low",
       "heat": 0.01,
       "owner": "unowned",
-      "id": "test_tools_merge_rationale_89",
       "community": 16,
-      "norm_label": "ac: system rejects more than 50 files with http 400."
+      "norm_label": "ac: system rejects more than 50 files with http 400.",
+      "id": "test_tools_merge_rationale_89"
     },
     {
       "label": "__init__.py",
@@ -13855,7 +13868,7 @@
       "heat": 0.01,
       "owner": "unowned",
       "sensitivity": "HIGH",
-      "community": 4,
+      "community": 3,
       "norm_label": "retrieves compiled searchable pdf bytes by token from ephemeral dev store or red",
       "id": "pdf_composer_rationale_116"
     }
@@ -15524,8 +15537,8 @@
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\tests\\test_tools_merge.py",
       "source_location": "L57",
       "weight": 1.0,
-      "_src": "test_tools_merge_test_merge_two_valid_pdfs_combines_pages_correctly",
-      "_tgt": "redis_client_ephemeralramstore_get",
+      "_src": "redis_client_ephemeralramstore_get",
+      "_tgt": "test_tools_merge_test_merge_two_valid_pdfs_combines_pages_correctly",
       "source": "redis_client_ephemeralramstore_get",
       "target": "test_tools_merge_test_merge_two_valid_pdfs_combines_pages_correctly"
     },
@@ -19301,6 +19314,18 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_footer.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
+      "_tgt": "services_host_resolver_dart",
+      "source": "services_host_resolver_dart",
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_header.dart",
       "source_location": null,
       "weight": 1.0,
@@ -21165,9 +21190,9 @@
       "source_location": null,
       "weight": 1.0,
       "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart",
-      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_scaffold",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_selectionarea",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart",
-      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_scaffold"
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_page_dart_selectionarea"
     },
     {
       "relation": "defines",
@@ -21509,6 +21534,18 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\tool_placeholder_page.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
+      "_tgt": "utils_app_limits_config_dart",
+      "source": "utils_app_limits_config_dart",
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart"
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\hero_dropzone.dart",
       "source_location": null,
       "weight": 1.0,
@@ -21633,9 +21670,9 @@
       "source_location": null,
       "weight": 1.0,
       "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart",
-      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_scaffold",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_selectionarea",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart",
-      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_scaffold"
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_merge_progress_page_dart_selectionarea"
     },
     {
       "relation": "defines",
@@ -22017,9 +22054,9 @@
       "source_location": null,
       "weight": 1.0,
       "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart",
-      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_scaffold",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_selectionarea",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart",
-      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_scaffold"
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_pdf_tools_hub_page_dart_selectionarea"
     },
     {
       "relation": "defines",
@@ -22725,9 +22762,9 @@
       "source_location": null,
       "weight": 1.0,
       "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
-      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_scaffold",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_selectionarea",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
-      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_scaffold"
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_selectionarea"
     },
     {
       "relation": "defines",
@@ -22752,18 +22789,6 @@
       "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_sizedbox",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
       "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_sizedbox"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\pages\\tool_placeholder_page.dart",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
-      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_appfooter",
-      "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart",
-      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_pages_tool_placeholder_page_dart_appfooter"
     },
     {
       "relation": "defines",
@@ -24069,6 +24094,18 @@
       "source_location": null,
       "weight": 1.0,
       "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_ispdftools",
+      "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_ispdftools"
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_footer.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
       "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildbrandcolumn",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
       "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildbrandcolumn"
@@ -24084,6 +24121,18 @@
       "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildnavcolumn",
       "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
       "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_buildnavcolumn"
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "E:\\Non_Office\\Dev_Space\\vibe_skool\\freeOcr\\src\\frontend\\lib\\widgets\\app_footer.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_src": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
+      "_tgt": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_inkwell",
+      "source": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart",
+      "target": "e_non_office_dev_space_vibe_skool_freeocr_src_frontend_lib_widgets_app_footer_dart_inkwell"
     },
     {
       "relation": "defines",

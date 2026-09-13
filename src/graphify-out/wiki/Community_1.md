@@ -17,6 +17,7 @@
 - [../widgets/app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/tool_placeholder_page.dart) (13 connections)
 - [tool_placeholder_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/tool_placeholder_page.dart) (12 connections)
 - [../main.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/tool_placeholder_page.dart) (12 connections)
+- [../utils/app_limits_config.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart) (4 connections)
 - [AboutPage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
 - [_AboutPageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
 - [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
@@ -28,7 +29,6 @@
 - [Scaffold](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
 - [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/about_page.dart) (1 connections)
 - [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/contact_page.dart) (1 connections)
-- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/contact_page.dart) (1 connections)
 - *... and 82 more nodes in this community*
 
 ## Relationships
@@ -45,11 +45,12 @@
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\result_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/result_page.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\terms_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/terms_page.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\tool_placeholder_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/tool_placeholder_page.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\hero_dropzone.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/hero_dropzone.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 309 (100%)
+- EXTRACTED: 312 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

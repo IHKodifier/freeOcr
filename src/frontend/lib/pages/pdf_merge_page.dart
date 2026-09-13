@@ -231,13 +231,14 @@ class _PdfMergePageState extends State<PdfMergePage> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppHeader(
-        currentRoute: '/merge',
-        onThemeToggle: () {
-          themeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
-        },
-      ),
+    return SelectionArea(
+      child: Scaffold(
+        appBar: AppHeader(
+          currentRoute: '/merge',
+          onThemeToggle: () {
+            themeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
+          },
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -355,8 +356,9 @@ class _PdfMergePageState extends State<PdfMergePage> {
                 ),
               ),
             ),
-            const AppFooter(),
-          ],
+              const AppFooter(currentRoute: '/merge'),
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import '../widgets/app_header.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/adsense_banner.dart';
 import '../services/telemetry_service.dart';
+import '../utils/app_limits_config.dart';
 import '../main.dart';
 
 class ToolPlaceholderPage extends StatelessWidget {
@@ -25,9 +26,10 @@ class ToolPlaceholderPage extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppHeader(
-        currentRoute: '/$toolId',
+    return SelectionArea(
+      child: Scaffold(
+        appBar: AppHeader(
+          currentRoute: '/$toolId',
         onThemeToggle: () {
           if (isDark) {
             themeNotifier.value = ThemeMode.light;
@@ -47,8 +49,7 @@ class ToolPlaceholderPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const AdSenseBanner(),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),
                       Container(
                         width: 64,
                         height: 64,
@@ -120,7 +121,7 @@ class ToolPlaceholderPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Max file size: 100 MB free • Processed in RAM disk with immediate cleanup',
+                              'Max file size: ${AppLimitsConfig.baseLimitFormatted} free • Processed in RAM disk with immediate cleanup',
                               style: TextStyle(
                                 fontSize: 13,
                                 color: theme.colorScheme.onSurfaceVariant,
@@ -143,10 +144,12 @@ class ToolPlaceholderPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 64),
-            const AppFooter(),
+            AppFooter(currentRoute: '/$toolId'),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
 }
+}
+

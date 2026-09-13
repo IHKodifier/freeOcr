@@ -16,9 +16,9 @@
 - [[hero_dropzone.dart]] `EXTRACTED`
 - [[contact_page.dart]] `EXTRACTED`
 - [[rewarded_video_ad_modal.dart]] `EXTRACTED`
+- [[app_footer.dart]] `EXTRACTED`
 - [[process_page.dart]] `EXTRACTED`
 - [[result_page.dart]] `EXTRACTED`
-- [[app_footer.dart]] `EXTRACTED`
 - [[landing_faq_section.dart]] `EXTRACTED`
 - [[about_page.dart]] `EXTRACTED`
 - [[privacy_page.dart]] `EXTRACTED`

@@ -913,12 +913,52 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Input file is deleted immediately. Ensure email address is correct.',
+                              'Input file is purged immediately. Ensure email address is correct.',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13,
                                 height: 1.35,
                                 color: isDark ? const Color(0xFFFEF3C7) : const Color(0xFF9A3412),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Zero Email Retention Guarantee Banner
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xFF064E3B).withValues(alpha: 0.4)
+                            : const Color(0xFFECFDF5),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFF059669).withValues(alpha: 0.6)
+                              : const Color(0xFFA7F3D0),
+                          width: 1.2,
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.verified_user_outlined,
+                            color: isDark ? const Color(0xFF34D399) : const Color(0xFF059669),
+                            size: 20,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Zero Email Retention: Although you share your email to receive download links, we never store, retain, or cache it. We cannot send marketing emails. 100% ad-supported.',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                height: 1.35,
+                                color: isDark ? const Color(0xFFD1FAE5) : const Color(0xFF065F46),
                               ),
                             ),
                           ),

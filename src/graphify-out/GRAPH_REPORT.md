@@ -1,11 +1,11 @@
 # Graph Report - E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src  (2026-09-13)
 
 ## Corpus Check
-- 120 files · ~246,856 words
+- 120 files · ~255,296 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1011 nodes · 1321 edges · 45 communities detected
+- 1012 nodes · 1324 edges · 45 communities detected
 - Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 168 edges (avg confidence: 0.78)
 - Token cost: 0 input · 0 output
 
@@ -99,33 +99,33 @@ Nodes (77): Verify that monetization parameters are present in backend configura
 
 ### Community 3 - "Community 3"
 
-Cohesion: 0.03
-Nodes (64): adsense_banner.dart, AdSenseBanner, AppFooter, build, _buildActionButton, _buildDropzone, _buildFilesHeader, _buildReorderableList (+56 more)
+Cohesion: 0.05
+Nodes (52): batch_download_zip(), download_job_file(), get_job_page_image(), get_job_preview(), get_job_status(), Returns extracted text blocks and page layout metadata for an OCR job.     Retu, Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j, Returns job status and progress for polling or verification. (+44 more)
 
 ### Community 4 - "Community 4"
 
 Cohesion: 0.05
-Nodes (52): batch_download_zip(), download_job_file(), get_job_page_image(), get_job_preview(), get_job_status(), Returns extracted text blocks and page layout metadata for an OCR job.     Retu, Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j, Returns job status and progress for polling or verification. (+44 more)
+Nodes (42): BaseModel, BaseSettings, get_runtime_config(), load_canonical_config(), Returns the single canonical global runtime configuration (limits, quotas, engin, Loads the single canonical configuration file., Settings, ContactRequest (+34 more)
 
 ### Community 5 - "Community 5"
 
-Cohesion: 0.05
-Nodes (42): BaseModel, BaseSettings, get_runtime_config(), load_canonical_config(), Returns the single canonical global runtime configuration (limits, quotas, engin, Loads the single canonical configuration file., Settings, ContactRequest (+34 more)
+Cohesion: 0.03
+Nodes (57): AdSenseBanner, AppFooter, build, _buildBentoCard, _buildCheckBullet, _buildCodeTeaserCard, _buildEarlyAccessCta, _buildHeroBadge (+49 more)
 
 ### Community 6 - "Community 6"
 
 Cohesion: 0.04
-Nodes (53): brand_icons.dart, ../constants/social_links.dart, AlertDialog, Icon, openSocialChannel, SizedBox, SocialLinks, AdSenseBanner (+45 more)
+Nodes (52): api_uploader_stub.dart, dart:async, dart:convert, dart:html, dart:math, dart:typed_data, AdSenseBanner, AppFooter (+44 more)
 
 ### Community 7 - "Community 7"
 
 Cohesion: 0.04
-Nodes (48): dart:ui, getBrand, getBrandTitle, getDefaultHomeRoute, HostResolver, isFreeOcrDomain, isFreePdfToolsDomain, trackGa4Event (+40 more)
+Nodes (49): check_database_connection(), AlertDialog, BackdropFilter, build, _buildDocumentPreviewPane, _buildMobileBody, _buildMobileHeader, _buildRightTextPane (+41 more)
 
 ### Community 8 - "Community 8"
 
-Cohesion: 0.04
-Nodes (49): check_database_connection(), AlertDialog, BackdropFilter, build, _buildDocumentPreviewPane, _buildMobileBody, _buildMobileHeader, _buildRightTextPane (+41 more)
+Cohesion: 0.05
+Nodes (40): dart:js, dart:ui, getBrand, getBrandTitle, getDefaultHomeRoute, HostResolver, isFreeOcrDomain, isFreePdfToolsDomain (+32 more)
 
 ### Community 9 - "Community 9"
 
@@ -135,27 +135,27 @@ Nodes (39): detect_page_orientation(), _get_tessdata_dir(), parse_html_table_to_
 ### Community 10 - "Community 10"
 
 Cohesion: 0.05
-Nodes (41): AdSenseBanner, AppFooter, build, _buildHeadline, _buildPulseBadge, _buildSubtitle, ConstrainedBox, Container (+33 more)
+Nodes (40): adsense_banner.dart, AdSenseBanner, AppFooter, build, _buildActionButton, _buildDropzone, _buildFilesHeader, _buildReorderableList (+32 more)
 
 ### Community 11 - "Community 11"
 
-Cohesion: 0.06
-Nodes (32): api_uploader_stub.dart, dart:async, dart:convert, dart:html, dart:js, dart:math, dart:typed_data, ApiService (+24 more)
+Cohesion: 0.05
+Nodes (41): AdSenseBanner, AppFooter, build, _buildHeadline, _buildPulseBadge, _buildSubtitle, ConstrainedBox, Container (+33 more)
 
 ### Community 12 - "Community 12"
+
+Cohesion: 0.06
+Nodes (34): brand_icons.dart, ../constants/social_links.dart, AlertDialog, Icon, openSocialChannel, SizedBox, SocialLinks, ActionChip (+26 more)
+
+### Community 13 - "Community 13"
 
 Cohesion: 0.09
 Nodes (28): get_baidu_ocr_engine(), health_check(), is_gpu_available(), ocr_complex_page(), parse_grounding_output(), Baidu Unlimited OCR GPU Microservice.  Standalone FastAPI microservice running B, Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR., Health check verifying microservice readiness, engine name, and GPU status. (+20 more)
 
-### Community 13 - "Community 13"
+### Community 14 - "Community 14"
 
 Cohesion: 0.07
 Nodes (28): AnimatedHourglassIcon, _AnimatedHourglassIconState, build, _buildBatchProgressUI, _buildSingleProgressUI, Column, Container, didUpdateWidget (+20 more)
-
-### Community 14 - "Community 14"
-
-Cohesion: 0.08
-Nodes (25): AdSenseBanner, AppFooter, build, _buildBentoCard, _buildCheckBullet, _buildCodeTeaserCard, _buildEarlyAccessCta, _buildHeroBadge (+17 more)
 
 ### Community 15 - "Community 15"
 
@@ -308,7 +308,7 @@ Cohesion: 1.0
 Nodes (1): Executes page-by-page OCR extraction on uploaded PDF or image file bytes.     S
 
 ## Knowledge Gaps
-- **653 isolated node(s):** `Loads the single canonical configuration file.`, `Health check endpoint returning service health status and API version.`, `Detailed healthz check endpoint for container orchestrators and monitoring tools`, `In-memory dict backed by Linux tmpfs / ephemeral RAM disk (/tmp or RAM_DISK_PATH`, `Stores job payload in Redis, with fallback to in-memory store when Redis is unav` (+648 more)
+- **654 isolated node(s):** `Loads the single canonical configuration file.`, `Health check endpoint returning service health status and API version.`, `Detailed healthz check endpoint for container orchestrators and monitoring tools`, `In-memory dict backed by Linux tmpfs / ephemeral RAM disk (/tmp or RAM_DISK_PATH`, `Stores job payload in Redis, with fallback to in-memory store when Redis is unav` (+649 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 31`** (2 nodes): `url_strategy_stub.dart`, `configureAppUrlStrategy`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
