@@ -21,6 +21,7 @@ import 'pages/about_page.dart';
 import 'pages/contact_page.dart';
 import 'pages/pdf_tools_hub_page.dart';
 import 'pages/tool_placeholder_page.dart';
+import 'pages/pdf_merge_page.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
 
@@ -74,6 +75,14 @@ class FreeOcrApp extends StatelessWidget {
             if (name == '/ocr') {
               return MaterialPageRoute(
                 builder: (context) => const HomePage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Merge PDF route (UC-017)
+            if (name == '/merge') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfMergePage(),
                 settings: settings,
               );
             }

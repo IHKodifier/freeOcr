@@ -8,9 +8,9 @@
 ## Overall Progress
 
 - **Total Backlog Tickets:** 37 Tickets (`UC-000a`..`UC-015`, `UC-005b`, `UC-009-GAM`, `UC-016`..`UC-032`)
-- **Completed:** 21 / 37 (57%)
+- **Completed:** 22 / 37 (59%)
 - **Current Active Sprint:** Sprint F1 — FreePDFToolz Core Foundation & Page Operations (`UC-016`..`UC-022`)
-- **Last Updated:** 2026-09-13 — Completed UC-016 (Multi-Tool Routing Hub & Host-Aware Navigation Shell). Launch target: Monday, September 21, 2026.
+- **Last Updated:** 2026-09-13 — Completed UC-017 (Merge PDF Engine & Multi-File Drag-and-Drop Reorder UI). Launch target: Monday, September 21, 2026.
 
 ---
 
@@ -23,7 +23,7 @@
 | **Phase 1** | **Sprint 2: Preview, Multi-Export & Email Purge** | UC-005, UC-005b, UC-006, UC-007, UC-008, UC-012 | 6 / 6 | 100% | Completed |
 | **Phase 1** | **Sprint 3: Ad Monetization, GA4 & AdSense Content** | UC-009, UC-010, UC-011, UC-014, UC-015 | 5 / 5 | 100% | Completed |
 | **Phase 2** | **Stage 02: GAM GPT & 31s Auto-Refresh** | UC-009-GAM | 1 / 1 | 100% | Completed |
-| **Phase 3** | **Sprint F1: Page Operations Hub** | UC-016, UC-017, UC-018, UC-019, UC-020, UC-021, UC-022 | 1 / 7 | 14% | In Progress |
+| **Phase 3** | **Sprint F1: Page Operations Hub** | UC-016, UC-017, UC-018, UC-019, UC-020, UC-021, UC-022 | 2 / 7 | 29% | In Progress |
 | **Phase 3** | **Sprint F2: Transformation & Security** | UC-023, UC-024, UC-025, UC-026, UC-027 | 0 / 5 | 0% | Queued |
 | **Phase 3** | **Sprint F3: AI, Conversions & AdSense Launch** | UC-028, UC-029, UC-030, UC-031, UC-032 | 0 / 5 | 0% | Queued |
 
@@ -65,7 +65,7 @@
 | **UC-015** | AdSense-Qualifying Content KB, Docs & GitHub Footer | Sprint 3 | P1 | Completed | PASS |
 | **UC-009-GAM** | Google Ad Manager (GAM / AdX) GPT Integration & 31s Declared Auto-Refresh | Stage 02 | P0 | Completed | PASS |
 | **UC-016** | Multi-Tool Routing Hub & Host-Aware Navigation Shell | Sprint F1 | P0 | Completed | PASS |
-| **UC-017** | Merge PDF Engine & Multi-File Drag-and-Drop Reorder UI | Sprint F1 | P0 | Queued | Pending |
+| **UC-017** | Merge PDF Engine & Multi-File Drag-and-Drop Reorder UI | Sprint F1 | P0 | Completed | PASS |
 | **UC-018** | Split PDF Engine & Page Range Selector UI | Sprint F1 | P0 | Queued | Pending |
 | **UC-019** | Rotate PDF Engine & Visual Page Rotation Grid | Sprint F1 | P1 | Queued | Pending |
 | **UC-020** | Delete Pages Engine & Visual Page Deletion Grid | Sprint F1 | P1 | Queued | Pending |
