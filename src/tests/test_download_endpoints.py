@@ -301,3 +301,15 @@ def test_download_zip_single_job_success():
         assert "# Page 1" in zf.read("my_notes_extracted.md").decode("utf-8")
 
 
+def test_download_expired_job_redirects_for_html_browser():
+    """Verify that a browser request (Accept: text/html) to an expired download link redirects to the frontend result view."""
+    response = client.get(
+        "/api/v1/jobs/missing_or_expired_job/download/pdf",
+        headers={"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
+        follow_redirects=False
+    )
+    assert response.status_code == 302
+    assert response.headers["location"].endswith("/result/missing_or_expired_job")
+
+
+

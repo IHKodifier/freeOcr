@@ -306,15 +306,6 @@ class AppFooter extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text('OCR PDF', style: linkStyle),
             ),
-          )
-        else
-          InkWell(
-            key: const Key('footer_pdf_tools_btn'),
-            onTap: () => _navigateTo(context, '/hub'),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Text('PDF Tools', style: linkStyle),
-            ),
           ),
         InkWell(
           key: const Key('footer_about_btn'),

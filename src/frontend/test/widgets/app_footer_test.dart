@@ -25,6 +25,7 @@ void main() {
       expect(find.byKey(const Key('footer_about_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_kb_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_docs_btn')), findsNothing);
+      expect(find.byKey(const Key('footer_pdf_tools_btn')), findsNothing);
       expect(find.byKey(const Key('footer_privacy_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_terms_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_contact_btn')), findsOneWidget);
