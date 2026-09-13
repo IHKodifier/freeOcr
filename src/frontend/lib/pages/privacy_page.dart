@@ -57,7 +57,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
 
                       _buildSection(
                         context,
-                        title: '1. Zero Persistent Document Storage & Ephemeral RAM Execution',
+                        title: '1. Zero Persistent Document Storage Guarantee & Ephemeral RAM Execution',
                         body: 'freeOCR.me and FreePDFToolz process all uploaded PDF and image files strictly in volatile Linux RAM disk (tmpfs). Uploaded documents are automatically unlinked and purged from memory immediately after conversion or within 24 hours. We never inspect, store, mine, or retain your documents on persistent hard drives.',
                       ),
                       _buildSection(

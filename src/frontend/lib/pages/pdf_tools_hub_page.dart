@@ -848,36 +848,41 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
         const SizedBox(height: 16),
         ...faqs.map((faq) => Container(
           margin: const EdgeInsets.only(bottom: 12),
-          decoration: BoxDecoration(
+          child: Material(
             color: isDark ? const Color(0xFF1E293B).withOpacity(0.5) : Colors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
-            ),
-          ),
-          child: ExpansionTile(
-            title: Text(
-              faq['q']!,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(
+                color: isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
               ),
             ),
-            iconColor: theme.colorScheme.primary,
-            collapsedIconColor: theme.colorScheme.onSurfaceVariant,
-            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                faq['a']!,
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              shape: const Border(),
+              collapsedShape: const Border(),
+              title: Text(
+                faq['q']!,
                 style: TextStyle(
-                  fontSize: 14,
-                  height: 1.5,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
-            ],
+              iconColor: theme.colorScheme.primary,
+              collapsedIconColor: theme.colorScheme.onSurfaceVariant,
+              childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  faq['a']!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    height: 1.5,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
         )),
       ],

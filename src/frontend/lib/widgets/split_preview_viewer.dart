@@ -913,7 +913,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Input file is purged immediately. Ensure email address is correct.',
+                              'Input file is deleted immediately. Ensure email address is correct.',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13,

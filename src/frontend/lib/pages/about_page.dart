@@ -54,7 +54,7 @@ class _AboutPageState extends State<AboutPage> {
                           border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.3)),
                         ),
                         child: const Text(
-                          'ABOUT FREEOCR.ME & FREEPDFTOOLZ',
+                          'ABOUT FREEOCR.ME',
                           style: TextStyle(
                             color: Color(0xFF6366F1),
                             fontSize: 12,
@@ -123,7 +123,7 @@ class _AboutPageState extends State<AboutPage> {
                       // Section 4: Ephemeral RAM-Disk Security
                       _buildCard(
                         context,
-                        title: '4. Kernel-Level Ephemeral RAM-Disk & Zero-Retention Privacy',
+                        title: '4. Kernel-Level Ephemeral RAM-Disk Security Guarantee & Zero-Retention Privacy',
                         icon: Icons.security_rounded,
                         body: 'In traditional cloud document processing architectures, uploaded files are written to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants and metadata can persist across filesystem journals, backups, and snapshot volumes for months or years. At freeOCR.me and FreePDFToolz, user confidentiality is enforced at the operating system kernel level:\n\n'
                             '• Linux tmpfs Volatile Memory Execution: All uploaded files, intermediate page bitmaps, deskewed buffers, and OCR artifacts exist exclusively in Linux tmpfs RAM disk mounts. Bytes are written only to volatile DRAM chips. At no point does your document ever touch persistent storage or non-volatile physical disk platters.\n\n'
