@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../utils/url_helper.dart';
 import '../services/host_resolver.dart';
 
 /// Reusable Apple-inspired AppHeader with Navigation, Tools Switcher & Theme Toggle

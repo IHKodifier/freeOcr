@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:free_ocr_frontend/main.dart';
 import 'package:free_ocr_frontend/pages/about_page.dart';
 import 'package:free_ocr_frontend/pages/contact_page.dart';
 

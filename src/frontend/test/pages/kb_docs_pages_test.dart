@@ -33,8 +33,8 @@ void main() {
     });
   });
 
-  group('API Docs Page Teaser Tests', () {
-    testWidgets('DocsPage renders API Access Coming Soon teaser via /docs route', (WidgetTester tester) async {
+  group('Disabled /docs Route Fallback Tests', () {
+    testWidgets('/docs safely falls back to HomePage without exposing teaser or ads', (WidgetTester tester) async {
       await tester.pumpWidget(const FreeOcrApp());
       await tester.pumpAndSettle();
 
@@ -42,10 +42,8 @@ void main() {
       Navigator.pushNamed(context, '/docs');
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Developer API'), findsAtLeast(1));
-      expect(find.textContaining('API Access Coming Soon'), findsOneWidget);
-      expect(find.textContaining('LAUNCHING POST-MVP'), findsOneWidget);
-      expect(find.byType(TextField), findsOneWidget);
+      expect(find.byType(HomePage), findsOneWidget);
+      expect(find.textContaining('API Access Coming Soon'), findsNothing);
     });
   });
 

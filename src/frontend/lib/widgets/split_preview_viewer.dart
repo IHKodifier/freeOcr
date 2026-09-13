@@ -1106,24 +1106,6 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
     );
   }
 
-  Widget _buildStackedView(ThemeData theme, ColorScheme colorScheme) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 350,
-            child: _buildDocumentPreviewPane(theme, colorScheme),
-          ),
-          Divider(height: 1, color: colorScheme.outlineVariant),
-          SizedBox(
-            height: 350,
-            child: _buildRightTextPane(theme, colorScheme),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildDocumentPreviewPane(ThemeData theme, ColorScheme colorScheme) {
     final currentPageNum = _currentPageIndex + 1;
     final pageImageUrl = ApiService.getPageImageUrl(widget.jobId, currentPageNum);
