@@ -8,11 +8,13 @@ import '../services/host_resolver.dart';
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String currentRoute;
   final VoidCallback? onThemeToggle;
+  final bool? showTools;
 
   const AppHeader({
     super.key,
     this.currentRoute = '/',
     this.onThemeToggle,
+    this.showTools,
   });
 
   @override
@@ -24,6 +26,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final isPdfTools = HostResolver.isFreePdfToolsDomain();
+    final showToolsDropdown = showTools ?? isPdfTools;
     final brandPrimary = isPdfTools ? 'FreePDF' : 'freeOCR';
     final brandSuffix = isPdfTools ? 'Toolz' : '.me';
     final homeRoute = HostResolver.getDefaultHomeRoute();
@@ -137,14 +140,16 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                             value: homeRoute,
                             child: const Text('Home'),
                           ),
-                          const PopupMenuItem(
-                            value: '/hub',
-                            child: Text('All PDF Tools (16)'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/ocr',
-                            child: Text('Free OCR'),
-                          ),
+                          if (showToolsDropdown) ...[
+                            const PopupMenuItem(
+                              value: '/hub',
+                              child: Text('All PDF Tools (16)'),
+                            ),
+                            const PopupMenuItem(
+                              value: '/ocr',
+                              child: Text('Free OCR'),
+                            ),
+                          ],
                           const PopupMenuItem(
                             value: '/kb',
                             child: Text('Knowledge Base'),
@@ -179,114 +184,116 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                             : navTextStyle,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    // --- Tools Dropdown Switcher ---
-                    PopupMenuButton<String>(
-                      key: const Key('header_tools_btn'),
-                      tooltip: 'PDF Tools',
-                      offset: const Offset(0, 36),
-                      onSelected: (route) {
-                        if (currentRoute != route) {
-                          Navigator.of(context).pushNamed(route);
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: '/hub',
-                          child: Row(
-                            children: [
-                              Icon(Icons.dashboard_rounded, size: 18, color: Color(0xFF6366F1)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('All PDF Tools (16)')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuDivider(),
-                        const PopupMenuItem(
-                          value: '/merge',
-                          child: Row(
-                            children: [
-                              Icon(Icons.call_merge_rounded, size: 18, color: Color(0xFF3B82F6)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Merge PDF')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: '/split',
-                          child: Row(
-                            children: [
-                              Icon(Icons.call_split_rounded, size: 18, color: Color(0xFF3B82F6)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Split PDF')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: '/compress',
-                          child: Row(
-                            children: [
-                              Icon(Icons.compress_rounded, size: 18, color: Color(0xFF10B981)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Compress PDF')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: '/ocr',
-                          child: Row(
-                            children: [
-                              Icon(Icons.document_scanner_rounded, size: 18, color: Color(0xFF8B5CF6)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('OCR PDF')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: '/pdf-to-word',
-                          child: Row(
-                            children: [
-                              Icon(Icons.article_rounded, size: 18, color: Color(0xFF8B5CF6)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Convert to Word')),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: '/summarize',
-                          child: Row(
-                            children: [
-                              Icon(Icons.auto_stories_rounded, size: 18, color: Color(0xFF8B5CF6)),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Summarize PDF')),
-                            ],
-                          ),
-                        ),
-                      ],
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Tools',
-                              style: (currentRoute == '/hub' ||
-                                      currentRoute.startsWith('/merge') ||
-                                      currentRoute.startsWith('/split') ||
-                                      currentRoute.startsWith('/compress'))
-                                  ? activeNavStyle
-                                  : navTextStyle,
+                    if (showToolsDropdown) ...[
+                      const SizedBox(width: 4),
+                      // --- Tools Dropdown Switcher ---
+                      PopupMenuButton<String>(
+                        key: const Key('header_tools_btn'),
+                        tooltip: 'PDF Tools',
+                        offset: const Offset(0, 36),
+                        onSelected: (route) {
+                          if (currentRoute != route) {
+                            Navigator.of(context).pushNamed(route);
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: '/hub',
+                            child: Row(
+                              children: [
+                                Icon(Icons.dashboard_rounded, size: 18, color: Color(0xFF6366F1)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('All PDF Tools (16)')),
+                              ],
                             ),
-                            const SizedBox(width: 2),
-                            Icon(
-                              Icons.arrow_drop_down_rounded,
-                              size: 18,
-                              color: theme.colorScheme.onSurface,
+                          ),
+                          const PopupMenuDivider(),
+                          const PopupMenuItem(
+                            value: '/merge',
+                            child: Row(
+                              children: [
+                                Icon(Icons.call_merge_rounded, size: 18, color: Color(0xFF3B82F6)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('Merge PDF')),
+                              ],
                             ),
-                          ],
+                          ),
+                          const PopupMenuItem(
+                            value: '/split',
+                            child: Row(
+                              children: [
+                                Icon(Icons.call_split_rounded, size: 18, color: Color(0xFF3B82F6)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('Split PDF')),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: '/compress',
+                            child: Row(
+                              children: [
+                                Icon(Icons.compress_rounded, size: 18, color: Color(0xFF10B981)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('Compress PDF')),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: '/ocr',
+                            child: Row(
+                              children: [
+                                Icon(Icons.document_scanner_rounded, size: 18, color: Color(0xFF8B5CF6)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('OCR PDF')),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: '/pdf-to-word',
+                            child: Row(
+                              children: [
+                                Icon(Icons.article_rounded, size: 18, color: Color(0xFF8B5CF6)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('Convert to Word')),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: '/summarize',
+                            child: Row(
+                              children: [
+                                Icon(Icons.auto_stories_rounded, size: 18, color: Color(0xFF8B5CF6)),
+                                SizedBox(width: 10),
+                                Expanded(child: Text('Summarize PDF')),
+                              ],
+                            ),
+                          ),
+                        ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Tools',
+                                style: (currentRoute == '/hub' ||
+                                        currentRoute.startsWith('/merge') ||
+                                        currentRoute.startsWith('/split') ||
+                                        currentRoute.startsWith('/compress'))
+                                    ? activeNavStyle
+                                    : navTextStyle,
+                              ),
+                              const SizedBox(width: 2),
+                              Icon(
+                                Icons.arrow_drop_down_rounded,
+                                size: 18,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                     const SizedBox(width: 4),
                     TextButton(
                       key: const Key('header_kb_btn'),
