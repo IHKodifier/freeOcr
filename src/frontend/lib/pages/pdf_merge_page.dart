@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:desktop_drop/desktop_drop.dart';
@@ -89,7 +90,7 @@ class _PdfMergePageState extends State<PdfMergePage> {
             'name': f.name,
             'size': f.size,
             'bytes': f.bytes,
-            'path': f.path,
+            'path': kIsWeb ? null : f.path,
           }).toList(),
         );
       }
@@ -110,7 +111,7 @@ class _PdfMergePageState extends State<PdfMergePage> {
           'name': xfile.name,
           'size': length,
           'bytes': bytes,
-          'path': xfile.path,
+          'path': kIsWeb ? null : xfile.path,
         });
       }
     }
