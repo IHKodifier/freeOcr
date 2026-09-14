@@ -32,6 +32,8 @@ import 'pages/pdf_extract_pages_page.dart';
 import 'pages/pdf_extract_pages_progress_page.dart';
 import 'pages/pdf_number_pages_page.dart';
 import 'pages/pdf_number_pages_progress_page.dart';
+import 'pages/pdf_compress_page.dart';
+import 'pages/pdf_compress_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -212,6 +214,27 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfNumberPagesProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Compress PDF route (UC-023)
+            if (name == '/compress') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfCompressPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Compress PDF Status & Progress route (UC-023)
+            if (name == '/compress/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfCompressProgressPage(file: file),
                 settings: settings,
               );
             }
