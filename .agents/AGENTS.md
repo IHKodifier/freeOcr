@@ -25,6 +25,14 @@
 - **NO Unprompted Local Commits:** The agent MUST NEVER run `git commit` locally without explicit user instruction. The user selects which files are committed and instructs when to execute local commits.
 - **NO Unprompted Remote Pushes:** The agent MUST NEVER execute `git push` to any remote repository without explicit user instructions to publish code to remote.
 
+### 2.2 Selective Dual-Domain Deployment Protocol
+- **Interactive UI Modal Mandate:** Whenever the user instructs Antigravity to merge to `dev` or `main` or execute `git push`, Antigravity MUST prompt the user using `ask_question` with the following selectable options:
+  1. `(•) freeocr.me (Only)` — Tags merge/commit with `[deploy:freeocr]`
+  2. `( ) freepdftoolz.me (Only)` — Tags merge/commit with `[deploy:freepdftoolz]`
+  3. `( ) Both (freeocr.me + freepdftoolz.me)` — Tags merge/commit with `[deploy:both]`
+  4. `( ) Skip Deployment (Automated Tests Only)` — Tags merge/commit with `[skip deploy]`
+- **Zero Accidental Deployments:** Commits without an explicit `[deploy:...]` tag will trigger only automated test suites (`ci.yml` and `test-backend`/`test-frontend` in `deploy.yml`) and will never deploy to GCP Cloud Run or Firebase Hosting. This guarantees 100% protection for `freeocr.me` during Google AdSense review.
+
 ---
 
 ## 3. Local-First & Zero-Cloud Execution
