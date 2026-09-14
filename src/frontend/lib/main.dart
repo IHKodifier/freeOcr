@@ -36,6 +36,8 @@ import 'pages/pdf_compress_page.dart';
 import 'pages/pdf_compress_progress_page.dart';
 import 'pages/pdf_watermark_page.dart';
 import 'pages/pdf_watermark_progress_page.dart';
+import 'pages/pdf_crop_page.dart';
+import 'pages/pdf_crop_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -247,6 +249,27 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfWatermarkProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Crop PDF route (UC-025)
+            if (name == '/crop') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfCropPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Crop PDF Status & Progress route (UC-025)
+            if (name == '/crop/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfCropProgressPage(file: file),
                 settings: settings,
               );
             }

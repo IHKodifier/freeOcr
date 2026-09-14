@@ -13,6 +13,7 @@ from app.api.v1.endpoints import (
     tools_number_pages,
     tools_compress,
     tools_watermark,
+    tools_crop,
 )
 
 api_router = APIRouter()
@@ -29,6 +30,7 @@ api_router.include_router(tools_extract_pages.router, prefix="/tools", tags=["PD
 api_router.include_router(tools_number_pages.router, prefix="/tools", tags=["PDF Tools - Number Pages"])
 api_router.include_router(tools_compress.router, prefix="/tools", tags=["PDF Tools - Compress"])
 api_router.include_router(tools_watermark.router, prefix="/tools", tags=["PDF Tools - Watermark"])
+api_router.include_router(tools_crop.router, prefix="/tools", tags=["PDF Tools - Crop"])
 
 
 
