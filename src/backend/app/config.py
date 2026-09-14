@@ -40,6 +40,10 @@ def load_canonical_config() -> dict:
 class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./dev.db"
     REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_SOCKET_TIMEOUT: float = 5.0
+    REDIS_SOCKET_CONNECT_TIMEOUT: float = 5.0
+    REDIS_RETRY_ON_TIMEOUT: bool = True
+    REDIS_SSL_CERT_REQS: str | None = "none"
     ENVIRONMENT: str = "development"
     FREE_TIER_MAX_FILE_MB: int = 100
     ALLOWED_EXTENSIONS: set = {".pdf", ".jpg", ".jpeg", ".png"}

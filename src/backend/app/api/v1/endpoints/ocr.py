@@ -10,7 +10,15 @@ from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Form, Request, HTTPException, status, BackgroundTasks
 from fastapi.responses import JSONResponse
 from app.config import settings, load_canonical_config
-from app.redis_client import get_redis_client, DEV_JOB_STORE, store_ad_pass_metadata, get_ad_pass_metadata
+from app.redis_client import (
+    get_redis_client,
+    DEV_JOB_STORE,
+    store_ad_pass_metadata,
+    get_ad_pass_metadata,
+    persist_pdf_to_redis,
+    store_job_metadata,
+    get_job_metadata,
+)
 from app.services.layout_analyzer import LayoutAnalyzer
 from app.services.ocr_worker import process_ocr_job
 from app.services.email_service import validate_email_address, send_download_links_email
@@ -47,8 +55,10 @@ def _get_session_keys(request: Request) -> list[str]:
 @router.post("/email-links")
 async def email_download_links(req: EmailDeliveryRequest, request: Request):
     """
-    Validates email, checks job completion, instantly purges original input file
-    from RAM disk (AC-1 / Privacy Mandate), and dispatches 24-hour expiring download links.
+    Validates email, checks job completion, promotes output PDF to external Redis
+    for 24-hour scale-to-zero survival (conserving Upstash free tier for non-email jobs),
+    instantly purges original input file from RAM disk (AC-1 / Privacy Mandate),
+    and dispatches 24-hour expiring download links.
     """
     if not validate_email_address(req.email):
         raise HTTPException(
@@ -57,26 +67,15 @@ async def email_download_links(req: EmailDeliveryRequest, request: Request):
         )
 
     job_id = req.job_id
-    job_data_bytes = None
+    data_str = get_job_metadata(job_id)
 
-    if job_id in DEV_JOB_STORE:
-        job_data_bytes = DEV_JOB_STORE[job_id]
-
-    if not job_data_bytes:
-        try:
-            redis_client = get_redis_client()
-            job_data_bytes = redis_client.get(f"job:{job_id}")
-        except Exception:
-            job_data_bytes = None
-
-    if not job_data_bytes:
+    if not data_str:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Job not found or expired."
         )
 
     try:
-        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
         parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
     except Exception:
         raise HTTPException(
@@ -89,6 +88,14 @@ async def email_download_links(req: EmailDeliveryRequest, request: Request):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Job not found or expired."
         )
+
+    # Free Tier Optimization: Promote heavy PDF binary to external Redis ONLY when email links are requested
+    output_pdf_token = parsed.get("output_pdf_token")
+    if output_pdf_token:
+        persist_pdf_to_redis(output_pdf_token, ttl_seconds=86400)
+
+    # Ensure job metadata is persisted in external Redis for 24-hour link survival
+    store_job_metadata(job_id, parsed, ttl_seconds=86400)
 
     # Privacy Mandate (AC-1): Instantly purge original input file from RAM disk upon endpoint invocation
     ram_disk_base = os.environ.get("RAM_DISK_PATH") or tempfile.gettempdir()

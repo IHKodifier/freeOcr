@@ -11,7 +11,7 @@ import urllib.parse
 import pymupdf
 from fastapi import APIRouter, Request, HTTPException, status, Query
 from fastapi.responses import StreamingResponse, Response, JSONResponse, RedirectResponse
-from app.redis_client import get_redis_client, DEV_JOB_STORE, EphemeralRamStore
+from app.redis_client import get_redis_client, DEV_JOB_STORE, EphemeralRamStore, get_job_metadata
 from app.services.pdf_composer import get_searchable_pdf
 
 router = APIRouter()
@@ -23,25 +23,14 @@ async def get_job_status(job_id: str):
     """
     Returns job status and progress for polling or verification.
     """
-    job_data_bytes = None
-    if job_id in DEV_JOB_STORE:
-        job_data_bytes = DEV_JOB_STORE[job_id]
-
-    if not job_data_bytes:
-        try:
-            redis_client = get_redis_client()
-            job_data_bytes = redis_client.get(f"job:{job_id}")
-        except Exception:
-            job_data_bytes = None
-
-    if not job_data_bytes:
+    data_str = get_job_metadata(job_id)
+    if not data_str:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Job not found or expired."
         )
 
     try:
-        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
         parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
         return parsed
     except Exception:
@@ -52,22 +41,27 @@ async def get_job_status(job_id: str):
 
 
 @router.get("/{job_id}/events", response_class=StreamingResponse)
-
 async def stream_job_events(job_id: str, request: Request):
     """
     Real-time Server-Sent Events (SSE) progress streaming endpoint.
     Subscribes to Redis pub/sub channel job_events:{job_id} and streams
     page OCR conversion progress to the client.
     """
-    redis_client = get_redis_client()
     job_data_bytes = None
+    redis_client = None
     try:
-        job_data_bytes = redis_client.get(f"job:{job_id}")
+        redis_client = get_redis_client()
+        job_data_bytes = redis_client.get(f"job:{job_id}") or redis_client.get(job_id)
     except Exception:
-        job_data_bytes = None
+        redis_client = None
 
     if not job_data_bytes and job_id in DEV_JOB_STORE:
         job_data_bytes = DEV_JOB_STORE[job_id]
+
+    if not job_data_bytes:
+        data_str = get_job_metadata(job_id)
+        if data_str:
+            job_data_bytes = data_str
 
     if not job_data_bytes:
         raise HTTPException(
@@ -75,19 +69,28 @@ async def stream_job_events(job_id: str, request: Request):
             detail="Job not found or expired."
         )
 
+    data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
+
     async def event_generator():
         pubsub = None
-        try:
-            pubsub = redis_client.pubsub()
-            pubsub.subscribe(f"job_events:{job_id}")
-        except Exception:
-            pubsub = None
+        active_client = redis_client
+        if active_client is None:
+            try:
+                active_client = get_redis_client()
+            except Exception:
+                active_client = None
+
+        if active_client is not None:
+            try:
+                pubsub = active_client.pubsub()
+                pubsub.subscribe(f"job_events:{job_id}")
+            except Exception:
+                pubsub = None
 
         # Send initial connection event if cached job state exists
-        if job_data_bytes:
+        if data_str:
             try:
-                data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
-                initial_payload = json.loads(data_str)
+                initial_payload = json.loads(data_str) if isinstance(data_str, str) else data_str
                 yield f"data: {json.dumps(initial_payload)}\n\n"
                 if initial_payload.get("status") in ("COMPLETED", "FAILED"):
                     return
@@ -101,10 +104,10 @@ async def stream_job_events(job_id: str, request: Request):
                     for message in messages:
                         if message and message.get("type") == "message":
                             raw_data = message.get("data")
-                            data_str = raw_data.decode("utf-8") if isinstance(raw_data, bytes) else str(raw_data)
-                            yield f"data: {data_str}\n\n"
+                            msg_str = raw_data.decode("utf-8") if isinstance(raw_data, bytes) else str(raw_data)
+                            yield f"data: {msg_str}\n\n"
                             try:
-                                parsed = json.loads(data_str)
+                                parsed = json.loads(msg_str)
                                 if parsed.get("status") in ("COMPLETED", "FAILED"):
                                     break
                             except Exception:
@@ -117,11 +120,11 @@ async def stream_job_events(job_id: str, request: Request):
                         message = pubsub.get_message(ignore_subscribe_messages=True, timeout=0.1)
                         if message and message.get("type") == "message":
                             raw_data = message.get("data")
-                            data_str = raw_data.decode("utf-8") if isinstance(raw_data, bytes) else str(raw_data)
-                            yield f"data: {data_str}\n\n"
+                            msg_str = raw_data.decode("utf-8") if isinstance(raw_data, bytes) else str(raw_data)
+                            yield f"data: {msg_str}\n\n"
                             last_ping = time.time()
                             try:
-                                parsed = json.loads(data_str)
+                                parsed = json.loads(msg_str)
                                 if parsed.get("status") in ("COMPLETED", "FAILED"):
                                     break
                             except Exception:
@@ -181,20 +184,8 @@ async def get_job_preview(job_id: str):
     Returns extracted text blocks and page layout metadata for an OCR job.
     Returns 404 if job_id is expired or invalid.
     """
-    job_data_bytes = None
-
-    # Check in-memory DEV_JOB_STORE first for immediate dev updates
-    if job_id in DEV_JOB_STORE:
-        job_data_bytes = DEV_JOB_STORE[job_id]
-
-    if not job_data_bytes: 
-        try:
-            redis_client = get_redis_client()
-            job_data_bytes = redis_client.get(f"job:{job_id}")
-        except Exception:
-            job_data_bytes = None
-
-    if not job_data_bytes:
+    data_str = get_job_metadata(job_id)
+    if not data_str:
         return JSONResponse(
             status_code=status.HTTP_410_GONE,
             content={
@@ -205,7 +196,6 @@ async def get_job_preview(job_id: str):
 
 
     try:
-        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
         parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
     except Exception:
         raise HTTPException(
@@ -242,25 +232,14 @@ async def get_job_page_image(job_id: str, page_number: int = 1):
             headers={"Cache-Control": "public, max-age=3600"}
         )
 
-    job_data_bytes = None
-    if job_id in DEV_JOB_STORE:
-        job_data_bytes = DEV_JOB_STORE[job_id]
-
-    if not job_data_bytes:
-        try:
-            redis_client = get_redis_client()
-            job_data_bytes = redis_client.get(f"job:{job_id}")
-        except Exception:
-            job_data_bytes = None
-
-    if not job_data_bytes:
+    data_str = get_job_metadata(job_id)
+    if not data_str:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Job not found or expired."
         )
 
     try:
-        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
         parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
     except Exception:
         raise HTTPException(
@@ -369,21 +348,11 @@ async def batch_download_zip(
 
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for job_id in id_list:
-            job_data_bytes = None
-            if job_id in DEV_JOB_STORE:
-                job_data_bytes = DEV_JOB_STORE[job_id]
-            if not job_data_bytes:
-                try:
-                    redis_client = get_redis_client()
-                    job_data_bytes = redis_client.get(f"job:{job_id}")
-                except Exception:
-                    job_data_bytes = None
-
-            if not job_data_bytes:
+            data_str = get_job_metadata(job_id)
+            if not data_str:
                 continue
 
             try:
-                data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
                 parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
             except Exception:
                 continue
@@ -483,22 +452,11 @@ async def download_file(job_id: str, format: str, request: Request):
             detail="Unsupported format. Choose pdf, txt, md, or zip."
         )
 
-    job_data_bytes = None
-    if job_id in DEV_JOB_STORE:
-        job_data_bytes = DEV_JOB_STORE[job_id]
-
-    if not job_data_bytes:
-        try:
-            redis_client = get_redis_client()
-            job_data_bytes = redis_client.get(f"job:{job_id}")
-        except Exception:
-            job_data_bytes = None
-
-    if not job_data_bytes:
+    data_str = get_job_metadata(job_id)
+    if not data_str:
         return _create_expired_response(None)
 
     try:
-        data_str = job_data_bytes.decode("utf-8") if isinstance(job_data_bytes, bytes) else str(job_data_bytes)
         parsed = json.loads(data_str) if isinstance(data_str, str) else data_str
     except Exception:
         raise HTTPException(

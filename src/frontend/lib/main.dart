@@ -22,6 +22,18 @@ import 'pages/pdf_tools_hub_page.dart';
 import 'pages/tool_placeholder_page.dart';
 import 'pages/pdf_merge_page.dart';
 import 'pages/pdf_merge_progress_page.dart';
+import 'pages/pdf_split_page.dart';
+import 'pages/pdf_split_progress_page.dart';
+import 'pages/pdf_rotate_page.dart';
+import 'pages/pdf_rotate_progress_page.dart';
+import 'pages/pdf_delete_pages_page.dart';
+import 'pages/pdf_delete_pages_progress_page.dart';
+import 'pages/pdf_extract_pages_page.dart';
+import 'pages/pdf_extract_pages_progress_page.dart';
+import 'pages/pdf_number_pages_page.dart';
+import 'pages/pdf_number_pages_progress_page.dart';
+import 'pages/pdf_compress_page.dart';
+import 'pages/pdf_compress_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -97,6 +109,132 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfMergeProgressPage(initialFiles: initialFiles),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Split PDF route (UC-018)
+            if (name == '/split') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfSplitPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Split PDF Status & Progress route (UC-018)
+            if (name == '/split/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfSplitProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Rotate PDF route (UC-019)
+            if (name == '/rotate') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfRotatePage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Rotate PDF Status & Progress route (UC-019)
+            if (name == '/rotate/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfRotateProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Delete Pages route (UC-020)
+            if (name == '/delete-pages') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfDeletePagesPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Delete Pages Status & Progress route (UC-020)
+            if (name == '/delete-pages/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfDeletePagesProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Extract Pages route (UC-021)
+            if (name == '/extract-pages') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfExtractPagesPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Extract Pages Status & Progress route (UC-021)
+            if (name == '/extract-pages/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfExtractPagesProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Number Pages route (UC-022)
+            if (name == '/number-pages') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfNumberPagesPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Number Pages Status & Progress route (UC-022)
+            if (name == '/number-pages/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfNumberPagesProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Compress PDF route (UC-023)
+            if (name == '/compress') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfCompressPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Compress PDF Status & Progress route (UC-023)
+            if (name == '/compress/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfCompressProgressPage(file: file),
                 settings: settings,
               );
             }

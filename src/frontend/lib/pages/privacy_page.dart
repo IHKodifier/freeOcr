@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/telemetry_service.dart';
+import '../services/host_resolver.dart';
 import '../widgets/adsense_banner.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_header.dart';
@@ -17,7 +18,8 @@ class _PrivacyPageState extends State<PrivacyPage> {
   @override
   void initState() {
     super.initState();
-    TelemetryService.trackPageView('/privacy', pageTitle: 'freeOCR.me — Privacy Policy');
+    final brandTitle = HostResolver.getBrandTitle();
+    TelemetryService.trackPageView('/privacy', pageTitle: '$brandTitle — Privacy Policy');
   }
 
   @override
@@ -25,6 +27,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
+    final brandTitle = HostResolver.getBrandTitle();
 
     return SelectionArea(
       child: Scaffold(
@@ -58,7 +61,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                       _buildSection(
                         context,
                         title: '1. Zero Persistent Document Storage Guarantee & Ephemeral RAM Execution',
-                        body: 'freeOCR.me and FreePDFToolz process all uploaded PDF and image files strictly in volatile Linux RAM disk (tmpfs). Uploaded documents are automatically unlinked and purged from memory immediately after conversion or within 24 hours. We never inspect, store, mine, or retain your documents on persistent hard drives.',
+                        body: '$brandTitle processes all uploaded PDF and image files strictly in volatile Linux RAM disk (tmpfs). Uploaded documents are automatically unlinked and purged from memory immediately after conversion or within 24 hours. We never inspect, store, mine, or retain your documents on persistent hard drives.',
                       ),
                       _buildSection(
                         context,
@@ -68,12 +71,12 @@ class _PrivacyPageState extends State<PrivacyPage> {
                       _buildSection(
                         context,
                         title: '3. General Data Protection Regulation (GDPR) Compliance',
-                        body: 'Under the EU GDPR, users have rights regarding personal data processing. freeOCR.me and FreePDFToolz operate on a strict zero-registration, privacy-first model: we do not collect personal identification, user accounts, or stored file data. Anonymized telemetry dispatches can be controlled via browser-level privacy controls.',
+                        body: 'Under the EU GDPR, users have rights regarding personal data processing. $brandTitle operates on a strict zero-registration, privacy-first model: we do not collect personal identification, user accounts, or stored file data. Anonymized telemetry dispatches can be controlled via browser-level privacy controls.',
                       ),
                       _buildSection(
                         context,
                         title: '4. California Consumer Privacy Act (CCPA) Disclosure',
-                        body: 'Under the CCPA, California residents have the right to know what personal information is collected, request deletion, and opt out of the sale of personal information. freeOCR.me and FreePDFToolz DO NOT SELL your personal information, email addresses, or document content to third parties under any circumstances.',
+                        body: 'Under the CCPA, California residents have the right to know what personal information is collected, request deletion, and opt out of the sale of personal information. $brandTitle DOES NOT SELL your personal information, email addresses, or document content to third parties under any circumstances.',
                       ),
                       _buildSection(
                         context,

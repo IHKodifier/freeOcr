@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/telemetry_service.dart';
+import '../services/host_resolver.dart';
 import '../widgets/adsense_banner.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_header.dart';
@@ -18,7 +19,7 @@ class _AboutPageState extends State<AboutPage> {
   @override
   void initState() {
     super.initState();
-    TelemetryService.trackPageView('/about', pageTitle: 'freeOCR.me — About Us');
+    TelemetryService.trackPageView('/about', pageTitle: '${HostResolver.getBrandTitle()} — About Us');
   }
 
   @override
@@ -125,7 +126,7 @@ class _AboutPageState extends State<AboutPage> {
                         context,
                         title: '4. Kernel-Level Ephemeral RAM-Disk Security Guarantee & Zero-Retention Privacy',
                         icon: Icons.security_rounded,
-                        body: 'In traditional cloud document processing architectures, uploaded files are written to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants and metadata can persist across filesystem journals, backups, and snapshot volumes for months or years. At freeOCR.me and FreePDFToolz, user confidentiality is enforced at the operating system kernel level:\n\n'
+                        body: 'In traditional cloud document processing architectures, uploaded files are written to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants and metadata can persist across filesystem journals, backups, and snapshot volumes for months or years. At ${HostResolver.getBrandTitle()}, user confidentiality is enforced at the operating system kernel level:\n\n'
                             '• Linux tmpfs Volatile Memory Execution: All uploaded files, intermediate page bitmaps, deskewed buffers, and OCR artifacts exist exclusively in Linux tmpfs RAM disk mounts. Bytes are written only to volatile DRAM chips. At no point does your document ever touch persistent storage or non-volatile physical disk platters.\n\n'
                             '• Instant Automated Unlink Protocols: The moment your OCR conversion finishes and your output PDF, TXT, or Markdown stream is generated, an automated file unlinking protocol executes immediately. Ephemeral file pointers are severed, and memory allocations are returned to the kernel.\n\n'
                             '• Autonomous Janitor & Watchdog Daemon: A continuous background watchdog process monitors the RAM disk mount. Any orphaned session older than 60 minutes is forcefully unlinked, preventing memory leakage and guaranteeing that no orphaned document ever lingers.\n\n'

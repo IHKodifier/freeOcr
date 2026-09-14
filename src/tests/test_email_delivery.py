@@ -262,3 +262,44 @@ def test_api_endpoint_resend_delivery_integration():
         os.environ.pop("API_BASE_URL", None)
         DEV_JOB_STORE.pop(job_id, None)
 
+
+def test_email_links_promotes_pdf_to_redis():
+    """
+    Verify that invoking /api/v1/ocr/email-links promotes the PDF bytes to Redis with 24-hour TTL,
+    enabling cold-boot survival while saving Upstash storage for routine web downloads.
+    """
+    from app.redis_client import DEV_PDF_STORE
+
+    job_id = "job-promote-redis-101"
+    pdf_token = "pdf_token_promote_101"
+    pdf_bytes = b"%PDF-1.4 sample output content"
+
+    job_payload = {
+        "job_id": job_id,
+        "filename": "document.pdf",
+        "status": "COMPLETED",
+        "output_pdf_token": pdf_token,
+        "total_pages": 1,
+        "pages": [{"page_number": 1, "text": "Content"}]
+    }
+    DEV_JOB_STORE[job_id] = json.dumps(job_payload)
+    DEV_PDF_STORE[pdf_token] = pdf_bytes
+
+    mock_redis = MagicMock()
+
+    try:
+        with patch("app.redis_client.get_redis_client", return_value=mock_redis):
+            response = client.post(
+                "/api/v1/ocr/email-links",
+                json={"job_id": job_id, "email": "persist@example.com"}
+            )
+            assert response.status_code == 200
+
+            # Verify PDF binary was promoted to Redis with 24h TTL (86400)
+            mock_redis.set.assert_any_call(f"pdf:{pdf_token}", pdf_bytes, ex=86400)
+            # Verify job metadata was promoted to Redis with 24h TTL (86400)
+            mock_redis.set.assert_any_call(f"job:{job_id}", json.dumps(job_payload), ex=86400)
+    finally:
+        DEV_JOB_STORE.pop(job_id, None)
+        DEV_PDF_STORE.pop(pdf_token, None)
+

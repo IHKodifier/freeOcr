@@ -154,7 +154,7 @@ def test_get_searchable_pdf_from_redis_when_local_cache_misses():
     mock_redis = MagicMock()
     mock_redis.get.return_value = dummy_pdf_bytes
 
-    with patch("app.services.pdf_composer.get_redis_client", return_value=mock_redis):
+    with patch("app.redis_client.get_redis_client", return_value=mock_redis):
         retrieved = get_searchable_pdf(token)
 
         assert retrieved == dummy_pdf_bytes
