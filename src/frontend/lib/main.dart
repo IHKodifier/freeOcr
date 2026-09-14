@@ -22,6 +22,8 @@ import 'pages/pdf_tools_hub_page.dart';
 import 'pages/tool_placeholder_page.dart';
 import 'pages/pdf_merge_page.dart';
 import 'pages/pdf_merge_progress_page.dart';
+import 'pages/pdf_split_page.dart';
+import 'pages/pdf_split_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -97,6 +99,27 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfMergeProgressPage(initialFiles: initialFiles),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Split PDF route (UC-018)
+            if (name == '/split') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfSplitPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Split PDF Status & Progress route (UC-018)
+            if (name == '/split/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfSplitProgressPage(file: file),
                 settings: settings,
               );
             }
