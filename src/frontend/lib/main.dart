@@ -28,6 +28,8 @@ import 'pages/pdf_rotate_page.dart';
 import 'pages/pdf_rotate_progress_page.dart';
 import 'pages/pdf_delete_pages_page.dart';
 import 'pages/pdf_delete_pages_progress_page.dart';
+import 'pages/pdf_extract_pages_page.dart';
+import 'pages/pdf_extract_pages_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -166,6 +168,27 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfDeletePagesProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Extract Pages route (UC-021)
+            if (name == '/extract-pages') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfExtractPagesPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Extract Pages Status & Progress route (UC-021)
+            if (name == '/extract-pages/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfExtractPagesProgressPage(file: file),
                 settings: settings,
               );
             }
