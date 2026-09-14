@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import ocr, jobs, config, contact, tools_info, tools_merge, tools_split, tools_rotate
+from app.api.v1.endpoints import ocr, jobs, config, contact, tools_info, tools_merge, tools_split, tools_rotate, tools_delete_pages
 
 api_router = APIRouter()
 api_router.include_router(ocr.router, prefix="/ocr", tags=["ocr"])
@@ -10,4 +10,6 @@ api_router.include_router(tools_info.router, prefix="/tools", tags=["tools"])
 api_router.include_router(tools_merge.router, prefix="/tools", tags=["PDF Tools - Merge"])
 api_router.include_router(tools_split.router, prefix="/tools", tags=["PDF Tools - Split"])
 api_router.include_router(tools_rotate.router, prefix="/tools", tags=["PDF Tools - Rotate"])
+api_router.include_router(tools_delete_pages.router, prefix="/tools", tags=["PDF Tools - Delete Pages"])
+
 
