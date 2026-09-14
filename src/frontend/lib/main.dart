@@ -34,6 +34,8 @@ import 'pages/pdf_number_pages_page.dart';
 import 'pages/pdf_number_pages_progress_page.dart';
 import 'pages/pdf_compress_page.dart';
 import 'pages/pdf_compress_progress_page.dart';
+import 'pages/pdf_watermark_page.dart';
+import 'pages/pdf_watermark_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -62,17 +64,6 @@ class FreeOcrApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: currentMode,
-          builder: (context, child) {
-            return Overlay(
-              initialEntries: [
-                OverlayEntry(
-                  builder: (context) => SelectionArea(
-                    child: child ?? const SizedBox.shrink(),
-                  ),
-                ),
-              ],
-            );
-          },
           onGenerateRoute: (settings) {
             final name = settings.name;
 
@@ -239,6 +230,26 @@ class FreeOcrApp extends StatelessWidget {
               );
             }
 
+            // Dedicated Watermark PDF route (UC-024)
+            if (name == '/watermark') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfWatermarkPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Watermark PDF Status & Progress route (UC-024)
+            if (name == '/watermark/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfWatermarkProgressPage(file: file),
+                settings: settings,
+              );
+            }
 
             // Specific PDF tools route matching
             if (name != null && name.startsWith('/')) {
@@ -425,8 +436,9 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return SelectionArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
       floatingActionButton: kDebugMode
           ? FloatingActionButton.extended(
               key: const Key('dev_toggle_expired_fab'),
@@ -543,7 +555,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildPulseBadge(bool isDark) {
