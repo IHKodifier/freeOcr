@@ -68,6 +68,25 @@ class EphemeralRamStore(dict):
         except KeyError:
             return default
 
+    def __delitem__(self, key: str):
+        if super().__contains__(key):
+            super().__delitem__(key)
+        path = self._file_path(key)
+        if os.path.exists(path):
+            try:
+                os.remove(path)
+            except Exception:
+                pass
+
+    def pop(self, key: str, default=None):
+        path = self._file_path(key)
+        if os.path.exists(path):
+            try:
+                os.remove(path)
+            except Exception:
+                pass
+        return super().pop(key, default)
+
     def clear(self):
         super().clear()
         try:
@@ -83,11 +102,26 @@ class EphemeralRamStore(dict):
 
 DEV_JOB_STORE: EphemeralRamStore = EphemeralRamStore("jobs", is_bytes=False)
 DEV_AD_PASS_STORE: EphemeralRamStore = EphemeralRamStore("adpass", is_bytes=False)
-
+DEV_PDF_STORE: EphemeralRamStore = EphemeralRamStore("pdf", is_bytes=True)
 
 
 def get_redis_client() -> redis.Redis:
-    return redis.Redis.from_url(settings.REDIS_URL, socket_timeout=2.0)
+    """
+    Initializes and returns a Redis client.
+    Supports both local development Redis ('redis://...') and Upstash Serverless
+    TLS Redis ('rediss://...') with resilient socket timeouts and auto-reconnect.
+    """
+    is_tls = settings.REDIS_URL.startswith("rediss://")
+    kwargs = {
+        "socket_timeout": getattr(settings, "REDIS_SOCKET_TIMEOUT", 5.0),
+        "socket_connect_timeout": getattr(settings, "REDIS_SOCKET_CONNECT_TIMEOUT", 5.0),
+        "retry_on_timeout": getattr(settings, "REDIS_RETRY_ON_TIMEOUT", True),
+    }
+    if is_tls:
+        ssl_cert_reqs = getattr(settings, "REDIS_SSL_CERT_REQS", "none")
+        if ssl_cert_reqs:
+            kwargs["ssl_cert_reqs"] = ssl_cert_reqs
+    return redis.Redis.from_url(settings.REDIS_URL, **kwargs)
 
 
 def check_redis_connection() -> bool:
@@ -98,32 +132,98 @@ def check_redis_connection() -> bool:
         return False
 
 
-def store_job_metadata(job_id: str, payload: dict) -> None:
+def store_job_metadata(job_id: str, payload: dict, ttl_seconds: int = 86400) -> None:
     """
-    Stores job payload in Redis, with fallback to in-memory store when Redis is unavailable.
+    Stores job payload in Redis (with 24-hour TTL for serverless container survival),
+    falling back to local RAM store when Redis is unavailable.
     """
     json_str = json.dumps(payload)
     DEV_JOB_STORE[job_id] = json_str
     try:
         client = get_redis_client()
         client.incr(f"ip_limit:{payload.get('client_ip', '127.0.0.1')}")
-        client.set(f"job:{job_id}", json_str, ex=86400)
+        client.set(f"job:{job_id}", json_str, ex=ttl_seconds)
     except Exception:
         pass
 
 
 def get_job_metadata(job_id: str) -> str | None:
     """
-    Retrieves job payload string from Redis, falling back to in-memory store.
+    Retrieves job payload string from local RAM store or Redis.
+    On container cold-boot (after scale-to-zero), fetches from Redis and
+    re-populates the local container RAM store for fast subsequent access.
     """
+    # 1. Check local container RAM store
+    if job_id in DEV_JOB_STORE:
+        return DEV_JOB_STORE[job_id]
+
+    # 2. Check external Redis (persists across scale-to-zero events)
     try:
         client = get_redis_client()
         data = client.get(f"job:{job_id}")
         if data:
-            return data.decode("utf-8") if isinstance(data, bytes) else str(data)
+            val_str = data.decode("utf-8") if isinstance(data, bytes) else str(data)
+            DEV_JOB_STORE[job_id] = val_str
+            return val_str
     except Exception:
         pass
-    return DEV_JOB_STORE.get(job_id)
+    return None
+
+
+def store_pdf_bytes(token: str, pdf_bytes: bytes, persist_redis: bool = False, ttl_seconds: int = 86400) -> None:
+    """
+    Stores compiled searchable PDF bytes in local RAM store.
+    If persist_redis is True, also syncs to external Redis with 24-hour TTL.
+    By default, standard web conversions keep PDF bytes in container RAM,
+    conserving free-tier Upstash memory.
+    """
+    DEV_PDF_STORE[token] = pdf_bytes
+    if persist_redis:
+        try:
+            client = get_redis_client()
+            client.set(f"pdf:{token}", pdf_bytes, ex=ttl_seconds)
+        except Exception:
+            pass
+
+
+def persist_pdf_to_redis(token: str, ttl_seconds: int = 86400) -> bool:
+    """
+    Promotes an existing in-memory PDF binary to external Redis with 24-hour TTL.
+    Invoked when a user requests email download links (/api/v1/ocr/email-links),
+    ensuring scale-to-zero survival without filling Upstash storage for transient web visitors.
+    """
+    pdf_bytes = DEV_PDF_STORE.get(token)
+    if not pdf_bytes:
+        return False
+    try:
+        client = get_redis_client()
+        client.set(f"pdf:{token}", pdf_bytes, ex=ttl_seconds)
+        return True
+    except Exception:
+        return False
+
+
+def get_pdf_bytes(token: str) -> bytes | None:
+    """
+    Retrieves searchable PDF bytes from local RAM store or external Redis.
+    On container cold-boot (after scale-to-zero), fetches from Redis and
+    re-populates the local container RAM store.
+    """
+    # 1. Check local container RAM store
+    cached = DEV_PDF_STORE.get(token)
+    if cached:
+        return cached
+
+    # 2. Check external Redis
+    try:
+        client = get_redis_client()
+        redis_bytes = client.get(f"pdf:{token}")
+        if redis_bytes:
+            DEV_PDF_STORE[token] = redis_bytes
+            return redis_bytes
+    except Exception:
+        pass
+    return None
 
 
 def store_ad_pass_metadata(key: str, payload: dict, ttl_seconds: int = 3600) -> None:
@@ -159,3 +259,4 @@ def get_ad_pass_metadata(key: str) -> dict | None:
         except Exception:
             pass
     return None
+
