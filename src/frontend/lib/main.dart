@@ -24,6 +24,8 @@ import 'pages/pdf_merge_page.dart';
 import 'pages/pdf_merge_progress_page.dart';
 import 'pages/pdf_split_page.dart';
 import 'pages/pdf_split_progress_page.dart';
+import 'pages/pdf_rotate_page.dart';
+import 'pages/pdf_rotate_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -120,6 +122,27 @@ class FreeOcrApp extends StatelessWidget {
               }
               return MaterialPageRoute(
                 builder: (context) => PdfSplitProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Rotate PDF route (UC-019)
+            if (name == '/rotate') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfRotatePage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Rotate PDF Status & Progress route (UC-019)
+            if (name == '/rotate/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfRotateProgressPage(file: file),
                 settings: settings,
               );
             }
