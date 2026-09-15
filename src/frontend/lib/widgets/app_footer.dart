@@ -323,6 +323,14 @@ class AppFooter extends StatelessWidget {
             child: Text('Knowledge Base', style: linkStyle),
           ),
         ),
+        InkWell(
+          key: const Key('footer_ai_ocr_btn'),
+          onTap: () => _navigateTo(context, '/kb/ai-vs-traditional-ocr'),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('AI vs Traditional OCR', style: linkStyle),
+          ),
+        ),
       ],
     );
   }

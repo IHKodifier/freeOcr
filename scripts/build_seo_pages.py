@@ -59,10 +59,35 @@ def markdown_to_simple_html(md_text: str, title: str) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title} | freeOCR.me</title>
   <meta name="description" content="{title} — Free Ephemeral AI OCR Utility Guide">
+  <link rel="canonical" href="https://freeocr.me/kb/ai-vs-traditional-ocr">
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "{title}",
+    "description": "{title} — Free Ephemeral AI OCR Utility Guide",
+    "author": {{
+      "@type": "Organization",
+      "name": "freeOCR.me Engineering Team"
+    }},
+    "publisher": {{
+      "@type": "Organization",
+      "name": "freeOCR.me",
+      "url": "https://freeocr.me"
+    }},
+    "datePublished": "2026-09-15",
+    "dateModified": "2026-09-15",
+    "mainEntityOfPage": "https://freeocr.me/kb/ai-vs-traditional-ocr"
+  }}
+  </script>
   <style>
-    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
-    h1 {{ font-size: 2.2rem; color: #111827; }}
+    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 840px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
+    h1 {{ font-size: 2.2rem; color: #111827; line-height: 1.25; }}
     h2 {{ font-size: 1.6rem; color: #1f2937; margin-top: 1.8rem; }}
+    h3 {{ font-size: 1.25rem; color: #374151; margin-top: 1.4rem; }}
+    table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
+    th, td {{ border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; }}
+    th {{ background: #f9fafb; font-weight: 600; }}
     a {{ color: #2563eb; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
     .nav {{ margin-bottom: 2rem; font-size: 0.95rem; }}
