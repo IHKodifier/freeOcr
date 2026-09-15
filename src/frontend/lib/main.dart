@@ -10,6 +10,7 @@ import 'widgets/app_header.dart';
 import 'widgets/app_footer.dart';
 import 'widgets/landing_faq_section.dart';
 import 'widgets/hero_scanner_showcase.dart';
+import 'widgets/announcement_banner.dart';
 
 import 'pages/process_page.dart';
 import 'pages/result_page.dart';
@@ -34,6 +35,14 @@ import 'pages/pdf_number_pages_page.dart';
 import 'pages/pdf_number_pages_progress_page.dart';
 import 'pages/pdf_compress_page.dart';
 import 'pages/pdf_compress_progress_page.dart';
+import 'pages/pdf_watermark_page.dart';
+import 'pages/pdf_watermark_progress_page.dart';
+import 'pages/pdf_crop_page.dart';
+import 'pages/pdf_crop_progress_page.dart';
+import 'pages/pdf_redact_page.dart';
+import 'pages/pdf_redact_progress_page.dart';
+import 'pages/pdf_sign_page.dart';
+import 'pages/pdf_sign_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -62,17 +71,6 @@ class FreeOcrApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: currentMode,
-          builder: (context, child) {
-            return Overlay(
-              initialEntries: [
-                OverlayEntry(
-                  builder: (context) => SelectionArea(
-                    child: child ?? const SizedBox.shrink(),
-                  ),
-                ),
-              ],
-            );
-          },
           onGenerateRoute: (settings) {
             final name = settings.name;
 
@@ -239,6 +237,93 @@ class FreeOcrApp extends StatelessWidget {
               );
             }
 
+            // Dedicated Watermark PDF route (UC-024)
+            if (name == '/watermark') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfWatermarkPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Watermark PDF Status & Progress route (UC-024)
+            if (name == '/watermark/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfWatermarkProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Crop PDF route (UC-025)
+            if (name == '/crop') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfCropPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Crop PDF Status & Progress route (UC-025)
+            if (name == '/crop/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfCropProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Redact PDF route (UC-026)
+            if (name == '/redact') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfRedactPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Redact PDF Status & Progress route (UC-026)
+            if (name == '/redact/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is SelectedPdfFile) {
+                file = args;
+              } else if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfRedactProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Sign PDF route (UC-027)
+            if (name == '/sign') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfSignPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Sign PDF Status & Progress route (UC-027)
+            if (name == '/sign/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is SelectedPdfFile) {
+                file = args;
+              } else if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfSignProgressPage(file: file),
+                settings: settings,
+              );
+            }
 
             // Specific PDF tools route matching
             if (name != null && name.startsWith('/')) {
@@ -425,8 +510,9 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return SelectionArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
       floatingActionButton: kDebugMode
           ? FloatingActionButton.extended(
               key: const Key('dev_toggle_expired_fab'),
@@ -475,6 +561,8 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             const AdSenseBanner(),
+                            const SizedBox(height: 10),
+                            const AnnouncementBanner(),
                             const SizedBox(height: 14),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,6 +604,8 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const AdSenseBanner(),
+                            const SizedBox(height: 10),
+                            const AnnouncementBanner(),
                             const SizedBox(height: 12),
                             _buildPulseBadge(isDark),
                             const SizedBox(height: 8),
@@ -543,7 +633,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildPulseBadge(bool isDark) {

@@ -22,6 +22,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
     6: false,
     7: false,
     8: false,
+    9: false,
   };
 
   @override
@@ -193,6 +194,14 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 index: 8,
                 question: 'Do you store or retain my email address if I request download links via email?',
                 answer: 'No. Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
+              ),
+              _buildFaqItem(
+                context,
+                theme,
+                colorScheme,
+                index: 9,
+                question: 'How does AI OCR handle complex multi-column PDFs, borderless tables, and math formulas compared to traditional OCR?',
+                answer: 'Unlike classical heuristic OCR engines (such as standard Tesseract) which rely on rigid horizontal projection lines that scramble multi-column layouts into alternating sentences, freeOCR.me utilizes deep neural Vision Transformers. Our AI performs simultaneous Document Layout Analysis (DLA) and Reading Order Detection (ROD), grouping headers, table columns, and footnotes into logical hierarchical blocks before transcribing text. Searchable PDFs are composed with ISO 32000-2 invisible text layers matching exact scan coordinates. For a comprehensive technical analysis, read our deep-dive article in the Knowledge Base.',
               ),
 
               const SizedBox(height: 32),
