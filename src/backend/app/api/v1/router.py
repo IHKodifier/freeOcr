@@ -15,6 +15,7 @@ from app.api.v1.endpoints import (
     tools_watermark,
     tools_crop,
     tools_redact,
+    tools_sign,
 )
 
 api_router = APIRouter()
@@ -33,6 +34,7 @@ api_router.include_router(tools_compress.router, prefix="/tools", tags=["PDF Too
 api_router.include_router(tools_watermark.router, prefix="/tools", tags=["PDF Tools - Watermark"])
 api_router.include_router(tools_crop.router, prefix="/tools", tags=["PDF Tools - Crop"])
 api_router.include_router(tools_redact.router, prefix="/tools", tags=["PDF Tools - Redact"])
+api_router.include_router(tools_sign.router, prefix="/tools", tags=["PDF Tools - Sign"])
 
 
 

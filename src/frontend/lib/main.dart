@@ -40,6 +40,8 @@ import 'pages/pdf_crop_page.dart';
 import 'pages/pdf_crop_progress_page.dart';
 import 'pages/pdf_redact_page.dart';
 import 'pages/pdf_redact_progress_page.dart';
+import 'pages/pdf_sign_page.dart';
+import 'pages/pdf_sign_progress_page.dart';
 import 'widgets/expired_link_view.dart';
 import 'utils/url_strategy_helper.dart';
 import 'utils/theme_storage_helper.dart';
@@ -288,11 +290,36 @@ class FreeOcrApp extends StatelessWidget {
             if (name == '/redact/process') {
               final args = settings.arguments;
               SelectedPdfFile? file;
-              if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+              if (args is SelectedPdfFile) {
+                file = args;
+              } else if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
                 file = args['file'] as SelectedPdfFile;
               }
               return MaterialPageRoute(
                 builder: (context) => PdfRedactProgressPage(file: file),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Sign PDF route (UC-027)
+            if (name == '/sign') {
+              return MaterialPageRoute(
+                builder: (context) => const PdfSignPage(),
+                settings: settings,
+              );
+            }
+
+            // Dedicated Sign PDF Status & Progress route (UC-027)
+            if (name == '/sign/process') {
+              final args = settings.arguments;
+              SelectedPdfFile? file;
+              if (args is SelectedPdfFile) {
+                file = args;
+              } else if (args is Map<String, dynamic> && args['file'] is SelectedPdfFile) {
+                file = args['file'] as SelectedPdfFile;
+              }
+              return MaterialPageRoute(
+                builder: (context) => PdfSignProgressPage(file: file),
                 settings: settings,
               );
             }
