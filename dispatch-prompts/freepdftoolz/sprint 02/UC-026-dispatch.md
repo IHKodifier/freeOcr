@@ -119,7 +119,7 @@ flutter test test/pages/pdf_redact_page_test.dart
 ---
 
 ## 6. Definition of Done (DoD)
-- [ ] PyMuPDF permanent redaction engine removing glyphs and pixel streams.
-- [ ] Verified zero trace of redacted text in `page.get_text()` search.
-- [ ] Search & Redact text pattern matching across multi-page documents.
-- [ ] 100% automated tests passing locally.
+- [x] PyMuPDF permanent redaction engine removing glyphs and pixel streams.
+- [x] Verified zero trace of redacted text in `page.get_text()` search.
+- [x] Search & Redact text pattern matching across multi-page documents.
+- [x] 100% automated tests passing locally.
