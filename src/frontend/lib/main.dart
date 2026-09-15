@@ -10,6 +10,7 @@ import 'widgets/app_header.dart';
 import 'widgets/app_footer.dart';
 import 'widgets/landing_faq_section.dart';
 import 'widgets/hero_scanner_showcase.dart';
+import 'widgets/announcement_banner.dart';
 
 import 'pages/process_page.dart';
 import 'pages/result_page.dart';
@@ -560,6 +561,8 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             const AdSenseBanner(),
+                            const SizedBox(height: 10),
+                            const AnnouncementBanner(),
                             const SizedBox(height: 14),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -601,6 +604,8 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const AdSenseBanner(),
+                            const SizedBox(height: 10),
+                            const AnnouncementBanner(),
                             const SizedBox(height: 12),
                             _buildPulseBadge(isDark),
                             const SizedBox(height: 8),
