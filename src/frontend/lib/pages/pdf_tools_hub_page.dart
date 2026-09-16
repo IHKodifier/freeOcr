@@ -4,6 +4,7 @@ import '../widgets/app_footer.dart';
 import '../widgets/adsense_banner.dart';
 import '../widgets/tool_card.dart';
 import '../services/telemetry_service.dart';
+import '../services/favorites_service.dart';
 import '../main.dart';
 
 class ToolItemData {
@@ -199,7 +200,7 @@ class PdfToolsHubPage extends StatefulWidget {
 
 class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
   String _searchQuery = '';
-  String _selectedCategory = 'all'; // 'all', 'page_ops', 'security', 'ai_conversions'
+  String _selectedFilter = 'all'; // 'all' or 'favorites'
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -214,14 +215,14 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
     super.dispose();
   }
 
-  List<ToolItemData> get _filteredTools {
+  List<ToolItemData> _getFilteredTools(Set<String> favorites) {
     return kPdfToolsCatalog.where((tool) {
-      final matchesCategory = _selectedCategory == 'all' || tool.category == _selectedCategory;
+      final matchesFilter = _selectedFilter == 'all' || favorites.contains(tool.id);
       final query = _searchQuery.trim().toLowerCase();
       final matchesSearch = query.isEmpty ||
           tool.name.toLowerCase().contains(query) ||
           tool.description.toLowerCase().contains(query);
-      return matchesCategory && matchesSearch;
+      return matchesFilter && matchesSearch;
     }).toList();
   }
 
@@ -232,51 +233,72 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
 
     return SelectionArea(
       child: Scaffold(
-        appBar: AppHeader(
-          currentRoute: '/hub',
-          onThemeToggle: () {
-            if (isDark) {
-              themeNotifier.value = ThemeMode.light;
-            } else {
-              themeNotifier.value = ThemeMode.dark;
-            }
-          },
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              pinned: false,
+              elevation: 0,
+              toolbarHeight: 64,
+              expandedHeight: 64,
+              backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+              automaticallyImplyLeading: false,
+              flexibleSpace: OverflowBox(
+                alignment: Alignment.topCenter,
+                minHeight: 64,
+                maxHeight: 64,
+                child: AppHeader(
+                  currentRoute: '/hub',
+                  onThemeToggle: () {
+                    if (isDark) {
+                      themeNotifier.value = ThemeMode.light;
+                    } else {
+                      themeNotifier.value = ThemeMode.dark;
+                    }
+                  },
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1200),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 2.0, 16.0, 16.0),
+                    padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 24.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const AdSenseBanner(
-                          height: 48.0,
-                          margin: EdgeInsets.only(top: 2.0, bottom: 4.0),
+                          height: 90.0,
+                          margin: EdgeInsets.only(top: 8.0, bottom: 16.0),
                         ),
+                        Center(child: _buildPill(isDark)),
+                        const SizedBox(height: 16),
                         _buildHeroHeader(theme, isDark),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 20),
                         _buildSearchBarAndFilters(theme, isDark),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 24),
                         _buildToolsGrid(theme, isDark),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 48),
                         _buildHowItWorksSection(theme, isDark),
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 36),
                         _buildZeroRetentionGuaranteeCard(theme, isDark),
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 36),
                         _buildEducationalFaqSection(theme, isDark),
                       ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 36),
-              const AppFooter(currentRoute: '/hub'),
-            ],
-          ),
+            ),
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 24.0),
+                child: AppFooter(currentRoute: '/hub'),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -285,44 +307,35 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
   Widget _buildHeroHeader(ThemeData theme, bool isDark) {
     return Column(
       children: [
-        Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 10,
-          runSpacing: 4,
-          children: [
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.6,
-                  color: theme.colorScheme.onSurface,
-                  fontFamily: 'Inter',
-                  height: 1.15,
-                ),
-                children: const [
-                  TextSpan(text: 'Free, All-in-One '),
-                  TextSpan(
-                    text: 'PDF Tools Suite',
-                    style: TextStyle(color: Color(0xFF6366F1)),
-                  ),
-                ],
-              ),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.6,
+              color: theme.colorScheme.onSurface,
+              fontFamily: 'Inter',
+              height: 1.2,
             ),
-            _buildPill(isDark),
-          ],
+            children: const [
+              TextSpan(text: 'Free, All-in-One '),
+              TextSpan(
+                text: 'PDF Tools Suite',
+                style: TextStyle(color: Color(0xFF6366F1)),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 8),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 580),
+          constraints: const BoxConstraints(maxWidth: 620),
           child: Text(
             'Free, fast, and completely private PDF Tools Suite. Process pages, edit documents, convert formats, and extract OCR without file retention.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 12.5,
-              height: 1.35,
+              fontSize: 13.5,
+              height: 1.45,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -333,12 +346,12 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
 
   Widget _buildPill(bool isDark) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFF6366F1).withOpacity(0.1),
+        color: const Color(0xFF6366F1).withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFF6366F1).withOpacity(0.25),
+          color: const Color(0xFF6366F1).withValues(alpha: 0.25),
           width: 1,
         ),
       ),
@@ -346,8 +359,8 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 6.5,
-            height: 6.5,
+            width: 7,
+            height: 7,
             decoration: const BoxDecoration(
               color: Color(0xFF10B981),
               shape: BoxShape.circle,
@@ -360,11 +373,11 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               ],
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 8),
           Text(
             '16 Free Tools • 100% In-Memory • Zero File Retention',
             style: TextStyle(
-              fontSize: 11.5,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               color: isDark ? const Color(0xFFA5B4FC) : const Color(0xFF4338CA),
             ),
@@ -379,7 +392,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       children: [
         // Search Input
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
+          constraints: const BoxConstraints(maxWidth: 520),
           child: TextField(
             controller: _searchController,
             onChanged: (val) => setState(() => _searchQuery = val),
@@ -432,37 +445,36 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
             ),
           ),
         ),
-        const SizedBox(height: 10),
-        // Filter Chips
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildCategoryChip('all', 'All (16)', theme),
-              const SizedBox(width: 8),
-              _buildCategoryChip('page_ops', 'Page Operations (6)', theme),
-              const SizedBox(width: 8),
-              _buildCategoryChip('security', 'Security & Privacy', theme),
-              const SizedBox(width: 8),
-              _buildCategoryChip('ai_conversions', 'AI & Conversions (5)', theme),
-            ],
-          ),
+        const SizedBox(height: 12),
+        // Simplified Filter Chips: All & Favorites
+        ValueListenableBuilder<Set<String>>(
+          valueListenable: FavoritesService.favoritesNotifier,
+          builder: (context, favorites, _) {
+            final favCount = favorites.length;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildFilterChip('all', 'All (${kPdfToolsCatalog.length})', theme),
+                const SizedBox(width: 10),
+                _buildFilterChip('favorites', '★ Favorites ($favCount)', theme),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
-  Widget _buildCategoryChip(String categoryId, String label, ThemeData theme) {
-    final isSelected = _selectedCategory == categoryId;
+  Widget _buildFilterChip(String filterId, String label, ThemeData theme) {
+    final isSelected = _selectedFilter == filterId;
     return FilterChip(
       selected: isSelected,
       visualDensity: VisualDensity.compact,
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       label: Text(
         label,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: 12.5,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
           color: isSelected ? Colors.white : theme.colorScheme.onSurface,
         ),
@@ -480,93 +492,154 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       ),
       onSelected: (selected) {
         setState(() {
-          _selectedCategory = categoryId;
+          _selectedFilter = filterId;
         });
       },
     );
   }
 
   Widget _buildToolsGrid(ThemeData theme, bool isDark) {
-    final tools = _filteredTools;
+    return ValueListenableBuilder<Set<String>>(
+      valueListenable: FavoritesService.favoritesNotifier,
+      builder: (context, favorites, _) {
+        final tools = _getFilteredTools(favorites);
 
-    if (tools.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 48),
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Icon(
-              Icons.search_off_rounded,
-              size: 54,
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No matching PDF tools found',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface,
+        if (_selectedFilter == 'favorites' && tools.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B).withOpacity(0.5) : const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
               ),
             ),
-            const SizedBox(height: 6),
-            Text(
-              'Try adjusting your search terms or clearing category filters.',
-              style: TextStyle(
-                fontSize: 14,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.star_outline_rounded,
+                  size: 48,
+                  color: const Color(0xFFF59E0B).withOpacity(0.8),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'No Starred PDF Tools Yet',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Text(
+                    'Click the star icon on any tool card to pin your most frequently used tools here for rapid 1-click access.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.4,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _selectedFilter = 'all';
+                    });
+                  },
+                  icon: const Icon(Icons.apps_rounded, size: 16),
+                  label: const Text('Browse All 16 Tools'),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                _searchController.clear();
-                setState(() {
-                  _searchQuery = '';
-                  _selectedCategory = 'all';
-                });
-              },
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: const Text('Reset Filters'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        int crossAxisCount = 1;
-        if (constraints.maxWidth >= 1050) {
-          crossAxisCount = 4;
-        } else if (constraints.maxWidth >= 760) {
-          crossAxisCount = 3;
-        } else if (constraints.maxWidth >= 500) {
-          crossAxisCount = 2;
+          );
         }
 
-        return GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            mainAxisExtent: 114,
-          ),
-          itemCount: tools.length,
-          itemBuilder: (context, index) {
-            final tool = tools[index];
-            return ToolCard(
-              key: ValueKey(tool.id),
-              id: tool.id,
-              name: tool.name,
-              description: tool.description,
-              category: tool.category,
-              route: tool.route,
-              icon: tool.icon,
-              badge: tool.badge,
-              color: tool.color,
+        if (tools.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.search_off_rounded,
+                  size: 48,
+                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'No matching PDF tools found',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Try adjusting your search terms or clearing your search.',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {
+                      _searchQuery = '';
+                      _selectedFilter = 'all';
+                    });
+                  },
+                  icon: const Icon(Icons.refresh_rounded, size: 16),
+                  label: const Text('Reset Search'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            int crossAxisCount = 1;
+            if (constraints.maxWidth >= 1050) {
+              crossAxisCount = 4;
+            } else if (constraints.maxWidth >= 760) {
+              crossAxisCount = 3;
+            } else if (constraints.maxWidth >= 500) {
+              crossAxisCount = 2;
+            }
+
+            return GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                mainAxisExtent: 60,
+              ),
+              itemCount: tools.length,
+              itemBuilder: (context, index) {
+                final tool = tools[index];
+                return ToolCard(
+                  key: ValueKey(tool.id),
+                  id: tool.id,
+                  name: tool.name,
+                  description: tool.description,
+                  category: tool.category,
+                  route: tool.route,
+                  icon: tool.icon,
+                  badge: tool.badge,
+                  color: tool.color,
+                );
+              },
             );
           },
         );

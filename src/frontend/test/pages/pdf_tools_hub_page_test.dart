@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:free_ocr_frontend/pages/pdf_tools_hub_page.dart';
 import 'package:free_ocr_frontend/widgets/tool_card.dart';
+import 'package:free_ocr_frontend/services/favorites_service.dart';
 
 void main() {
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    await FavoritesService.init();
+  });
+
   Widget buildTestHub() {
     return MaterialApp(
       routes: {
@@ -15,7 +22,7 @@ void main() {
     );
   }
 
-  testWidgets('PdfToolsHubPage renders header, search field, and all 16 tool cards', (tester) async {
+  testWidgets('PdfToolsHubPage renders header, retention pill, search field, and all 16 tool cards', (tester) async {
     tester.view.physicalSize = const Size(1280, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -26,6 +33,7 @@ void main() {
 
     // Verify Title / Header
     expect(find.textContaining('PDF Tools Suite'), findsOneWidget);
+    expect(find.textContaining('Zero File Retention'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
 
     // Verify tool cards count (all 16 tools)
@@ -58,7 +66,7 @@ void main() {
     expect(find.text('Compress PDF'), findsNothing);
   });
 
-  testWidgets('PdfToolsHubPage filters tools by category chips', (tester) async {
+  testWidgets('PdfToolsHubPage supports starring tools and filtering by Favorites', (tester) async {
     tester.view.physicalSize = const Size(1280, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -67,16 +75,40 @@ void main() {
     await tester.pumpWidget(buildTestHub());
     await tester.pumpAndSettle();
 
-    // Tap "Security & Privacy" filter chip
-    final securityChip = find.text('Security & Privacy');
-    expect(securityChip, findsOneWidget);
-    await tester.tap(securityChip);
+    // Verify initial filter chips: All (16) and Favorites (0)
+    expect(find.text('All (16)'), findsOneWidget);
+    expect(find.text('★ Favorites (0)'), findsOneWidget);
+
+    // Tap Favorites chip with 0 starred -> Shows empty state
+    await tester.tap(find.text('★ Favorites (0)'));
     await tester.pumpAndSettle();
 
-    // Should find security tools
-    expect(find.text('Compress PDF'), findsOneWidget);
-    expect(find.text('Redact PDF'), findsOneWidget);
-    // Should NOT find Page Ops tools like Split
+    expect(find.text('No Starred PDF Tools Yet'), findsOneWidget);
+    expect(find.byType(ToolCard), findsNothing);
+
+    // Switch back to All (16)
+    await tester.tap(find.text('Browse All 16 Tools'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ToolCard), findsNWidgets(16));
+
+    // Star 'Merge PDF' by tapping its star icon
+    final mergeStarBtn = find.descendant(
+      of: find.widgetWithText(ToolCard, 'Merge PDF'),
+      matching: find.byTooltip('Add to favorites'),
+    );
+    expect(mergeStarBtn, findsOneWidget);
+    await tester.tap(mergeStarBtn);
+    await tester.pumpAndSettle();
+
+    // Verify filter chip updated to ★ Favorites (1)
+    expect(find.text('★ Favorites (1)'), findsOneWidget);
+
+    // Filter by Favorites
+    await tester.tap(find.text('★ Favorites (1)'));
+    await tester.pumpAndSettle();
+
+    // Only 'Merge PDF' should be visible
+    expect(find.text('Merge PDF'), findsOneWidget);
     expect(find.text('Split PDF'), findsNothing);
   });
 

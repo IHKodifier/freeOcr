@@ -67,34 +67,63 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ClipRRect(
-                    key: const Key('header_brand_logo'),
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/brand_logo_icon.png',
+                  if (isPdfTools)
+                    Container(
+                      key: const Key('header_brand_logo'),
                       width: 32,
                       height: 32,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6366F1).withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: const Color(0xFF6366F1).withValues(alpha: 0.3),
-                              width: 1,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF6366F1).withValues(alpha: 0.35),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    )
+                  else
+                    ClipRRect(
+                      key: const Key('header_brand_logo'),
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/images/brand_logo_icon.png',
+                        width: 32,
+                        height: 32,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          child: Icon(
-                            isPdfTools ? Icons.picture_as_pdf_rounded : Icons.document_scanner_rounded,
-                            color: const Color(0xFF6366F1),
-                            size: 20,
-                          ),
-                        );
-                      },
+                            child: const Icon(
+                              Icons.document_scanner_rounded,
+                              color: Color(0xFF6366F1),
+                              size: 20,
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
                   const SizedBox(width: 8),
                   RichText(
                     text: TextSpan(
