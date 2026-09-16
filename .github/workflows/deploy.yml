@@ -194,6 +194,7 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT || secrets.GCP_SA_KEY }}
           channelId: live
           projectId: ${{ env.GCP_PROJECT }}
+          target: freeocr-staging-app
 
   deploy-freepdftoolz:
     name: Deploy to freepdftoolz.me (GCP Cloud Run & Firebase)
@@ -201,7 +202,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.detect-target.outputs.deploy_freepdftoolz == 'true'
     env:
-      GCP_PROJECT: ${{ needs.detect-target.outputs.deploy_env == 'production' && (vars.FREEPDFTOOLZ_PROD_PROJECT || 'freepdftoolz-prod') || (vars.FREEPDFTOOLZ_STAGING_PROJECT || 'freepdftoolz-staging') }}
+      GCP_PROJECT: ${{ needs.detect-target.outputs.deploy_env == 'production' && (vars.FREEPDFTOOLZ_PROD_PROJECT || 'freepdftoolz-prod') || (vars.FREEPDFTOOLZ_STAGING_PROJECT || 'freeocr-staging-app') }}
       DEPLOY_ENV: ${{ needs.detect-target.outputs.deploy_env }}
 
     steps:
@@ -225,6 +226,10 @@ jobs:
           cd src/frontend
           flutter pub get
           flutter build web --release --no-wasm-dry-run
+
+      - name: Build Pre-rendered Static SEO Pages
+        run: |
+          python scripts/build_seo_pages.py
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -262,3 +267,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PDFTOOLZ || secrets.GCP_SA_KEY_PDFTOOLZ || secrets.GCP_SA_KEY }}
           channelId: live
           projectId: ${{ env.GCP_PROJECT }}
+          target: freepdftoolz

@@ -21,7 +21,7 @@ class HostResolver {
 
     // 2. Domain / Host sniffing
     final host = targetUri.host.toLowerCase();
-    if (host.contains('freepdftoolz.me') || host.contains('tools.localhost')) {
+    if (host.contains('freepdftoolz') || host.contains('tools.localhost')) {
       return AppBrand.freePdfTools;
     }
 

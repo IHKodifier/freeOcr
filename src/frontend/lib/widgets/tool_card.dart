@@ -8,6 +8,7 @@ class ToolCard extends StatefulWidget {
   final String route;
   final IconData icon;
   final String? badge;
+  final Color? color;
   final VoidCallback? onTap;
 
   const ToolCard({
@@ -19,6 +20,7 @@ class ToolCard extends StatefulWidget {
     required this.route,
     required this.icon,
     this.badge,
+    this.color,
     this.onTap,
   });
 
@@ -33,8 +35,8 @@ class _ToolCardState extends State<ToolCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-
     final primaryColor = theme.colorScheme.primary;
+    final accentColor = widget.color ?? _getCategoryColor(widget.category, primaryColor);
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -49,101 +51,96 @@ class _ToolCardState extends State<ToolCard> {
           }
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 180),
           curve: Curves.easeOutCubic,
           transform: _isHovered
-              ? (Matrix4.identity()..translateByDouble(0.0, -4.0, 0.0, 1.0))
+              ? (Matrix4.identity()..translateByDouble(0.0, -2.5, 0.0, 1.0))
               : Matrix4.identity(),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
           decoration: BoxDecoration(
             color: isDark
                 ? (_isHovered ? const Color(0xFF1E293B) : const Color(0xFF0F172A).withValues(alpha: 0.85))
-                : (_isHovered ? Colors.white : Colors.white.withValues(alpha: 0.9)),
-            borderRadius: BorderRadius.circular(16),
+                : (_isHovered ? Colors.white : Colors.white.withValues(alpha: 0.95)),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _isHovered
-                  ? primaryColor.withValues(alpha: 0.4)
+                  ? accentColor.withValues(alpha: 0.45)
                   : (isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06)),
               width: _isHovered ? 1.5 : 1.0,
             ),
             boxShadow: [
               if (_isHovered)
                 BoxShadow(
-                  color: primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
-                  blurRadius: 18,
-                  offset: const Offset(0, 8),
+                  color: accentColor.withValues(alpha: isDark ? 0.20 : 0.10),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
                 )
               else
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: isDark ? 0.12 : 0.02),
+                  blurRadius: 4,
+                  offset: const Offset(0, 1),
                 ),
             ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Top row: Icon container + Badge
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Icon container
-                  Container(
-                    width: 46,
-                    height: 46,
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: _getIconGradient(widget.category, primaryColor),
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                      color: accentColor.withValues(alpha: isDark ? (_isHovered ? 0.25 : 0.16) : (_isHovered ? 0.16 : 0.08)),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: accentColor.withValues(alpha: isDark ? 0.35 : 0.20),
+                        width: 1,
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _getIconGradient(widget.category, primaryColor).first.withValues(alpha: 0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: Icon(
                       widget.icon,
-                      color: Colors.white,
-                      size: 24,
+                      color: accentColor,
+                      size: 16,
                     ),
                   ),
                   const Spacer(),
                   if (widget.badge != null) _buildBadge(widget.badge!),
                 ],
               ),
-              const SizedBox(height: 14),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.name,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.3,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    widget.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      height: 1.4,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 7),
+              // Tool Name
+              Text(
+                widget.name,
+                style: TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.2,
+                  color: theme.colorScheme.onSurface,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 3),
+              // Description
+              Expanded(
+                child: Text(
+                  widget.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    height: 1.35,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              // Bottom Row: Category & Arrow
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,17 +149,21 @@ class _ToolCardState extends State<ToolCard> {
                       _formatCategory(widget.category),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 10.5,
                         fontWeight: FontWeight.w600,
                         color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
                       ),
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 16,
-                    color: _isHovered ? primaryColor : Colors.grey.withValues(alpha: 0.5),
+                  AnimatedSlide(
+                    duration: const Duration(milliseconds: 150),
+                    offset: _isHovered ? const Offset(0.2, 0) : Offset.zero,
+                    child: Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 13,
+                      color: _isHovered ? accentColor : (isDark ? Colors.white38 : Colors.black38),
+                    ),
                   ),
                 ],
               ),
@@ -198,34 +199,34 @@ class _ToolCardState extends State<ToolCard> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: fg.withValues(alpha: 0.3), width: 1),
       ),
       child: Text(
         badge.toUpperCase(),
         style: TextStyle(
-          fontSize: 10,
+          fontSize: 9,
           fontWeight: FontWeight.w700,
           color: fg,
-          letterSpacing: 0.5,
+          letterSpacing: 0.4,
         ),
       ),
     );
   }
 
-  List<Color> _getIconGradient(String category, Color primaryColor) {
+  Color _getCategoryColor(String category, Color primaryColor) {
     switch (category) {
       case 'page_ops':
-        return [const Color(0xFF3B82F6), const Color(0xFF1D4ED8)];
+        return const Color(0xFF4F46E5);
       case 'security':
-        return [const Color(0xFF10B981), const Color(0xFF047857)];
+        return const Color(0xFF0D9488);
       case 'ai_conversions':
-        return [const Color(0xFF8B5CF6), const Color(0xFF6D28D9)];
+        return const Color(0xFF8B5CF6);
       default:
-        return [primaryColor, primaryColor.withValues(alpha: 0.8)];
+        return primaryColor;
     }
   }
 
