@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_ocr_frontend/services/telemetry_service.dart';
 
 void main() {
-  group('TelemetryService Unit Tests', () {
+  group('TelemetryService Unit & FreePDFToolz Telemetry Tests', () {
     test('trackPageView dispatches pageview without throwing', () {
       expect(
         () => TelemetryService.trackPageView('/', pageTitle: 'freeOCR.me — Home'),
@@ -10,6 +10,65 @@ void main() {
       );
       expect(
         () => TelemetryService.trackPageView('/result/job_abc123', pageTitle: 'Result'),
+        returnsNormally,
+      );
+    });
+
+    test('test_track_page_view_dispatches_for_freepdftoolz_routes', () {
+      // Hub & FreePDFToolz tools
+      expect(
+        () => TelemetryService.trackPageView('/pdf-tools', pageTitle: 'FreePDFToolz — All PDF Tools'),
+        returnsNormally,
+      );
+      expect(
+        () => TelemetryService.trackPageView('/sign/process', pageTitle: 'FreePDFToolz — Sign PDF (Workspace)'),
+        returnsNormally,
+      );
+      expect(
+        () => TelemetryService.trackPageView('/merge/process', pageTitle: 'FreePDFToolz — Merge PDF'),
+        returnsNormally,
+      );
+      expect(
+        () => TelemetryService.trackPageView('/compress', pageTitle: 'FreePDFToolz — Compress PDF'),
+        returnsNormally,
+      );
+    });
+
+    test('test_tool_conversion_events_format', () {
+      // 1. Tool upload started
+      expect(
+        () => TelemetryService.trackToolUploadStarted(
+          tool: 'merge',
+          fileSizeKb: 1024.5,
+        ),
+        returnsNormally,
+      );
+
+      // 2. Tool process completed
+      expect(
+        () => TelemetryService.trackToolProcessCompleted(
+          tool: 'compress',
+          durationMs: 1420,
+          pages: 12,
+        ),
+        returnsNormally,
+      );
+
+      // 3. Tool download clicked
+      expect(
+        () => TelemetryService.trackToolDownloadClicked(
+          tool: 'split',
+          fileSizeKb: 850.0,
+        ),
+        returnsNormally,
+      );
+
+      // 4. Rewarded ad watched
+      expect(
+        () => TelemetryService.trackRewardedAdWatched(
+          tool: 'redact',
+          boostMb: 50.0,
+        ),
         returnsNormally,
       );
     });

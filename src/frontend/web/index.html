@@ -79,33 +79,57 @@
   <!-- Google AdSense Monetization Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
 
-  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
+  <!-- Google Analytics 4 (GA4) Domain-Aware Telemetry Tag -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
+    (function() {
+      var hostname = window.location.hostname;
+      var isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+      var gaMeasurementId = null;
 
-    // JS Interop helpers for Flutter Telemetry Service
-    window.trackGa4Event = function(eventName, eventParams) {
-      const params = eventParams || {};
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', eventName, params);
+      if (hostname.indexOf('freepdftoolz') !== -1 || window.location.search.indexOf('brand=freepdftoolz') !== -1) {
+        var metaTag = document.querySelector('meta[name="freepdftoolz-ga4-id"]');
+        gaMeasurementId = (metaTag && metaTag.getAttribute('content')) ? metaTag.getAttribute('content') : 'G-W4D8V33FX1';
+      } else if (hostname.indexOf('freeocr') !== -1 || !isLocalhost) {
+        gaMeasurementId = 'G-E852V95BXB';
       }
-      console.log('[GA4 Telemetry Event]', eventName, params);
-    };
 
-    window.trackGa4PageView = function(pagePath, pageTitle) {
-      const title = pageTitle || document.title;
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'page_view', {
-          'page_path': pagePath,
-          'page_title': title
-        });
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+
+      if (gaMeasurementId && !isLocalhost) {
+        gtag('config', gaMeasurementId, { 'send_page_view': true });
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaMeasurementId;
+        document.head.appendChild(script);
+        console.log('[GA4 Dynamic Loader] Initialized container for host:', hostname, gaMeasurementId);
+      } else if (isLocalhost) {
+        console.log('[GA4 Dynamic Loader] Localhost detected. Telemetry network calls suppressed for production container protection.');
       }
-      console.log('[GA4 Telemetry PageView]', pagePath, title);
-    };
+
+      // JS Interop helpers for Flutter Telemetry Service
+      window.trackGa4Event = function(eventName, eventParams) {
+        var params = eventParams || {};
+        if (typeof window.gtag === 'function' && !isLocalhost && gaMeasurementId) {
+          window.gtag('event', eventName, params);
+        }
+        console.log('[GA4 Telemetry Event]', eventName, params);
+      };
+
+      window.trackGa4PageView = function(pagePath, pageTitle) {
+        var title = pageTitle || document.title;
+        if (typeof window.gtag === 'function' && !isLocalhost && gaMeasurementId) {
+          window.gtag('event', 'page_view', {
+            'page_path': pagePath,
+            'page_title': title
+          });
+        }
+        console.log('[GA4 Telemetry PageView]', pagePath, title);
+      };
+    })();
+  </script>
 
     // Immediate synchronous stream downloader that preserves active user gesture,
     // absorbs duplicate clicks, and delegates directly to browser's native download manager

@@ -75,7 +75,7 @@ class FreeOcrApp extends StatelessWidget {
             final name = settings.name;
 
             // FreePDFToolz Hub route
-            if (name == '/hub') {
+            if (name == '/hub' || name == '/pdf-tools') {
               return MaterialPageRoute(
                 builder: (context) => const PdfToolsHubPage(),
                 settings: settings,
@@ -334,6 +334,17 @@ class FreeOcrApp extends StatelessWidget {
                       toolId: tool.id,
                       toolTitle: tool.name,
                       description: tool.description,
+                      icon: tool.icon,
+                    ),
+                    settings: settings,
+                  );
+                }
+                if ('${tool.route}/process' == name && tool.id != 'ocr') {
+                  return MaterialPageRoute(
+                    builder: (context) => ToolPlaceholderPage(
+                      toolId: '${tool.id}/process',
+                      toolTitle: '${tool.name} (Processing)',
+                      description: 'Processing ${tool.name} document workspace.',
                       icon: tool.icon,
                     ),
                     settings: settings,

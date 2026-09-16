@@ -187,7 +187,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
   @override
   void initState() {
     super.initState();
-    TelemetryService.trackPageView('/hub', pageTitle: 'FreePDFToolz — All PDF Tools');
+    TelemetryService.trackPageView('/pdf-tools', pageTitle: 'FreePDFToolz — All PDF Tools');
   }
 
   @override

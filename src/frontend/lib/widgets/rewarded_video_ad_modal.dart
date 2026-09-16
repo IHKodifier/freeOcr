@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../services/telemetry_service.dart';
 
 class RewardedVideoAdModal extends StatefulWidget {
   final String filename;
@@ -13,6 +14,7 @@ class RewardedVideoAdModal extends StatefulWidget {
   final int adDurationSeconds;
   final Function(double boostedLimitMb) onWatchAd;
   final VoidCallback? onCancel;
+  final String? toolName;
 
   const RewardedVideoAdModal({
     super.key,
@@ -24,6 +26,7 @@ class RewardedVideoAdModal extends StatefulWidget {
     this.adDurationSeconds = 15,
     required this.onWatchAd,
     this.onCancel,
+    this.toolName,
   });
 
   static Future<void> show({
@@ -36,6 +39,7 @@ class RewardedVideoAdModal extends StatefulWidget {
     int adDurationSeconds = 15,
     required Function(double boostedLimitMb) onWatchAd,
     VoidCallback? onCancel,
+    String? toolName,
   }) {
     return showDialog<void>(
       context: context,
@@ -60,6 +64,7 @@ class RewardedVideoAdModal extends StatefulWidget {
               Navigator.of(dialogContext).pop();
               if (onCancel != null) onCancel();
             },
+            toolName: toolName,
           ),
         );
       },
@@ -131,6 +136,10 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
 
         // Negotiate boost pass with backend Redis
         _completedAds++;
+        TelemetryService.trackRewardedAdWatched(
+          tool: widget.toolName ?? 'general',
+          boostMb: widget.boostPerAdMb,
+        );
         final res = await ApiService.notifyRewardedAdWatched();
         final double? returnedLimit = (res['boosted_max_file_mb'] as num?)?.toDouble();
         final double newLimit = (returnedLimit != null && returnedLimit > _currentActiveLimitMb)
