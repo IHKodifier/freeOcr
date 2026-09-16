@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class AdSenseBanner extends StatelessWidget {
   final double height;
   final double maxWidth;
+  final EdgeInsetsGeometry? margin;
 
   /// Retained as safe no-ops for API compatibility with existing callers.
   static void resetSessionCount() {}
@@ -14,8 +15,9 @@ class AdSenseBanner extends StatelessWidget {
 
   const AdSenseBanner({
     super.key,
-    this.height = 90.0,
+    this.height = 54.0,
     this.maxWidth = 728.0,
+    this.margin,
   });
 
   @override
@@ -39,7 +41,7 @@ class AdSenseBanner extends StatelessWidget {
               maxWidth: maxWidth,
               minHeight: height,
             ),
-            margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+            margin: margin ?? const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
             decoration: BoxDecoration(
               color: isDark ? Colors.white.withOpacity(0.02) : const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12.0),
