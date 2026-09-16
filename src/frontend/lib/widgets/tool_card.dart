@@ -86,17 +86,17 @@ class _ToolCardState extends State<ToolCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top row: Icon container + Badge
+              // Top row: Icon container + Tool Name (Space 5) + Badge
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
-                    width: 30,
-                    height: 30,
+                    width: 28,
+                    height: 28,
                     decoration: BoxDecoration(
                       color: accentColor.withValues(alpha: isDark ? (_isHovered ? 0.25 : 0.16) : (_isHovered ? 0.16 : 0.08)),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(7),
                       border: Border.all(
                         color: accentColor.withValues(alpha: isDark ? 0.35 : 0.20),
                         width: 1,
@@ -105,28 +105,31 @@ class _ToolCardState extends State<ToolCard> {
                     child: Icon(
                       widget.icon,
                       color: accentColor,
-                      size: 16,
+                      size: 15,
                     ),
                   ),
-                  const Spacer(),
-                  if (widget.badge != null) _buildBadge(widget.badge!),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      widget.name,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (widget.badge != null) ...[
+                    const SizedBox(width: 6),
+                    _buildBadge(widget.badge!),
+                  ],
                 ],
               ),
-              const SizedBox(height: 7),
-              // Tool Name
-              Text(
-                widget.name,
-                style: TextStyle(
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.2,
-                  color: theme.colorScheme.onSurface,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 3),
-              // Description
+              const SizedBox(height: 6),
+              // Description (takes full height with zero clipping!)
               Expanded(
                 child: Text(
                   widget.description,
