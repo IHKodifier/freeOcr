@@ -208,6 +208,10 @@ class _PdfMergeProgressPageState extends State<PdfMergeProgressPage> {
       _errorMessage = null;
     });
 
+    final totalBytes = _files.fold<int>(0, (sum, f) => sum + (f.bytes?.length ?? f.sizeBytes));
+    TelemetryService.trackToolUploadStarted(tool: 'merge', fileSizeKb: totalBytes / 1024.0);
+    final stopwatch = Stopwatch()..start();
+
     try {
       final uri = Uri.parse('${ApiService.baseUrl}/tools/merge');
       final request = http.MultipartRequest('POST', uri);
@@ -227,6 +231,7 @@ class _PdfMergeProgressPageState extends State<PdfMergeProgressPage> {
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
+      stopwatch.stop();
 
       if (response.statusCode == 200) {
         setState(() {
@@ -238,6 +243,11 @@ class _PdfMergeProgressPageState extends State<PdfMergeProgressPage> {
           'file_count': _files.length,
           'output_size_bytes': response.bodyBytes.length,
         });
+        TelemetryService.trackToolProcessCompleted(
+          tool: 'merge',
+          durationMs: stopwatch.elapsedMilliseconds,
+          pages: _files.length,
+        );
       } else {
         String detail = 'Merge failed (HTTP ${response.statusCode})';
         try {
@@ -263,6 +273,10 @@ class _PdfMergeProgressPageState extends State<PdfMergeProgressPage> {
       jobId: 'merge_${DateTime.now().millisecondsSinceEpoch}',
       format: 'pdf',
       filename: 'merged_document.pdf',
+    );
+    TelemetryService.trackToolDownloadClicked(
+      tool: 'merge',
+      fileSizeKb: (_mergedSizeBytes ?? _mergedPdfBytes!.length) / 1024.0,
     );
     DownloadHelper.triggerDownloadBytes(
       _mergedPdfBytes!,

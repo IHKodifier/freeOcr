@@ -14,6 +14,7 @@ class ToolItemData {
   final String route;
   final IconData icon;
   final String? badge;
+  final Color? color;
 
   const ToolItemData({
     required this.id,
@@ -23,6 +24,7 @@ class ToolItemData {
     required this.route,
     required this.icon,
     this.badge,
+    this.color,
   });
 }
 
@@ -34,8 +36,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Combine multiple PDF files into a single unified document in any order.',
     category: 'page_ops',
     route: '/merge',
-    icon: Icons.call_merge_rounded,
+    icon: Icons.layers_rounded,
     badge: 'POPULAR',
+    color: Color(0xFF4F46E5),
   ),
   ToolItemData(
     id: 'split',
@@ -43,8 +46,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Extract individual pages or custom ranges into standalone PDF documents.',
     category: 'page_ops',
     route: '/split',
-    icon: Icons.call_split_rounded,
+    icon: Icons.content_cut_rounded,
     badge: 'POPULAR',
+    color: Color(0xFF8B5CF6),
   ),
   ToolItemData(
     id: 'rotate',
@@ -52,7 +56,8 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Rotate PDF pages clockwise or counter-clockwise permanently.',
     category: 'page_ops',
     route: '/rotate',
-    icon: Icons.rotate_right_rounded,
+    icon: Icons.rotate_90_degrees_cw_rounded,
+    color: Color(0xFF0284C7),
   ),
   ToolItemData(
     id: 'delete-pages',
@@ -60,7 +65,8 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Remove unwanted, blank, or duplicate pages from your PDF file effortlessly.',
     category: 'page_ops',
     route: '/delete-pages',
-    icon: Icons.delete_sweep_rounded,
+    icon: Icons.delete_outline_rounded,
+    color: Color(0xFFF43F5E),
   ),
   ToolItemData(
     id: 'extract-pages',
@@ -68,7 +74,8 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Select specific pages to extract into a fresh new PDF document.',
     category: 'page_ops',
     route: '/extract-pages',
-    icon: Icons.file_copy_rounded,
+    icon: Icons.drive_file_move_rounded,
+    color: Color(0xFFF59E0B),
   ),
   ToolItemData(
     id: 'number-pages',
@@ -76,8 +83,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Add clean, customizable page numbers to your PDF documents.',
     category: 'page_ops',
     route: '/number-pages',
-    icon: Icons.format_list_numbered_rounded,
+    icon: Icons.pin_rounded,
     badge: 'NEW',
+    color: Color(0xFF10B981),
   ),
 
   // Security & Optimization (5 tools)
@@ -89,6 +97,7 @@ const List<ToolItemData> kPdfToolsCatalog = [
     route: '/compress',
     icon: Icons.compress_rounded,
     badge: 'POPULAR',
+    color: Color(0xFF0D9488),
   ),
   ToolItemData(
     id: 'watermark',
@@ -97,6 +106,7 @@ const List<ToolItemData> kPdfToolsCatalog = [
     category: 'security',
     route: '/watermark',
     icon: Icons.branding_watermark_rounded,
+    color: Color(0xFF0891B2),
   ),
   ToolItemData(
     id: 'crop',
@@ -105,6 +115,7 @@ const List<ToolItemData> kPdfToolsCatalog = [
     category: 'security',
     route: '/crop',
     icon: Icons.crop_rounded,
+    color: Color(0xFFEA580C),
   ),
   ToolItemData(
     id: 'redact',
@@ -112,8 +123,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Permanently black out sensitive text, data, and confidential areas.',
     category: 'security',
     route: '/redact',
-    icon: Icons.security_rounded,
+    icon: Icons.visibility_off_rounded,
     badge: 'SECURITY',
+    color: Color(0xFF64748B),
   ),
   ToolItemData(
     id: 'sign',
@@ -121,8 +133,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Draw, type, or upload verifiable digital signatures to sign PDF documents.',
     category: 'security',
     route: '/sign',
-    icon: Icons.draw_rounded,
+    icon: Icons.history_edu_rounded,
     badge: 'POPULAR',
+    color: Color(0xFF7C3AED),
   ),
 
   // AI & Conversions (5 tools)
@@ -134,6 +147,7 @@ const List<ToolItemData> kPdfToolsCatalog = [
     route: '/ocr',
     icon: Icons.document_scanner_rounded,
     badge: 'AI',
+    color: Color(0xFF2563EB),
   ),
   ToolItemData(
     id: 'annotate',
@@ -142,6 +156,7 @@ const List<ToolItemData> kPdfToolsCatalog = [
     category: 'ai_conversions',
     route: '/annotate',
     icon: Icons.edit_note_rounded,
+    color: Color(0xFFD97706),
   ),
   ToolItemData(
     id: 'edit-text',
@@ -149,8 +164,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Modify, correct, and update existing text inside PDF documents directly.',
     category: 'ai_conversions',
     route: '/edit-text',
-    icon: Icons.text_fields_rounded,
+    icon: Icons.drive_file_rename_outline_rounded,
     badge: 'NEW',
+    color: Color(0xFF3B82F6),
   ),
   ToolItemData(
     id: 'pdf-to-word',
@@ -158,8 +174,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Convert PDF documents to editable Microsoft Word .docx format accurately.',
     category: 'ai_conversions',
     route: '/pdf-to-word',
-    icon: Icons.article_rounded,
+    icon: Icons.description_rounded,
     badge: 'POPULAR',
+    color: Color(0xFF1D4ED8),
   ),
   ToolItemData(
     id: 'summarize',
@@ -167,8 +184,9 @@ const List<ToolItemData> kPdfToolsCatalog = [
     description: 'Generate concise AI summaries, key takeaways, and outline briefs from long PDFs.',
     category: 'ai_conversions',
     route: '/summarize',
-    icon: Icons.auto_stories_rounded,
+    icon: Icons.auto_awesome_rounded,
     badge: 'AI',
+    color: Color(0xFFA855F7),
   ),
 ];
 
@@ -187,7 +205,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
   @override
   void initState() {
     super.initState();
-    TelemetryService.trackPageView('/hub', pageTitle: 'FreePDFToolz — All PDF Tools');
+    TelemetryService.trackPageView('/pdf-tools', pageTitle: 'FreePDFToolz — All PDF Tools');
   }
 
   @override
@@ -231,29 +249,29 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1200),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const AdSenseBanner(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
                         _buildHeroHeader(theme, isDark),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
                         _buildSearchBarAndFilters(theme, isDark),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 14),
                         _buildToolsGrid(theme, isDark),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 40),
                         _buildHowItWorksSection(theme, isDark),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 32),
                         _buildZeroRetentionGuaranteeCard(theme, isDark),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 32),
                         _buildEducationalFaqSection(theme, isDark),
                       ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 40),
               const AppFooter(currentRoute: '/hub'),
             ],
           ),
@@ -266,7 +284,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
             color: const Color(0xFF6366F1).withOpacity(0.1),
             borderRadius: BorderRadius.circular(20),
@@ -279,8 +297,8 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 8,
-                height: 8,
+                width: 7,
+                height: 7,
                 decoration: const BoxDecoration(
                   color: Color(0xFF10B981),
                   shape: BoxShape.circle,
@@ -293,12 +311,12 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 7),
               Flexible(
                 child: Text(
                   '16 Free Tools • 100% In-Memory • Zero File Retention',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: isDark ? const Color(0xFFA5B4FC) : const Color(0xFF4338CA),
                   ),
@@ -308,17 +326,17 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             style: TextStyle(
-              fontSize: 38,
+              fontSize: 28,
               fontWeight: FontWeight.w800,
-              letterSpacing: -1.0,
+              letterSpacing: -0.7,
               color: theme.colorScheme.onSurface,
               fontFamily: 'Inter',
-              height: 1.2,
+              height: 1.15,
             ),
             children: const [
               TextSpan(text: 'Free, All-in-One '),
@@ -329,15 +347,16 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 640),
+          constraints: const BoxConstraints(maxWidth: 580),
           child: Text(
             'Free, fast, and completely private PDF Tools Suite. Process pages, edit documents, convert formats, and extract OCR without file retention.',
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.4,
               color: theme.colorScheme.onSurfaceVariant,
-              height: 1.5,
             ),
           ),
         ),
@@ -350,23 +369,25 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       children: [
         // Search Input
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 540),
+          constraints: const BoxConstraints(maxWidth: 500),
           child: TextField(
             controller: _searchController,
             onChanged: (val) => setState(() => _searchQuery = val),
+            style: const TextStyle(fontSize: 13.5),
             decoration: InputDecoration(
               hintText: 'Search tools (e.g. merge, split, compress, ocr)...',
               hintStyle: TextStyle(
                 color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
-                fontSize: 14,
+                fontSize: 13,
               ),
               prefixIcon: Icon(
                 Icons.search_rounded,
+                size: 20,
                 color: theme.colorScheme.primary,
               ),
               suffixIcon: _searchQuery.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.clear_rounded, size: 18),
+                      icon: const Icon(Icons.clear_rounded, size: 16),
                       onPressed: () {
                         _searchController.clear();
                         setState(() => _searchQuery = '');
@@ -377,21 +398,22 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               fillColor: isDark
                   ? const Color(0xFF1E293B).withOpacity(0.7)
                   : Colors.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              isDense: true,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   color: isDark ? Colors.white12 : Colors.black.withOpacity(0.08),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   color: isDark ? Colors.white12 : Colors.black.withOpacity(0.08),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   color: theme.colorScheme.primary,
                   width: 1.5,
@@ -400,7 +422,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
         // Filter Chips
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -425,10 +447,12 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
     final isSelected = _selectedCategory == categoryId;
     return FilterChip(
       selected: isSelected,
+      visualDensity: VisualDensity.compact,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
       label: Text(
         label,
         style: TextStyle(
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
           color: isSelected ? Colors.white : theme.colorScheme.onSurface,
         ),
@@ -437,7 +461,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       checkmarkColor: Colors.white,
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: isSelected
               ? theme.colorScheme.primary
@@ -516,9 +540,9 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 18,
-            mainAxisSpacing: 18,
-            mainAxisExtent: 220,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            mainAxisExtent: 128,
           ),
           itemCount: tools.length,
           itemBuilder: (context, index) {
@@ -532,6 +556,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               route: tool.route,
               icon: tool.icon,
               badge: tool.badge,
+              color: tool.color,
             );
           },
         );

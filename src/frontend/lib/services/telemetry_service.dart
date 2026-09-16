@@ -13,6 +13,60 @@ abstract class TelemetryService {
     helper.trackGa4Event(eventName, parameters);
   }
 
+  /// Standard FreePDFToolz Conversion Event: Upload initiated
+  static void trackToolUploadStarted({
+    required String tool,
+    required double fileSizeKb,
+  }) {
+    final params = {
+      'tool': tool,
+      'file_size_kb': fileSizeKb,
+      'timestamp': DateTime.now().toIso8601String(),
+    };
+    trackEvent('tool_upload_started', params);
+  }
+
+  /// Standard FreePDFToolz Conversion Event: Tool manipulation complete
+  static void trackToolProcessCompleted({
+    required String tool,
+    required int durationMs,
+    required int pages,
+  }) {
+    final params = {
+      'tool': tool,
+      'duration_ms': durationMs,
+      'pages': pages,
+      'timestamp': DateTime.now().toIso8601String(),
+    };
+    trackEvent('tool_process_completed', params);
+  }
+
+  /// Standard FreePDFToolz Conversion Event: Download action clicked
+  static void trackToolDownloadClicked({
+    required String tool,
+    required double fileSizeKb,
+  }) {
+    final params = {
+      'tool': tool,
+      'file_size_kb': fileSizeKb,
+      'timestamp': DateTime.now().toIso8601String(),
+    };
+    trackEvent('tool_download_clicked', params);
+  }
+
+  /// Standard FreePDFToolz Conversion Event: Rewarded video ad completed
+  static void trackRewardedAdWatched({
+    required String tool,
+    required double boostMb,
+  }) {
+    final params = {
+      'tool': tool,
+      'boost_mb': boostMb,
+      'timestamp': DateTime.now().toIso8601String(),
+    };
+    trackEvent('rewarded_ad_watched', params);
+  }
+
   /// Track when a user initiates/completes a file upload.
   static void trackDocumentUploaded({
     required String filename,

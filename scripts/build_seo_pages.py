@@ -13,8 +13,8 @@ import sys
 import glob
 import re
 
-def markdown_to_simple_html(md_text: str, title: str) -> str:
-    """Converts basic markdown formatting into clean semantic HTML structure."""
+def markdown_to_simple_html(md_text: str, title: str, domain: str = "freeocr.me") -> str:
+    """Converts basic markdown formatting into clean semantic HTML structure with domain-aware GA4 telemetry."""
     lines = md_text.splitlines()
     html_lines = []
     in_list = False
@@ -52,32 +52,52 @@ def markdown_to_simple_html(md_text: str, title: str) -> str:
 
     content_body = "\n".join(html_lines)
 
+    # Domain-aware branding and GA4 telemetry configuration
+    is_pdftoolz = "freepdftoolz" in domain.lower()
+    brand_name = "FreePDFToolz" if is_pdftoolz else "freeOCR.me"
+    brand_domain = "freepdftoolz.me" if is_pdftoolz else "freeocr.me"
+    brand_title = f"{title} | FreePDFToolz.me" if is_pdftoolz else f"{title} | freeOCR.me"
+    ga_id = "G-W4D8V33FX1" if is_pdftoolz else "G-E852V95BXB"
+    back_href = "https://freepdftoolz.me" if is_pdftoolz else "/"
+    back_label = "Back to FreePDFToolz Suite" if is_pdftoolz else "Back to freeOCR.me Converter"
+    footer_text = "&copy; 2026 FreePDFToolz.me — 100% Free &amp; Zero-Retention PDF Platform." if is_pdftoolz else "&copy; 2026 freeOCR.me — 100% Free &amp; Zero-Retention AI OCR Utility."
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title} | freeOCR.me</title>
-  <meta name="description" content="{title} — Free Ephemeral AI OCR Utility Guide">
-  <link rel="canonical" href="https://freeocr.me/kb/ai-vs-traditional-ocr">
+  <title>{brand_title}</title>
+  <meta name="description" content="{title} — {brand_name} Zero-Retention Utility Guide">
+  <link rel="canonical" href="https://{brand_domain}/kb/ai-vs-traditional-ocr">
+
+  <!-- Google Analytics 4 (GA4) Domain-Aware Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={ga_id}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){{dataLayer.push(arguments);}}
+    gtag('js', new Date());
+    gtag('config', '{ga_id}', {{ 'send_page_view': true }});
+  </script>
+
   <script type="application/ld+json">
   {{
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "{title}",
-    "description": "{title} — Free Ephemeral AI OCR Utility Guide",
+    "description": "{title} — {brand_name} Zero-Retention Utility Guide",
     "author": {{
       "@type": "Organization",
-      "name": "freeOCR.me Engineering Team"
+      "name": "{brand_name} Engineering Team"
     }},
     "publisher": {{
       "@type": "Organization",
-      "name": "freeOCR.me",
-      "url": "https://freeocr.me"
+      "name": "{brand_name}",
+      "url": "https://{brand_domain}"
     }},
     "datePublished": "2026-09-15",
     "dateModified": "2026-09-15",
-    "mainEntityOfPage": "https://freeocr.me/kb/ai-vs-traditional-ocr"
+    "mainEntityOfPage": "https://{brand_domain}/kb/ai-vs-traditional-ocr"
   }}
   </script>
   <style>
@@ -95,12 +115,12 @@ def markdown_to_simple_html(md_text: str, title: str) -> str:
   </style>
 </head>
 <body>
-  <div class="nav"><a href="/">&larr; Back to freeOCR.me Converter</a></div>
+  <div class="nav"><a href="{back_href}">&larr; {back_label}</a></div>
   <article>
     {content_body}
   </article>
   <footer>
-    <p>&copy; 2026 freeOCR.me — 100% Free &amp; Zero-Retention AI OCR Utility.</p>
+    <p>{footer_text}</p>
   </footer>
 </body>
 </html>

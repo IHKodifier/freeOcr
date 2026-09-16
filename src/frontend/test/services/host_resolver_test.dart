@@ -11,12 +11,20 @@ void main() {
       expect(HostResolver.getBrandTitle(uri: uri), 'freeOCR.me');
     });
 
-    test('detects freepdftoolz.me as FreePdfTools brand', () {
+    test('detects freepdftoolz.me, www.freepdftoolz.me, and freepdftoolz.web.app as FreePdfTools brand', () {
       final uri = Uri.parse('https://freepdftoolz.me/');
       expect(HostResolver.isFreeOcrDomain(uri: uri), isFalse);
       expect(HostResolver.isFreePdfToolsDomain(uri: uri), isTrue);
       expect(HostResolver.getBrand(uri: uri), AppBrand.freePdfTools);
       expect(HostResolver.getBrandTitle(uri: uri), 'FreePDFToolz');
+
+      final wwwUri = Uri.parse('https://www.freepdftoolz.me/');
+      expect(HostResolver.isFreePdfToolsDomain(uri: wwwUri), isTrue);
+      expect(HostResolver.getBrand(uri: wwwUri), AppBrand.freePdfTools);
+
+      final webAppUri = Uri.parse('https://freepdftoolz.web.app/');
+      expect(HostResolver.isFreePdfToolsDomain(uri: webAppUri), isTrue);
+      expect(HostResolver.getBrand(uri: webAppUri), AppBrand.freePdfTools);
     });
 
     test('freeocr-staging-app.web.app defaults to FreeOCR brand to protect AdSense', () {
