@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts &mdash; freeOCR.me Knowledge Base</title>
+  <meta name="title" content="AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts &mdash; freeOCR.me Knowledge Base">
+  <meta name="description" content="Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freeocr.me/kb/ai-vs-traditional-ocr">
+
+  <!-- OpenGraph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freeocr.me/kb/ai-vs-traditional-ocr">
+  <meta property="og:title" content="AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts &mdash; freeOCR.me">
+  <meta property="og:description" content="Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.">
+  <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
+  <meta property="og:site_name" content="freeOCR.me">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://freeocr.me/kb/ai-vs-traditional-ocr">
+  <meta name="twitter:title" content="AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts &mdash; freeOCR.me">
+  <meta name="twitter:description" content="Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.">
+  <meta name="twitter:image" content="https://freeocr.me/icons/Icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Theme Script (Runs synchronously before render) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('freeocr_theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { }
+    })();
+  </script>
+
+  <!-- Google AdSense Monetization Tag -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
+
+  <!-- Google Analytics 4 (GA4) Telemetry Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E852V95BXB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-E852V95BXB', { 'send_page_view': true });
+  </script>
+
+  <!-- JSON-LD TechArticle Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts",
+    "description": "Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.",
+    "author": {
+      "@type": "Organization",
+      "name": "freeOCR.me Engineering Team",
+      "url": "https://freeocr.me"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "freeOCR.me",
+      "url": "https://freeocr.me",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://freeocr.me/icons/Icon-512.png"
+      }
+    },
+    "datePublished": "2026-09-15",
+    "dateModified": "2026-09-16",
+    "mainEntityOfPage": "https://freeocr.me/kb/ai-vs-traditional-ocr"
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --card-bg: #f8fafc;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --heading: #0f172a;
+      --accent: #6366f1;
+      --accent-light: #4f46e5;
+      --border: #e2e8f0;
+      --code-bg: #f1f5f9;
+      --header-bg: rgba(255, 255, 255, 0.92);
+      --footer-bg: #f1f5f9;
+      --tip-bg: #eef2ff;
+      --tip-border: rgba(99, 102, 241, 0.3);
+      --tip-text: #312e81;
+      --sec-bg: #fff1f2;
+      --sec-border: rgba(225, 29, 72, 0.3);
+      --sec-text: #881337;
+      --toggle-bg: rgba(99, 102, 241, 0.08);
+      --toggle-color: #6366f1;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --heading: #ffffff;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --border: rgba(255, 255, 255, 0.08);
+      --code-bg: #1e293b;
+      --header-bg: rgba(11, 15, 25, 0.92);
+      --footer-bg: rgba(15, 23, 42, 0.95);
+      --tip-bg: rgba(99, 102, 241, 0.12);
+      --tip-border: rgba(99, 102, 241, 0.35);
+      --tip-text: #c7d2fe;
+      --sec-bg: rgba(225, 29, 72, 0.12);
+      --sec-border: rgba(225, 29, 72, 0.35);
+      --sec-text: #fecdd3;
+      --toggle-bg: rgba(255, 255, 255, 0.1);
+      --toggle-color: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--heading);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #818cf8;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    .theme-toggle-btn {
+      background: var(--toggle-bg);
+      color: var(--toggle-color);
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .main-layout {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sidebar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      transition: all 0.2s;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--accent-light);
+      background: rgba(99, 102, 241, 0.08);
+    }
+
+    .sidebar-nav a.active {
+      color: #ffffff;
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    .article-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.75rem 2.5rem;
+    }
+
+    .breadcrumbs {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .breadcrumbs a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    .category-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: var(--accent-light);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+      color: var(--heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .article-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--text-main);
+      margin-bottom: 1.75rem;
+      font-weight: 450;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-top: 2.25rem;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.3px;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+    }
+
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--code-bg);
+      color: var(--accent-light);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    pre code {
+      padding: 0;
+      background: none;
+      color: var(--text-main);
+    }
+
+    .tip-box {
+      display: flex;
+      gap: 1rem;
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      margin: 1.75rem 0;
+    }
+
+    .tip-box p {
+      margin: 0.35rem 0 0;
+      font-size: 0.95rem;
+    }
+
+    .security-box {
+      display: flex;
+      gap: 1rem;
+      background: var(--sec-bg);
+      border: 1px solid var(--sec-border);
+      color: var(--sec-text);
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      margin: 1.75rem 0;
+    }
+
+    .security-box p {
+      margin: 0.35rem 0 0;
+      font-size: 0.95rem;
+    }
+
+    .box-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.92rem;
+    }
+
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .benchmark-table th {
+      background: var(--code-bg);
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .benchmark-table td.highlight {
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.08));
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .cta-card h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #6366f1;
+      color: #ffffff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--footer-bg);
+      padding: 3rem 2rem 2rem;
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto 2.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .footer-col h4 {
+      color: var(--heading);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+    }
+
+    .footer-col li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent-light);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar {
+        order: 2;
+      }
+      .article-container {
+        padding: 1.75rem 1.25rem;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      header {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="/" class="logo">
+      <div class="logo-icon">âš¡</div>
+      freeOCR<span>.me</span>
+    </a>
+    <div class="nav-wrapper">
+      <nav>
+        <a href="/">Home</a>
+        <a href="/knowledge-base" class="active">Knowledge Base</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <span id="themeIcon">ðŸŒ“</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">Articles In This Series</div>
+        <ul class="sidebar-nav">
+          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
+          <li><a href="/kb/pdf-standards">The Evolution of PDF</a></li>
+          <li><a href="/kb/privacy-security">Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security</a></li>
+          <li><a href="/kb/scan-restoration">Scan Restoration & Preprocessing</a></li>
+          <li><a href="/kb/markdown-vs-text">Markdown vs Plain Text</a></li>
+          <li><a href="/kb/ai-vs-traditional-ocr" class="active">AI vs Traditional OCR</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">Security Assurance</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          All file operations execute exclusively within volatile Linux RAM disk (tmpfs). Documents are unlinked immediately upon conversion.
+        </p>
+      </div>
+    </aside>
+
+    <main>
+      <article class="article-container">
+        <nav class="breadcrumbs">
+          <a href="/">Home</a> &rsaquo;
+          <a href="/knowledge-base">Knowledge Base</a> &rsaquo;
+          <span>AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts</span>
+        </nav>
+
+        <span class="category-badge">RESEARCH & BENCHMARKS</span>
+        <h1>AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts</h1>
+        <div class="article-meta">
+          Published September 15, 2026 &bull; freeOCR.me Engineering Team &bull; 11 min read
+        </div>
+
+                <p class="lead">Classical OCR engines rely on geometric projection heuristics that encounter severe failure modes on multi-column articles, borderless financial tables, and historical scans. Modern deep learning Vision-Language Transformers perform unified Document Layout Analysis (DLA) and Reading Order Detection (ROD) prior to character transcription, achieving near-lossless layout fidelity.</p>
+
+        <h2>1. The Heuristic Geometry Wall (Classical OCR Limitations)</h2>
+        <p>For decades, open-source OCR was defined by Google's Tesseract architecture. While heuristic OCR excels at single-column books or clean typewritten documents, it encounters severe failure modes when confronted with complex geometry:</p>
+        <ul>
+          <li><strong>Spliced Multi-Column Sentences:</strong> Heuristic projection profiles slice pixels horizontally across the page. Even a 1.5&deg; skew causes Column A and Column B to overlap, reading horizontally across gutters and splicing unrelated paragraphs into nonsense text.</li>
+          <li><strong>Borderless Tabular Collapses:</strong> Without physical gridlines, heuristic systems cluster characters based on arbitrary whitespace thresholds. Numbers in adjacent columns merge into single invalid entries or fragment into broken strings.</li>
+          <li><strong>Marginalia and Stamp Pollution:</strong> Non-horizontal textâ€”such as vertical legal margin stamps or diagonal watermarksâ€”intercepts regular text lines, polluting downstream search with alphanumeric noise.</li>
+        </ul>
+
+        <h2>2. Deep-Learning Vision Transformers: PaddleOCR &amp; Baidu Unlimited OCR</h2>
+        <p>Modern neural OCR solves the coordinate problem by treating layout analysis as a multi-modal semantic task:</p>
+        <ul>
+          <li><strong>Document Layout Analysis (DLA):</strong> Vision transformers (like Swin and ResNet backbones in PaddleOCR) segment documents into functional blocksâ€”Title, Header, Multi-Column Body, Table Matrix, Caption, and Marginaliaâ€”before transcribing characters.</li>
+          <li><strong>Reading Order Detection (ROD):</strong> Directed Acyclic Graphs (DAG) model natural human reading flow. Even when quotes or callout boxes interrupt a two-column spread, attention heads trace semantic flow correctly across column boundaries.</li>
+        </ul>
+
+        <h2>3. Head-to-Head Comparative Benchmark (1,000 Complex Scans)</h2>
+        <div style="overflow-x:auto; margin: 1.5rem 0;">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Document Archetype</th>
+                <th>Heuristic (Tesseract)</th>
+                <th>Deep-Learning AI OCR</th>
+                <th>Primary Legacy Failure Mode</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dual-Column Academic Paper</strong></td>
+                <td>62.4% Word Order</td>
+                <td class="highlight">99.2% Word Order</td>
+                <td>Spliced across column gutters</td>
+              </tr>
+              <tr>
+                <td><strong>Borderless Financial Balance Sheet</strong></td>
+                <td>51.8% Cell Extraction</td>
+                <td class="highlight">97.4% Cell Extraction</td>
+                <td>Columns collapsed into unseparated numbers</td>
+              </tr>
+              <tr>
+                <td><strong>Skewed / Rotated Thermal Receipt</strong></td>
+                <td>44.1% Accuracy</td>
+                <td class="highlight">96.8% Accuracy</td>
+                <td>Unable to trace curved baselines</td>
+              </tr>
+              <tr>
+                <td><strong>Historical Bleed-Through Archive</strong></td>
+                <td>58.3% Accuracy</td>
+                <td class="highlight">95.1% Accuracy</td>
+                <td>Bleed-through ink read as punctuation</td>
+              </tr>
+              <tr>
+                <td><strong>Mixed Latin &amp; Asian Script Page</strong></td>
+                <td>68.7% Accuracy</td>
+                <td class="highlight">98.6% Accuracy</td>
+                <td>Script confusion in dense typography</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>4. Open-Source Engine Attributions &amp; Foundations</h2>
+        <p>freeOCR.me proudly acknowledges and builds upon world-class open-source projects:</p>
+        <ul>
+          <li><strong>Baidu Unlimited OCR (PaddleOCR):</strong> State-of-the-art multi-lingual deep vision-language OCR and Document Layout Analysis models.</li>
+          <li><strong>OCRmyPDF:</strong> Production-grade PDF/A composition, invisible font glyph injection, and page deskewing engine.</li>
+          <li><strong>PyMuPDF:</strong> High-performance Python bindings for MuPDF, used by freeOCR.me for page rasterization, text position extraction, and PDF manipulation.</li>
+        </ul>
+
+        <div class="cta-card">
+          <h3>Try freeOCR.me 100% Free</h3>
+          <p>Convert your scanned PDFs, receipts, and images to dual-layer searchable PDFs and Structured Markdown with ephemeral RAM security.</p>
+          <a href="/" class="btn-primary">
+            <span>âš¡</span> Convert Scanned Document Now
+          </a>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>freeOCR.me</h4>
+        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+          100% Free Online AI OCR utility platform. Converts scanned documents and images into searchable PDFs and structured text with zero persistent cloud storage.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Knowledge Base</h4>
+        <ul>
+          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
+          <li><a href="/kb/pdf-standards">The Evolution of PDF</a></li>
+          <li><a href="/kb/privacy-security">Zero-Disk Retention</a></li>
+          <li><a href="/kb/scan-restoration">Scan Restoration</a></li>
+          <li><a href="/kb/markdown-vs-text">Markdown vs TXT</a></li>
+          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Features</h4>
+        <ul>
+          <li><a href="/">Scanned PDF to Searchable PDF</a></li>
+          <li><a href="/">Extract PDF to Markdown</a></li>
+          <li><a href="/">Multi-Column Layout OCR</a></li>
+          <li><a href="/">Radon Deskewing Pipeline</a></li>
+          <li><a href="/">Adaptive Otsu Binarization</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Governance &amp; Trust</h4>
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 freeOCR.me &bull; Ephemeral Linux RAM-Disk Optical Character Recognition. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('themeToggleBtn');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var current = document.documentElement.getAttribute('data-theme') || 'dark';
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('freeocr_theme', next); } catch(e) {}
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -431,12 +431,7 @@
             if (shell && shell.parentNode) shell.parentNode.removeChild(shell);
           }, 360);
         }
-        if (editorial) {
-          editorial.style.opacity = '0';
-          setTimeout(function() {
-            if (editorial && editorial.parentNode) editorial.parentNode.removeChild(editorial);
-          }, 360);
-        }
+        // Permanent DOM Retention: #editorial-content is kept permanently mounted in the live DOM for search engine crawlers and AdSense reviewers.
       }
 
       // 1. Observe when Flutter's canvas view mounts to document.body

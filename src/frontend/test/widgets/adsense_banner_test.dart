@@ -4,7 +4,21 @@ import 'package:free_ocr_frontend/widgets/adsense_banner.dart';
 
 void main() {
   setUp(() {
+    AdSenseBanner.kAdSenseApproved = true;
     AdSenseBanner.resetSessionCount();
+  });
+
+  testWidgets('AdSenseBanner collapses to SizedBox.shrink when kAdSenseApproved is false', (WidgetTester tester) async {
+    AdSenseBanner.kAdSenseApproved = false;
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: AdSenseBanner(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('adsense_banner_container')), findsNothing);
   });
 
   testWidgets('AdSenseBanner renders static compliant banner layout correctly', (WidgetTester tester) async {
