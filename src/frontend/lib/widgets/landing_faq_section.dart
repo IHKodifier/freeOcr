@@ -60,7 +60,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).')),
+                        Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: AdSenseBanner.kAdSenseApproved ? 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).' : 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable up to 1 GB per file with instant session passes, +50 MB per pass).')),
                         const SizedBox(width: 16),
                         Expanded(child: _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'Deep neural models analyze document layout, structure, and reading order while pages are enhanced to 300 DPI for high-accuracy character recognition.')),
                         const SizedBox(width: 16),
@@ -72,7 +72,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                   }
                   return Column(
                     children: [
-                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).'),
+                      _buildStepCard(context, theme, colorScheme, isDark, stepNum: '01', title: 'Upload Document', description: AdSenseBanner.kAdSenseApproved ? 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable upto 1 GB per file with video ad rewards, +50 MB for each ad).' : 'Drag and drop any scanned PDF, PNG, JPG, or JPEG file up to your active session limit (100 MB free base limit, extendable up to 1 GB per file with instant session passes, +50 MB per pass).'),
                       const SizedBox(height: 12),
                       _buildStepCard(context, theme, colorScheme, isDark, stepNum: '02', title: 'Neural Preprocessing', description: 'Deep neural models analyze document layout, structure, and reading order while pages are enhanced to 300 DPI for high-accuracy character recognition.'),
                       const SizedBox(height: 12),
@@ -211,7 +211,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 colorScheme,
                 index: 8,
                 question: 'Do you store or retain my email address if I request download links via email?',
-                answer: 'No. Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
+                answer: 'No. Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—our service is 100% free and privacy-focused.',
               ),
               _buildFaqItem(
                 context,

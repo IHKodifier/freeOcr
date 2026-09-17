@@ -953,7 +953,7 @@ class _SplitPreviewViewerState extends State<SplitPreviewViewer> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Zero Email Retention: Although you share your email to receive download links, we never store, retain, or cache it. We cannot send marketing emails. 100% ad-supported.',
+                              'Zero Email Retention: Although you share your email to receive download links, we never store, retain, or cache it. We cannot send marketing emails. 100% free and privacy-focused.',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
