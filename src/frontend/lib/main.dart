@@ -4,6 +4,7 @@ import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'services/telemetry_service.dart';
 import 'services/host_resolver.dart';
+import 'services/favorites_service.dart';
 import 'widgets/hero_dropzone.dart';
 import 'widgets/adsense_banner.dart';
 import 'widgets/app_header.dart';
@@ -49,8 +50,10 @@ import 'utils/theme_storage_helper.dart';
 
 final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier<ThemeMode>(ThemeStorageHelper.loadTheme());
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   configureAppUrlStrategy();
+  await FavoritesService.init();
   themeNotifier.addListener(() {
     ThemeStorageHelper.saveTheme(themeNotifier.value);
   });

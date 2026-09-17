@@ -206,6 +206,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
   @override
   void initState() {
     super.initState();
+    FavoritesService.init();
     TelemetryService.trackPageView('/pdf-tools', pageTitle: 'FreePDFToolz — All PDF Tools');
   }
 
@@ -456,7 +457,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               children: [
                 _buildFilterChip('all', 'All (${kPdfToolsCatalog.length})', theme),
                 const SizedBox(width: 10),
-                _buildFilterChip('favorites', '★ Favorites ($favCount)', theme),
+                _buildFilterChip('favorites', '♥ Favorites ($favCount)', theme),
               ],
             );
           },
@@ -519,13 +520,13 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.star_outline_rounded,
+                  Icons.favorite_border_rounded,
                   size: 48,
-                  color: const Color(0xFFF59E0B).withOpacity(0.8),
+                  color: const Color(0xFFF43F5E).withOpacity(0.8),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'No Starred PDF Tools Yet',
+                  'No Favorite PDF Tools Yet',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
@@ -536,7 +537,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: Text(
-                    'Click the star icon on any tool card to pin your most frequently used tools here for rapid 1-click access.',
+                    'Click the heart icon on any tool card to pin your most frequently used tools here for rapid 1-click access.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 13,

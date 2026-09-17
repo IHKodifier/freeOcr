@@ -66,7 +66,7 @@ void main() {
     expect(find.text('Compress PDF'), findsNothing);
   });
 
-  testWidgets('PdfToolsHubPage supports starring tools and filtering by Favorites', (tester) async {
+  testWidgets('PdfToolsHubPage supports favoriting tools and filtering by Favorites', (tester) async {
     tester.view.physicalSize = const Size(1280, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -77,13 +77,13 @@ void main() {
 
     // Verify initial filter chips: All (16) and Favorites (0)
     expect(find.text('All (16)'), findsOneWidget);
-    expect(find.text('★ Favorites (0)'), findsOneWidget);
+    expect(find.text('♥ Favorites (0)'), findsOneWidget);
 
-    // Tap Favorites chip with 0 starred -> Shows empty state
-    await tester.tap(find.text('★ Favorites (0)'));
+    // Tap Favorites chip with 0 favorited -> Shows empty state
+    await tester.tap(find.text('♥ Favorites (0)'));
     await tester.pumpAndSettle();
 
-    expect(find.text('No Starred PDF Tools Yet'), findsOneWidget);
+    expect(find.text('No Favorite PDF Tools Yet'), findsOneWidget);
     expect(find.byType(ToolCard), findsNothing);
 
     // Switch back to All (16)
@@ -91,25 +91,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(ToolCard), findsNWidgets(16));
 
-    // Star 'Merge PDF' by tapping its star icon
-    final mergeStarBtn = find.descendant(
+    // Favorite 'Merge PDF' by tapping its heart icon
+    final mergeHeartBtn = find.descendant(
       of: find.widgetWithText(ToolCard, 'Merge PDF'),
       matching: find.byTooltip('Add to favorites'),
     );
-    expect(mergeStarBtn, findsOneWidget);
-    await tester.tap(mergeStarBtn);
+    expect(mergeHeartBtn, findsOneWidget);
+    await tester.tap(mergeHeartBtn);
     await tester.pumpAndSettle();
 
-    // Verify filter chip updated to ★ Favorites (1)
-    expect(find.text('★ Favorites (1)'), findsOneWidget);
+    // Verify filter chip updated to ♥ Favorites (1)
+    expect(find.text('♥ Favorites (1)'), findsOneWidget);
 
     // Filter by Favorites
-    await tester.tap(find.text('★ Favorites (1)'));
+    await tester.tap(find.text('♥ Favorites (1)'));
     await tester.pumpAndSettle();
 
     // Only 'Merge PDF' should be visible
     expect(find.text('Merge PDF'), findsOneWidget);
     expect(find.text('Split PDF'), findsNothing);
+
+    // Verify SemanticHeartIcon is rendered with filled state
+    final filledHeartIcon = find.descendant(
+      of: find.widgetWithText(ToolCard, 'Merge PDF'),
+      matching: find.byWidgetPredicate((w) => w is SemanticHeartIcon && w.isFilled == true),
+    );
+    expect(filledHeartIcon, findsOneWidget);
   });
 
   testWidgets('Tapping a ToolCard navigates to corresponding route', (tester) async {
