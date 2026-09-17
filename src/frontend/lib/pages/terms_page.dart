@@ -61,8 +61,12 @@ class _TermsPageState extends State<TermsPage> {
                     ),
                     _buildSection(
                       context,
-                      title: '2. Service Limits & Ad Boost Passes',
-                      body: 'Standard uploads are limited to 50MB per file. Users may extend session limits up to 500MB by engaging with rewarded video advertisements. We reserve the right to apply automated IP rate limiting to maintain server stability.',
+                      title: AdSenseBanner.kAdSenseApproved
+                          ? '2. Service Limits & Ad Boost Passes'
+                          : '2. Service Limits & Session Boost Passes',
+                      body: AdSenseBanner.kAdSenseApproved
+                          ? 'Standard uploads are limited to 50MB per file. Users may extend session limits up to 500MB by engaging with rewarded video advertisements. We reserve the right to apply automated IP rate limiting to maintain server stability.'
+                          : 'Standard uploads are limited to 50MB per file. Users may extend ephemeral session limits up to 500MB by requesting session passes. We reserve the right to apply automated IP rate limiting to maintain server stability.',
                     ),
                     _buildSection(
                       context,

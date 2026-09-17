@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'glass_card.dart';
+import 'adsense_banner.dart';
 
 /// Apple-Inspired High-Density Educational & FAQ Section for Landing Page (/)
 /// Guarantees compliance with Google AdSense "Valuable Inventory: Thin Content" policy
@@ -105,7 +106,18 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.picture_as_pdf, title: 'Invisible Searchable PDF Overlay', description: 'Generates an invisible text layer positioned precisely over your original scanned PDF pages, preserving 100% of visual fonts, headers, and images.'),
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.lock_open, title: 'Password-in-Place PDF Decryption', description: 'Decrypt password-protected PDFs directly in your browser session before processing without unencrypting sensitive files onto persistent disk storage.'),
                       _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.download_for_offline, title: '1-Click Multi-Format Export', description: 'Export extracted text in 1 click as Searchable PDF, Plain Text (.txt), or Clean Structured Markdown (.md) for LLM prompting and note apps.'),
-                      _buildFeatureTile(context, theme, colorScheme, isDark, width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth, icon: Icons.bolt, title: 'Stackable Session Limit Passes', description: 'Need to process larger multi-hundred-page files? Watch 15-second rewarded video ads to stack +50MB session limit increments up to 1 GB (1,024MB).'),
+                      _buildFeatureTile(
+                        context,
+                        theme,
+                        colorScheme,
+                        isDark,
+                        width: isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth,
+                        icon: Icons.bolt,
+                        title: 'Stackable Session Limit Passes',
+                        description: AdSenseBanner.kAdSenseApproved
+                            ? 'Need to process larger multi-hundred-page files? Watch 15-second rewarded video ads to stack +50MB session limit increments up to 1 GB (1,024MB).'
+                            : 'Need to process larger multi-hundred-page files? Request instant session limit passes to expand ephemeral RAM-disk capacity in +50MB increments up to 1 GB (1,024MB).',
+                      ),
                     ],
                   );
                 },
@@ -129,7 +141,9 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 colorScheme,
                 index: 0,
                 question: 'How does freeOCR.me convert scanned PDFs into searchable text for free without charging subscriptions?',
-                answer: 'freeOCR.me operates on a sustainable ad-supported freemium architecture powered by Google AdSense and voluntary rewarded video ads. Simple documents route to lightweight CPU workers running OCRmyPDF and Tesseract, while complex multi-column documents, math formulas, and dense tables route to Baidu\'s Unlimited OCR neural vision model on GPU clusters. This dual-engine architecture ensures high accuracy while keeping the service 100% free with no subscriptions or accounts.',
+                answer: AdSenseBanner.kAdSenseApproved
+                    ? 'freeOCR.me operates on a sustainable ad-supported freemium architecture powered by Google AdSense and voluntary rewarded video ads. Simple documents route to lightweight CPU workers running OCRmyPDF and Tesseract, while complex multi-column documents, math formulas, and dense tables route to Baidu\'s Unlimited OCR neural vision model on GPU clusters. This dual-engine architecture ensures high accuracy while keeping the service 100% free with no subscriptions or accounts.'
+                    : 'freeOCR.me operates on an open-source, community-driven architecture powered by highly optimized CPU and GPU workers. Simple documents route to lightweight CPU workers running OCRmyPDF and Tesseract, while complex multi-column documents, math formulas, and dense tables route to Baidu\'s Unlimited OCR neural vision model on GPU clusters. This dual-engine architecture ensures high accuracy while keeping the service 100% free with no subscriptions or accounts.',
               ),
               _buildFaqItem(
                 context,
@@ -160,8 +174,12 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                 theme,
                 colorScheme,
                 index: 4,
-                question: 'How do stackable rewarded video ad session passes increase file size limits up to 1 GB?',
-                answer: 'Every user receives an immediate 100 MB per-file upload limit with zero registration. For larger documents like scanned books or court records, users can watch voluntary 15-second sponsor video ads. Each completed video ad offsets the GPU compute cost and adds +50 MB of upload capacity to your active session, stacking all the way up to 1,024 MB (1 GB).',
+                question: AdSenseBanner.kAdSenseApproved
+                    ? 'How do stackable rewarded video ad session passes increase file size limits up to 1 GB?'
+                    : 'How do stackable session limit passes increase file size limits up to 1 GB?',
+                answer: AdSenseBanner.kAdSenseApproved
+                    ? 'Every user receives an immediate 100 MB per-file upload limit with zero registration. For larger documents like scanned books or court records, users can watch voluntary 15-second sponsor video ads. Each completed video ad offsets the GPU compute cost and adds +50 MB of upload capacity to your active session, stacking all the way up to 1,024 MB (1 GB).'
+                    : 'Every user receives an immediate 100 MB per-file upload limit with zero registration. For larger documents like scanned books or court records, users can request instant session limit passes that expand ephemeral RAM-disk capacity in +50 MB increments, stacking all the way up to 1,024 MB (1 GB) for 60 minutes.',
               ),
               _buildFaqItem(
                 context,

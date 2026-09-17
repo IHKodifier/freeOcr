@@ -253,6 +253,9 @@ void main() {
 
       // Verify immediate success state
       expect(find.textContaining('All Quotas Unlocked'), findsOneWidget);
+      expect(find.textContaining('Each ad watch adds'), findsNothing);
+      expect(find.textContaining('Each session boost adds'), findsOneWidget);
+
       final continueButton = find.text('Continue Processing File');
       expect(continueButton, findsOneWidget);
       await tester.ensureVisible(continueButton);
