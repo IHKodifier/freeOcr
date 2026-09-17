@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/telemetry_service.dart';
+import 'adsense_banner.dart';
 
 class RewardedVideoAdModal extends StatefulWidget {
   final String filename;
@@ -15,6 +16,15 @@ class RewardedVideoAdModal extends StatefulWidget {
   final Function(double boostedLimitMb) onWatchAd;
   final VoidCallback? onCancel;
   final String? toolName;
+
+  /// Override for testing ad playback flow explicitly.
+  static bool? debugOverrideAdPlayback;
+
+  /// When true (e.g. once video ad network is live), displays the ad playback simulation.
+  /// When false (default during AdSense review), suppresses fake ad countdowns
+  /// and provides a clean, instant free quota boost.
+  static bool get isAdPlaybackEnabled =>
+      debugOverrideAdPlayback ?? AdSenseBanner.kAdSenseApproved;
 
   const RewardedVideoAdModal({
     super.key,
@@ -160,6 +170,46 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
         }
       }
     });
+  }
+
+  Future<void> _unlockInstantBoost() async {
+    setState(() {
+      _isPlayingAd = false;
+      _isSyncing = true;
+      _isUnlockedSuccess = false;
+      _isIntermediateMilestone = false;
+    });
+
+    _completedAds++;
+    TelemetryService.trackRewardedAdWatched(
+      tool: widget.toolName ?? 'general',
+      boostMb: widget.boostPerAdMb,
+    );
+
+    double newLimit = _currentActiveLimitMb + widget.boostPerAdMb;
+    try {
+      final res = await ApiService.notifyRewardedAdWatched();
+      final double? returnedLimit = (res['boosted_max_file_mb'] as num?)?.toDouble();
+      if (returnedLimit != null && returnedLimit > _currentActiveLimitMb) {
+        newLimit = returnedLimit;
+      }
+    } catch (_) {
+      // Graceful local boost if backend endpoint is unavailable
+    }
+
+    final double clampedLimit = newLimit > widget.maxStackMb ? widget.maxStackMb : newLimit;
+    final double fileSizeMb = widget.fileSizeInBytes / (1024 * 1024);
+    final bool isFullyUnlocked = clampedLimit >= fileSizeMb || clampedLimit >= widget.maxStackMb || _completedAds >= _totalAdsRequired;
+
+    if (mounted) {
+      setState(() {
+        _isSyncing = false;
+        _currentActiveLimitMb = clampedLimit;
+        _newLimitMb = clampedLimit;
+        _isUnlockedSuccess = isFullyUnlocked;
+        _isIntermediateMilestone = !isFullyUnlocked;
+      });
+    }
   }
 
   void _confirmEarlyCancel() {
@@ -366,8 +416,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                                 isDark: isDark,
                                 icon: Icons.add_to_photos_outlined,
                                 title: 'How to Request Higher Limits',
-                                subtitle:
-                                    'To request higher limits anytime, simply drop or select a PDF larger than your active limit (${_newLimitMb.toInt()} MB). The app will automatically prompt you to watch an ad for an instant boost.',
+                                subtitle: RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'To request higher limits anytime, simply drop or select a PDF larger than your active limit (${_newLimitMb.toInt()} MB). The app will automatically prompt you to watch an ad for an instant boost.'
+                                    : 'To request higher limits anytime, simply drop or select a PDF larger than your active limit (${_newLimitMb.toInt()} MB). The app will automatically prompt you for an instant boost.',
                               ),
                               Divider(color: isDark ? Colors.white12 : Colors.green.shade200, height: 16),
                               _buildSuccessDetailRow(
@@ -492,12 +543,19 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton.icon(
-                          onPressed: _startAdPlayback,
-                          icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+                          onPressed: RewardedVideoAdModal.isAdPlaybackEnabled ? _startAdPlayback : _unlockInstantBoost,
+                          icon: Icon(
+                            RewardedVideoAdModal.isAdPlaybackEnabled ? Icons.play_circle_fill_rounded : Icons.bolt_rounded,
+                            size: 20,
+                          ),
                           label: Text(
                             _totalAdsRequired - _completedAds == 1
-                                ? 'Watch Final Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)'
-                                : 'Watch Next Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)',
+                                ? (RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'Watch Final Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)'
+                                    : 'Unlock Final Boost Step (+${widget.boostPerAdMb.toInt()} MB Free)')
+                                : (RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'Watch Next Ad (Ad ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB)'
+                                    : 'Unlock Next Boost Step (Step ${_completedAds + 1} of $_totalAdsRequired) (+${widget.boostPerAdMb.toInt()} MB Free)'),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: isDark ? Colors.amber.shade500 : const Color(0xFFD97706),
@@ -635,7 +693,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                                   border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
                                 ),
                                 child: Text(
-                                  '${fileSizeMb.toStringAsFixed(1)} MB File • $_totalAdsRequired Short Ads Required to Unlock (Ad 1 of $_totalAdsRequired)',
+                                  RewardedVideoAdModal.isAdPlaybackEnabled
+                                      ? '${fileSizeMb.toStringAsFixed(1)} MB File • $_totalAdsRequired Short Ads Required to Unlock (Ad 1 of $_totalAdsRequired)'
+                                      : '${fileSizeMb.toStringAsFixed(1)} MB File • Session Boost Available (Step 1 of $_totalAdsRequired)',
                                   style: TextStyle(
                                     color: isDark ? Colors.amber.shade300 : const Color(0xFFB45309),
                                     fontWeight: FontWeight.bold,
@@ -745,7 +805,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Unlock Stackable Limit Boost (+${widget.boostPerAdMb.toInt()} MB)',
+                                RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'Unlock Stackable Limit Boost (+${widget.boostPerAdMb.toInt()} MB)'
+                                    : 'Unlock Ephemeral RAM-Disk Boost (+${widget.boostPerAdMb.toInt()} MB)',
                                 style: TextStyle(
                                   color: isDark ? Colors.white : const Color(0xFF78350F),
                                   fontWeight: FontWeight.bold,
@@ -754,7 +816,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Watch short sponsor ads to stack file limits up to ${widget.maxStackMb.toInt()} MB per session.',
+                                RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'Watch short sponsor ads to stack file limits up to ${widget.maxStackMb.toInt()} MB per session.'
+                                    : 'Click below to expand ephemeral RAM-disk session capacity up to ${widget.maxStackMb.toInt()} MB instantly.',
                                 style: TextStyle(
                                   color: isDark ? Colors.amber.shade100 : const Color(0xFF92400E),
                                   fontSize: 12,
@@ -771,12 +835,19 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
 
                   // Action Buttons
                   ElevatedButton.icon(
-                    onPressed: _startAdPlayback,
-                    icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+                    onPressed: RewardedVideoAdModal.isAdPlaybackEnabled ? _startAdPlayback : _unlockInstantBoost,
+                    icon: Icon(
+                      RewardedVideoAdModal.isAdPlaybackEnabled ? Icons.play_circle_fill_rounded : Icons.bolt_rounded,
+                      size: 20,
+                    ),
                     label: Text(
-                      _totalAdsRequired > 1
-                          ? 'Watch Ad 1 of $_totalAdsRequired (+${widget.boostPerAdMb.toInt()} MB Boost)'
-                          : 'Watch ${widget.adDurationSeconds}s Ad to Stack Boost (+${widget.boostPerAdMb.toInt()} MB)',
+                      RewardedVideoAdModal.isAdPlaybackEnabled
+                          ? (_totalAdsRequired > 1
+                              ? 'Watch Ad 1 of $_totalAdsRequired (+${widget.boostPerAdMb.toInt()} MB Boost)'
+                              : 'Watch ${widget.adDurationSeconds}s Ad to Stack Boost (+${widget.boostPerAdMb.toInt()} MB)')
+                          : (_totalAdsRequired > 1
+                              ? 'Unlock Instant Boost 1 of $_totalAdsRequired (+${widget.boostPerAdMb.toInt()} MB Free)'
+                              : '⚡ Unlock Instant Free Boost (+${widget.boostPerAdMb.toInt()} MB)'),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? Colors.amber.shade500 : const Color(0xFFD97706),
