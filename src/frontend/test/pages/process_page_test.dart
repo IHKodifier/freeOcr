@@ -10,6 +10,14 @@ import 'package:free_ocr_frontend/widgets/app_footer.dart';
 
 void main() {
   group('ProcessPage Dedicated Route Tests', () {
+    setUp(() {
+      AdSenseBanner.kAdSenseApproved = true;
+    });
+
+    tearDown(() {
+      AdSenseBanner.kAdSenseApproved = false;
+    });
+
     testWidgets('ProcessPage renders AppHeader, OcrProgressView hero card, and AdSenseBanner underneath', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
