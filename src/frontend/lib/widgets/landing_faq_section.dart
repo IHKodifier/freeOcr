@@ -13,16 +13,16 @@ class LandingFaqSection extends StatefulWidget {
 
 class _LandingFaqSectionState extends State<LandingFaqSection> {
   final Map<int, bool> _expandedFaq = {
-    0: true,  // First item open by default
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-    8: false,
-    9: false,
+    0: true,
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: true,
+    6: true,
+    7: true,
+    8: true,
+    9: true,
   };
 
   @override

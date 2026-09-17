@@ -9,6 +9,11 @@ class AdSenseBanner extends StatelessWidget {
   final double maxWidth;
   final EdgeInsetsGeometry? margin;
 
+  /// Set to true once Google AdSense account/site review has been approved.
+  /// When false, collapses all ad placeholders across the entire domain to prevent
+  /// "Low value content / Premature ad placement" policy flags.
+  static bool kAdSenseApproved = false;
+
   /// Retained as safe no-ops for API compatibility with existing callers.
   static void resetSessionCount() {}
   static void rotateAd() {}
@@ -22,6 +27,9 @@ class AdSenseBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!kAdSenseApproved) {
+      return const SizedBox.shrink();
+    }
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
