@@ -425,8 +425,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                                 isDark: isDark,
                                 icon: Icons.layers_outlined,
                                 title: 'Stack Up to 1 GB (1,024 MB) + Session Renewal',
-                                subtitle:
-                                    'Each ad watch adds +50 MB per ad (up to 1,024 MB max) and resets your full 1-hour session window so you have plenty of time to process your files.',
+                                subtitle: RewardedVideoAdModal.isAdPlaybackEnabled
+                                    ? 'Each ad watch adds +50 MB per ad (up to 1,024 MB max) and resets your full 1-hour session window so you have plenty of time to process your files.'
+                                    : 'Each session boost adds +50 MB of free ephemeral RAM-disk capacity (up to 1,024 MB max) and resets your full 1-hour active window.',
                               ),
                             ],
                           ),
@@ -510,7 +511,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Progress: $_completedAds of $_totalAdsRequired Ads Completed (${((_completedAds / _totalAdsRequired) * 100).toInt()}%)',
+                          RewardedVideoAdModal.isAdPlaybackEnabled
+                              ? 'Progress: $_completedAds of $_totalAdsRequired Ads Completed (${((_completedAds / _totalAdsRequired) * 100).toInt()}%)'
+                              : 'Progress: Step $_completedAds of $_totalAdsRequired Unlocked (${((_completedAds / _totalAdsRequired) * 100).toInt()}%)',
                           style: TextStyle(color: secondaryText, fontSize: 12),
                           textAlign: TextAlign.center,
                         ),
@@ -530,7 +533,9 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  'Active limit boosted to ${_currentActiveLimitMb.toInt()} MB. Your file is ${fileSizeMb.toStringAsFixed(1)} MB, so ${_totalAdsRequired - _completedAds} more ad needed to unlock this file.',
+                                  RewardedVideoAdModal.isAdPlaybackEnabled
+                                      ? 'Active limit boosted to ${_currentActiveLimitMb.toInt()} MB. Your file is ${fileSizeMb.toStringAsFixed(1)} MB, so ${_totalAdsRequired - _completedAds} more ad needed to unlock this file.'
+                                      : 'Active session limit expanded to ${_currentActiveLimitMb.toInt()} MB. Your file is ${fileSizeMb.toStringAsFixed(1)} MB, so ${_totalAdsRequired - _completedAds} more boost step needed to unlock this file.',
                                   style: TextStyle(
                                     color: isDark ? Colors.white70 : const Color(0xFF78350F),
                                     fontSize: 12,
