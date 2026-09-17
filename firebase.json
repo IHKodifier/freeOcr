@@ -73,7 +73,7 @@
     },
     {
       "site": "freepdftoolz",
-      "public": "src/frontend/build/web",
+      "public": "src/frontend/build/freepdftoolz_web",
       "cleanUrls": true,
       "trailingSlash": false,
       "ignore": [
