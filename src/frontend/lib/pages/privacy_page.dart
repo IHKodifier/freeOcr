@@ -66,7 +66,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                       _buildSection(
                         context,
                         title: '2. Zero Retention Policy for Email Addresses & Zero Marketing Promise',
-                        body: 'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
+                        body: 'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—our service is 100% free and privacy-focused.',
                       ),
                       _buildSection(
                         context,

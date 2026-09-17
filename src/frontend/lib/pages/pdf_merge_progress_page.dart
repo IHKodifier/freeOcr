@@ -883,7 +883,7 @@ class _PdfMergeProgressPageState extends State<PdfMergeProgressPage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Zero Email Retention: Although you share your email with us to receive download links, we never store, retain, or cache your email address. No marketing emails, ever. 100% ad-supported.',
+                              'Zero Email Retention: Although you share your email with us to receive download links, we never store, retain, or cache your email address. No marketing emails, ever. 100% free and privacy-focused.',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,

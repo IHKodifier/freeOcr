@@ -9,6 +9,7 @@ import '../services/telemetry_service.dart';
 import '../utils/limit_evaluator.dart';
 import '../utils/app_limits_config.dart';
 import 'rewarded_video_ad_modal.dart';
+import 'adsense_banner.dart';
 
 
 class HeroDropzone extends StatefulWidget {
@@ -810,9 +811,11 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const Text(
-                        '• Boost up to 1 GB with Ads',
-                        style: TextStyle(
+                      Text(
+                        AdSenseBanner.kAdSenseApproved
+                            ? '• Boost up to 1 GB with Ads'
+                            : '• Boost up to 1 GB Free',
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF6366F1),

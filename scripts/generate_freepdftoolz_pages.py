@@ -196,8 +196,8 @@ def generate_pages():
         <li><strong>AI & Transformation:</strong> PDF to Word (.docx), OCR PDF with Neural Vision, Summarize PDF, Inline Text Editing, Split by Chapter/Bookmark.</li>
       </ul>
       
-      <h2>5. The Sustainable Freemium Model</h2>
-      <p>How does FreePDFToolz remain 100% free without selling user data or charging subscriptions? We operate on a clean, unobtrusive ad-supported model powered by Google AdSense and voluntary rewarded video ads. For standard files up to 100 MB, the service is completely free and instant. For massive document archives (up to 1,024 MB), users can voluntarily watch short sponsor ads to offset cloud compute costs, keeping the entire platform free for students, legal professionals, and small businesses globally.</p>
+      <h2>5. The Open-Source Infrastructure Model</h2>
+      <p>How does FreePDFToolz remain 100% free without selling user data or charging subscriptions? We operate on a clean, unobtrusive model powered by lightweight containerized worker runtimes. For standard files up to 100 MB, the service is completely free and instant. For massive document archives (up to 1,024 MB), users can instantly request ephemeral RAM-disk session passes to expand upload capacity, keeping the entire platform free for students, legal professionals, and small businesses globally.</p>
     </article>
     """
     about_doc = build_html_document(
@@ -976,7 +976,7 @@ Sitemap: https://freepdftoolz.me/sitemap.xml
             "name": "How does FreePDFToolz.me keep all 16 PDF tools 100% free without charging subscriptions?",
             "acceptedAnswer": {{
               "@type": "Answer",
-              "text": "FreePDFToolz.me operates on an ethical ad-supported model funded by Google AdSense and voluntary rewarded video ads. Standard files up to 100 MB process completely free without registration or credit cards."
+              "text": "FreePDFToolz.me operates on an open-source, community-driven architecture. Standard files up to 100 MB process completely free without registration or credit cards."
             }}
           }},
           {{
@@ -1121,7 +1121,7 @@ Sitemap: https://freepdftoolz.me/sitemap.xml
       <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
         <div class="card">
           <h3>Q1: How does FreePDFToolz.me keep all 16 PDF tools 100% free without subscriptions?</h3>
-          <p>FreePDFToolz operates on an ethical ad-supported model funded by Google AdSense and voluntary rewarded video ads. For standard files up to 100 MB, the service is completely free with zero account registration or credit cards.</p>
+          <p>FreePDFToolz operates on an open-source, community-driven architecture. For standard files up to 100 MB, the service is completely free with zero account registration or credit cards.</p>
         </div>
         <div class="card">
           <h3>Q2: Are my uploaded documents stored, analyzed, or mined on your servers?</h3>
@@ -1145,7 +1145,7 @@ Sitemap: https://freepdftoolz.me/sitemap.xml
         </div>
         <div class="card">
           <h3>Q7: What is the maximum file size limit on FreePDFToolz?</h3>
-          <p>Every visitor receives an immediate 100 MB per-file upload limit. For massive archives or scanned books, watching voluntary 15-second sponsor video ads increases capacity up to 1,024 MB (1 GB).</p>
+          <p>Every visitor receives an immediate 100 MB per-file upload limit. For massive archives or scanned books, requesting instant session limit passes increases capacity in +50 MB increments up to 1,024 MB (1 GB).</p>
         </div>
         <div class="card">
           <h3>Q8: Are digital signatures created on FreePDFToolz legally binding?</h3>

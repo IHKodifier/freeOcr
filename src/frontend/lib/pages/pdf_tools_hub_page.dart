@@ -864,7 +864,7 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
           ),
           const SizedBox(height: 18),
           Text(
-            'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—we are totally ads supported.',
+            'Although you may share your email with us to receive download links in email, we never store, retain, or even cache your email addresses, making us in no position to bother you with unwanted marketing emails. Just like we have a zero retention policy for input and output files, we have a zero retention policy for your email addresses as well. That is why you do not need to sign up—our service is 100% free and privacy-focused.',
             style: TextStyle(
               fontSize: 14,
               height: 1.6,
@@ -906,7 +906,9 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
       },
       {
         'q': 'How does the free upload size limit work, and can I process large files over 100 MB?',
-        'a': 'Every visitor receives an immediate 100 MB per-file upload allowance without registering or paying fees. For large archives, users can voluntarily view a 15-second sponsor video ad to boost their file limit by +50 MB, stackable all the way up to 1,024 MB (1 GB).',
+        'a': AdSenseBanner.kAdSenseApproved
+            ? 'Every visitor receives an immediate 100 MB per-file upload allowance without registering or paying fees. For large archives, users can voluntarily view a 15-second sponsor video ad to boost their file limit by +50 MB, stackable all the way up to 1,024 MB (1 GB).'
+            : 'Every visitor receives an immediate 100 MB per-file upload allowance without registering or paying fees. For large archives, users can request instant session limit passes to expand their file limit in +50 MB increments, stackable all the way up to 1,024 MB (1 GB).',
       },
       {
         'q': 'Will I receive marketing emails if I enter my email address on the results page?',
