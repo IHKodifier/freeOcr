@@ -227,9 +227,10 @@ jobs:
           flutter pub get
           flutter build web --release --no-wasm-dry-run
 
-      - name: Build Pre-rendered Static SEO Pages
+      - name: Build Dedicated FreePDFToolz Web Distribution
         run: |
-          python scripts/build_seo_pages.py
+          python scripts/generate_freepdftoolz_pages.py
+          pwsh scripts/build_freepdftoolz_site.ps1
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
