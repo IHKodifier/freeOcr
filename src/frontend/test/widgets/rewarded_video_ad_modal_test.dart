@@ -51,6 +51,14 @@ void main() {
   });
 
   group('RewardedVideoAdModal Widget Tests', () {
+    setUp(() {
+      RewardedVideoAdModal.debugOverrideAdPlayback = true;
+    });
+
+    tearDown(() {
+      RewardedVideoAdModal.debugOverrideAdPlayback = null;
+    });
+
     testWidgets('Renders frosted glass modal with file size and boost options', (WidgetTester tester) async {
       bool watchAdClicked = false;
       bool cancelClicked = false;
@@ -207,6 +215,51 @@ void main() {
 
       // Verify onWatchAd was called with the full boosted limit (200 MB)
       expect(finalBoostedLimit, equals(200.0));
+    });
+
+    testWidgets('When isAdPlaybackEnabled is false (AdSense review mode), unlocks boost instantly without ad countdown', (WidgetTester tester) async {
+      RewardedVideoAdModal.debugOverrideAdPlayback = false;
+      double boostedResult = 0.0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: RewardedVideoAdModal(
+              filename: 'review_oversized.pdf',
+              fileSizeInBytes: 60 * 1024 * 1024,
+              currentLimitMb: 50.0,
+              boostPerAdMb: 50.0,
+              maxStackMb: 1024.0,
+              onWatchAd: (boostedLimit) {
+                boostedResult = boostedLimit;
+              },
+            ),
+          ),
+        ),
+      );
+
+      // Verify clean instant boost UI (no fake sponsor ad labels)
+      expect(find.text('File Size Limit Exceeded'), findsOneWidget);
+      expect(find.textContaining('Unlock Ephemeral RAM-Disk Boost'), findsOneWidget);
+      expect(find.textContaining('Unlock Instant Free Boost'), findsOneWidget);
+
+      // Tap instant boost
+      final instantButton = find.textContaining('Unlock Instant Free Boost');
+      await tester.tap(instantButton);
+      await tester.pump();
+
+      // Verify no 15-second timer or fake ad video view appeared
+      expect(find.textContaining('Rewarded Video Sponsor Ad'), findsNothing);
+
+      // Verify immediate success state
+      expect(find.textContaining('All Quotas Unlocked'), findsOneWidget);
+      final continueButton = find.text('Continue Processing File');
+      expect(continueButton, findsOneWidget);
+      await tester.ensureVisible(continueButton);
+      await tester.tap(continueButton);
+      await tester.pump();
+
+      expect(boostedResult, equals(150.0));
     });
   });
 }
