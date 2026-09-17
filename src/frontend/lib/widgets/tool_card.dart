@@ -129,7 +129,7 @@ class _ToolCardState extends State<ToolCard> {
                 _buildBadge(widget.badge!),
               ],
               const SizedBox(width: 4),
-              // Star / Favorite Toggle Button
+              // Heart / Favorite Toggle Button with Lively Spring Animation
               ValueListenableBuilder<Set<String>>(
                 valueListenable: FavoritesService.favoritesNotifier,
                 builder: (context, favorites, _) {
@@ -144,17 +144,41 @@ class _ToolCardState extends State<ToolCard> {
                           FavoritesService.toggleFavorite(widget.id);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
-                            child: SemanticStarIcon(
+                            duration: const Duration(milliseconds: 320),
+                            switchInCurve: Curves.elasticOut,
+                            switchOutCurve: Curves.easeInCubic,
+                            transitionBuilder: (child, anim) {
+                              return ScaleTransition(
+                                scale: Tween<double>(begin: 0.5, end: 1.0).animate(anim),
+                                child: RotationTransition(
+                                  turns: Tween<double>(begin: isFav ? -0.06 : 0.06, end: 0.0).animate(anim),
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: Container(
                               key: ValueKey<bool>(isFav),
-                              isFilled: isFav,
-                              size: 19,
-                              color: isFav
-                                  ? const Color(0xFFF59E0B)
-                                  : (isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: isFav
+                                    ? [
+                                        BoxShadow(
+                                          color: const Color(0xFFF43F5E).withValues(alpha: 0.35),
+                                          blurRadius: 8,
+                                          spreadRadius: 1,
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                              child: SemanticHeartIcon(
+                                isFilled: isFav,
+                                size: 15,
+                                color: isFav
+                                    ? const Color(0xFFF43F5E) // Vibrant rose-500
+                                    : (isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
+                              ),
                             ),
                           ),
                         ),
@@ -227,17 +251,17 @@ class _ToolCardState extends State<ToolCard> {
   }
 }
 
-/// Pure vector star icon that never fails due to font glyph or unicode tree-shaking issues in Web/CanvasKit/HTML.
-class SemanticStarIcon extends StatelessWidget {
+/// Pure vector heart icon that never fails due to font glyph or unicode tree-shaking issues in Web/CanvasKit/HTML.
+class SemanticHeartIcon extends StatelessWidget {
   final bool isFilled;
   final Color color;
   final double size;
 
-  const SemanticStarIcon({
+  const SemanticHeartIcon({
     super.key,
     required this.isFilled,
     required this.color,
-    this.size = 18,
+    this.size = 15,
   });
 
   @override
@@ -246,41 +270,60 @@ class SemanticStarIcon extends StatelessWidget {
       width: size,
       height: size,
       child: CustomPaint(
-        painter: _StarPainter(isFilled: isFilled, color: color),
+        painter: _HeartPainter(isFilled: isFilled, color: color),
       ),
     );
   }
 }
 
-class _StarPainter extends CustomPainter {
+class _HeartPainter extends CustomPainter {
   final bool isFilled;
   final Color color;
 
-  const _StarPainter({required this.isFilled, required this.color});
+  const _HeartPainter({required this.isFilled, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-    final outerRadius = size.width * 0.48;
-    final innerRadius = outerRadius * 0.42;
+    final width = size.width;
+    final height = size.height;
 
+    // Smooth, perfectly balanced bezier heart curve scaled to size
     final path = Path();
-    const int points = 5;
-    const double step = math.pi / points;
-    double angle = -math.pi / 2;
+    path.moveTo(width * 0.5, height * 0.85);
 
-    for (int i = 0; i < points * 2; i++) {
-      final r = (i % 2 == 0) ? outerRadius : innerRadius;
-      final x = cx + r * math.cos(angle);
-      final y = cy + r * math.sin(angle);
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-      angle += step;
-    }
+    // Left lower arc to top left lobe
+    path.cubicTo(
+      width * 0.12, height * 0.58,
+      0, height * 0.38,
+      0, height * 0.24,
+    );
+    path.cubicTo(
+      0, height * 0.08,
+      width * 0.18, 0,
+      width * 0.36, 0,
+    );
+    path.cubicTo(
+      width * 0.44, 0,
+      width * 0.48, height * 0.06,
+      width * 0.5, height * 0.14,
+    );
+
+    // Right top lobe to lower point
+    path.cubicTo(
+      width * 0.52, height * 0.06,
+      width * 0.56, 0,
+      width * 0.64, 0,
+    );
+    path.cubicTo(
+      width * 0.82, 0,
+      width, height * 0.08,
+      width, height * 0.24,
+    );
+    path.cubicTo(
+      width, height * 0.38,
+      width * 0.88, height * 0.58,
+      width * 0.5, height * 0.85,
+    );
     path.close();
 
     if (isFilled) {
@@ -292,7 +335,7 @@ class _StarPainter extends CustomPainter {
       final strokePaint = Paint()
         ..color = color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.6
+        ..strokeWidth = 1.4
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round;
       canvas.drawPath(path, strokePaint);
@@ -300,8 +343,18 @@ class _StarPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _StarPainter oldDelegate) {
+  bool shouldRepaint(covariant _HeartPainter oldDelegate) {
     return oldDelegate.isFilled != isFilled || oldDelegate.color != color;
   }
+}
+
+/// Kept for backwards compatibility if referenced elsewhere.
+class SemanticStarIcon extends SemanticHeartIcon {
+  const SemanticStarIcon({
+    super.key,
+    required super.isFilled,
+    required super.color,
+    super.size = 18,
+  });
 }
 
