@@ -13,10 +13,27 @@ sys.path.insert(0, os.path.dirname(__file__))
 from kb_articles_data import PILLARS, ARTICLES
 
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
-OUTPUT_PATHS = [
-    os.path.join(BASE_WEB_DIR, "kb", "index.html"),
-    os.path.join(BASE_WEB_DIR, "knowledge-base", "index.html"),
-]
+BUILD_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web"))
+BUILD_PDFTOOLZ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "freepdftoolz_web"))
+
+def get_output_paths():
+    paths = [
+        os.path.join(BASE_WEB_DIR, "kb", "index.html"),
+        os.path.join(BASE_WEB_DIR, "knowledge-base", "index.html"),
+        os.path.join(BASE_WEB_DIR, "kb.html"),
+        os.path.join(BASE_WEB_DIR, "knowledge-base.html"),
+    ]
+    # Also write to build directories if they exist (for direct deployment bundling)
+    for b_dir in [BUILD_WEB_DIR, BUILD_PDFTOOLZ_DIR]:
+        if os.path.exists(b_dir):
+            paths.extend([
+                os.path.join(b_dir, "kb", "index.html"),
+                os.path.join(b_dir, "knowledge-base", "index.html"),
+                os.path.join(b_dir, "kb.html"),
+                os.path.join(b_dir, "knowledge-base.html"),
+            ])
+    return paths
+
 
 def build_hub_html():
     # Build pillar sections HTML
@@ -703,7 +720,7 @@ def build_hub_html():
 
 def main():
     hub_html = build_hub_html()
-    for p in OUTPUT_PATHS:
+    for p in get_output_paths():
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
             f.write(hub_html)

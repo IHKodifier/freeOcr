@@ -14,6 +14,10 @@ class AppFooter extends StatelessWidget {
 
 
   void _navigateTo(BuildContext context, String routeName) {
+    if (kIsWeb && (routeName == '/kb' || routeName.startsWith('/kb/'))) {
+      UrlHelper.navigateToPath(routeName);
+      return;
+    }
     if (ModalRoute.of(context)?.settings.name != routeName) {
       Navigator.pushNamed(context, routeName);
     }

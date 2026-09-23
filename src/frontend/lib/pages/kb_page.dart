@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/telemetry_service.dart';
 import '../utils/url_helper.dart';
@@ -29,6 +30,15 @@ class _KbPageState extends State<KbPage> {
     super.initState();
     _selectedTab = _slugToTab(widget.initialArticleSlug);
     TelemetryService.trackPageView('/kb', pageTitle: 'freeOCR.me — Knowledge Base');
+
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final path = widget.initialArticleSlug != null
+            ? '/kb/${widget.initialArticleSlug}'
+            : '/kb';
+        UrlHelper.navigateToPath(path);
+      });
+    }
   }
 
   int _slugToTab(String? slug) {

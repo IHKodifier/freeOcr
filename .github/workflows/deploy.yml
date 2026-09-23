@@ -154,6 +154,11 @@ jobs:
           flutter pub get
           flutter build web --release --no-wasm-dry-run
 
+      - name: Generate Static Knowledge Base & Hub Pages
+        run: |
+          python scripts/generate_kb_static_pages.py
+          python scripts/generate_kb_index_hub.py
+
       - name: Build Pre-rendered Static SEO Pages
         run: |
           python scripts/build_seo_pages.py
