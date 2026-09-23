@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security &mdash; freeOCR.me Knowledge Base</title>
-  <meta name="title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security &mdash; freeOCR.me Knowledge Base">
+  <title>Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security — freeOCR.me Knowledge Base</title>
+  <meta name="title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security — freeOCR.me Knowledge Base">
   <meta name="description" content="Technical deep-dive into freeOCR.me's ephemeral Linux tmpfs RAM disk security architecture, POSIX unlinking, and zero persistent file retention guarantees.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freeocr.me/kb/privacy-security">
@@ -12,7 +12,7 @@
   <!-- OpenGraph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://freeocr.me/kb/privacy-security">
-  <meta property="og:title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security &mdash; freeOCR.me">
+  <meta property="og:title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security — freeOCR.me">
   <meta property="og:description" content="Technical deep-dive into freeOCR.me's ephemeral Linux tmpfs RAM disk security architecture, POSIX unlinking, and zero persistent file retention guarantees.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
   <meta property="og:site_name" content="freeOCR.me">
@@ -20,7 +20,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://freeocr.me/kb/privacy-security">
-  <meta name="twitter:title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security &mdash; freeOCR.me">
+  <meta name="twitter:title" content="Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security — freeOCR.me">
   <meta name="twitter:description" content="Technical deep-dive into freeOCR.me's ephemeral Linux tmpfs RAM disk security architecture, POSIX unlinking, and zero persistent file retention guarantees.">
   <meta name="twitter:image" content="https://freeocr.me/icons/Icon-512.png">
 
@@ -74,7 +74,7 @@
       }
     },
     "datePublished": "2026-09-15",
-    "dateModified": "2026-09-16",
+    "dateModified": "2026-09-23",
     "mainEntityOfPage": "https://freeocr.me/kb/privacy-security"
   }
   </script>
@@ -144,41 +144,41 @@
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 2rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--header-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--heading);
+      gap: 0.5rem;
       text-decoration: none;
+      color: var(--heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
     }
 
     .logo-icon {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.35);
+      border: 1px solid rgba(99, 102, 241, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #818cf8;
-      font-weight: bold;
+      color: var(--accent);
+      font-size: 0.95rem;
     }
 
     .logo span {
@@ -186,6 +186,12 @@
     }
 
     .nav-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav {
       display: flex;
       align-items: center;
       gap: 1.5rem;
@@ -223,11 +229,11 @@
     }
 
     .main-layout {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 2rem auto;
       padding: 0 1.5rem;
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 290px 1fr;
       gap: 2.5rem;
       flex: 1;
       width: 100%;
@@ -247,29 +253,30 @@
     }
 
     .sidebar-title {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
 
     .sidebar-nav {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
     }
 
     .sidebar-nav a {
       display: block;
-      padding: 0.55rem 0.75rem;
-      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
-      line-height: 1.4;
+      font-size: 0.85rem;
+      line-height: 1.35;
       transition: all 0.2s;
     }
 
@@ -347,6 +354,14 @@
       margin-top: 2.25rem;
       margin-bottom: 0.85rem;
       letter-spacing: -0.3px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
     }
 
     p {
@@ -576,7 +591,7 @@
 <body>
   <header>
     <a href="/" class="logo">
-      <div class="logo-icon">âš¡</div>
+      <div class="logo-icon">⚡</div>
       freeOCR<span>.me</span>
     </a>
     <div class="nav-wrapper">
@@ -589,7 +604,7 @@
         <a href="/terms">Terms</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <span id="themeIcon">ðŸŒ“</span>
+        <span id="themeIcon">🌓</span>
       </button>
     </div>
   </header>
@@ -597,14 +612,41 @@
   <div class="main-layout">
     <aside class="sidebar">
       <div class="sidebar-card">
-        <div class="sidebar-title">Articles In This Series</div>
+        <div class="sidebar-title" style="font-size: 0.9rem; margin-bottom: 1rem;">Knowledge Base Directory</div>
+        <div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">⚡ Tool Guides & Workflows</div>
         <ul class="sidebar-nav">
-          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
-          <li><a href="/kb/pdf-standards">The Evolution of PDF</a></li>
-          <li><a href="/kb/privacy-security" class="active">Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security</a></li>
-          <li><a href="/kb/scan-restoration">Scan Restoration & Preprocessing</a></li>
-          <li><a href="/kb/markdown-vs-text">Markdown vs Plain Text</a></li>
-          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+        <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
+        <li><a href="/kb/low-res-scan-enhancement">How to Extract Accurate Text from Low-Resolution & Blurry Scans</a></li>
+        <li><a href="/kb/batch-invoice-processing">Automating Batch Invoices & Receipts with Optical Character Recognition</a></li>
+        <li><a href="/kb/optimal-dpi-settings">Optimal DPI Settings for Scanned Documents</a></li>
+        <li><a href="/kb/pdf-to-searchable-pdf-guide">How to Convert Scanned PDF to Searchable PDF Without Losing Formatting</a></li>
+        <li><a href="/kb/secure-password-pdf-ocr">Decrypted In-Memory</a></li>
+        </ul>
+        <div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">⚖️ Format & Tech Comparisons</div>
+        <ul class="sidebar-nav">
+        <li><a href="/kb/pdf-standards">The Evolution of PDF</a></li>
+        <li><a href="/kb/markdown-vs-text">Markdown vs Plain Text</a></li>
+        <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+        <li><a href="/kb/searchable-pdf-vs-plain-text">Searchable PDF vs Plain Text OCR</a></li>
+        <li><a href="/kb/multi-column-layout-analysis">How Layout Analysis Engines Process Multi-Column Documents & Reading Order</a></li>
+        <li><a href="/kb/ocr-engine-comparison-tesseract-paddleocr-cloud">OCR Engine Comparison</a></li>
+        </ul>
+        <div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">🏢 Use-Case Solutions</div>
+        <ul class="sidebar-nav">
+        <li><a href="/kb/privacy-security" class="active">Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security</a></li>
+        <li><a href="/kb/legal-discovery-court-filings">OCR for Legal Discovery & Court Filings</a></li>
+        <li><a href="/kb/receipt-expense-auditing">Digitizing Thermal Receipts & Invoices for Expense Auditing & Tax Records</a></li>
+        <li><a href="/kb/academic-research-archiving">Archiving Academic Journals & Research Papers</a></li>
+        <li><a href="/kb/medical-records-ocr-privacy">Medical Records OCR</a></li>
+        <li><a href="/kb/historical-archive-preservation">Digitizing Historical Books & Faded Archives</a></li>
+        </ul>
+        <div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">🛠️ Troubleshooting & FAQs</div>
+        <ul class="sidebar-nav">
+        <li><a href="/kb/scan-restoration">Scan Restoration & Preprocessing</a></li>
+        <li><a href="/kb/fixing-skewed-rotated-scans">Troubleshooting Skewed & Rotated Scans</a></li>
+        <li><a href="/kb/handwriting-vs-print-ocr-limits">Handwriting OCR vs Printed Text OCR</a></li>
+        <li><a href="/kb/font-recognition-ligatures-special-chars">Resolving Font Recognition Errors, Ligatures & Special Unicode Characters</a></li>
+        <li><a href="/kb/compress-scanned-pdf-without-losing-ocr">How to Reduce Scanned PDF File Size Without Sacrificing OCR Text Searchability</a></li>
         </ul>
       </div>
 
@@ -627,25 +669,26 @@
         <span class="category-badge">SECURITY & PRIVACY</span>
         <h1>Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security</h1>
         <div class="article-meta">
-          Published September 15, 2026 &bull; freeOCR.me Engineering Team &bull; 8 min read
+          Published September 15, 2026 &bull; freeOCR.me Engineering Team &bull; 11 min read
         </div>
 
-                <p class="lead">Document confidentiality and privacy are the non-negotiable architectural pillars of freeOCR.me. Unlike conventional cloud document utilities that persist uploaded files to solid-state drives (SSDs) or cloud object storage buckets (e.g., AWS S3, Google Cloud Storage)â€”where files can remain in filesystem journals, metadata logs, and backup snapshotsâ€”freeOCR.me operates on an uncompromising Zero Persistent Storage architecture.</p>
+        <p class="lead">Document confidentiality and privacy are the non-negotiable architectural pillars of freeOCR.me. Unlike conventional cloud document utilities that persist uploaded files to solid-state drives (SSDs) or cloud object storage buckets (e.g., AWS S3, Google Cloud Storage)—where files can remain in filesystem journals, metadata logs, and backup snapshots—freeOCR.me operates on an uncompromising Zero Persistent Storage architecture.</p>
 
         <h2>1. The Cloud Storage Vulnerability Vector</h2>
         <p>When you upload sensitive files (such as medical invoices, corporate tax filings, legal discovery bundles, or identity documents) to conventional conversion platforms, standard workflows write files to persistent storage. Even if a service claims to "delete files after 1 hour", deleting a file on an SSD only unlinks the file allocation table pointer. The underlying flash memory cells retain the raw data until garbage-collection wear-leveling cycles overwrite them weeks later.</p>
         <p>Furthermore, cloud object buckets routinely store asynchronous replication copies across availability zones, creating multiple attack surfaces for credential leaks, malicious internal actors, and compliance violations under GDPR and HIPAA regulations.</p>
 
         <h2>2. Linux tmpfs Volatile RAM-Disk Ingestion</h2>
-        <p>freeOCR.me eliminates storage vulnerabilities by processing documents entirely within volatile Linux <code>tmpfs</code> RAM disk mounts:</p>
+        <p><a href="/">freeOCR.me</a> eliminates storage vulnerabilities by processing documents entirely within volatile Linux <code>tmpfs</code> RAM disk mounts:</p>
         <ul>
           <li><strong>Pure DRAM Electrical Storage:</strong> Uploaded PDF streams, intermediate raster page bitmaps, neural bounding-box vectors, and generated output files exist strictly as volatile electrical charges across system DRAM chips. At no point does raw document data ever touch physical, non-volatile solid-state drives or spinning hard disk platters.</li>
           <li><strong>Kernel-Level POSIX Unlinking:</strong> The microsecond an OCR conversion finishes and client download links are delivered, an automated POSIX <code>unlink()</code> syscall executes. The kernel de-allocates the memory inode and wipes the page tables.</li>
           <li><strong>Autonomous Watchdog Janitor Daemon:</strong> A continuous asynchronous watchdog daemon sweeps memory directories every 60 seconds. Any inactive temporary buffer older than 60 minutes is forcefully zeroed (<code>memset</code>) and reclaimed.</li>
+          <li><strong>Zero Swap Paging:</strong> Server memory nodes disable swap paging for temporary RAM directories, guaranteeing that DRAM pages are never written to swap partitions on disk.</li>
         </ul>
 
         <div class="security-box">
-          <div class="box-icon">ðŸ›¡ï¸</div>
+          <div class="box-icon">🛡️</div>
           <div>
             <strong>Zero AI Model Training Guarantee:</strong>
             <p>freeOCR.me NEVER inspects, aggregates, mines, or uses uploaded user documents to train machine learning models. Your intellectual property, proprietary business records, and private documents remain exclusively yours.</p>
@@ -660,11 +703,88 @@
           <li>We cannot send unsolicited marketing or promotional messages because your contact details do not exist in our systems.</li>
         </ul>
 
+        <h2>4. Compliance Alignments: GDPR, CCPA, and Ephemeral Document Retention</h2>
+        <p>By enforcing complete volatile memory processing, freeOCR.me inherently aligns with international data protection frameworks:</p>
+        <ul>
+          <li><strong>GDPR Article 5(1)(e) (Storage Limitation):</strong> Personal data is erased immediately upon fulfillment of the processing request.</li>
+          <li><strong>GDPR Article 17 (Right to Erasure):</strong> Instant automated deletion obviates manual data deletion requests.</li>
+          <li><strong>CCPA &amp; CPRA:</strong> No user data or documents are ever sold, shared, or retained for commercial tracking.</li>
+        </ul>
+
+        <h2>5. Architectural Flowchart: Volatile Memory Lifecycle</h2>
+        <ol>
+          <li>Client uploads document over TLS 1.3 encrypted tunnel.</li>
+          <li>Web server writes stream directly into <code>/dev/shm/freeocr_sessions/</code> (POSIX tmpfs RAM mount).</li>
+          <li>OCR workers deskew, recognize, and assemble searchable PDF in RAM memory.</li>
+          <li>Client streams output file directly from volatile buffer.</li>
+          <li>Watchdog daemon executes <code>unlink()</code> syscall; DRAM memory reclaimed by Linux kernel.</li>
+        </ol>
+<h2>6. Cryptographic and Operating System Memory Isolation</h2>
+        <p>To verify our zero-retention claim from an engineering perspective, document processing on freeOCR.me takes place inside Linux kernel namespaces utilizing <code>tmpfs</code> volatile memory mounts:</p>
+        <pre><code># Architectural mounting configuration for volatile processing
+mount -t tmpfs -o size=2G,noexec,nosuid,nodev tmpfs /mnt/ephemeral_ocr
+
+# Kernel level unlink ensures zero persistent inode allocation
+# POSIX unlink() immediately detaches the file descriptor from the filesystem table</code></pre>
+        <p>Because the filesystem resides entirely in volatile DRAM, memory cells lose their electronic charges when processes terminate, guaranteeing that unauthorized disk forensic recovery is physically impossible.</p>
+
+        <h2>7. Enterprise Compliance Matrix (GDPR, HIPAA, SOC 2)</h2>
+        <div style="overflow-x:auto; margin: 1.5rem 0;">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Compliance Standard</th>
+                <th>Standard Cloud OCR Risk</th>
+                <th>freeOCR.me Zero-Disk Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GDPR (Article 17: Right to Erasure)</strong></td>
+                <td>Complex deletion queues across cloud backups</td>
+                <td class="highlight">Instant POSIX unlink(); 0 retention in DRAM</td>
+              </tr>
+              <tr>
+                <td><strong>HIPAA (Protected Health Information)</strong></td>
+                <td>Requires signed Business Associate Agreement (BAA)</td>
+                <td class="highlight">Stateless transmission; no PHI persistence</td>
+              </tr>
+              <tr>
+                <td><strong>CCPA / CPRA (California Privacy)</strong></td>
+                <td>Risk of third-party model training use</td>
+                <td class="highlight">No data sharing, no indexing, zero training</td>
+              </tr>
+              <tr>
+                <td><strong>Transport Security</strong></td>
+                <td>Variable TLS cipher suites</td>
+                <td class="highlight">Strict TLS 1.3 with Perfect Forward Secrecy</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>8. Frequently Asked Questions (FAQ)</h2>
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+          <div style="background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.15); border-radius: 10px; padding: 1rem 1.25rem;">
+            <h3 style="margin-top: 0; font-size: 1rem; color: var(--heading);">Q: How long are my uploaded files stored on freeOCR.me servers?</h3>
+            <p style="margin-bottom: 0; font-size: 0.9rem;">Files are stored for exactly zero seconds after your processing session ends. Documents exist only in ephemeral Linux RAM disk memory during the seconds required to perform optical character recognition and generate your download.</p>
+          </div>
+          <div style="background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.15); border-radius: 10px; padding: 1rem 1.25rem;">
+            <h3 style="margin-top: 0; font-size: 1rem; color: var(--heading);">Q: Are my documents ever viewed by human annotators or employees?</h3>
+            <p style="margin-bottom: 0; font-size: 0.9rem;">Never. The entire processing pipeline is 100% automated. No human has access to document memory buffers, and our server logs record only operational performance metrics (latency, page counts) with zero document contents.</p>
+          </div>
+          <div style="background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.15); border-radius: 10px; padding: 1rem 1.25rem;">
+            <h3 style="margin-top: 0; font-size: 1rem; color: var(--heading);">Q: Does freeOCR.me use client documents to train artificial intelligence models?</h3>
+            <p style="margin-bottom: 0; font-size: 0.9rem;">No. We strictly forbid using user data for model fine-tuning or machine learning training. Our deep learning vision models are pre-trained on open-source public corpora.</p>
+          </div>
+        </div>
+
+
         <div class="cta-card">
           <h3>Try freeOCR.me 100% Free</h3>
           <p>Convert your scanned PDFs, receipts, and images to dual-layer searchable PDFs and Structured Markdown with ephemeral RAM security.</p>
           <a href="/" class="btn-primary">
-            <span>âš¡</span> Convert Scanned Document Now
+            <span>⚡</span> Convert Scanned Document Now
           </a>
         </div>
       </article>
