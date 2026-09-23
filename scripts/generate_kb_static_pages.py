@@ -12,12 +12,19 @@ breadcrumbs, categorized sidebar navigation, and internal cross-links.
 import os
 import sys
 
-# Ensure current directory is in sys.path so kb_articles_data can be imported
 sys.path.insert(0, os.path.dirname(__file__))
-
 from kb_articles_data import PILLARS, ARTICLES
 
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
+BUILD_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web"))
+BUILD_PDFTOOLZ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "freepdftoolz_web"))
+
+def get_target_web_dirs():
+    dirs = [BASE_WEB_DIR]
+    for b_dir in [BUILD_WEB_DIR, BUILD_PDFTOOLZ_DIR]:
+        if os.path.exists(b_dir):
+            dirs.append(b_dir)
+    return dirs
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -769,33 +776,42 @@ def generate_all():
             sidebar_links=sidebar_links
         )
 
-        # Output to /kb/<slug>/index.html
-        kb_slug_dir = os.path.join(BASE_WEB_DIR, "kb", slug)
-        os.makedirs(kb_slug_dir, exist_ok=True)
-        out_path = os.path.join(kb_slug_dir, "index.html")
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write(html_content)
-
-        # Mirror output to /knowledge-base/<slug>/index.html
-        knowledge_base_slug_dir = os.path.join(BASE_WEB_DIR, "knowledge-base", slug)
-        os.makedirs(knowledge_base_slug_dir, exist_ok=True)
-        kb_out_path = os.path.join(knowledge_base_slug_dir, "index.html")
-        with open(kb_out_path, "w", encoding="utf-8") as f:
-            f.write(html_content)
-
-        # Aliases
-        for alias in article.get("aliases", []):
-            alias_dir = os.path.join(BASE_WEB_DIR, "kb", alias)
-            os.makedirs(alias_dir, exist_ok=True)
-            with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as f:
+        # Output to all target web directories
+        target_dirs = get_target_web_dirs()
+        for base_dir in target_dirs:
+            # /kb/<slug>/index.html and /kb/<slug>.html
+            kb_slug_dir = os.path.join(base_dir, "kb", slug)
+            os.makedirs(kb_slug_dir, exist_ok=True)
+            with open(os.path.join(kb_slug_dir, "index.html"), "w", encoding="utf-8") as f:
+                f.write(html_content)
+            with open(os.path.join(base_dir, "kb", f"{slug}.html"), "w", encoding="utf-8") as f:
                 f.write(html_content)
 
-            kb_alias_dir = os.path.join(BASE_WEB_DIR, "knowledge-base", alias)
-            os.makedirs(kb_alias_dir, exist_ok=True)
-            with open(os.path.join(kb_alias_dir, "index.html"), "w", encoding="utf-8") as f:
+            # /knowledge-base/<slug>/index.html and /knowledge-base/<slug>.html
+            knowledge_base_slug_dir = os.path.join(base_dir, "knowledge-base", slug)
+            os.makedirs(knowledge_base_slug_dir, exist_ok=True)
+            with open(os.path.join(knowledge_base_slug_dir, "index.html"), "w", encoding="utf-8") as f:
+                f.write(html_content)
+            with open(os.path.join(base_dir, "knowledge-base", f"{slug}.html"), "w", encoding="utf-8") as f:
                 f.write(html_content)
 
-        print(f"Generated: /kb/{slug}/ and /knowledge-base/{slug}/")
+            # Aliases
+            for alias in article.get("aliases", []):
+                alias_dir = os.path.join(base_dir, "kb", alias)
+                os.makedirs(alias_dir, exist_ok=True)
+                with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as f:
+                    f.write(html_content)
+                with open(os.path.join(base_dir, "kb", f"{alias}.html"), "w", encoding="utf-8") as f:
+                    f.write(html_content)
+
+                kb_alias_dir = os.path.join(base_dir, "knowledge-base", alias)
+                os.makedirs(kb_alias_dir, exist_ok=True)
+                with open(os.path.join(kb_alias_dir, "index.html"), "w", encoding="utf-8") as f:
+                    f.write(html_content)
+                with open(os.path.join(base_dir, "knowledge-base", f"{alias}.html"), "w", encoding="utf-8") as f:
+                    f.write(html_content)
+
+        print(f"Generated: /kb/{slug}/ and /knowledge-base/{slug}/ (directory + .html)")
 
     print(f"Knowledge base generation completed successfully ({len(ARTICLES)} articles generated).")
 

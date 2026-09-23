@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/host_resolver.dart';
+import '../utils/url_helper.dart';
 
 /// Reusable Apple-inspired AppHeader with Navigation, Tools Switcher & Theme Toggle
 /// Governed by docs/DESIGN.md & HostResolver (freeOCR.me vs FreePDFToolz)
@@ -160,6 +161,10 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       PopupMenuButton<String>(
                         icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
                         onSelected: (route) {
+                          if (kIsWeb && route == '/kb') {
+                            UrlHelper.navigateToPath('/kb');
+                            return;
+                          }
                           if (currentRoute != route) {
                             Navigator.of(context).pushNamed(route);
                           }
@@ -332,7 +337,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        if (currentRoute != '/kb') {
+                        if (kIsWeb) {
+                          UrlHelper.navigateToPath('/kb');
+                        } else if (currentRoute != '/kb') {
                           Navigator.of(context).pushNamed('/kb');
                         }
                       },
