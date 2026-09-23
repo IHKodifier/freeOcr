@@ -4,303 +4,20 @@ generate_kb_static_pages.py — Generates standalone, rich static HTML pages for
 Knowledge Base technical whitepapers and guides for freeOCR.me.
 
 Solves AdSense "Low value content / Site Under Construction" rejection by generating
-complete, crawlable semantic HTML with 900–1,200 words per article, distinct canonical
-and OpenGraph meta tags, JSON-LD TechArticle schema markup, breadcrumbs, and cross-links.
+complete, crawlable semantic HTML with 900–1,500 words per article across 23 guides,
+distinct canonical and OpenGraph meta tags, JSON-LD TechArticle schema markup,
+breadcrumbs, categorized sidebar navigation, and internal cross-links.
 """
 
 import os
 import sys
 
+# Ensure current directory is in sys.path so kb_articles_data can be imported
+sys.path.insert(0, os.path.dirname(__file__))
+
+from kb_articles_data import PILLARS, ARTICLES
+
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
-
-ARTICLES = [
-    {
-        "slug": "ocr-guide",
-        "aliases": ["understanding-ocr"],
-        "title": "Understanding OCR: The Complete Guide to Optical Character Recognition",
-        "category": "TECHNICAL ARCHITECTURE",
-        "description": "Comprehensive engineering guide on optical character recognition, DPI upscaling, Otsu binarization, sub-pixel normalization, and dual-layer searchable PDF synthesis.",
-        "read_time": "9 min read",
-        "content_html": """
-        <p class="lead">Optical Character Recognition (OCR) is the foundational computer vision technology that converts pixel matrix representations of text within scanned documents, photographic receipts, or raster images into machine-encoded digital characters. Digitize paper archives, enable rapid keyword indexing (<code>Ctrl+F</code>), and automate data ingestion pipelines into Large Language Models (LLMs) and vector search databases.</p>
-
-        <h2>1. The Digitization Challenge: Raster Pixels vs Digital Glyphs</h2>
-        <p>When physical paperwork passes through a flatbed scanner or smartphone camera lens, the resulting computer file is merely an unindexed raster bitmap—a 2D grid of colored picture elements (RGB pixels). Searching for legal terms, copying contract clauses, or highlighting research citations is completely impossible because the document format possesses zero concept of words, paragraphs, or font characters.</p>
-        <p>OCR bridges this analog-digital chasm through a multi-stage computer vision and deep learning inference pipeline: image acquisition, geometric rectification, thresholding, line and word tokenization, neural glyph classification, and post-recognition dictionary validation.</p>
-
-        <h2>2. Critical Image Preprocessing Steps</h2>
-        <p>Raw document scans frequently exhibit rotational tilt, non-uniform ambient illumination, thermal paper fading, and compression artifacts. In modern OCR pipelines, preprocessing accounts for over 60% of character recognition accuracy:</p>
-        <ul>
-          <li><strong>DPI Normalization &amp; Upscaling (Target 300 DPI):</strong> Standard consumer fax machines and web captures operate at 72 to 150 DPI. Low resolutions blur glyph loops, causing neural classifiers to confuse similar characters (such as 'e', 'a', 'o', or 'c'). Upscaling via Lanczos-4 sinc interpolation expands glyph features to optimal neural dimensions without aliasing.</li>
-          <li><strong>Adaptive Binarization (Sauvola &amp; Otsu Thresholding):</strong> Eliminates colored backgrounds, coffee stains, and paper bleed-through. While global Otsu thresholding establishes a single mathematical cutoff across the entire page, localized adaptive Sauvola binarization dynamically evaluates pixel neighborhoods (15x15 to 31x31 pixels), extracting crisp character edges even across uneven shadow gradients.</li>
-          <li><strong>Radon Transform Deskewing:</strong> Physical feeder rollers inevitably introduce rotational tilt (typically &plusmn;0.5&deg; to &plusmn;5.0&deg;). Projecting pixel intensities along rotational radial angles identifies the document's baseline angle at maximum variance. The canvas is rotated via bicubic interpolation, restoring pure horizontal line orientation.</li>
-        </ul>
-
-        <div class="tip-box">
-          <div class="box-icon">💡</div>
-          <div>
-            <strong>Preprocessing Benchmark:</strong>
-            <p>Applying localized adaptive Sauvola binarization and Lanczos-4 upscaling prior to deep neural inference improves character recognition accuracy on aged scans from 82.4% to 98.7%.</p>
-          </div>
-        </div>
-
-        <h2>3. Dual-Layer Searchable PDF Synthesis (ISO 32000-1)</h2>
-        <p>Once character tokens and their precise bounding coordinates are extracted, freeOCR.me synthesizes a dual-layer PDF (commonly known as a "Sandwich PDF") governed by the ISO 32000-1 international specification:</p>
-        <ul>
-          <li><strong>Visual Background Layer:</strong> Your original scanned page image is preserved at 100% visual fidelity. Handwritten wet-ink signatures, embossed stamps, watermarks, paper textures, and company logos remain intact without raster re-encoding or destructive compression.</li>
-          <li><strong>Invisible Text Foreground Layer (Render Mode 3):</strong> Under Section 9.3.6 of ISO 32000-1, text rendering mode 3 ("Neither fill nor stroke text") instructs rendering engines (Adobe Acrobat, Chrome PDF Viewer, Apple Preview) to draw invisible character glyphs directly over their corresponding bitmap words.</li>
-          <li><strong>Sub-Pixel Coordinate Normalization:</strong> Neural polygon outputs are mapped to standard PDF points (72 points per inch) using affine coordinate transform matrices. When you select, copy, or search (<code>Ctrl+F</code>), your mouse highlights the scanned word with sub-pixel precision.</li>
-        </ul>
-
-        <h2>4. High-Performance OCR Engine Integration</h2>
-        <p>freeOCR.me implements a dual-engine architecture combining CPU speed with GPU neural intelligence:</p>
-        <ul>
-          <li><strong>OCRmyPDF &amp; Tesseract OCR (CPU Workers):</strong> Handles clean, single-column scanned contracts, business letters, and administrative documents in under 1.5 seconds per page.</li>
-          <li><strong>Baidu Unlimited OCR Neural Vision Model (~6 GB Weights, GPU Clusters):</strong> Decomposes complex multi-column layouts, newspaper spreads, mathematical TeX formulas, and borderless financial tables with state-of-the-art accuracy.</li>
-        </ul>
-        """
-    },
-    {
-        "slug": "pdf-standards",
-        "aliases": ["the-evolution-of-pdf", "evolution-of-pdf"],
-        "title": "The Evolution of PDF: From PostScript to ISO 32000-1 Searchable PDFs",
-        "category": "STANDARDS & HISTORY",
-        "description": "Historical and architectural analysis of the Portable Document Format (PDF), PostScript roots, ISO 32000-1 standards, and modern searchable PDF synthesis.",
-        "read_time": "10 min read",
-        "content_html": """
-        <p class="lead">The Portable Document Format (PDF) revolutionized digital communications by providing platform-independent document fidelity. Emerging in 1993 from Dr. John Warnock's legendary Camelot Project at Adobe, PDF solved the fundamental flaw of desktop publishing: ensuring a document looks identical regardless of operating system, display monitor, or printer hardware.</p>
-
-        <h2>1. The Camelot Vision and PostScript Roots</h2>
-        <p>Before the PDF standard, desktop publishing relied on PostScript—a Turing-complete programming language developed by Adobe in 1982 to communicate vector graphics and fonts directly to laser printers. However, PostScript had a significant limitation: because it was an executable programming language containing loops, conditionals, and variables, rendering page 50 required executing and interpreting the code for pages 1 through 49.</p>
-        <p>Dr. Warnock's Camelot Paper articulated the need for a declarative, non-programmable format: <em>"Imagine if our documents could be electronically viewed and printed from any application, on any computer display, and printed on any printer without special fonts or software."</em></p>
-        <p>PDF stripped away the computational execution loops of PostScript while preserving its imaging model. Pages became independently addressable, self-contained objects with predictable rendering times and standardized compression.</p>
-
-        <h2>2. Anatomy of a PDF Object Stream</h2>
-        <p>At its core, a PDF file is an indexed hierarchy of basic COS (Carousel Object System) data objects:</p>
-        <ul>
-          <li><strong>Booleans, Numbers, and Strings:</strong> Represent geometric coordinates, page rotation angles, metadata, and character text strings.</li>
-          <li><strong>Names and Dictionaries:</strong> Key-value pairings defining font descriptors, media boxes, color profiles, and content references.</li>
-          <li><strong>Content Streams:</strong> Compressed byte arrays containing executable graphic and text operators (such as <code>BT</code> for Begin Text, <code>ET</code> for End Text, <code>Tm</code> for Text Matrix, and <code>Tj</code> for Show Text).</li>
-          <li><strong>Cross-Reference Table (XREF):</strong> A byte-offset index positioned at the document's end, enabling PDF readers to instantly jump to specific page objects without parsing preceding pages.</li>
-        </ul>
-
-        <h2>3. ISO 32000-1 &amp; The Dual-Layer "Sandwich" Standard</h2>
-        <p>In 2008, Adobe transferred official stewardship of the PDF specification to the International Organization for Standardization (ISO), resulting in ISO 32000-1. Within this international standard lies the architectural foundation of searchable scanned PDFs:</p>
-        <div class="tip-box">
-          <div class="box-icon">📐</div>
-          <div>
-            <strong>Font Rendering Mode 3 (3 Tr):</strong>
-            <p>ISO 32000-1 Section 9.3.6 defines font rendering mode 3 as "Neither fill nor stroke text". Characters placed on this layer construct geometric selection paths and clipboard ASCII/Unicode values, but contribute zero colored pixels to the rasterizer, creating seamless invisible search layers.</p>
-          </div>
-        </div>
-        <p>By synchronizing the image transformation matrix (<code>cm</code>) of the scanned bitmap with the text transformation matrices (<code>Tm</code>) of invisible glyphs, freeOCR.me creates dual-layer searchable documents that look authentic while offering full digital selection and searchability.</p>
-
-        <h2>4. PDF/A Long-Term Archival Standards</h2>
-        <p>For legal, medical, and governmental compliance, documents must remain readable for decades. Standard PDFs may link to external fonts, reference dynamic JavaScript, or stream encrypted content. The ISO 19005 (PDF/A) standard guarantees digital preservation by mandating:</p>
-        <ul>
-          <li><strong>Mandatory Font Embedding:</strong> All font glyphs and metric descriptors must reside internally inside the PDF stream.</li>
-          <li><strong>Device-Independent Color Profiles:</strong> Color spaces must reference standardized ICC color profiles.</li>
-          <li><strong>Forbidden Dynamic Content:</strong> Audio, video, and executable JavaScript scripts are prohibited.</li>
-        </ul>
-        """
-    },
-    {
-        "slug": "privacy-security",
-        "aliases": ["zero-disk-retention", "zero-disk"],
-        "title": "Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security",
-        "category": "SECURITY & PRIVACY",
-        "description": "Technical deep-dive into freeOCR.me's ephemeral Linux tmpfs RAM disk security architecture, POSIX unlinking, and zero persistent file retention guarantees.",
-        "read_time": "8 min read",
-        "content_html": """
-        <p class="lead">Document confidentiality and privacy are the non-negotiable architectural pillars of freeOCR.me. Unlike conventional cloud document utilities that persist uploaded files to solid-state drives (SSDs) or cloud object storage buckets (e.g., AWS S3, Google Cloud Storage)—where files can remain in filesystem journals, metadata logs, and backup snapshots—freeOCR.me operates on an uncompromising Zero Persistent Storage architecture.</p>
-
-        <h2>1. The Cloud Storage Vulnerability Vector</h2>
-        <p>When you upload sensitive files (such as medical invoices, corporate tax filings, legal discovery bundles, or identity documents) to conventional conversion platforms, standard workflows write files to persistent storage. Even if a service claims to "delete files after 1 hour", deleting a file on an SSD only unlinks the file allocation table pointer. The underlying flash memory cells retain the raw data until garbage-collection wear-leveling cycles overwrite them weeks later.</p>
-        <p>Furthermore, cloud object buckets routinely store asynchronous replication copies across availability zones, creating multiple attack surfaces for credential leaks, malicious internal actors, and compliance violations under GDPR and HIPAA regulations.</p>
-
-        <h2>2. Linux tmpfs Volatile RAM-Disk Ingestion</h2>
-        <p>freeOCR.me eliminates storage vulnerabilities by processing documents entirely within volatile Linux <code>tmpfs</code> RAM disk mounts:</p>
-        <ul>
-          <li><strong>Pure DRAM Electrical Storage:</strong> Uploaded PDF streams, intermediate raster page bitmaps, neural bounding-box vectors, and generated output files exist strictly as volatile electrical charges across system DRAM chips. At no point does raw document data ever touch physical, non-volatile solid-state drives or spinning hard disk platters.</li>
-          <li><strong>Kernel-Level POSIX Unlinking:</strong> The microsecond an OCR conversion finishes and client download links are delivered, an automated POSIX <code>unlink()</code> syscall executes. The kernel de-allocates the memory inode and wipes the page tables.</li>
-          <li><strong>Autonomous Watchdog Janitor Daemon:</strong> A continuous asynchronous watchdog daemon sweeps memory directories every 60 seconds. Any inactive temporary buffer older than 60 minutes is forcefully zeroed (<code>memset</code>) and reclaimed.</li>
-        </ul>
-
-        <div class="security-box">
-          <div class="box-icon">🛡️</div>
-          <div>
-            <strong>Zero AI Model Training Guarantee:</strong>
-            <p>freeOCR.me NEVER inspects, aggregates, mines, or uses uploaded user documents to train machine learning models. Your intellectual property, proprietary business records, and private documents remain exclusively yours.</p>
-          </div>
-        </div>
-
-        <h2>3. Zero Account Registration &amp; Ephemeral Email Delivery</h2>
-        <p>Security through minimization: freeOCR.me does not require account creation, username/password credentials, or credit card collection. For large multi-page documents where users opt to receive download links via email:</p>
-        <ul>
-          <li>Your email address is utilized strictly as an in-memory variable for SMTP dispatch.</li>
-          <li>Email addresses are never stored in databases, relational tables, or caching tiers.</li>
-          <li>We cannot send unsolicited marketing or promotional messages because your contact details do not exist in our systems.</li>
-        </ul>
-        """
-    },
-    {
-        "slug": "scan-restoration",
-        "aliases": ["restoration"],
-        "title": "Scan Restoration & Preprocessing: Radon Deskewing, Otsu Binarization & Upscaling",
-        "category": "COMPUTER VISION",
-        "description": "Technical tutorial on restoring degraded scans, faded receipts, skewed contracts, and low-DPI faxes using Radon transforms, adaptive Otsu binarization, and Lanczos-4 interpolation.",
-        "read_time": "10 min read",
-        "content_html": """
-        <p class="lead">Real-world document digitization rarely begins with pristine, professionally scanned master pages. Smartphone camera captures with ambient perspective skew, faded thermal store receipts, wrinkled contracts, and low-resolution 72 DPI faxes present severe challenges for optical character recognition systems. Automated computer vision preprocessing restores degraded documents before text extraction.</p>
-
-        <h2>1. Radon Transform Rotational Deskewing</h2>
-        <p>When paper sheets travel through automatic document feeder (ADF) rollers or are captured handheld, angular skew is virtually inevitable. Even a modest 1.5&deg; tilt causes horizontal bounding boxes to slice through adjacent text lines, splicing sentences together into illegible text:</p>
-        <p>freeOCR.me computes the mathematical Radon transform, projecting image pixel intensity integrals along radial lines across angular steps of 0.1&deg; spanning &minus;15&deg; to +15&deg;:</p>
-        <ul>
-          <li><strong>Variance Baseline Peak:</strong> Because parallel printed text lines create sharp peaks of dark and light alternating contrast, projecting parallel to text baselines maximizes intensity variance.</li>
-          <li><strong>Sub-Degree Orientation Detection:</strong> The projection angle exhibiting maximum mathematical variance corresponds precisely to document orientation.</li>
-          <li><strong>Bicubic Mirror Rotation:</strong> The image buffer is rotated using bicubic interpolation with boundary mirroring, correcting rotation without clipping margin characters.</li>
-        </ul>
-
-        <h2>2. Local Adaptive Otsu Binarization</h2>
-        <p>Global thresholding algorithms calculate a single luminance cutoff for an entire page. This fails catastrophically on wrinkled papers, faded thermal receipts, or pages with shadow gradients across the book spine. freeOCR.me applies localized adaptive binarization:</p>
-        <ul>
-          <li><strong>Localized Sliding Window:</strong> The raster image is divided into dynamic sub-windows (15x15 to 31x31 pixels).</li>
-          <li><strong>Dynamic Threshold Calculation:</strong> Threshold cutoffs are computed independently for each region based on local mean luminance and standard deviation.</li>
-          <li><strong>Contrast Enhancement:</strong> Faded character strokes on thermal receipt paper are separated from background yellowing while dark gutter shadows are suppressed.</li>
-        </ul>
-
-        <div class="tip-box">
-          <div class="box-icon">💡</div>
-          <div>
-            <strong>Camera Capture Pro-Tip:</strong>
-            <p>When digitizing paperwork with mobile smartphone cameras, ensure the document fills at least 85% of the viewport and avoid direct flashlight reflection hotspots that saturate paper white levels.</p>
-          </div>
-        </div>
-
-        <h2>3. Lanczos-4 Sinc Interpolation for Low-DPI Upscaling</h2>
-        <p>Neural OCR models are trained on character topologies normalized for 300 DPI resolution. Low-resolution faxes (72 to 100 DPI) cause character loops to merge. Our preprocessor detects sub-optimal resolutions and executes Lanczos-4 sinc windowed interpolation, reconstructing smooth glyph edges and preserving character loops before neural tokenization.</p>
-        """
-    },
-    {
-        "slug": "markdown-vs-text",
-        "aliases": ["markdown"],
-        "title": "Markdown vs Plain Text: Structured Output Formats for LLMs & RAG Pipelines",
-        "category": "DOCUMENT DATA SCIENCE",
-        "description": "Architectural comparison of Structured Markdown (.md) vs Plain Text (.txt) for OCR exports, LLM prompting, vector search chunking, and Retrieval-Augmented Generation.",
-        "read_time": "9 min read",
-        "content_html": """
-        <p class="lead">For over three decades, optical character recognition tools defaulted to outputting unformatted Plain Text (.txt). While plain text provides raw character strings, it strips away the document's architectural DNA: semantic heading hierarchies, tabular cell boundaries, code blocks, and list indentations. Structured Markdown (.md) preserves document structure for human note-taking and AI vector pipelines.</p>
-
-        <h2>1. Preservation of Heading Hierarchy</h2>
-        <p>In unformatted plain text, an 18pt bold chapter title looks identical to a 10pt paragraph body. Human readers and automated parsers cannot distinguish section boundaries. freeOCR.me analyzes font size clustering, vertical line spacing, and stroke weights to generate semantic Markdown headings:</p>
-        <ul>
-          <li><code># Document Title (H1)</code>: Main document identifier.</li>
-          <li><code>## Chapter / Major Section (H2)</code>: Functional thematic divisions.</li>
-          <li><code>### Subsection / Article Clause (H3)</code>: Granular analytical units.</li>
-        </ul>
-
-        <h2>2. Tabular Data &amp; Financial Ledger Preservation</h2>
-        <p>When multi-column financial statements, invoices, or balance sheets are flattened to plain text, column alignments collapse into ambiguous lines where figures lose connection to their column headers. Structured Markdown preserves tables with GitHub Flavored Markdown (GFM) syntax:</p>
-        <pre><code>| Transaction Date | Description         | Debit ($) | Credit ($) |
-|------------------|---------------------|-----------|------------|
-| 2026-09-15       | Cloud OCR Worker    | 45.20     | -          |
-| 2026-09-16       | RAM Cache Allocation| 12.50     | -          |</code></pre>
-        <p>This allows invoices and exhibits to be copied directly into Excel, Notion, Obsidian, Pandas dataframes, or SQL database ingestion scripts without manual re-keying.</p>
-
-        <div class="tip-box">
-          <div class="box-icon">🚀</div>
-          <div>
-            <strong>LLM Chunking &amp; RAG Optimization:</strong>
-            <p>Modern Retrieval-Augmented Generation (RAG) frameworks rely on semantic Markdown chunking. Headings (<code>#</code>, <code>##</code>) act as natural semantic boundary delimiters, preventing vector embeddings from splitting paragraphs mid-sentence.</p>
-          </div>
-        </div>
-
-        <h2>3. 1-Click Multi-Format Export</h2>
-        <p>freeOCR.me provides instant 1-click downloads in all three primary document formats: Searchable PDF (with invisible text layer), Clean Structured Markdown (.md) for note-taking and AI prompting, and Plain Text (.txt) for lightweight parsing.</p>
-        """
-    },
-    {
-        "slug": "ai-vs-traditional-ocr",
-        "aliases": ["ai-vs-traditional", "ai-ocr-complex-layouts"],
-        "title": "AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts",
-        "category": "RESEARCH & BENCHMARKS",
-        "description": "Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.",
-        "read_time": "11 min read",
-        "content_html": """
-        <p class="lead">Classical OCR engines rely on geometric projection heuristics that encounter severe failure modes on multi-column articles, borderless financial tables, and historical scans. Modern deep learning Vision-Language Transformers perform unified Document Layout Analysis (DLA) and Reading Order Detection (ROD) prior to character transcription, achieving near-lossless layout fidelity.</p>
-
-        <h2>1. The Heuristic Geometry Wall (Classical OCR Limitations)</h2>
-        <p>For decades, open-source OCR was defined by Google's Tesseract architecture. While heuristic OCR excels at single-column books or clean typewritten documents, it encounters severe failure modes when confronted with complex geometry:</p>
-        <ul>
-          <li><strong>Spliced Multi-Column Sentences:</strong> Heuristic projection profiles slice pixels horizontally across the page. Even a 1.5&deg; skew causes Column A and Column B to overlap, reading horizontally across gutters and splicing unrelated paragraphs into nonsense text.</li>
-          <li><strong>Borderless Tabular Collapses:</strong> Without physical gridlines, heuristic systems cluster characters based on arbitrary whitespace thresholds. Numbers in adjacent columns merge into single invalid entries or fragment into broken strings.</li>
-          <li><strong>Marginalia and Stamp Pollution:</strong> Non-horizontal text—such as vertical legal margin stamps or diagonal watermarks—intercepts regular text lines, polluting downstream search with alphanumeric noise.</li>
-        </ul>
-
-        <h2>2. Deep-Learning Vision Transformers: PaddleOCR &amp; Baidu Unlimited OCR</h2>
-        <p>Modern neural OCR solves the coordinate problem by treating layout analysis as a multi-modal semantic task:</p>
-        <ul>
-          <li><strong>Document Layout Analysis (DLA):</strong> Vision transformers (like Swin and ResNet backbones in PaddleOCR) segment documents into functional blocks—Title, Header, Multi-Column Body, Table Matrix, Caption, and Marginalia—before transcribing characters.</li>
-          <li><strong>Reading Order Detection (ROD):</strong> Directed Acyclic Graphs (DAG) model natural human reading flow. Even when quotes or callout boxes interrupt a two-column spread, attention heads trace semantic flow correctly across column boundaries.</li>
-        </ul>
-
-        <h2>3. Head-to-Head Comparative Benchmark (1,000 Complex Scans)</h2>
-        <div style="overflow-x:auto; margin: 1.5rem 0;">
-          <table class="benchmark-table">
-            <thead>
-              <tr>
-                <th>Document Archetype</th>
-                <th>Heuristic (Tesseract)</th>
-                <th>Deep-Learning AI OCR</th>
-                <th>Primary Legacy Failure Mode</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Dual-Column Academic Paper</strong></td>
-                <td>62.4% Word Order</td>
-                <td class="highlight">99.2% Word Order</td>
-                <td>Spliced across column gutters</td>
-              </tr>
-              <tr>
-                <td><strong>Borderless Financial Balance Sheet</strong></td>
-                <td>51.8% Cell Extraction</td>
-                <td class="highlight">97.4% Cell Extraction</td>
-                <td>Columns collapsed into unseparated numbers</td>
-              </tr>
-              <tr>
-                <td><strong>Skewed / Rotated Thermal Receipt</strong></td>
-                <td>44.1% Accuracy</td>
-                <td class="highlight">96.8% Accuracy</td>
-                <td>Unable to trace curved baselines</td>
-              </tr>
-              <tr>
-                <td><strong>Historical Bleed-Through Archive</strong></td>
-                <td>58.3% Accuracy</td>
-                <td class="highlight">95.1% Accuracy</td>
-                <td>Bleed-through ink read as punctuation</td>
-              </tr>
-              <tr>
-                <td><strong>Mixed Latin &amp; Asian Script Page</strong></td>
-                <td>68.7% Accuracy</td>
-                <td class="highlight">98.6% Accuracy</td>
-                <td>Script confusion in dense typography</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h2>4. Open-Source Engine Attributions &amp; Foundations</h2>
-        <p>freeOCR.me proudly acknowledges and builds upon world-class open-source projects:</p>
-        <ul>
-          <li><strong>Baidu Unlimited OCR (PaddleOCR):</strong> State-of-the-art multi-lingual deep vision-language OCR and Document Layout Analysis models.</li>
-          <li><strong>OCRmyPDF:</strong> Production-grade PDF/A composition, invisible font glyph injection, and page deskewing engine.</li>
-          <li><strong>PyMuPDF:</strong> High-performance Python bindings for MuPDF, used by freeOCR.me for page rasterization, text position extraction, and PDF manipulation.</li>
-        </ul>
-        """
-    }
-]
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -378,7 +95,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }}
     }},
     "datePublished": "2026-09-15",
-    "dateModified": "2026-09-16",
+    "dateModified": "2026-09-23",
     "mainEntityOfPage": "https://freeocr.me/kb/{slug}"
   }}
   </script>
@@ -448,41 +165,41 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     header {{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 2rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--header-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }}
 
     .logo {{
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--heading);
+      gap: 0.5rem;
       text-decoration: none;
+      color: var(--heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
     }}
 
     .logo-icon {{
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.35);
+      border: 1px solid rgba(99, 102, 241, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #818cf8;
-      font-weight: bold;
+      color: var(--accent);
+      font-size: 0.95rem;
     }}
 
     .logo span {{
@@ -490,6 +207,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     .nav-wrapper {{
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }}
+
+    nav {{
       display: flex;
       align-items: center;
       gap: 1.5rem;
@@ -527,11 +250,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     .main-layout {{
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 2rem auto;
       padding: 0 1.5rem;
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 290px 1fr;
       gap: 2.5rem;
       flex: 1;
       width: 100%;
@@ -551,29 +274,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
 
     .sidebar-title {{
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }}
 
     .sidebar-nav {{
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
     }}
 
     .sidebar-nav a {{
       display: block;
-      padding: 0.55rem 0.75rem;
-      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
-      line-height: 1.4;
+      font-size: 0.85rem;
+      line-height: 1.35;
       transition: all 0.2s;
     }}
 
@@ -651,6 +375,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       margin-top: 2.25rem;
       margin-bottom: 0.85rem;
       letter-spacing: -0.3px;
+    }}
+
+    h3 {{
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
     }}
 
     p {{
@@ -901,10 +633,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <div class="main-layout">
     <aside class="sidebar">
       <div class="sidebar-card">
-        <div class="sidebar-title">Articles In This Series</div>
-        <ul class="sidebar-nav">
-          {sidebar_links}
-        </ul>
+        <div class="sidebar-title" style="font-size: 0.9rem; margin-bottom: 1rem;">Knowledge Base Directory</div>
+        {sidebar_links}
       </div>
 
       <div class="sidebar-card">
@@ -1003,8 +733,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
+
 def generate_all():
-    print("Generating Knowledge Base static HTML articles...")
+    print(f"Generating Knowledge Base static HTML articles for {len(ARTICLES)} guides...")
 
     for article in ARTICLES:
         slug = article["slug"]
@@ -1014,12 +745,19 @@ def generate_all():
         read_time = article["read_time"]
         content_html = article["content_html"]
 
-        # Build sidebar links with active highlighting
-        sidebar_items = []
-        for other in ARTICLES:
-            active_cls = ' class="active"' if other["slug"] == slug else ''
-            sidebar_items.append(f'<li><a href="/kb/{other["slug"]}"{active_cls}>{other["title"].split(":")[0]}</a></li>')
-        sidebar_links = "\n          ".join(sidebar_items)
+        # Build categorized sidebar navigation grouped by the 4 pillars
+        sidebar_blocks = []
+        for pillar in PILLARS:
+            sidebar_blocks.append(f'<div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">{pillar["icon"]} {pillar["title"]}</div>')
+            sidebar_blocks.append('<ul class="sidebar-nav">')
+            for a_slug in pillar["slugs"]:
+                other = next((a for a in ARTICLES if a["slug"] == a_slug), None)
+                if other:
+                    active_cls = ' class="active"' if other["slug"] == slug else ''
+                    short_title = other["title"].split(":")[0]
+                    sidebar_blocks.append(f'<li><a href="/kb/{other["slug"]}"{active_cls}>{short_title}</a></li>')
+            sidebar_blocks.append('</ul>')
+        sidebar_links = "\n        ".join(sidebar_blocks)
 
         html_content = HTML_TEMPLATE.format(
             title=title,
@@ -1037,7 +775,6 @@ def generate_all():
         out_path = os.path.join(kb_slug_dir, "index.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print(f"Created: {out_path}")
 
         # Mirror output to /knowledge-base/<slug>/index.html
         knowledge_base_slug_dir = os.path.join(BASE_WEB_DIR, "knowledge-base", slug)
@@ -1045,7 +782,6 @@ def generate_all():
         kb_out_path = os.path.join(knowledge_base_slug_dir, "index.html")
         with open(kb_out_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print(f"Created mirror: {kb_out_path}")
 
         # Aliases
         for alias in article.get("aliases", []):
@@ -1053,15 +789,16 @@ def generate_all():
             os.makedirs(alias_dir, exist_ok=True)
             with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as f:
                 f.write(html_content)
-            print(f"Created alias: {alias_dir}/index.html")
 
             kb_alias_dir = os.path.join(BASE_WEB_DIR, "knowledge-base", alias)
             os.makedirs(kb_alias_dir, exist_ok=True)
             with open(os.path.join(kb_alias_dir, "index.html"), "w", encoding="utf-8") as f:
                 f.write(html_content)
-            print(f"Created mirror alias: {kb_alias_dir}/index.html")
 
-    print("Knowledge base generation completed successfully.")
+        print(f"Generated: /kb/{slug}/ and /knowledge-base/{slug}/")
+
+    print(f"Knowledge base generation completed successfully ({len(ARTICLES)} articles generated).")
+
 
 if __name__ == "__main__":
     generate_all()
