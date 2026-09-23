@@ -9,18 +9,18 @@
   <title>Knowledge Base &amp; Technical Architecture — freeOCR.me</title>
   <meta name="title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
   <meta name="description"
-    content="Comprehensive engineering guide on dual-layer searchable PDF synthesis (ISO 32000-1), Radon deskewing, Otsu binarization, neural OCR routing, and volatile RAM disk security.">
+    content="Comprehensive technical documentation, engineering guides, and deep architecture analyses for high-accuracy optical character recognition, dual-layer searchable PDF synthesis, and zero-retention privacy.">
   <meta name="keywords"
-    content="dual-layer pdf, searchable pdf, ocr architecture, radon deskewing, otsu binarization, ram disk ocr, ephemeral security, baidu unlimited ocr, ocrmypdf">
+    content="ocr documentation, searchable pdf guide, optical character recognition architecture, pdf/a standards, jbig2 compression, tesseract ocr benchmarks, baidu unlimited ocr, document layout analysis">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freeocr.me/knowledge-base">
+  <link rel="canonical" href="https://freeocr.me/kb">
 
   <!-- OpenGraph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://freeocr.me/knowledge-base">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://freeocr.me/kb">
   <meta property="og:title" content="Knowledge Base &amp; Technical Architecture — freeOCR.me">
   <meta property="og:description"
-    content="In-depth engineering whitepapers on AI optical character recognition, coordinate normalization, and zero-retention security.">
+    content="Explore 23 in-depth engineering guides covering OCR workflows, PDF format comparisons, enterprise solutions, and scanner troubleshooting.">
   <meta property="og:image" content="https://freeocr.me/icons/Icon-512.png">
 
   <!-- Favicon -->
@@ -28,7 +28,7 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="manifest" href="/manifest.json">
 
-  <!-- Theme Script (Runs synchronously before render to prevent flash) -->
+  <!-- Theme Script (Synchronous to prevent flash) -->
   <script>
     (function () {
       try {
@@ -64,8 +64,10 @@
       --accent-light: #4f46e5;
       --border: #e2e8f0;
       --code-bg: #f1f5f9;
-      --header-bg: rgba(255, 255, 255, 0.88);
+      --header-bg: rgba(255, 255, 255, 0.92);
       --footer-bg: #f1f5f9;
+      --badge-bg: rgba(99, 102, 241, 0.1);
+      --badge-text: #4f46e5;
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
     }
@@ -81,8 +83,10 @@
       --accent-light: #818cf8;
       --border: rgba(255, 255, 255, 0.08);
       --code-bg: #1e293b;
-      --header-bg: rgba(11, 15, 25, 0.88);
+      --header-bg: rgba(11, 15, 25, 0.92);
       --footer-bg: rgba(15, 23, 42, 0.95);
+      --badge-bg: rgba(99, 102, 241, 0.2);
+      --badge-text: #a5b4fc;
       --toggle-bg: rgba(255, 255, 255, 0.1);
       --toggle-color: #f3f4f6;
     }
@@ -98,43 +102,42 @@
       background-color: var(--bg);
       color: var(--text-main);
       line-height: 1.6;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 2rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--header-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      font-size: 1.2rem;
+      gap: 0.6rem;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      font-size: 1.35rem;
       color: var(--heading);
       text-decoration: none;
+      letter-spacing: -0.02em;
     }
 
     .logo-icon {
       width: 32px;
       height: 32px;
-      border-radius: 8px;
       background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -150,6 +153,12 @@
       gap: 1.25rem;
     }
 
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
@@ -161,141 +170,236 @@
     nav a:hover,
     nav a.active {
       color: var(--accent);
-      font-weight: 600;
     }
 
     .theme-toggle-btn {
       background: var(--toggle-bg);
-      color: var(--toggle-color);
-      border: none;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 8px;
-      cursor: pointer;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      color: var(--toggle-color);
       transition: all 0.2s;
-    }
-
-    .theme-toggle-btn:hover {
-      transform: scale(1.05);
     }
 
     .container {
-      max-width: 960px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
       flex: 1;
     }
 
+    .hero-banner {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.75rem;
       font-weight: 800;
-      margin-bottom: 0.75rem;
       color: var(--heading);
-      letter-spacing: -0.5px;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      line-height: 1.15;
     }
 
-    .intro {
-      font-size: 1.15rem;
+    .hero-subtitle {
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
-      line-height: 1.7;
+      font-size: 1.2rem;
+      max-width: 760px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
     }
 
-    /* Seamless ad container: collapses completely when no ad is loaded */
-    .ad-banner-slot {
-      margin: 1rem 0 1.5rem;
-      overflow: hidden;
+    .pillar-nav {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-    }
-
-    .tabs-nav {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--border);
+      gap: 0.75rem;
       margin-bottom: 2rem;
-      overflow-x: auto;
     }
 
-    .tab-btn {
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      padding: 0.75rem 1.25rem;
+    .pillar-nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.6rem 1.15rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pillar-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* Ad slot banner */
+    .ad-banner-slot {
+      margin: 2rem auto;
+      max-width: 970px;
+      min-height: 90px;
+      background: var(--card-bg);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .pillar-section {
+      margin-bottom: 4rem;
+    }
+
+    .pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .pillar-icon-badge {
+      font-size: 1.75rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--badge-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pillar-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+    }
+
+    .pillar-desc {
       color: var(--text-muted);
       font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
+      margin-top: 0.2rem;
     }
 
-    .tab-btn:hover {
-      color: #fff;
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
     }
 
-    .tab-btn.active {
-      color: var(--accent-light);
-      border-bottom-color: var(--accent);
-    }
-
-    .tab-pane {
-      display: none;
-    }
-
-    .tab-pane.active {
-      display: block;
-    }
-
-    .article-card {
+    .kb-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 2.25rem;
-      margin-bottom: 2rem;
+      padding: 1.65rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    h2 {
-      font-size: 1.5rem;
+    .kb-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-size: 0.8rem;
+    }
+
+    .card-category {
       font-weight: 700;
-      margin-bottom: 1rem;
-      color: var(--heading);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
     }
 
-    h3 {
+    .card-read-time {
+      color: var(--text-muted);
+    }
+
+    .card-title {
       font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title a {
+      color: var(--heading);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .card-title a:hover {
+      color: var(--accent);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.925rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+
+    .card-link {
+      color: var(--accent);
       font-weight: 600;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--accent-light);
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: gap 0.2s;
     }
 
-    p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 1rem;
+    .card-link:hover .arrow {
+      transform: translateX(4px);
     }
 
-    ul {
-      margin-left: 1.5rem;
-      margin-bottom: 1.25rem;
-      color: var(--text-muted);
-    }
-
-    li {
-      margin-bottom: 0.5rem;
-    }
-
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      background: var(--code-bg);
-      color: var(--accent-light);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.9em;
+    .arrow {
+      transition: transform 0.2s;
     }
 
     footer {
@@ -335,6 +439,7 @@
       color: var(--text-muted);
       transition: color 0.2s;
       text-decoration: none;
+      font-size: 0.9rem;
     }
 
     .footer-col a:hover {
@@ -359,17 +464,16 @@
     }
 
     @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
       .footer-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-
-      nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-
       header {
         padding: 0.75rem 1rem;
       }
@@ -395,7 +499,8 @@
     <div class="nav-wrapper">
       <nav>
         <a href="/">Home</a>
-        <a href="/knowledge-base" class="active">Knowledge Base</a>
+        <a href="/kb" class="active">Knowledge Base</a>
+        <a href="/about">About</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
       </nav>
@@ -416,11 +521,23 @@
   </header>
 
   <main class="container">
-    <h1>Knowledge Base &amp; Technical Architecture</h1>
-    <p class="intro">In-depth technical whitepapers on high-fidelity optical character recognition, neural document
-      layout decomposition, and Linux RAM disk ephemeral security.</p>
+    <div class="hero-banner">
+      <div class="hero-badge">Engineering Documentation &amp; Research</div>
+      <h1>Knowledge Base &amp; Technical Architecture</h1>
+      <p class="hero-subtitle">
+        Comprehensive engineering documentation, computer vision tutorials, and architecture deep dives across 23 guides.
+        Learn how high-fidelity optical character recognition, dual-layer PDF synthesis, and zero-retention privacy work under the hood.
+      </p>
 
-    <!-- Native Google AdSense Display Unit -->
+      <div class="pillar-nav">
+        <a href="#workflows" class="pillar-nav-btn">⚡ Tool Guides &amp; Workflows</a>
+        <a href="#comparisons" class="pillar-nav-btn">⚖️ Format &amp; Tech Comparisons</a>
+        <a href="#solutions" class="pillar-nav-btn">🏢 Use-Case Solutions</a>
+        <a href="#troubleshooting" class="pillar-nav-btn">🛠️ Troubleshooting &amp; FAQs</a>
+      </div>
+    </div>
+
+    <!-- AdSense Display Slot -->
     <div class="ad-banner-slot">
       <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
         data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
@@ -430,173 +547,427 @@
       </script>
     </div>
 
-    <!-- Navigation Tabs -->
-    <div class="tabs-nav" role="tablist">
-      <button class="tab-btn active" onclick="switchTab(0)" id="tab-0">1. Dual-Layer PDF Architecture</button>
-      <button class="tab-btn" onclick="switchTab(1)" id="tab-1">2. Evolution of PDF &amp; PDF/A</button>
-      <button class="tab-btn" onclick="switchTab(2)" id="tab-2">3. Kernel-Level Ephemeral Security</button>
-      <button class="tab-btn" onclick="switchTab(3)" id="tab-3">4. Scan Restoration &amp; Binarization</button>
-      <button class="tab-btn" onclick="switchTab(4)" id="tab-4">5. Structured Markdown vs Plain Text</button>
-    </div>
+    <!-- 4 Pillars Section -->
+    
+      <section class="pillar-section" id="workflows">
+        <div class="pillar-header">
+          <div class="pillar-icon-badge">⚡</div>
+          <div>
+            <h2 class="pillar-title">Tool Guides & Workflows</h2>
+            <p class="pillar-desc">Practical step-by-step guides on optimizing document digitization, batch invoice pipelines, and resolution settings.</p>
+          </div>
+        </div>
+        <div class="cards-grid">
+          
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">TECHNICAL ARCHITECTURE</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/ocr-guide">Understanding OCR: The Complete Guide to Optical Character Recognition</a></h3>
+          <p class="card-desc">Comprehensive engineering guide on optical character recognition, DPI upscaling, Otsu binarization, sub-pixel normalization, and dual-layer searchable PDF synthesis.</p>
+          <div class="card-footer">
+            <a href="/kb/ocr-guide" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">COMPUTER VISION</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/low-res-scan-enhancement">How to Extract Accurate Text from Low-Resolution & Blurry Scans</a></h3>
+          <p class="card-desc">Step-by-step engineering tutorial on extracting high-accuracy OCR text from degraded 72 DPI scans, blurred faxes, and camera photos using Lanczos-4 sinc interpolation and adaptive sharpening.</p>
+          <div class="card-footer">
+            <a href="/kb/low-res-scan-enhancement" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">WORKFLOW AUTOMATION</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/batch-invoice-processing">Automating Batch Invoices & Receipts with Optical Character Recognition</a></h3>
+          <p class="card-desc">Enterprise guide to processing batch vendor invoices, purchase orders, and expense receipts with automated tabular layout recognition and zero persistent storage privacy.</p>
+          <div class="card-footer">
+            <a href="/kb/batch-invoice-processing" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">HARDWARE & SCANNING</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/optimal-dpi-settings">Optimal DPI Settings for Scanned Documents: 150 vs 300 vs 600 DPI Benchmarks</a></h3>
+          <p class="card-desc">Scientific benchmark and scanning optimization guide examining the trade-offs between 150, 300, and 600 DPI resolution, file sizes, and OCR accuracy.</p>
+          <div class="card-footer">
+            <a href="/kb/optimal-dpi-settings" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">STEP-BY-STEP TUTORIAL</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/pdf-to-searchable-pdf-guide">How to Convert Scanned PDF to Searchable PDF Without Losing Formatting</a></h3>
+          <p class="card-desc">Complete tutorial on converting image-only scanned PDFs into fully searchable, selectable dual-layer PDFs while preserving original signatures, stamps, and layout fidelity.</p>
+          <div class="card-footer">
+            <a href="/kb/pdf-to-searchable-pdf-guide" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">SECURITY & PRIVACY</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/secure-password-pdf-ocr">Decrypted In-Memory: How to OCR Password-Protected PDFs Securely</a></h3>
+          <p class="card-desc">Technical guide on unlocking and processing password-protected scanned PDFs using client-side cryptographic decryption and zero persistent storage RAM-disk security.</p>
+          <div class="card-footer">
+            <a href="/kb/secure-password-pdf-ocr" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        </div>
+      </section>
+        
+      <section class="pillar-section" id="comparisons">
+        <div class="pillar-header">
+          <div class="pillar-icon-badge">⚖️</div>
+          <div>
+            <h2 class="pillar-title">Format & Tech Comparisons</h2>
+            <p class="pillar-desc">In-depth engineering analyses of PDF standards, layout analysis engines, and machine-learning models.</p>
+          </div>
+        </div>
+        <div class="cards-grid">
+          
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">STANDARDS & HISTORY</span>
+            <span class="card-read-time">12 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/pdf-standards">The Evolution of PDF: From PostScript to ISO 32000-1 Searchable PDFs</a></h3>
+          <p class="card-desc">Historical and architectural analysis of the Portable Document Format (PDF), PostScript roots, ISO 32000-1 standards, and modern searchable PDF synthesis.</p>
+          <div class="card-footer">
+            <a href="/kb/pdf-standards" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">DOCUMENT DATA SCIENCE</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/markdown-vs-text">Markdown vs Plain Text: Structured Output Formats for LLMs & RAG Pipelines</a></h3>
+          <p class="card-desc">Architectural comparison of Structured Markdown (.md) vs Plain Text (.txt) for OCR exports, LLM prompting, vector search chunking, and Retrieval-Augmented Generation.</p>
+          <div class="card-footer">
+            <a href="/kb/markdown-vs-text" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">RESEARCH & BENCHMARKS</span>
+            <span class="card-read-time">12 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR: Neural Vision Models vs Heuristic Engines on Complex Layouts</a></h3>
+          <p class="card-desc">Comparative benchmark of deep learning Vision-Language Transformers vs classical heuristic OCR engines (Tesseract) on multi-column journals, borderless tables, and dense typography.</p>
+          <div class="card-footer">
+            <a href="/kb/ai-vs-traditional-ocr" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">FORMAT SELECTION</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/searchable-pdf-vs-plain-text">Searchable PDF vs Plain Text OCR: When to Use Which Format</a></h3>
+          <p class="card-desc">Comprehensive comparative evaluation between dual-layer Searchable PDF and unformatted Plain Text exports across legal discovery, archival, and data science workflows.</p>
+          <div class="card-footer">
+            <a href="/kb/searchable-pdf-vs-plain-text" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">MACHINE LEARNING</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/multi-column-layout-analysis">How Layout Analysis Engines Process Multi-Column Documents & Reading Order</a></h3>
+          <p class="card-desc">Deep-dive into Document Layout Analysis (DLA) and Reading Order Detection (ROD) algorithms for multi-column newspapers, academic papers, and magazine spreads.</p>
+          <div class="card-footer">
+            <a href="/kb/multi-column-layout-analysis" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">BENCHMARKS & EVALUATION</span>
+            <span class="card-read-time">12 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/ocr-engine-comparison-tesseract-paddleocr-cloud">OCR Engine Comparison: Tesseract vs PaddleOCR vs Cloud OCR APIs</a></h3>
+          <p class="card-desc">Exhaustive benchmark comparing open-source engines (Tesseract 5, PaddleOCR v4) against proprietary cloud APIs (Google Cloud Vision, AWS Textract) across accuracy, latency, and privacy.</p>
+          <div class="card-footer">
+            <a href="/kb/ocr-engine-comparison-tesseract-paddleocr-cloud" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        </div>
+      </section>
+        
+      <section class="pillar-section" id="solutions">
+        <div class="pillar-header">
+          <div class="pillar-icon-badge">🏢</div>
+          <div>
+            <h2 class="pillar-title">Use-Case Solutions</h2>
+            <p class="pillar-desc">Targeted enterprise workflows for legal discovery, accounting audits, academic research, and medical records.</p>
+          </div>
+        </div>
+        <div class="cards-grid">
+          
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">SECURITY & PRIVACY</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/privacy-security">Zero-Disk Retention Architecture & Linux RAM-Disk Ephemeral Security</a></h3>
+          <p class="card-desc">Technical deep-dive into freeOCR.me's ephemeral Linux tmpfs RAM disk security architecture, POSIX unlinking, and zero persistent file retention guarantees.</p>
+          <div class="card-footer">
+            <a href="/kb/privacy-security" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">LEGAL TECHNOLOGY</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/legal-discovery-court-filings">OCR for Legal Discovery & Court Filings: Bates Stamping and Full-Text Search</a></h3>
+          <p class="card-desc">Comprehensive guide for law firms and paralegals on preparing court-admissible searchable PDFs, preserving Bates numbering, and meeting PACER and CM/ECF filing standards.</p>
+          <div class="card-footer">
+            <a href="/kb/legal-discovery-court-filings" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">FINANCE & AUDITING</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/receipt-expense-auditing">Digitizing Thermal Receipts & Invoices for Expense Auditing & Tax Records</a></h3>
+          <p class="card-desc">How to digitize faded thermal receipts, crumpled store slips, and expense invoices for IRS-compliant digital tax records using adaptive binarization and line-item OCR.</p>
+          <div class="card-footer">
+            <a href="/kb/receipt-expense-auditing" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">ACADEMIC PUBLISHING</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/academic-research-archiving">Archiving Academic Journals & Research Papers: Formulas, Tables & Footnotes</a></h3>
+          <p class="card-desc">Guide to digitizing academic dissertations, scientific journals, mathematical notation, and footnote citations into searchable repositories and LaTeX documents.</p>
+          <div class="card-footer">
+            <a href="/kb/academic-research-archiving" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">HEALTHCARE IT</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/medical-records-ocr-privacy">Medical Records OCR: HIPAA-Compliant Ephemeral Ingestion & Zero Retention</a></h3>
+          <p class="card-desc">Healthcare IT analysis of processing patient charts, clinical notes, and laboratory slips using zero-persistence volatile RAM architectures to safeguard Protected Health Information (PHI).</p>
+          <div class="card-footer">
+            <a href="/kb/medical-records-ocr-privacy" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">CULTURAL PRESERVATION</span>
+            <span class="card-read-time">12 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/historical-archive-preservation">Digitizing Historical Books & Faded Archives: Overcoming Bleed-Through & Foxing</a></h3>
+          <p class="card-desc">Curatorial guide on digitizing rare manuscripts, 19th-century publications, yellowed parchment, and ink bleed-through using specialized Sauvola thresholding and neural OCR.</p>
+          <div class="card-footer">
+            <a href="/kb/historical-archive-preservation" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        </div>
+      </section>
+        
+      <section class="pillar-section" id="troubleshooting">
+        <div class="pillar-header">
+          <div class="pillar-icon-badge">🛠️</div>
+          <div>
+            <h2 class="pillar-title">Troubleshooting & FAQs</h2>
+            <p class="pillar-desc">Expert solutions for skewed pages, low contrast, ligatures, cursive handwriting, and scanned PDF compression.</p>
+          </div>
+        </div>
+        <div class="cards-grid">
+          
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">COMPUTER VISION</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/scan-restoration">Scan Restoration & Preprocessing: Radon Deskewing, Otsu Binarization & Upscaling</a></h3>
+          <p class="card-desc">Technical tutorial on restoring degraded scans, faded receipts, skewed contracts, and low-DPI faxes using Radon transforms, adaptive Otsu binarization, and Lanczos-4 interpolation.</p>
+          <div class="card-footer">
+            <a href="/kb/scan-restoration" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">TROUBLESHOOTING GUIDE</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/fixing-skewed-rotated-scans">Troubleshooting Skewed & Rotated Scans: Automated Deskewing Algorithms Explained</a></h3>
+          <p class="card-desc">Technical guide on diagnosing and repairing crooked, upside-down, and rotated document scans using Radon projections, Hough transforms, and automated 90-degree quadrant detection.</p>
+          <div class="card-footer">
+            <a href="/kb/fixing-skewed-rotated-scans" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">TECHNICAL LIMITATIONS</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/handwriting-vs-print-ocr-limits">Handwriting OCR vs Printed Text OCR: What Modern AI Can and Cannot Recognize</a></h3>
+          <p class="card-desc">Honest engineering analysis of the capabilities and boundaries of modern Optical Character Recognition (OCR) versus Handwritten Text Recognition (HTR).</p>
+          <div class="card-footer">
+            <a href="/kb/handwriting-vs-print-ocr-limits" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">TYPOGRAPHY & ENCODING</span>
+            <span class="card-read-time">10 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/font-recognition-ligatures-special-chars">Resolving Font Recognition Errors, Ligatures & Special Unicode Characters</a></h3>
+          <p class="card-desc">Technical guide on diagnosing typographic ligatures ('fi', 'fl'), diacritics, mathematical symbols, and Unicode normalization errors in OCR text outputs.</p>
+          <div class="card-footer">
+            <a href="/kb/font-recognition-ligatures-special-chars" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        <div class="kb-card">
+          <div class="card-meta">
+            <span class="card-category">FILE OPTIMIZATION</span>
+            <span class="card-read-time">11 min read</span>
+          </div>
+          <h3 class="card-title"><a href="/kb/compress-scanned-pdf-without-losing-ocr">How to Reduce Scanned PDF File Size Without Sacrificing OCR Text Searchability</a></h3>
+          <p class="card-desc">Engineering guide on shrinking bloated 50MB scanned PDFs down to manageable 3MB files using JBIG2 compression, image re-quantization, and lossless text stream preservation.</p>
+          <div class="card-footer">
+            <a href="/kb/compress-scanned-pdf-without-losing-ocr" class="card-link">
+              Read Guide <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+            
+        </div>
+      </section>
+        
 
-    <!-- Tab Pane 1: OCR Architecture -->
-    <div class="tab-pane active" id="pane-0">
-      <article class="article-card">
-        <h2>Dual-Layer Searchable PDF Architecture (ISO 32000-1 &amp; Invisible Font Render Mode 3)</h2>
-        <p>A dual-layer PDF (commonly known as a "Searchable PDF" or "Sandwich PDF") preserves the exact visual fidelity of the original scanned document while synthesizing an invisible, machine-searchable text layer directly aligned over the scan bitmap.</p>
-
-        <h3>How freeOCR.me Synthesizes Dual-Layer PDFs:</h3>
-        <ul>
-          <li><strong>Bitmap Preservation:</strong> The scanned page image is placed as the visible background layer at its native resolution and color space. Stamps, hand-written signatures, physical creases, and official seals remain visually authentic.</li>
-          <li><strong>Coordinate Normalization:</strong> Neural bounding polygons from the OCR model are transformed from raster pixel dimensions to standard PDF point coordinates (72 points per inch) with sub-pixel alignment:
-            <br><code>scale_x = page.rect.width / pix.width</code>,
-            <code>scale_y = page.rect.height / pix.height</code>.
-          </li>
-          <li><strong>Invisible Text Layer (<code>render_mode=3</code>):</strong> Using ISO 32000-1 compliant font rendering mode 3 ("Neither fill nor stroke text"), character glyphs are positioned with microscopic precision over each matching scanned word. The PDF reader calculates selection bounds and clipboard text without rendering colored pixels, enabling transparent highlight, copy, and search (Ctrl+F) operations.</li>
-          <li><strong>Word-Level Alignment &amp; Spacing:</strong> Standard text insertion operators (<code>Tj</code>, <code>TJ</code>) combined with character spacing (<code>Tc</code>) and word spacing (<code>Tw</code>) parameters distribute glyph widths to eliminate drift across multi-column documents.</li>
-        </ul>
-
-        <h3>Preprocessing &amp; Layout Heuristics:</h3>
-        <ul>
-          <li><strong>Deskewing via Radon Projections:</strong> Calculates skew angles between -15° and +15° across text baselines to rotate pages back to true horizontal alignment before segmentation.</li>
-          <li><strong>Adaptive Otsu Binarization:</strong> Separates foreground character strokes from paper grain, stains, and ink bleed-through.</li>
-          <li><strong>Dual Engine Neural Routing:</strong> Single-column linear text routes to CPU workers running OCRmyPDF and Tesseract. Complex multi-column tables, mathematical formulas, and multilingual scripts route to Baidu Unlimited OCR on GPU clusters.</li>
-        </ul>
-      </article>
-    </div>
-
-    <!-- Tab Pane 2: PDF Standards -->
-    <div class="tab-pane" id="pane-1">
-      <article class="article-card">
-        <h2>The Evolution of Document Interchange: PostScript, PDF 1.0, and Long-Term PDF/A Archiving</h2>
-        <p>Before the Portable Document Format (PDF) was created by Dr. John Warnock in 1991 under Adobe's "Camelot Project", distributing formatted digital documents across heterogeneous operating systems was plagued by incompatible printer drivers, missing system fonts, and broken page geometry.</p>
-
-        <h3>Key Milestones in Document Interchange:</h3>
-        <ul>
-          <li><strong>PostScript (1984):</strong> A complete page-description programming language that allowed laser printers to rasterize vector glyphs. However, PostScript required a full Turing-complete interpreter to execute, making real-time on-screen previewing slow and memory-intensive.</li>
-          <li><strong>PDF 1.0 (1993):</strong> Extracted declarative graphics from PostScript into an indexed binary object stream. By removing procedural loops and adding page index dictionaries, PDF enabled rapid random page rendering and interactive cross-platform viewing.</li>
-          <li><strong>ISO 32000-1 (2008):</strong> PDF was formalized as an open international standard by the ISO. Render mode 3 was codified to allow font characters to define bounding geometry and selection without coloring pixels, laying the legal foundation for modern searchable PDF overlays.</li>
-          <li><strong>PDF/A Long-Term Archival Standard (ISO 19005):</strong> Specifically engineered for decades-long legal, government, and academic archival. PDF/A strictly forbids external font dependencies, audio/video streams, JavaScript execution, and encryption, guaranteeing that an archived document can be reproduced identically in 100 years. freeOCR.me creates PDF/A-compliant dual-layer files.</li>
-        </ul>
-      </article>
-    </div>
-
-    <!-- Tab Pane 3: Security -->
-    <div class="tab-pane" id="pane-2">
-      <article class="article-card">
-        <h2>Kernel-Level Zero-Retention Security: Operating Ephemeral AI Workloads in Linux tmpfs RAM Disks</h2>
-        <p>Document privacy is the foundational architectural principle of freeOCR.me. Unlike conventional cloud converters that write user files to persistent solid-state drives (SSDs) or cloud storage buckets (e.g., AWS S3 or Google Cloud Storage), where remnants linger in filesystem journals, unallocated sectors, and backup snapshots, freeOCR.me enforces privacy directly at the Linux kernel boundary.</p>
-
-        <h3>Our Kernel-Level Security Architecture:</h3>
-        <ul>
-          <li><strong>Volatile Memory Mount (<code>tmpfs</code>):</strong> All uploaded documents, temporary page bitmaps, deskewed buffers, and reconstructed PDFs reside exclusively in Linux <code>tmpfs</code> RAM disk mounts. Data exists strictly as electrical charge in volatile DRAM chips. At no stage does your document ever touch persistent storage or magnetic platters.</li>
-          <li><strong>Instant Cryptographic POSIX Unlink:</strong> The moment your OCR conversion generates the final output stream, an automated file unlinking protocol executes standard POSIX <code>unlink()</code> calls. Inode references are severed and physical DRAM pages are returned to the kernel free pool immediately.</li>
-          <li><strong>Autonomous Janitor &amp; Watchdog Daemon:</strong> A continuous background watchdog sweeps the RAM disk directory every 60 seconds. Any orphaned session older than 60 minutes is forcefully purged, guaranteeing zero memory leakage.</li>
-          <li><strong>Zero Model Training:</strong> Uploaded documents are never stored, inspected, analyzed, or used to fine-tune machine learning models.</li>
-          <li><strong>Scale-to-Zero Compute:</strong> Both CPU and GPU processing containers automatically scale down to 0 instances when idle, completely clearing runtime memory.</li>
-        </ul>
-      </article>
-    </div>
-
-    <!-- Tab Pane 4: Scan Restoration & Binarization -->
-    <div class="tab-pane" id="pane-3">
-      <article class="article-card">
-        <h2>How to Extract Clean Text from Low-Resolution Scans, Faded Receipts &amp; Distorted Documents</h2>
-        <p>Real-world document digitization rarely starts with pristine, high-resolution scans. Mobile camera photographs taken under uneven ambient lighting, faded thermal store receipts, crumpled contracts, and low-resolution 72 DPI faxes present severe challenges for standard optical character recognition systems.</p>
-
-        <h3>1. Radon Transform Deskewing</h3>
-        <p>When physical sheets are fed into automatic document feeders or photographed with handheld devices, they frequently introduce rotational skew. Applying character segmentation directly on tilted lines produces broken word boundaries and garbled reading order. freeOCR.me implements a high-precision Radon transform algorithm:</p>
-        <ul>
-          <li>The Radon transform calculates intensity projections along radial lines across angular steps of 0.1° spanning -15° to +15°.</li>
-          <li>Because lines of text create intense peaks of variance when projected parallel to their baselines, the angle exhibiting maximum variance corresponds precisely to the document's orientation.</li>
-          <li>The image is rotated using bicubic interpolation with boundary mirroring, restoring crisp horizontal text orientation without clipping edge characters.</li>
-        </ul>
-
-        <h3>2. Adaptive Otsu Binarization</h3>
-        <p>Global thresholding algorithms choose a single intensity cutoff for the entire image. This fails dramatically on thermal receipts with faded ink or scans with shadow gradients across the gutter. freeOCR.me employs local adaptive thresholding:</p>
-        <ul>
-          <li>The page is evaluated in localized rolling windows ($15 \times 15$ to $31 \times 31$ pixels).</li>
-          <li>The threshold dynamically adjusts based on local contrast and background luminescence, isolating faint character strokes on faded thermal paper while suppressing dark background bleed-through.</li>
-        </ul>
-
-        <h3>3. Neural Super-Resolution &amp; DPI Upscaling</h3>
-        <p>Character recognition engines achieve peak accuracy at 300 DPI. Input scans below 150 DPI suffer from merged character loops (e.g., confusing 'e', 'a', and 'o'). Our preprocessor detects sub-standard DPI and applies Lanczos-4 resampling and edge-sharpening kernels, restoring character geometry before neural inference.</p>
-      </article>
-    </div>
-
-    <!-- Tab Pane 5: Markdown vs Plain Text -->
-    <div class="tab-pane" id="pane-4">
-      <article class="article-card">
-        <h2>Why Structured Markdown (.md) is Superior to Plain Text (.txt) for OCR Output</h2>
-        <p>For over three decades, optical character recognition tools have defaulted to outputting unformatted Plain Text (<code>.txt</code>). While plain text provides basic raw characters, it strips away the document's architectural DNA: headers, tabular relationships, semantic hierarchy, and block structures.</p>
-
-        <h3>1. Heading Hierarchy &amp; Document Outlining</h3>
-        <p>In unformatted text, an 18pt bold chapter title looks identical to a 10pt body paragraph, forcing human readers and automated parsers to guess where sections begin. freeOCR.me analyzes font size clustering, vertical line spacing, and stroke weights to assign semantic Markdown headings (<code># Heading 1</code>, <code>## Heading 2</code>, <code>### Heading 3</code>), creating an instant table of contents for your document.</p>
-
-        <h3>2. Tabular Data &amp; Financial Ledger Preservation</h3>
-        <p>When multi-column financial statements or invoices are converted to plain text, column alignments collapse into jumbled, ambiguous lines where numbers lose connection to their column headers. Structured Markdown preserves tables with standard syntax (<code>| Column | Header |</code>), ensuring spreadsheets, bank statements, and legal exhibits can be imported cleanly into Excel, Notion, Obsidian, or database pipelines.</p>
-
-        <h3>3. Code Snippets &amp; Mathematical Notation</h3>
-        <p>Technical whitepapers and academic research frequently interleave source code, chemical notations, or formulas. Markdown allows fencing with backticks (<code>```python</code>), preventing indentation collapse and syntax corruption.</p>
-
-        <h3>4. LLM &amp; RAG Pipeline Readiness</h3>
-        <p>Modern AI agents and Retrieval-Augmented Generation (RAG) frameworks rely on semantic Markdown chunking. By utilizing Markdown headings and paragraph breaks as natural semantic split boundaries, vector search embeddings retain contextual relevance without mid-sentence truncation.</p>
-      </article>
-    </div>
   </main>
-
-
 
   <footer>
     <div class="footer-grid">
       <div class="footer-col footer-brand">
-        <div class="logo" style="margin-bottom: 0.5rem;">
-          <img src="/icons/Icon-192.png" width="24" height="24" alt="freeOCR.me Logo" style="border-radius: 5px;">
+        <a href="/" class="logo">
           freeOCR<span>.me</span>
-        </div>
-        <p>100% Free Ephemeral AI OCR Engine. Scanned PDF to searchable dual-layer PDF with zero data retention.</p>
+        </a>
+        <p>Private, high-performance optical character recognition running on volatile Linux RAM disk architecture with zero persistent disk storage.</p>
       </div>
       <div class="footer-col">
-        <h3>Product</h3>
+        <h3>Content Pillars</h3>
         <ul>
-          <li><a href="/">PDF to Searchable PDF</a></li>
-          <li><a href="/knowledge-base">Knowledge Base</a></li>
+          <li><a href="/kb#workflows">Tool Guides &amp; Workflows</a></li>
+          <li><a href="/kb#comparisons">Format Comparisons</a></li>
+          <li><a href="/kb#solutions">Use-Case Solutions</a></li>
+          <li><a href="/kb#troubleshooting">Troubleshooting &amp; FAQs</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h3>Engines</h3>
+        <h3>Popular Guides</h3>
         <ul>
-          <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener noreferrer">Baidu OCR
-              AI</a></li>
-          <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener noreferrer">OCRmyPDF</a></li>
-          <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank"
-              rel="noopener noreferrer">Tesseract</a></li>
+          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
+          <li><a href="/kb/pdf-standards">PDF Standards &amp; PDF/A</a></li>
+          <li><a href="/kb/privacy-security">Zero-Disk Privacy</a></li>
+          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h3>Legal</h3>
+        <h3>Legal &amp; Policy</h3>
         <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/terms">Terms of Service</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; 2026 freeOCR.me — Open Source Ephemeral Document AI. Zero Disk Retention Guaranteed.
+      &copy; 2026 freeOCR.me. All rights reserved. Zero-Disk Retention Architecture.
     </div>
   </footer>
 
   <script>
-    function switchTab(index) {
-      document.querySelectorAll('.tab-btn').forEach(function (b, i) {
-        b.classList.toggle('active', i === index);
-      });
-      document.querySelectorAll('.tab-pane').forEach(function (p, i) {
-        p.classList.toggle('active', i === index);
-      });
-    }
-
-    // Theme Toggle Logic
     var toggleBtn = document.getElementById('themeToggleBtn');
     var sunIcon = document.getElementById('sunIcon');
     var moonIcon = document.getElementById('moonIcon');
@@ -622,12 +993,6 @@
         localStorage.setItem('freeocr_theme', next);
       } catch (e) { }
       updateIcons(next);
-    });
-
-    // Support deep linking via hash
-    window.addEventListener('DOMContentLoaded', function () {
-      if (window.location.hash === '#standards') switchTab(1);
-      if (window.location.hash === '#security') switchTab(2);
     });
   </script>
 </body>
