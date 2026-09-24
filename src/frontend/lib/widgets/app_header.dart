@@ -188,14 +188,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                             value: '/kb',
                             child: Text('Knowledge Base'),
                           ),
-                          const PopupMenuItem(
-                            value: '/about',
-                            child: Text('About'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/contact',
-                            child: Text('Contact'),
-                          ),
                         ],
                       ),
                       const SizedBox(width: 4),
@@ -354,42 +346,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       child: Text(
                         'Knowledge Base',
                         style: currentRoute.startsWith('/kb') ? activeNavStyle : navTextStyle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    TextButton(
-                      key: const Key('header_about_btn'),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        if (currentRoute != '/about') {
-                          Navigator.of(context).pushNamed('/about');
-                        }
-                      },
-                      child: Text(
-                        'About',
-                        style: currentRoute == '/about' ? activeNavStyle : navTextStyle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    TextButton(
-                      key: const Key('header_contact_btn'),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        if (currentRoute != '/contact') {
-                          Navigator.of(context).pushNamed('/contact');
-                        }
-                      },
-                      child: Text(
-                        'Contact',
-                        style: currentRoute == '/contact' ? activeNavStyle : navTextStyle,
                       ),
                     ),
                     const SizedBox(width: 8),
