@@ -33,7 +33,7 @@
       --badge-bg: rgba(99, 102, 241, 0.08);
       --badge-border: rgba(99, 102, 241, 0.22);
       --badge-color: #4f46e5;
-      --nav-link: #64748b;
+      --nav-link: #475569;
       --logo-text: #0f172a;
       --pill-bg: rgba(99, 102, 241, 0.08);
       --pill-border: rgba(99, 102, 241, 0.2);
@@ -44,6 +44,23 @@
       --faq-bg: rgba(0, 0, 0, 0.02);
       --faq-border: rgba(0, 0, 0, 0.08);
       --link-color: #4f46e5;
+      --dropzone-bg: rgba(255, 255, 255, 0.85);
+      --dropzone-border: rgba(99, 102, 241, 0.35);
+      --dropzone-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --showcase-bg: rgba(255, 255, 255, 0.95);
+      --showcase-border: rgba(203, 213, 225, 0.5);
+      --showcase-shadow: 0 10px 28px rgba(99, 102, 241, 0.08);
+      --showcase-img-bg: #f8fafc;
+      --tile-bg: #f1f5f9;
+      --tile-border: #e2e8f0;
+      --toggle-bg: rgba(99, 102, 241, 0.08);
+      --toggle-border: rgba(99, 102, 241, 0.2);
+      --badge-text-color: #4338ca;
+      --sub-card-bg: rgba(0, 0, 0, 0.03);
+      --sub-card-border: rgba(0, 0, 0, 0.08);
+      --format-pill-bg: #f1f5f9;
+      --format-pill-border: #cbd5e1;
+      --format-pill-text: #64748b;
     }
 
     [data-theme="dark"] {
@@ -69,6 +86,23 @@
       --faq-bg: rgba(255, 255, 255, 0.03);
       --faq-border: rgba(255, 255, 255, 0.08);
       --link-color: #818cf8;
+      --dropzone-bg: rgba(15, 23, 42, 0.65);
+      --dropzone-border: rgba(99, 102, 241, 0.45);
+      --dropzone-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      --showcase-bg: rgba(30, 41, 59, 0.9);
+      --showcase-border: rgba(255, 255, 255, 0.12);
+      --showcase-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+      --showcase-img-bg: #0f172a;
+      --tile-bg: rgba(15, 23, 42, 0.6);
+      --tile-border: rgba(255, 255, 255, 0.08);
+      --toggle-bg: rgba(255, 255, 255, 0.1);
+      --toggle-border: rgba(255, 255, 255, 0.15);
+      --badge-text-color: #a5b4fc;
+      --sub-card-bg: rgba(255, 255, 255, 0.04);
+      --sub-card-border: rgba(255, 255, 255, 0.08);
+      --format-pill-bg: rgba(255, 255, 255, 0.06);
+      --format-pill-border: rgba(255, 255, 255, 0.1);
+      --format-pill-text: #94a3b8;
     }
 
     html, body {
@@ -94,6 +128,75 @@
       z-index: 1;
       width: 100%;
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .shell-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 16px 24px;
+      box-sizing: border-box;
+    }
+    .shell-hero-row {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      margin-top: 14px;
+    }
+    .shell-col-left {
+      flex: 7;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .shell-col-right {
+      flex: 5;
+      min-width: 0;
+    }
+    .shell-nav-link {
+      color: var(--nav-link);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      transition: color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 8px;
+    }
+    .shell-nav-link:hover {
+      color: #6366f1;
+    }
+    .shell-format-pill {
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: var(--format-pill-bg);
+      border: 1px solid var(--format-pill-border);
+      color: var(--format-pill-text);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    @media (max-width: 991px) {
+      .shell-hero-row {
+        flex-direction: column;
+        align-items: center;
+      }
+      .shell-col-left {
+        width: 100%;
+        max-width: 640px;
+        align-items: center;
+        text-align: center;
+      }
+      .shell-col-right {
+        width: 100%;
+        max-width: 640px;
+        margin-top: 20px;
+      }
+    }
+    @media (max-width: 639px) {
+      .shell-desktop-nav {
+        display: none !important;
+      }
     }
     #editorial-content {
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -328,50 +431,192 @@
     Smoothly fades out and dissolves when Flutter's interactive canvas mounts into the DOM.
   -->
   <div id="app-loading-shell">
-    <header style="max-width: 1200px; margin: 0 auto; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--header-border); background-color: var(--header-bg);">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35); display: flex; align-items: center; justify-content: center; color: #818cf8; font-weight: 800; font-size: 15px; font-family: sans-serif;">
-          ⚡
-        </div>
-        <span style="font-size: 1.25rem; font-weight: 800; color: var(--logo-text); letter-spacing: -0.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          freeOCR<span style="color: #6366f1;">.me</span>
-        </span>
+    <header style="border-bottom: 1px solid var(--header-border); background-color: var(--header-bg); transition: background-color 0.2s ease, border-color 0.2s ease;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+        <!-- Brand Logo & Name -->
+        <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+          <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+          <span style="font-size: 18px; font-weight: 800; color: var(--logo-text); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            freeOCR<span style="color: #6366f1;">.me</span>
+          </span>
+        </a>
+        <!-- Synchronized Navigation Links & Theme Switcher Button -->
+        <nav style="display: flex; align-items: center; gap: 4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <div class="shell-desktop-nav" style="display: flex; align-items: center; gap: 4px;">
+            <a href="/" class="shell-nav-link" style="color: #6366f1; font-weight: 700;">Home</a>
+            <a href="/kb" class="shell-nav-link">Knowledge Base</a>
+            <a href="/about" class="shell-nav-link">About</a>
+            <a href="/contact" class="shell-nav-link">Contact</a>
+          </div>
+          <div style="margin-left: 6px; display: flex; align-items: center;">
+            <button id="shell-theme-toggle" type="button" aria-label="Toggle Theme" style="background: var(--toggle-bg); border: 1px solid var(--toggle-border); border-radius: 50%; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; transition: background-color 0.2s ease;">
+              <span id="shell-theme-icon" style="font-size: 16px; line-height: 1;">🌙</span>
+            </button>
+          </div>
+        </nav>
       </div>
-      <nav style="display: flex; align-items: center; gap: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.95rem;">
-        <a href="/knowledge-base" style="color: var(--nav-link); text-decoration: none; font-weight: 500;">Knowledge Base</a>
-        <a href="/about" style="color: var(--nav-link); text-decoration: none; font-weight: 500;">About</a>
-        <a href="/contact" style="color: var(--nav-link); text-decoration: none; font-weight: 500;">Contact</a>
-      </nav>
     </header>
 
-    <div style="max-width: 860px; margin: 36px auto 32px; padding: 0 20px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--badge-color); font-size: 12px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 18px;">
-        ✨ 100% FREE ONLINE OCR — ZERO PERSISTENT STORAGE
+    <div class="shell-container" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <!-- Synchronized Orange Announcement Banner -->
+      <div style="margin-top: 10px; margin-bottom: 14px; background: linear-gradient(135deg, #FF5E00 0%, #FF8C00 50%, #FFA500 100%); border-radius: 16px; box-shadow: 0 6px 18px rgba(255, 111, 0, 0.35); border: 1.2px solid rgba(255, 255, 255, 0.4); padding: 14px 18px; color: #ffffff; display: flex; align-items: center; justify-content: space-between; gap: 16px; overflow: hidden; position: relative;">
+        <div style="display: flex; align-items: center; gap: 16px; min-width: 0;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 0, 0, 0.18); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 24px;">
+            ✨
+          </div>
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span style="background: rgba(0, 0, 0, 0.25); border-radius: 6px; padding: 3px 8px; font-weight: 800; font-size: 11px; letter-spacing: 0.8px; white-space: nowrap;">
+                ⚡ HIGH-FIDELITY UPGRADE
+              </span>
+              <span style="font-weight: 800; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Near-Lossless Layout Fidelity in Searchable PDFs
+              </span>
+            </div>
+            <div style="font-size: 13px; color: rgba(255, 255, 255, 0.95); margin-top: 5px; line-height: 1.4;">
+              Our top-of-the-line PDF composition engine has been upgraded. Generated outputs now deliver near-lossless fidelity—perfectly reproducing multi-column layouts, borderless tables, and fonts from your scanned PDFs.
+            </div>
+          </div>
+        </div>
+        <a href="/kb" class="shell-desktop-nav" style="color: #ffffff; font-weight: 800; font-size: 12px; text-decoration: none; background: rgba(0, 0, 0, 0.2); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.25); white-space: nowrap; flex-shrink: 0;">
+          Read Technical Deep-Dive &rarr;
+        </a>
       </div>
-      <h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: var(--text-main); margin: 0 0 14px; letter-spacing: -0.8px; line-height: 1.2;">
-        Scanned PDF to Searchable PDF &amp; Text
-      </h2>
-      <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 640px; margin: 0 auto 32px; line-height: 1.55;">
-        Convert scanned documents, books, and receipts into searchable PDFs with sub-pixel text alignment. Zero account registration and ephemeral RAM-disk privacy.
-      </p>
 
-      <!-- Frosted Hero Dropzone Skeleton -->
-      <div style="max-width: 720px; margin: 0 auto; padding: 48px 24px; border-radius: 24px; background: var(--card-bg); border: 2px dashed var(--card-border); box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); animation: subtleGlow 3s infinite ease-in-out;">
-        <div style="width: 64px; height: 64px; border-radius: 18px; background: rgba(99,102,241,0.14); border: 1px solid rgba(99,102,241,0.25); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #818cf8;">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <!-- Synchronized 2-Column Hero Landing Layout (Desktop: Row / Mobile: Column) -->
+      <div class="shell-hero-row">
+        <!-- Left Column: flex 7 (Badge + Headline + Subtitle + Hero Dropzone Card) -->
+        <div class="shell-col-left">
+          <!-- Pulse Badge -->
+          <div style="background: rgba(99, 102, 241, 0.1); border-radius: 20px; border: 1px solid rgba(99, 102, 241, 0.25); padding: 6px 14px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 4px 1px rgba(16, 185, 129, 0.4);"></div>
+            <span style="font-size: 13px; font-weight: 600; color: var(--badge-text-color);">
+              100% Free • Zero File Retention • No Registration
+            </span>
+          </div>
+
+          <!-- Headline -->
+          <h1 style="font-size: clamp(2rem, 3.2vw, 2.5rem); font-weight: 800; letter-spacing: -1.0px; color: var(--text-main); line-height: 1.15; margin: 0 0 6px;">
+            Extract Text with <span style="color: #6366f1;">Precision</span>
+          </h1>
+
+          <!-- Subtitle -->
+          <p style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; max-width: 600px; margin: 0 0 12px;">
+            Secure, fast, and highly accurate optical character recognition powered by advanced neural engines. Files are processed in memory and never stored.
+          </p>
+
+          <!-- Hero Dropzone Skeleton -->
+          <div style="width: 100%; border-radius: 24px; background: var(--dropzone-bg); border: 2px dashed var(--dropzone-border); box-shadow: var(--dropzone-shadow); padding: 28px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-sizing: border-box; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: subtleGlow 3s infinite ease-in-out;">
+            <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(99, 102, 241, 0.1); display: flex; align-items: center; justify-content: center; color: #6366f1; margin-bottom: 10px;">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 2px;">
+              Drag &amp; Drop files here
+            </div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+              or
+            </div>
+            <button type="button" style="background: #6366f1; color: #ffffff; font-weight: 700; font-size: 15px; padding: 10px 26px; border-radius: 30px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); margin-bottom: 12px;">
+              Select PDF or Images
+            </button>
+            <div style="padding: 6px 14px; border-radius: 16px; background: var(--sub-card-bg); border: 1px solid var(--sub-card-border); font-size: 12px; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 6px;">
+              <span style="color: #10B981; font-weight: 800;">✓</span>
+              <span style="color: var(--text-main); font-weight: 700;">Up to 100 MB free per PDF</span>
+              <span style="color: #6366f1; font-weight: 600;">• Boost up to 1 GB Free</span>
+            </div>
+            <!-- Format Pills Row -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+              <span class="shell-format-pill">PDF</span>
+              <span class="shell-format-pill">PNG</span>
+              <span class="shell-format-pill">JPG</span>
+              <span class="shell-format-pill">WEBP</span>
+              <span class="shell-format-pill">TIFF</span>
+              <span class="shell-format-pill">BMP</span>
+            </div>
+          </div>
         </div>
-        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
-          Drop your PDF or image here
-        </div>
-        <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 22px;">
-          100 MB free base limit &bull; Stackable up to 1 GB &bull; PDF, PNG, JPG
-        </div>
-        <div style="display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 12px; background: var(--pill-bg); border: 1px solid var(--pill-border); color: var(--pill-color); font-size: 0.9rem; font-weight: 600;">
-          <span style="width: 8px; height: 8px; border-radius: 50%; background: #6366f1; animation: pulseDot 1.4s infinite ease-in-out;"></span>
-          Initializing secure OCR workspace...
+
+        <!-- Right Column: flex 5 (HeroScannerShowcase Card Skeleton) -->
+        <div class="shell-col-right">
+          <div style="background: var(--showcase-bg); border: 1px solid var(--showcase-border); border-radius: 20px; box-shadow: var(--showcase-shadow); padding: 16px; box-sizing: border-box; width: 100%;">
+            <!-- Header Row: Indicator + Live Badge -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 6px 1px rgba(16, 185, 129, 0.4);"></div>
+                <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.8px; color: var(--text-main);">
+                  NEURAL OCR ENGINE
+                </span>
+              </div>
+              <div style="padding: 4px 10px; border-radius: 12px; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.25); font-size: 11px; font-weight: 700; color: #6366f1;">
+                File Size up to 1 GB
+              </div>
+            </div>
+
+            <div style="border-top: 1px solid var(--showcase-border); margin: 0 0 12px;"></div>
+
+            <!-- Center Image Showcase -->
+            <div style="border-radius: 14px; overflow: hidden; background: var(--showcase-img-bg); border: 1px solid var(--showcase-border); aspect-ratio: 16 / 9; position: relative; display: flex; align-items: center; justify-content: center;">
+              <img src="/assets/assets/images/hero_scanner_3d.png" alt="Neural OCR Scanner 3D Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.onerror=null;this.src='/icons/Icon-512.png';" />
+            </div>
+
+            <div style="height: 12px;"></div>
+
+            <!-- Bottom Dual Metric Tiles -->
+            <div style="display: flex; gap: 8px;">
+              <div style="flex: 1; background: var(--tile-bg); border: 1px solid var(--tile-border); border-radius: 12px; padding: 10px 12px; box-sizing: border-box;">
+                <div style="font-size: 10px; font-weight: 800; color: #10B981; letter-spacing: 0.6px; margin-bottom: 2px;">
+                  RAM-DISK SECURITY
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">
+                  Zero File Retention
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted);">
+                  Auto-purged post OCR
+                </div>
+              </div>
+              <div style="flex: 1; background: var(--tile-bg); border: 1px solid var(--tile-border); border-radius: 12px; padding: 10px 12px; box-sizing: border-box;">
+                <div style="font-size: 10px; font-weight: 800; color: #6366f1; letter-spacing: 0.6px; margin-bottom: 2px;">
+                  DUAL-LAYER PDF
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">
+                  Searchable &amp; Selectable
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted);">
+                  Full text + layout fidelity
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Synchronous Shell Theme Controller -->
+    <script>
+      (function() {
+        function updateShellTheme(theme) {
+          var icon = document.getElementById('shell-theme-icon');
+          if (icon) {
+            icon.textContent = (theme === 'dark') ? '☀️' : '🌙';
+          }
+        }
+        var activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateShellTheme(activeTheme);
+        var toggleBtn = document.getElementById('shell-theme-toggle');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var curr = document.documentElement.getAttribute('data-theme') || 'light';
+            var next = (curr === 'dark') ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            try {
+              localStorage.setItem('freeocr_theme', next);
+            } catch (err) {}
+            updateShellTheme(next);
+          });
+        }
+      })();
+    </script>
   </div>
 
   <!-- 
