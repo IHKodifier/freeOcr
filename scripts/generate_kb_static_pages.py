@@ -625,7 +625,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div class="nav-wrapper">
       <nav>
         <a href="/">Home</a>
-        <a href="/knowledge-base" class="active">Knowledge Base</a>
+        <a href="/kb" class="active">Knowledge Base</a>
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
         <a href="/privacy">Privacy</a>
@@ -656,7 +656,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <article class="article-container">
         <nav class="breadcrumbs">
           <a href="/">Home</a> &rsaquo;
-          <a href="/knowledge-base">Knowledge Base</a> &rsaquo;
+          <a href="/kb">Knowledge Base</a> &rsaquo;
+          {category_breadcrumb}
           <span>{title}</span>
         </nav>
 
@@ -688,14 +689,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </p>
       </div>
       <div class="footer-col">
-        <h4>Knowledge Base</h4>
+        <h4>Content Pillars</h4>
         <ul>
-          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
-          <li><a href="/kb/pdf-standards">The Evolution of PDF</a></li>
-          <li><a href="/kb/privacy-security">Zero-Disk Retention</a></li>
-          <li><a href="/kb/scan-restoration">Scan Restoration</a></li>
-          <li><a href="/kb/markdown-vs-text">Markdown vs TXT</a></li>
-          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+          <li><a href="/kb/workflows">Tool Guides &amp; Workflows</a></li>
+          <li><a href="/kb/comparisons">Format Comparisons</a></li>
+          <li><a href="/kb/solutions">Use-Case Solutions</a></li>
+          <li><a href="/kb/troubleshooting">Troubleshooting &amp; FAQs</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -755,7 +754,7 @@ def generate_all():
         # Build categorized sidebar navigation grouped by the 4 pillars
         sidebar_blocks = []
         for pillar in PILLARS:
-            sidebar_blocks.append(f'<div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;">{pillar["icon"]} {pillar["title"]}</div>')
+            sidebar_blocks.append(f'<div class="sidebar-title" style="margin-top: 0.9rem; font-size: 0.78rem;"><a href="/kb/{pillar["id"]}" style="color: inherit; text-decoration: none;">{pillar["icon"]} {pillar["title"]} &rarr;</a></div>')
             sidebar_blocks.append('<ul class="sidebar-nav">')
             for a_slug in pillar["slugs"]:
                 other = next((a for a in ARTICLES if a["slug"] == a_slug), None)
@@ -766,6 +765,9 @@ def generate_all():
             sidebar_blocks.append('</ul>')
         sidebar_links = "\n        ".join(sidebar_blocks)
 
+        parent_pillar = next((p for p in PILLARS if slug in p["slugs"]), None)
+        category_breadcrumb = f'<a href="/kb/{parent_pillar["id"]}">{parent_pillar["title"]}</a> &rsaquo;' if parent_pillar else ''
+
         html_content = HTML_TEMPLATE.format(
             title=title,
             category=category,
@@ -773,7 +775,8 @@ def generate_all():
             read_time=read_time,
             content_html=content_html,
             slug=slug,
-            sidebar_links=sidebar_links
+            sidebar_links=sidebar_links,
+            category_breadcrumb=category_breadcrumb
         )
 
         # Output to all target web directories
