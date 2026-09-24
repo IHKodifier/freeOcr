@@ -42,9 +42,10 @@ class _KbPageState extends State<KbPage> {
   }
 
   int _slugToTab(String? slug) {
-    if (slug == 'pdf-history' || slug == 'pdf-standards') return 1;
-    if (slug == 'privacy-security' || slug == 'zero-disk') return 2;
-    if (slug == 'scan-restoration' || slug == 'binarization' || slug == 'deskew') return 3;
+    if (slug == 'workflows' || slug == 'ocr-guide') return 0;
+    if (slug == 'comparisons' || slug == 'pdf-history' || slug == 'pdf-standards') return 1;
+    if (slug == 'solutions' || slug == 'privacy-security' || slug == 'zero-disk') return 2;
+    if (slug == 'troubleshooting' || slug == 'scan-restoration' || slug == 'binarization' || slug == 'deskew') return 3;
     if (slug == 'markdown-vs-text' || slug == 'markdown' || slug == 'structured-text') return 4;
     if (slug == 'ai-vs-traditional-ocr' || slug == 'ai-ocr-complex-layouts' || slug == 'ai-vs-traditional') return 5;
     return 0; // Default to OCR guide
