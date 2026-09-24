@@ -45,10 +45,13 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
     );
 
     final headerContent = SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-        child: Row(
-          children: [
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              children: [
             if (Navigator.canPop(context)) ...[
               IconButton(
                 icon: const Icon(Icons.arrow_back_rounded, size: 20),
@@ -357,7 +360,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
 
     return Container(
       decoration: BoxDecoration(
