@@ -198,11 +198,11 @@
       margin-bottom: 1.5rem;
     }
 
-    /* Seamless ad container: collapses completely when no ad is loaded */
+    /* Seamless ad container: suppressed during AdSense review */
     .ad-banner-slot {
+      display: none !important;
       margin: 1rem 0 1.5rem;
       overflow: hidden;
-      display: flex;
       justify-content: center;
     }
 
@@ -394,7 +394,7 @@
       <h1>Privacy Policy (GDPR &amp; CCPA Compliant)</h1>
       <div class="meta">Last Updated: August 30, 2026 • freeOCR.me Trust &amp; Ephemeral Architecture</div>
 
-      <!-- Native Google AdSense Display Unit (seamless / collapses when empty) -->
+      <!-- Native Google AdSense Display Unit (Uncomment post-approval)
       <div class="ad-banner-slot">
         <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
           data-ad-client="ca-pub-6775900998665017" data-ad-slot="9876543210" data-ad-format="auto"
@@ -403,6 +403,7 @@
           (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
       </div>
+      -->
 
       <section class="policy-section">
         <h2>1. Zero Persistent Document Storage Guarantee</h2>

@@ -12,6 +12,75 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 from kb_articles_data import PILLARS, ARTICLES
 
+# ==============================================================================
+# Google AdSense Approval Configuration
+# Set to True once Google AdSense site review has passed and ad units are active.
+# When False, completely suppresses ad containers (.ad-banner-slot) and script tags
+# to prevent AdSense rejection for "Low-value content" / "Empty ad placeholders".
+# ==============================================================================
+K_ADSENSE_APPROVED = False
+
+if K_ADSENSE_APPROVED:
+    AD_BANNER_SLOT_CSS = """
+    /* Ad slot banner */
+    .ad-banner-slot {
+      margin: 2rem auto;
+      max-width: 970px;
+      min-height: 90px;
+      background: var(--card-bg);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    """
+    MAIN_HUB_AD_SLOT_HTML = """
+    <!-- AdSense Display Slot -->
+    <div class="ad-banner-slot">
+      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
+        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    """
+    CATEGORY_TOP_AD_SLOT_HTML = """
+    <!-- AdSense Display Slot (Top) -->
+    <div class="ad-banner-slot">
+      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
+        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    """
+    CATEGORY_BOTTOM_AD_SLOT_HTML = """
+    <!-- AdSense Display Slot (Bottom) -->
+    <div class="ad-banner-slot">
+      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
+        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567891" data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    """
+else:
+    AD_BANNER_SLOT_CSS = """
+    /* Ad slot banner: suppressed during AdSense review */
+    .ad-banner-slot {
+      display: none !important;
+    }
+    """
+    MAIN_HUB_AD_SLOT_HTML = ""
+    CATEGORY_TOP_AD_SLOT_HTML = ""
+    CATEGORY_BOTTOM_AD_SLOT_HTML = ""
+
+
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
 BUILD_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web"))
 BUILD_PDFTOOLZ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "freepdftoolz_web"))
@@ -295,21 +364,7 @@ COMMON_CSS = """
       color: #ffffff;
       border-color: var(--accent);
     }
-
-    /* Ad slot banner */
-    .ad-banner-slot {
-      margin: 2rem auto;
-      max-width: 970px;
-      min-height: 90px;
-      background: var(--card-bg);
-      border: 1px dashed var(--border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
+""" + AD_BANNER_SLOT_CSS + """
     .pillar-section {
       margin-bottom: 4rem;
     }
@@ -827,15 +882,7 @@ def build_hub_html():
       </div>
     </div>
 
-    <!-- AdSense Display Slot -->
-    <div class="ad-banner-slot">
-      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
-        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({{}});
-      </script>
-    </div>
+{MAIN_HUB_AD_SLOT_HTML}
 
     <!-- 4 Pillars Section -->
     {pillar_sections_html}
@@ -995,29 +1042,13 @@ def build_category_hub_html(pillar):
       </div>
     </div>
 
-    <!-- AdSense Display Slot (Top) -->
-    <div class="ad-banner-slot">
-      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
-        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567890" data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({{}});
-      </script>
-    </div>
+{CATEGORY_TOP_AD_SLOT_HTML}
 
     <div class="cards-grid">
       {cards_html}
     </div>
 
-    <!-- AdSense Display Slot (Bottom) -->
-    <div class="ad-banner-slot">
-      <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;"
-        data-ad-client="ca-pub-6775900998665017" data-ad-slot="1234567891" data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({{}});
-      </script>
-    </div>
+{CATEGORY_BOTTOM_AD_SLOT_HTML}
 
     <div class="cross-explore-box">
       <h3>Explore Other Knowledge Base Topics</h3>
