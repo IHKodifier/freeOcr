@@ -148,11 +148,19 @@
       gap: 1.25rem;
     }
 
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
+      padding: 0.2rem 0.35rem;
       transition: color 0.2s;
     }
 
@@ -160,6 +168,14 @@
     nav a.active {
       color: var(--accent);
       font-weight: 600;
+    }
+
+    .nav-sep {
+      color: var(--border);
+      opacity: 0.6;
+      font-size: 0.85rem;
+      user-select: none;
+      padding: 0 0.15rem;
     }
 
     .theme-toggle-btn {
@@ -177,6 +193,7 @@
 
     .container {
       max-width: 900px;
+      width: 100%;
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
       flex: 1;
@@ -376,15 +393,25 @@
     <div class="nav-wrapper">
       <nav>
         <a href="/">Home</a>
+        <span class="nav-sep">|</span>
         <a href="/about" class="active">About</a>
-        <a href="/knowledge-base">Knowledge Base</a>
+        <span class="nav-sep">|</span>
+        <a href="/kb">Knowledge Base</a>
+        <span class="nav-sep">|</span>
+        <a href="/privacy">Privacy</a>
+        <span class="nav-sep">|</span>
+        <a href="/terms">Terms</a>
+        <span class="nav-sep">|</span>
         <a href="/contact">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
         <span id="sunIcon" style="display:none;">☀️</span>
         <span id="moonIcon">🌙</span>
       </button>
-    </div>  <main class="container">
+    </div>
+  </header>
+
+  <main class="container">
     <div class="badge">ABOUT FREEOCR.ME</div>
     <h1>Democratizing Document OCR with Zero-Storage Privacy</h1>
     <p class="subtitle">A high-performance web platform converting scanned documents into searchable PDFs and clean
