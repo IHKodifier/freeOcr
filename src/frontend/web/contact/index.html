@@ -169,11 +169,19 @@
       gap: 1.25rem;
     }
 
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
+      padding: 0.2rem 0.35rem;
       transition: color 0.2s;
     }
 
@@ -181,6 +189,14 @@
     nav a.active {
       color: var(--accent);
       font-weight: 600;
+    }
+
+    .nav-sep {
+      color: var(--border);
+      opacity: 0.6;
+      font-size: 0.85rem;
+      user-select: none;
+      padding: 0 0.15rem;
     }
 
     .theme-toggle-btn {
@@ -503,8 +519,15 @@
     <div class="nav-wrapper">
       <nav>
         <a href="/">Home</a>
+        <span class="nav-sep">|</span>
         <a href="/about">About</a>
-        <a href="/knowledge-base">Knowledge Base</a>
+        <span class="nav-sep">|</span>
+        <a href="/kb">Knowledge Base</a>
+        <span class="nav-sep">|</span>
+        <a href="/privacy">Privacy</a>
+        <span class="nav-sep">|</span>
+        <a href="/terms">Terms</a>
+        <span class="nav-sep">|</span>
         <a href="/contact" class="active">Contact</a>
       </nav>
       <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">

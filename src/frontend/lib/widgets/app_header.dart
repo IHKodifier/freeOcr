@@ -161,8 +161,8 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       PopupMenuButton<String>(
                         icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
                         onSelected: (route) {
-                          if (kIsWeb && route == '/kb') {
-                            UrlHelper.navigateToPath('/kb');
+                          if (kIsWeb && route != '/' && route != homeRoute) {
+                            UrlHelper.navigateToPath(route);
                             return;
                           }
                           if (currentRoute != route) {
@@ -185,8 +185,24 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                             ),
                           ],
                           const PopupMenuItem(
+                            value: '/about',
+                            child: Text('About'),
+                          ),
+                          const PopupMenuItem(
                             value: '/kb',
                             child: Text('Knowledge Base'),
+                          ),
+                          const PopupMenuItem(
+                            value: '/privacy',
+                            child: Text('Privacy Policy'),
+                          ),
+                          const PopupMenuItem(
+                            value: '/terms',
+                            child: Text('Terms of Service'),
+                          ),
+                          const PopupMenuItem(
+                            value: '/contact',
+                            child: Text('Contact'),
                           ),
                         ],
                       ),
@@ -219,7 +235,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                     if (showToolsDropdown) ...[
-                      const SizedBox(width: 4),
+                      _buildNavSeparator(context, isDark),
                       // --- Tools Dropdown Switcher ---
                       PopupMenuButton<String>(
                         key: const Key('header_tools_btn'),
@@ -328,25 +344,50 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       ),
                     ],
-                    const SizedBox(width: 4),
-                    TextButton(
+                    _buildNavSeparator(context, isDark),
+                    _buildNavLink(
+                      context,
+                      label: 'About',
+                      path: '/about',
+                      activeStyle: activeNavStyle,
+                      inactiveStyle: navTextStyle,
+                      key: const Key('header_about_btn'),
+                    ),
+                    _buildNavSeparator(context, isDark),
+                    _buildNavLink(
+                      context,
+                      label: 'Knowledge Base',
+                      path: '/kb',
+                      activeStyle: activeNavStyle,
+                      inactiveStyle: navTextStyle,
                       key: const Key('header_kb_btn'),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        if (kIsWeb) {
-                          UrlHelper.navigateToPath('/kb');
-                        } else if (currentRoute != '/kb') {
-                          Navigator.of(context).pushNamed('/kb');
-                        }
-                      },
-                      child: Text(
-                        'Knowledge Base',
-                        style: currentRoute.startsWith('/kb') ? activeNavStyle : navTextStyle,
-                      ),
+                    ),
+                    _buildNavSeparator(context, isDark),
+                    _buildNavLink(
+                      context,
+                      label: 'Privacy',
+                      path: '/privacy',
+                      activeStyle: activeNavStyle,
+                      inactiveStyle: navTextStyle,
+                      key: const Key('header_privacy_btn'),
+                    ),
+                    _buildNavSeparator(context, isDark),
+                    _buildNavLink(
+                      context,
+                      label: 'Terms',
+                      path: '/terms',
+                      activeStyle: activeNavStyle,
+                      inactiveStyle: navTextStyle,
+                      key: const Key('header_terms_btn'),
+                    ),
+                    _buildNavSeparator(context, isDark),
+                    _buildNavLink(
+                      context,
+                      label: 'Contact',
+                      path: '/contact',
+                      activeStyle: activeNavStyle,
+                      inactiveStyle: navTextStyle,
+                      key: const Key('header_contact_btn'),
                     ),
                     const SizedBox(width: 8),
                     _buildThemeToggleButton(context, isDark),
@@ -380,6 +421,50 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                 filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
                 child: headerContent,
               ),
+      ),
+    );
+  }
+
+  Widget _buildNavSeparator(BuildContext context, bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: Text(
+        '|',
+        style: TextStyle(
+          color: isDark ? const Color.fromRGBO(255, 255, 255, 0.22) : const Color.fromRGBO(0, 0, 0, 0.22),
+          fontSize: 13,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavLink(
+    BuildContext context, {
+    required String label,
+    required String path,
+    required TextStyle activeStyle,
+    required TextStyle inactiveStyle,
+    Key? key,
+  }) {
+    final isActive = currentRoute == path || (path != '/' && currentRoute.startsWith(path));
+    return TextButton(
+      key: key,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      onPressed: () {
+        if (kIsWeb) {
+          UrlHelper.navigateToPath(path);
+        } else if (currentRoute != path) {
+          Navigator.of(context).pushNamed(path);
+        }
+      },
+      child: Text(
+        label,
+        style: isActive ? activeStyle : inactiveStyle,
       ),
     );
   }

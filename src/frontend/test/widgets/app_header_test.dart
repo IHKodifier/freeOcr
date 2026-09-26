@@ -41,9 +41,14 @@ void main() {
       // Verify Brand logo
       expect(find.byKey(const Key('header_brand_logo')), findsOneWidget);
 
-      // Verify Navigation Buttons
+      // Verify Navigation Buttons & Separators
       expect(find.byKey(const Key('header_home_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_about_btn')), findsOneWidget);
       expect(find.byKey(const Key('header_kb_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_privacy_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_terms_btn')), findsOneWidget);
+      expect(find.byKey(const Key('header_contact_btn')), findsOneWidget);
+      expect(find.text('|'), findsNWidgets(5));
       expect(find.byKey(const Key('header_docs_btn')), findsNothing);
       expect(find.byKey(const Key('header_tools_btn')), findsNothing);
 
