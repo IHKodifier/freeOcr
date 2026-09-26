@@ -442,9 +442,18 @@
         </a>
         <!-- Synchronized Navigation Links & Theme Switcher Button -->
         <nav style="display: flex; align-items: center; gap: 4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div class="shell-desktop-nav" style="display: flex; align-items: center; gap: 4px;">
-            <a href="/" class="shell-nav-link" style="color: #6366f1; font-weight: 700;">Home</a>
-            <a href="/kb" class="shell-nav-link">Knowledge Base</a>
+          <div class="shell-desktop-nav" style="display: flex; align-items: center; gap: 4px; font-size: 13px;">
+            <a href="/" class="shell-nav-link" style="color: #6366f1; font-weight: 700; text-decoration: none; padding: 2px 4px;">Home</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
+            <a href="/about" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">About</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
+            <a href="/kb" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Knowledge Base</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
+            <a href="/privacy" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Privacy</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
+            <a href="/terms" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Terms</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
+            <a href="/contact" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Contact</a>
           </div>
           <div style="margin-left: 6px; display: flex; align-items: center;">
             <button id="shell-theme-toggle" type="button" aria-label="Toggle Theme" style="background: var(--toggle-bg); border: 1px solid var(--toggle-border); border-radius: 50%; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; transition: background-color 0.2s ease;">
