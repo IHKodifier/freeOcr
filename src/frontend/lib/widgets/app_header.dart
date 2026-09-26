@@ -148,73 +148,79 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(width: 8),
 
             // --- Desktop / Mobile Navigation Row ---
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final isMobile = MediaQuery.of(context).size.width < 640;
-                if (isMobile) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PopupMenuButton<String>(
-                        icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
-                        onSelected: (route) {
-                          if (kIsWeb && route != '/' && route != homeRoute) {
-                            UrlHelper.navigateToPath(route);
-                            return;
-                          }
-                          if (currentRoute != route) {
-                            Navigator.of(context).pushNamed(route);
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: homeRoute,
-                            child: const Text('Home'),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isMobile = MediaQuery.of(context).size.width < 640;
+                    if (isMobile) {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PopupMenuButton<String>(
+                            icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
+                            onSelected: (route) {
+                              if (kIsWeb && route != '/' && route != homeRoute) {
+                                UrlHelper.navigateToPath(route);
+                                return;
+                              }
+                              if (currentRoute != route) {
+                                Navigator.of(context).pushNamed(route);
+                              }
+                            },
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                value: homeRoute,
+                                child: const Text('Home'),
+                              ),
+                              if (showToolsDropdown) ...[
+                                const PopupMenuItem(
+                                  value: '/hub',
+                                  child: Text('All PDF Tools (16)'),
+                                ),
+                                const PopupMenuItem(
+                                  value: '/ocr',
+                                  child: Text('Free OCR'),
+                                ),
+                              ],
+                              const PopupMenuItem(
+                                value: '/about',
+                                child: Text('About'),
+                              ),
+                              const PopupMenuItem(
+                                value: '/kb',
+                                child: Text('Knowledge Base'),
+                              ),
+                              const PopupMenuItem(
+                                value: '/privacy',
+                                child: Text('Privacy Policy'),
+                              ),
+                              const PopupMenuItem(
+                                value: '/terms',
+                                child: Text('Terms of Service'),
+                              ),
+                              const PopupMenuItem(
+                                value: '/contact',
+                                child: Text('Contact'),
+                              ),
+                            ],
                           ),
-                          if (showToolsDropdown) ...[
-                            const PopupMenuItem(
-                              value: '/hub',
-                              child: Text('All PDF Tools (16)'),
-                            ),
-                            const PopupMenuItem(
-                              value: '/ocr',
-                              child: Text('Free OCR'),
-                            ),
-                          ],
-                          const PopupMenuItem(
-                            value: '/about',
-                            child: Text('About'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/kb',
-                            child: Text('Knowledge Base'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/privacy',
-                            child: Text('Privacy Policy'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/terms',
-                            child: Text('Terms of Service'),
-                          ),
-                          const PopupMenuItem(
-                            value: '/contact',
-                            child: Text('Contact'),
-                          ),
+                          const SizedBox(width: 4),
+                          _buildThemeToggleButton(context, isDark),
                         ],
-                      ),
-                      const SizedBox(width: 4),
-                      _buildThemeToggleButton(context, isDark),
-                    ],
-                  );
-                }
+                      );
+                    }
 
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+                    return FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
                     TextButton(
                       key: const Key('header_home_btn'),
                       style: TextButton.styleFrom(
@@ -392,10 +398,13 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                     const SizedBox(width: 8),
                     _buildThemeToggleButton(context, isDark),
                   ],
+                  ),
                 );
               },
             ),
-          ],
+          ),
+        ),
+      ],
         ),
       ),
     );
