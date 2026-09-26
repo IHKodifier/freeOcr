@@ -511,29 +511,32 @@
 
 <body>
 
-  <header>
-    <a href="/" class="logo">
-      <div class="logo-icon">📄</div>
-      <div>freeOCR<span>.me</span></div>
-    </a>
-    <div class="nav-wrapper">
-      <nav>
-        <a href="/">Home</a>
-        <span class="nav-sep">|</span>
-        <a href="/about">About</a>
-        <span class="nav-sep">|</span>
-        <a href="/kb">Knowledge Base</a>
-        <span class="nav-sep">|</span>
-        <a href="/privacy">Privacy</a>
-        <span class="nav-sep">|</span>
-        <a href="/terms">Terms</a>
-        <span class="nav-sep">|</span>
-        <a href="/contact" class="active">Contact</a>
-      </nav>
-      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <span id="sunIcon" style="display:none;">☀️</span>
-        <span id="moonIcon">🌙</span>
-      </button>
+  <header style="height: 64px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); background-color: var(--header-bg); transition: background-color 0.2s ease, border-color 0.2s ease; box-sizing: border-box; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div style="width: 100%; height: 100%; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+      <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+        <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+        <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          freeOCR<span style="color: #6366f1;">.me</span>
+        </span>
+      </a>
+      <div class="nav-wrapper">
+        <nav style="display: flex; align-items: center; gap: 4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <a href="/">Home</a>
+          <span class="nav-sep">|</span>
+          <a href="/about">About</a>
+          <span class="nav-sep">|</span>
+          <a href="/kb">Knowledge Base</a>
+          <span class="nav-sep">|</span>
+          <a href="/privacy">Privacy</a>
+          <span class="nav-sep">|</span>
+          <a href="/terms">Terms</a>
+          <span class="nav-sep">|</span>
+          <a href="/contact" class="active">Contact</a>
+        </nav>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -655,32 +658,26 @@
   </footer>
 
   <script>
-    var toggleBtn = document.getElementById('themeToggleBtn');
-    var sunIcon = document.getElementById('sunIcon');
-    var moonIcon = document.getElementById('moonIcon');
-
-    function updateIcons(t) {
-      if (t === 'dark') {
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-      } else {
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
+    (function () {
+      var btn = document.getElementById('themeToggleBtn');
+      var icon = document.getElementById('themeIcon');
+      function updateIcon(theme) {
+        if (icon) {
+          icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
       }
-    }
-
-    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-    updateIcons(currentTheme);
-
-    toggleBtn.addEventListener('click', function () {
-      var active = document.documentElement.getAttribute('data-theme') || 'light';
-      var next = active === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try {
-        localStorage.setItem('freeocr_theme', next);
-      } catch (e) { }
-      updateIcons(next);
-    });
+      var initial = document.documentElement.getAttribute('data-theme') || 'light';
+      updateIcon(initial);
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var current = document.documentElement.getAttribute('data-theme') || 'light';
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          updateIcon(next);
+          try { localStorage.setItem('freeocr_theme', next); } catch(e) {}
+        });
+      }
+    })();
 
     var contactForm = document.getElementById('contactForm');
     var submitBtn = document.getElementById('submitBtn');
