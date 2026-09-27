@@ -1,49 +1,50 @@
 # Community 13
 
-> 30 nodes · cohesion 0.09
+> 37 nodes · cohesion 0.07
 
 ## Key Concepts
 
-- [baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (8 connections)
-- [test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L1) (6 connections)
-- [get_baidu_ocr_engine()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L55) (5 connections)
-- [parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L82) (5 connections)
-- [run_baidu_ocr_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L190) (5 connections)
-- **dict** (5 connections)
-- [test_ocr_worker_dispatches_to_baidu_gpu_service()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L91) (5 connections)
-- [is_gpu_available()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L46) (4 connections)
-- [test_ocr_worker_resilient_cpu_fallback_on_gpu_timeout_or_error()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L138) (4 connections)
-- [health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L236) (3 connections)
-- [ocr_complex_page()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L246) (3 connections)
-- [verify_internal_secret()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L37) (3 connections)
-- [test_baidu_gpu_service_auth_missing_or_invalid()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L21) (3 connections)
-- [test_baidu_gpu_service_complex_page_mock_inference()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L57) (3 connections)
-- [test_baidu_gpu_service_health()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L9) (3 connections)
-- [test_parse_grounding_output()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L40) (3 connections)
-- [Baidu Unlimited OCR GPU Microservice.  Standalone FastAPI microservice running B](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L1) (1 connections)
-- [Runs inference on 300 DPI page image bytes using authentic Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L191) (1 connections)
-- [Health check verifying microservice readiness, engine name, and GPU status.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L237) (1 connections)
-- [Executes Baidu Unlimited OCR model inference on a 300 DPI complex document page.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L249) (1 connections)
-- [Validates the internal shared secret to protect GPU compute from unauthorized ac](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L38) (1 connections)
-- [Checks if CUDA GPU hardware is accessible for Baidu Unlimited OCR.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L47) (1 connections)
-- [Initializes or retrieves the cached Baidu Unlimited OCR (baidu/Unlimited-OCR) mo](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L56) (1 connections)
-- [Parses Baidu Unlimited OCR grounding output containing detection tags and boundi](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py#L83) (1 connections)
-- [Verifies that GET /health returns ready status and identifies Baidu_Unlimited_OC](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py#L10) (1 connections)
-- *... and 5 more nodes in this community*
+- [test_tools_extract_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L1) (12 connections)
+- [create_mock_pdf_bytes()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L18) (8 connections)
+- [parse_extract_page_numbers()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py#L12) (7 connections)
+- [extract_pdf_pages()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py#L109) (6 connections)
+- [test_extract_endpoint_merged_produces_pdf()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L138) (4 connections)
+- [test_extract_endpoint_separate_produces_zip()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L156) (4 connections)
+- [test_extract_invalid_pages_returns_422()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L127) (4 connections)
+- [test_extract_no_pages_returns_400()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L172) (4 connections)
+- [test_extract_pages_merged_produces_correct_page_count()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L62) (4 connections)
+- [test_extract_pages_separate_produces_zip()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L87) (4 connections)
+- [extract_pages_endpoint()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_extract_pages.py#L45) (4 connections)
+- [get_max_file_bytes()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_extract_pages.py#L21) (4 connections)
+- [tools_extract_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_extract_pages.py#L1) (3 connections)
+- [test_extract_non_pdf_returns_400()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L183) (3 connections)
+- [test_parse_extract_page_numbers_deduplicates_and_sorts()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L41) (3 connections)
+- [test_parse_extract_page_numbers_empty_raises_value_error()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L54) (3 connections)
+- [test_parse_extract_page_numbers_out_of_bounds_raises_value_error()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L46) (3 connections)
+- [test_parse_extract_page_numbers_valid_cases()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L32) (3 connections)
+- [pdf_extract_pages_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py#L1) (2 connections)
+- [cleanup_directory()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_extract_pages.py#L34) (2 connections)
+- [Extracts specified pages from a PDF document into a merged single PDF or separat](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py#L116) (1 connections)
+- [Parses a page selection specification (comma-separated, ranges like '2-4', JSON](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py#L16) (1 connections)
+- [AC: Requesting page 99 on a 3-page document returns HTTP 422.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L128) (1 connections)
+- [Verifies endpoint returns merged PDF with correct content and headers.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L139) (1 connections)
+- [Verifies endpoint returns ZIP archive containing separate extracted pages.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py#L157) (1 connections)
+- *... and 12 more nodes in this community*
 
 ## Relationships
 
-- [[Community 12]] (14 shared connections)
+- No strong cross-community connections detected
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/baidu_gpu_service.py)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_baidu_gpu_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_baidu_gpu_service.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\endpoints\tools_extract_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/endpoints/tools_extract_pages.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\services\pdf_extract_pages_service.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/services/pdf_extract_pages_service.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_tools_extract_pages.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_extract_pages.py)
 
 ## Audit Trail
 
-- EXTRACTED: 65 (79%)
-- INFERRED: 17 (21%)
+- EXTRACTED: 84 (81%)
+- INFERRED: 20 (19%)
 - AMBIGUOUS: 0 (0%)
 
 ---

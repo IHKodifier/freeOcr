@@ -2,35 +2,35 @@
   "hotspots": [
     {
       "label": "process_ocr_job()",
-      "risk": 0.651,
-      "type": "FUNCTION"
-    },
-    {
-      "label": "download_job_file()",
-      "risk": 0.317,
+      "risk": 0.633,
       "type": "FUNCTION"
     },
     {
       "label": "stream_job_events()",
-      "risk": 0.309,
+      "risk": 0.359,
       "type": "FUNCTION"
     },
     {
-      "label": "convert_document()",
-      "risk": 0.252,
+      "label": "download_file()",
+      "risk": 0.28,
       "type": "FUNCTION"
     },
     {
-      "label": "analyze_pdf_bytes()",
-      "risk": 0.23,
+      "label": "EphemeralRamStore",
+      "risk": 0.266,
+      "type": "CLASS"
+    },
+    {
+      "label": "parse_extract_page_numbers()",
+      "risk": 0.246,
       "type": "FUNCTION"
     }
   ],
   "blast_radius": {
-    "package:flutter/material.dart": 49,
-    "get_redis_client()": 20,
-    "package:flutter_test/flutter_test.dart": 20,
-    "EphemeralRamStore": 19,
-    "process_ocr_job()": 19
+    "package:flutter/material.dart": 82,
+    "dart:typed_data": 37,
+    "../services/telemetry_service.dart": 36,
+    "../widgets/adsense_banner.dart": 32,
+    "../widgets/app_header.dart": 32
   }
 }

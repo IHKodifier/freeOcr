@@ -17,6 +17,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify Brand title & Privacy commitment text
+      expect(find.byKey(const Key('footer_brand_logo')), findsOneWidget);
       expect(find.text('freeOCR.me'), findsOneWidget);
       expect(find.textContaining('RAM disk'), findsOneWidget);
 

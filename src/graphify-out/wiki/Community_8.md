@@ -1,35 +1,35 @@
 # Community 8
 
-> 46 nodes · cohesion 0.05
+> 47 nodes · cohesion 0.04
 
 ## Key Concepts
 
-- [rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (22 connections)
-- [package:flutter/foundation.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (13 connections)
-- [../services/api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (10 connections)
-- [app_limits_config.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (9 connections)
+- [rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart) (24 connections)
+- [app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (21 connections)
 - [host_resolver.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (7 connections)
 - [glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart) (6 connections)
-- [dart:ui](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (4 connections)
-- [telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (4 connections)
-- [telemetry_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (3 connections)
-- [dart:js](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (2 connections)
+- [dart:ui](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (5 connections)
 - [getBrand](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
 - [getBrandTitle](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
 - [getDefaultHomeRoute](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
 - [HostResolver](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
 - [isFreeOcrDomain](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
 - [isFreePdfToolsDomain](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart) (1 connections)
-- [trackGa4Event](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (1 connections)
-- [trackGa4PageView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart) (1 connections)
-- [trackGa4Event](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (1 connections)
-- [trackGa4PageView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart) (1 connections)
-- [AppLimitsConfig](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (1 connections)
-- [calculateAdsRequired](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (1 connections)
-- [evaluate](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (1 connections)
-- [recordBoost](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (1 connections)
-- [resetBoost](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (1 connections)
-- *... and 21 more nodes in this community*
+- [AppHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [_buildNavLink](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [_buildNavSeparator](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [_buildThemeToggleButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [ClipRRect](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [FittedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [IconButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Padding](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [PopupMenuDivider](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [PopupMenuItem](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [Row](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- [SafeArea](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart) (1 connections)
+- *... and 22 more nodes in this community*
 
 ## Relationships
 
@@ -38,16 +38,14 @@
 ## Source Files
 
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\host_resolver.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/host_resolver.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_stub.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\telemetry_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/telemetry_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\app_limits_config.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\app_header.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/app_header.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\glass_card.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/glass_card.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\rewarded_video_ad_modal.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/rewarded_video_ad_modal.dart)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 116 (100%)
+- EXTRACTED: 105 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
