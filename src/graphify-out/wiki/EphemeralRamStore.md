@@ -1,6 +1,6 @@
 # EphemeralRamStore
 
-> God node · 19 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
+> God node · 28 connections · [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L9)
 
 ## Call Trace Diagram
 
@@ -12,10 +12,17 @@ sequenceDiagram
     participant P3 as Returns extracted text blocks and page layout metadata for an OCR job.     Retu
     participant P4 as Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j
     participant P5 as Streams a single ZIP archive containing all completed documents in the batch.
-    participant P6 as 1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).     Streams r
+    participant P6 as Streams the requested OCR output format (pdf, txt, md, zip) with Content-Disposi
     participant P7 as Overlays invisible text (render_mode=3) onto PDF or image pages using bounding b
     participant P8 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
-    participant P9 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
+    participant P9 as Real-time Server-Sent Events (SSE) progress streaming endpoint.     Subscribes
+    participant P10 as Returns extracted text blocks and page layout metadata for an OCR job.     Retu
+    participant P11 as Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j
+    participant P12 as Streams a single ZIP archive containing all completed documents in the batch.
+    participant P13 as 1-Click Multi-Format Direct Downloads endpoint (.pdf, .txt, .md).     Streams r
+    participant P14 as Overlays invisible text (render_mode=3) onto PDF or image pages using bounding b
+    participant P15 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
+    participant P16 as Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red
     P0->>+ P1: uses
     P1-->>- P0: return
     P1->>+ P0: uses
@@ -48,6 +55,20 @@ sequenceDiagram
     P8-->>- P0: return
     P0->>+ P9: uses
     P9-->>- P0: return
+    P0->>+ P10: uses
+    P10-->>- P0: return
+    P0->>+ P11: uses
+    P11-->>- P0: return
+    P0->>+ P12: uses
+    P12-->>- P0: return
+    P0->>+ P13: uses
+    P13-->>- P0: return
+    P0->>+ P14: uses
+    P14-->>- P0: return
+    P0->>+ P15: uses
+    P15-->>- P0: return
+    P0->>+ P16: uses
+    P16-->>- P0: return
 ```
 
 ## Connections by Relation
@@ -60,10 +81,12 @@ sequenceDiagram
 
 ### method
 - [[.get()]] `EXTRACTED`
+- [[.pop()]] `EXTRACTED`
 - [[._file_path()]] `EXTRACTED`
 - [[.__getitem__()]] `EXTRACTED`
-- [[.__setitem__()]] `EXTRACTED`
 - [[.__contains__()]] `EXTRACTED`
+- [[.__setitem__()]] `EXTRACTED`
+- [[.__delitem__()]] `EXTRACTED`
 - [[.__init__()]] `EXTRACTED`
 - [[.clear()]] `EXTRACTED`
 
@@ -72,6 +95,13 @@ sequenceDiagram
 
 ### uses
 - [[Returns job status and progress for polling or verification.]] `INFERRED`
+- [[Real-time Server-Sent Events (SSE) progress streaming endpoint.     Subscribes]] `INFERRED`
+- [[Returns extracted text blocks and page layout metadata for an OCR job.     Retu]] `INFERRED`
+- [[Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j]] `INFERRED`
+- [[Streams a single ZIP archive containing all completed documents in the batch.]] `INFERRED`
+- [[Streams the requested OCR output format (pdf, txt, md, zip) with Content-Disposi]] `INFERRED`
+- [[Overlays invisible text (render_mode=3) onto PDF or image pages using bounding b]] `INFERRED`
+- [[Retrieves compiled searchable PDF bytes by token from ephemeral dev store or Red]] `INFERRED`
 - [[Real-time Server-Sent Events (SSE) progress streaming endpoint.     Subscribes]] `INFERRED`
 - [[Returns extracted text blocks and page layout metadata for an OCR job.     Retu]] `INFERRED`
 - [[Renders and streams high-fidelity 150 DPI page preview image (PNG) for a given j]] `INFERRED`

@@ -1,19 +1,19 @@
-# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src (2026-09-13)
+# Architectural Compass - E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src (2026-09-27)
 
 > [!NOTE]
 > This is a token-optimized summary. For deep logic, see GRAPH_REPORT.md.
 
 ## Core Abstractions (God Nodes)
-1. `package:flutter/material.dart` (49 edges)
-2. `get_redis_client()` (20 edges)
-3. `package:flutter_test/flutter_test.dart` (20 edges)
-4. `EphemeralRamStore` (19 edges)
-5. `process_ocr_job()` (19 edges)
-6. `../services/telemetry_service.dart` (16 edges)
-7. `package:flutter/foundation.dart` (13 edges)
-8. `../widgets/adsense_banner.dart` (13 edges)
-9. `../widgets/app_header.dart` (13 edges)
-10. `../widgets/app_footer.dart` (13 edges)
+1. `package:flutter/material.dart` (82 edges)
+2. `dart:typed_data` (37 edges)
+3. `../services/telemetry_service.dart` (36 edges)
+4. `../widgets/adsense_banner.dart` (32 edges)
+5. `../widgets/app_header.dart` (32 edges)
+6. `../widgets/app_footer.dart` (32 edges)
+7. `package:flutter_test/flutter_test.dart` (32 edges)
+8. `package:flutter/foundation.dart` (30 edges)
+9. `EphemeralRamStore` (28 edges)
+10. `get_redis_client()` (24 edges)
 
 ## System Layers
 - **L0: Global/Entry**: 

@@ -1,12 +1,35 @@
 # Community 30
 
-> 3 nodes · cohesion 0.67
+> 26 nodes · cohesion 0.08
 
 ## Key Concepts
 
-- [url_strategy_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (2 connections)
-- [configureAppUrlStrategy](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (1 connections)
-- [package:flutter_web_plugins/url_strategy.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart) (1 connections)
+- [pdf_merge_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (41 connections)
+- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [AlertDialog](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_buildActionButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_buildErrorBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_buildFilesManagerCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_buildStatusHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_buildSuccessCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_downloadMergedPdf](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [Icon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [initState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_onReorder](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [PdfMergeProgressPage](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_PdfMergeProgressPageState](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_processIncomingFiles](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_removeFileAt](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_resetAndGoBack](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [Row](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [SelectionArea](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [_showEmailDownloadDialog](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [SizedBox](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- [StatefulBuilder](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
+- *... and 1 more nodes in this community*
 
 ## Relationships
 
@@ -14,11 +37,11 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_strategy_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_strategy_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\pdf_merge_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 4 (100%)
+- EXTRACTED: 66 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

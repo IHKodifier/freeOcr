@@ -459,17 +459,13 @@ foreach ($article in $Articles) {
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 2rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--header-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
+      max-width: 1200px;
+      margin: 10px auto 6px;
+      padding: 0 16px;
+      box-sizing: border-box;
     }
 
     .logo {
@@ -881,31 +877,37 @@ foreach ($article in $Articles) {
       .footer-grid {
         grid-template-columns: 1fr;
       }
-      header {
-        padding: 0.75rem 1rem;
-      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <a href="/" class="logo">
-      <div class="logo-icon">⚡</div>
-      freeOCR<span>.me</span>
-    </a>
-    <div class="nav-wrapper">
-      <nav>
-        <a href="/">Home</a>
-        <a href="/knowledge-base" class="active">Knowledge Base</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </nav>
-      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-        <span id="themeIcon">🌓</span>
-      </button>
+  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+    <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
+      <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+        <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+        <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          freeOCR<span style="color: #6366f1;">.me</span>
+        </span>
+      </a>
+      <div class="nav-wrapper">
+        <nav style="display: flex; align-items: center; gap: 4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <a href="/">Home</a>
+          <span class="nav-sep">|</span>
+          <a href="/about">About</a>
+          <span class="nav-sep">|</span>
+          <a href="/kb" class="active">Knowledge Base</a>
+          <span class="nav-sep">|</span>
+          <a href="/privacy">Privacy</a>
+          <span class="nav-sep">|</span>
+          <a href="/terms">Terms</a>
+          <span class="nav-sep">|</span>
+          <a href="/contact">Contact</a>
+        </nav>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+          <span id="themeIcon" style="display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -955,9 +957,14 @@ foreach ($article in $Articles) {
 
   <footer>
     <div class="footer-grid">
-      <div class="footer-col">
-        <h4>freeOCR.me</h4>
-        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+      <div class="footer-col footer-brand">
+        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            freeOCR<span style="color: #6366f1;">.me</span>
+          </span>
+        </a>
+        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-top: 0.75rem;">
           100% Free Online AI OCR utility platform. Converts scanned documents and images into searchable PDFs and structured text with zero persistent cloud storage.
         </p>
       </div>
@@ -989,6 +996,7 @@ foreach ($article in $Articles) {
           <li><a href="/contact">Contact</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
         </ul>
       </div>
     </div>
@@ -1000,11 +1008,22 @@ foreach ($article in $Articles) {
   <script>
     (function () {
       var btn = document.getElementById('themeToggleBtn');
+      var icon = document.getElementById('themeIcon');
+      var moonSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg>';
+      var sunSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B" style="display: block;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/></svg>';
+      function updateIcon(theme) {
+        if (icon) {
+          icon.innerHTML = theme === 'dark' ? sunSvg : moonSvg;
+        }
+      }
+      var initial = document.documentElement.getAttribute('data-theme') || 'light';
+      updateIcon(initial);
       if (btn) {
         btn.addEventListener('click', function () {
-          var current = document.documentElement.getAttribute('data-theme') || 'dark';
+          var current = document.documentElement.getAttribute('data-theme') || 'light';
           var next = current === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
+          updateIcon(next);
           try { localStorage.setItem('freeocr_theme', next); } catch(e) {}
         });
       }

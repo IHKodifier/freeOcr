@@ -1,0 +1,25 @@
+# Retrieves job payload string from Redis, falling back to in-memory store.
+
+> 1 nodes · cohesion 1.00
+
+## Key Concepts
+
+- [Retrieves job payload string from Redis, falling back to in-memory store.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py#L116) (0 connections)
+
+## Relationships
+
+- No strong cross-community connections detected
+
+## Source Files
+
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\redis_client.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/redis_client.py)
+
+## Audit Trail
+
+- EXTRACTED: 0 (0%)
+- INFERRED: 0 (0%)
+- AMBIGUOUS: 0 (0%)
+
+---
+
+*Part of the graphify knowledge wiki. See [[index]] to navigate.*

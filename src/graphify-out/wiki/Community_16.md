@@ -1,22 +1,35 @@
 # Community 16
 
-> 13 nodes · cohesion 0.22
+> 34 nodes · cohesion 0.06
 
 ## Key Concepts
 
-- [create_mock_pdf_bytes()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L10) (7 connections)
-- [test_tools_merge.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L1) (6 connections)
-- [test_merge_two_valid_pdfs_combines_pages_correctly()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L45) (4 connections)
-- [test_merge_enforces_max_files_limit()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L88) (3 connections)
-- [test_merge_preserves_reorder_sequence()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L68) (3 connections)
-- [test_merge_rejects_non_pdf_file_with_400()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L32) (3 connections)
-- [test_merge_rejects_single_file_with_400()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L21) (3 connections)
-- [Helper to generate a minimal valid in-memory PDF with specified page text.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L11) (1 connections)
-- [AC: When uploading fewer than 2 PDF files, system rejects with HTTP 400.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L22) (1 connections)
-- [AC: System rejects non-PDF uploads with HTTP 400.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L33) (1 connections)
-- [AC: 2 valid PDFs merge into a single PDF with total combined page count.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L46) (1 connections)
-- [AC: Output PDF preserves the exact sequence of the files submitted.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L69) (1 connections)
-- [AC: System rejects more than 50 files with HTTP 400.](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py#L89) (1 connections)
+- [pdf_number_pages_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (45 connections)
+- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildActionButtons](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildConfiguratorCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildDocumentOverviewCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildDownloadCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildFormatSelector](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildLivePreviewCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildNoFilePlaceholder](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildPositionAnchor](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_buildPositionMatrix](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [Center](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [ChoiceChip](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [Column](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_detectPageCount](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [didChangeDependencies](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [dispose](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_downloadResult](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_formatFileSize](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_getAlignmentForPosition](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [_getPreviewText](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- [Icon](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart) (1 connections)
+- *... and 9 more nodes in this community*
 
 ## Relationships
 
@@ -24,12 +37,12 @@
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_tools_merge.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_tools_merge.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\pdf_number_pages_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_number_pages_progress_page.dart)
 
 ## Audit Trail
 
-- EXTRACTED: 34 (97%)
-- INFERRED: 1 (3%)
+- EXTRACTED: 78 (100%)
+- INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
 ---

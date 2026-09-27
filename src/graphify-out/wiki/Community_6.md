@@ -1,58 +1,53 @@
 # Community 6
 
-> 60 nodes · cohesion 0.04
+> 58 nodes · cohesion 0.04
 
 ## Key Concepts
 
-- [pdf_merge_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (37 connections)
-- [api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (18 connections)
-- [dart:async](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (9 connections)
-- [dart:typed_data](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart) (7 connections)
-- [dart:convert](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart) (6 connections)
-- [download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart) (6 connections)
-- [sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (6 connections)
-- [theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart) (5 connections)
-- [dart:html](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (4 connections)
-- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart) (4 connections)
-- [api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart) (4 connections)
-- [package:http/http.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart) (4 connections)
-- [url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart) (3 connections)
-- [../services/download_helper.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (3 connections)
-- [package:flutter/services.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (2 connections)
-- [api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [dart:math](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart) (1 connections)
-- [AdSenseBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [AppFooter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [_buildActionButton](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [_buildErrorBanner](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [_buildFilesManagerCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [_buildStatusHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- [_buildSuccessCard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart) (1 connections)
-- *... and 35 more nodes in this community*
+- [split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (51 connections)
+- [check_database_connection()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py#L22) (5 connections)
+- [main.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/main.py#L1) (5 connections)
+- [database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py#L1) (4 connections)
+- [healthz()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/main.py#L39) (4 connections)
+- [test_database_connection()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_database.py#L11) (3 connections)
+- [test_database_metadata_create_all()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_database.py#L16) (3 connections)
+- [Text](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (2 connections)
+- [test_database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_database.py#L1) (2 connections)
+- [health_check()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/main.py#L27) (2 connections)
+- [get_db()](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py#L14) (1 connections)
+- [router.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/router.py#L1) (1 connections)
+- [AlertDialog](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [BackdropFilter](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [build](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildDocumentPreviewPane](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildMobileBody](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildMobileHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildRightTextPane](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildSplitView](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildTabOption](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_buildTopHeader](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [Center](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [Container](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- [_copyTextToClipboard](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart) (1 connections)
+- *... and 33 more nodes in this community*
 
 ## Relationships
 
-- No strong cross-community connections detected
+- [[Community 3]] (2 shared connections)
+- [[Community 7]] (2 shared connections)
 
 ## Source Files
 
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\pages\pdf_merge_progress_page.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/pages/pdf_merge_progress_page.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_service.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_stub.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_stub.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\api_uploader_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/api_uploader_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\download_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/download_helper_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\services\sse_service.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/services/sse_service.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\app_limits_config.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/app_limits_config.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\theme_storage_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/theme_storage_web.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\utils\url_helper_web.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/utils/url_helper_web.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\api\v1\router.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/api/v1/router.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/database.py)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\backend\app\main.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/backend/app/main.py)
 - [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\lib\widgets\split_preview_viewer.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/lib/widgets/split_preview_viewer.dart)
-- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\frontend\test\pages\process_page_test.dart](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/test/pages/process_page_test.dart)
+- [E:\Non_Office\Dev_Space\vibe_skool\freeOcr\src\tests\test_database.py](file:///E:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/tests/test_database.py)
 
 ## Audit Trail
 
-- EXTRACTED: 163 (100%)
-- INFERRED: 0 (0%)
+- EXTRACTED: 120 (93%)
+- INFERRED: 9 (7%)
 - AMBIGUOUS: 0 (0%)
 
 ---

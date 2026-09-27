@@ -182,18 +182,45 @@ class AppFooter extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: brandColor.withOpacity(0.12),
+              if (!isPdfTools)
+                ClipRRect(
+                  key: const Key('footer_brand_logo'),
                   borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/brand_logo_icon.png',
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: brandColor.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          brandIcon,
+                          color: brandColor,
+                          size: 20,
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else
+                Container(
+                  key: const Key('footer_brand_logo'),
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: brandColor.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    brandIcon,
+                    color: brandColor,
+                    size: 20,
+                  ),
                 ),
-                child: Icon(
-                  brandIcon,
-                  color: brandColor,
-                  size: 20,
-                ),
-              ),
               const SizedBox(width: 10),
               Text(
                 brandTitle,

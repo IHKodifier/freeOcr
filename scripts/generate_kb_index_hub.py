@@ -182,14 +182,10 @@ COMMON_CSS = """
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background-color: var(--header-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 0.85rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1200px;
+      margin: 10px auto 6px;
+      padding: 0 16px;
+      box-sizing: border-box;
     }
 
     .logo {
@@ -613,15 +609,12 @@ COMMON_CSS = """
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-      header {
-        padding: 0.75rem 1rem;
-      }
     }
 """
 
 HEADER_HTML = """
-  <header style="height: 64px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); background-color: var(--header-bg); transition: background-color 0.2s ease, border-color 0.2s ease; box-sizing: border-box; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-    <div style="width: 100%; height: 100%; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+    <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg, #f8fafc); border: 1px solid var(--card-border, #e2e8f0); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
       <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
         <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
         <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -643,7 +636,7 @@ HEADER_HTML = """
           <a href="/contact">Contact</a>
         </nav>
         <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-          <span id="themeIcon">🌙</span>
+          <span id="themeIcon" style="display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg></span>
         </button>
       </div>
     </div>
@@ -687,6 +680,7 @@ FOOTER_HTML = """
           <li><a href="/contact">Contact</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
         </ul>
       </div>
     </div>
@@ -699,9 +693,11 @@ FOOTER_HTML = """
     (function () {
       var btn = document.getElementById('themeToggleBtn');
       var icon = document.getElementById('themeIcon');
+      var moonSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg>';
+      var sunSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B" style="display: block;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/></svg>';
       function updateIcon(theme) {
         if (icon) {
-          icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+          icon.innerHTML = theme === 'dark' ? sunSvg : moonSvg;
         }
       }
       var initial = document.documentElement.getAttribute('data-theme') || 'light';

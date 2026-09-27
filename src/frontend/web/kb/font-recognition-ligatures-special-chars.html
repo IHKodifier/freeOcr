@@ -147,14 +147,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background-color: var(--header-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1200px;
+      margin: 10px auto 6px;
+      padding: 0 16px;
+      box-sizing: border-box;
     }
 
     .logo {
@@ -592,16 +588,13 @@
       .footer-grid {
         grid-template-columns: 1fr;
       }
-      header {
-        padding: 0.75rem 1rem;
-      }
     }
   </style>
 </head>
 
 <body>
-  <header style="height: 64px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); background-color: var(--header-bg); transition: background-color 0.2s ease, border-color 0.2s ease; box-sizing: border-box; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-    <div style="width: 100%; height: 100%; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+    <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
       <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
         <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
         <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -826,9 +819,14 @@ end</code></pre>
 
   <footer>
     <div class="footer-grid">
-      <div class="footer-col">
-        <h4>freeOCR.me</h4>
-        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+            <div class="footer-col footer-brand">
+        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            freeOCR<span style="color: #6366f1;">.me</span>
+          </span>
+        </a>
+        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-top: 0.75rem;">
           100% Free Online AI OCR utility platform. Converts scanned documents and images into searchable PDFs and structured text with zero persistent cloud storage.
         </p>
       </div>
@@ -858,6 +856,7 @@ end</code></pre>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
         </ul>
       </div>
     </div>
