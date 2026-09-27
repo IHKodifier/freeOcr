@@ -12,6 +12,7 @@ import 'widgets/app_footer.dart';
 import 'widgets/landing_faq_section.dart';
 import 'widgets/hero_scanner_showcase.dart';
 import 'widgets/announcement_banner.dart';
+import 'widgets/featured_guides_section.dart';
 
 import 'pages/process_page.dart';
 import 'pages/result_page.dart';
@@ -641,6 +642,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            const FeaturedGuidesSection(),
             const LandingFaqSection(),
             const SizedBox(height: 32),
             const AppFooter(),

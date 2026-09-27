@@ -683,7 +683,40 @@
       </div>
     </div>
 
-
+    <!-- Editorial Category Overview & Technical Deep-Dive -->
+    <section class="category-overview" style="margin-bottom: 2.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);">
+      <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--heading); margin-top: 0; margin-bottom: 1rem; letter-spacing: -0.3px;">
+        High-Throughput Digitization &amp; Batch Production Pipelines
+      </h2>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.25rem;">
+        Building reliable document ingestion pipelines requires mastering the interplay between optical scanner hardware, software preprocessing filters, and character recognition workloads. Whether digitizing thousands of archival court records or converting recurring accounting invoices, following standardized operational workflows maximizes recognition precision while minimizing processing latency.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 1.5rem;">
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">⚙️ 300 DPI Scanner Calibration</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Optical scanning at 300 DPI delivers the optimal balance between character edge definition and RAM consumption. Scanning below 200 DPI causes character fragmentation, while scanning at 600 DPI quadruples file size without measurable OCR accuracy gains.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🚀 Ephemeral Batch Ingestion</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Users can process multi-file batches using stackable session limit passes expanding RAM-disk allocations in +50 MB increments up to 1 GB. Files process concurrently in isolated memory namespaces and purge automatically upon conversion.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">📑 Dual-Engine Intelligent Routing</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Our neural dispatcher analyzes each incoming page before character recognition. Clean single-column pages route to CPU workers for sub-1.5 second turnaround, while dense multi-column tables and mathematical notation route to Nvidia GPU clusters.
+          </p>
+        </div>
+      </div>
+      
+      <p style="font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0;">
+        Explore our step-by-step engineering tutorials below to streamline your high-volume document conversion workflows.
+      </p>
+    </section>
 
     <div class="cards-grid">
       

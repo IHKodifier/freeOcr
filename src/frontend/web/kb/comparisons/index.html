@@ -683,7 +683,40 @@
       </div>
     </div>
 
-
+    <!-- Editorial Category Overview & Technical Deep-Dive -->
+    <section class="category-overview" style="margin-bottom: 2.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);">
+      <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--heading); margin-top: 0; margin-bottom: 1rem; letter-spacing: -0.3px;">
+        Architectural Evaluation &amp; Benchmark Methodology
+      </h2>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.25rem;">
+        Selecting the appropriate document container format and character recognition engine is one of the most critical architectural decisions in automated document digitization pipelines. Modern document intelligence spans a wide spectrum—from legacy rasterized bitmaps lacking selectable characters to dual-layer ISO 32000-1 searchable PDFs and structured semantic markdown optimized for large language model (LLM) embeddings.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 1.5rem;">
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">📐 ISO 32000-1 Dual-Layer PDFs</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Dual-layer PDFs overlay invisible font glyphs (font render mode 3) directly on top of scanned pixel coordinates at 72 points per inch. This preserves 100% visual fidelity for signatures, stamps, and layout while enabling native text selection, search (Ctrl+F), and clipboard copying.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">⚡ CPU Heuristics vs. GPU Vision Transformers</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Standard single-column contracts and memos achieve sub-1.5 second turnaround on lightweight CPU engines (Tesseract / OCRmyPDF). Conversely, dense tabular filings, TeX mathematical syntax, and newspaper columns require deep learning Vision-Language models on Nvidia GPU clusters.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🤖 Markdown for RAG &amp; Vector Embeddings</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Exporting OCR results to Structured Markdown preserves the semantic hierarchy (#, ##, ###) and table cell boundaries. This structure provides high-fidelity chunking boundaries for Retrieval-Augmented Generation (RAG) vector pipelines without token fragmentation.
+          </p>
+        </div>
+      </div>
+      
+      <p style="font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0;">
+        Review our detailed technical whitepapers below to explore benchmark comparisons, character recognition accuracy matrices, and layout analysis algorithms.
+      </p>
+    </section>
 
     <div class="cards-grid">
       
