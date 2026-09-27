@@ -205,9 +205,9 @@ class FeaturedGuidesSection extends StatelessWidget {
               LayoutBuilder(
                 builder: (context, constraints) {
                   int crossAxisCount = 1;
-                  if (constraints.maxWidth >= 900) {
+                  if (constraints.maxWidth >= 992) {
                     crossAxisCount = 3;
-                  } else if (constraints.maxWidth >= 600) {
+                  } else if (constraints.maxWidth >= 640) {
                     crossAxisCount = 2;
                   }
 
@@ -279,33 +279,40 @@ class FeaturedGuidesSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: Category Pill + Read Time
+          // Header: Category Pill + Read Time (Overflow-Proof)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: guide.categoryColor.withOpacity(isDark ? 0.18 : 0.10),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(guide.icon, size: 12, color: guide.categoryColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      guide.category,
-                      style: TextStyle(
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.5,
-                        color: guide.categoryColor,
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: guide.categoryColor.withOpacity(isDark ? 0.18 : 0.10),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(guide.icon, size: 12, color: guide.categoryColor),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          guide.category,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.5,
+                            color: guide.categoryColor,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 guide.readTime,
                 style: TextStyle(
