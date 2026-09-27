@@ -677,7 +677,40 @@
       </div>
     </div>
 
-
+    <!-- Editorial Category Overview & Technical Deep-Dive -->
+    <section class="category-overview" style="margin-bottom: 2.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);">
+      <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--heading); margin-top: 0; margin-bottom: 1rem; letter-spacing: -0.3px;">
+        Document Diagnostics &amp; Image Restoration Engineering
+      </h2>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.25rem;">
+        Real-world scanned documents rarely exhibit pristine contrast, orthogonal alignment, or clean vector glyphs. Physical paper degrades over time, smartphone captures introduce keystone distortion, fax transmissions compress high frequencies, and low-contrast receipts fade. Overcoming these real-world artifacts requires a multi-stage computer vision preprocessing pipeline before invoking neural recognition.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 1.5rem;">
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">📐 Radon Transform Deskewing</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Crooked scans cause character baseline drift and reading order failures. Radon transform projections detect text orientation within [-15°, +15°] at sub-degree precision, rotating pages horizontally to ensure accurate horizontal line segmentation.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🌓 Adaptive Otsu Binarization</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Global thresholding fails on unevenly lit phone captures or dark paper creases. Local adaptive Otsu binarization calculates variance histograms across localized pixel windows, isolating faint ink from coffee stains and shadows.
+          </p>
+        </div>
+        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🔍 Lanczos-4 Sinc Upscaling</h3>
+          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+            Low-resolution 72–150 DPI faxes lack sufficient pixel density to resolve fine font serifs, causing character confusion (e.g. 'rn' vs 'm'). Lanczos-4 sinc interpolation resamples bitmaps to 300 DPI, reconstructing stroke continuity.
+          </p>
+        </div>
+      </div>
+      
+      <p style="font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0;">
+        Consult our comprehensive troubleshooting tutorials below to resolve common scanning errors, ligature recognition issues, and layout distortions.
+      </p>
+    </section>
 
     <div class="cards-grid">
       
