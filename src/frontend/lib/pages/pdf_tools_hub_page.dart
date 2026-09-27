@@ -241,14 +241,14 @@ class _PdfToolsHubPageState extends State<PdfToolsHubPage> {
               snap: true,
               pinned: false,
               elevation: 0,
-              toolbarHeight: 64,
-              expandedHeight: 64,
+              toolbarHeight: 72,
+              expandedHeight: 72,
               backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
               automaticallyImplyLeading: false,
               flexibleSpace: OverflowBox(
                 alignment: Alignment.topCenter,
-                minHeight: 64,
-                maxHeight: 64,
+                minHeight: 72,
+                maxHeight: 72,
                 child: AppHeader(
                   currentRoute: '/hub',
                   onThemeToggle: () {

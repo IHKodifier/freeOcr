@@ -14,7 +14,7 @@ void main() {
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
+          preferredSize: const Size.fromHeight(72),
           child: child,
         ),
       ),

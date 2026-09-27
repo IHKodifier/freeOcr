@@ -19,7 +19,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(64);
+  Size get preferredSize => const Size.fromHeight(72);
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       color: theme.colorScheme.primary,
     );
 
-    final headerContent = SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
+    final headerContent = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+      child: Row(
           children: [
             if (Navigator.canPop(context)) ...[
               IconButton(
@@ -405,31 +404,53 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ],
-        ),
       ),
     );
 
-    return Container(
+    final pillContainer = Container(
+      height: 56.0,
       decoration: BoxDecoration(
         color: isDark
-            ? (kIsWeb ? const Color(0xFF0F172A) : const Color.fromRGBO(15, 23, 42, 0.85))
-            : (kIsWeb ? const Color(0xFFF8FAFC) : const Color.fromRGBO(248, 250, 252, 0.85)),
-        border: Border(
-          bottom: BorderSide(
-            color: isDark
-                ? const Color.fromRGBO(255, 255, 255, 0.10)
-                : const Color.fromRGBO(0, 0, 0, 0.08),
-            width: 1.0,
-          ),
+            ? (kIsWeb ? const Color(0xFF0F172A).withValues(alpha: 0.94) : const Color.fromRGBO(15, 23, 42, 0.85))
+            : (kIsWeb ? const Color(0xFFFFFFFF).withValues(alpha: 0.95) : const Color.fromRGBO(255, 255, 255, 0.85)),
+        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(
+          color: isDark
+              ? const Color.fromRGBO(255, 255, 255, 0.12)
+              : const Color.fromRGBO(0, 0, 0, 0.08),
+          width: 1.0,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.35)
+                : const Color(0xFF6366F1).withValues(alpha: 0.06),
+            blurRadius: 16.0,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: ClipRect(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.0),
         child: kIsWeb
             ? headerContent
             : BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
                 child: headerContent,
               ),
+      ),
+    );
+
+    return SafeArea(
+      bottom: false,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 16.0, right: 16.0, bottom: 6.0),
+            child: pillContainer,
+          ),
+        ),
       ),
     );
   }
