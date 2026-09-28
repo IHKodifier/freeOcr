@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'services/api_service.dart';
 import 'services/telemetry_service.dart';
-import 'services/host_resolver.dart';
 import 'services/favorites_service.dart';
 import 'widgets/hero_dropzone.dart';
 import 'widgets/adsense_banner.dart';
@@ -70,7 +69,7 @@ class FreeOcrApp extends StatelessWidget {
       valueListenable: themeNotifier,
       builder: (context, currentMode, _) {
         return MaterialApp(
-          title: HostResolver.getBrandTitle(),
+          title: 'freeOCR.me',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
@@ -458,14 +457,7 @@ class FreeOcrApp extends StatelessWidget {
               );
             }
 
-            // Root route '/': host-aware fallback
-            if (HostResolver.isFreePdfToolsDomain()) {
-              return MaterialPageRoute(
-                builder: (context) => const PdfToolsHubPage(),
-                settings: settings,
-              );
-            }
-
+            // Root route '/': freeOCR.me Home dropzone
             return MaterialPageRoute(
               builder: (context) => const HomePage(),
               settings: settings,

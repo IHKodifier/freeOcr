@@ -1,4 +1,9 @@
-# standardize_footers.ps1 — Standardizes footers across all HTML files in src/frontend/web using regex
+# scripts/standardize_footers.ps1 — Standardizes footers across all HTML files in src/frontend/web
+# Single source of truth mirroring Flutter's AppFooter widget 1:1 for freeOCR.me.
+
+param (
+    [switch]$Check
+)
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $RootDir = Split-Path -Parent $ScriptDir
@@ -7,74 +12,324 @@ $WebDir = Join-Path $RootDir "src\frontend\web"
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $files = Get-ChildItem -Path $WebDir -Recurse -Filter *.html
 
-$brandReplacement1 = @'
-      <div class="footer-col footer-brand">
-        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
-          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            freeOCR<span style="color: #6366f1;">.me</span>
-          </span>
-        </a>
-        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-top: 0.75rem;">
-          100% Free Online AI OCR utility platform. Converts scanned documents and images into searchable PDFs and structured text with zero persistent cloud storage.
-        </p>
+$twitterSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
+$instagramSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>'
+$facebookSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
+
+$canonicalFooterFreeOcr = @"
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <!-- Column 1: Brand & Social Channels -->
+        <div class="footer-col footer-brand">
+          <a href="/" class="footer-brand-title">
+            <img src="/icons/Icon-48.png" width="30" height="30" alt="freeOCR.me Logo" class="footer-brand-icon" onerror="this.onerror=null;this.src='/favicon.png';" />
+            <span>freeOCR<span class="brand-accent">.me</span></span>
+          </a>
+          <p class="footer-brand-desc">
+            &copy; 2026 freeOCR.me &bull; Privacy-First Ephemeral OCR Platform.<br>
+            All rights reserved. Files processed in RAM disk.
+          </p>
+          <div class="footer-social-row">
+            <a href="https://x.com/freeocrme" class="footer-social-btn" title="Twitter / X" target="_blank" rel="noopener" aria-label="Twitter / X">
+              $twitterSvg
+            </a>
+            <a href="https://instagram.com/freeocrme" class="footer-social-btn" title="Instagram" target="_blank" rel="noopener" aria-label="Instagram">
+              $instagramSvg
+            </a>
+            <a href="https://facebook.com/freeOCRme" class="footer-social-btn" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook">
+              $facebookSvg
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Navigation Links -->
+        <div class="footer-col">
+          <h3>Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/kb">Knowledge Base</a></li>
+            <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Open-Source Engine Attributions -->
+        <div class="footer-col">
+          <h3>Engines</h3>
+          <div class="engine-chips">
+            <a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener" class="engine-chip">Baidu Unlimited OCR</a>
+            <a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener" class="engine-chip">Tesseract OCR</a>
+            <a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener" class="engine-chip">OCRmyPDF</a>
+            <a href="https://github.com/pymupdf/PyMuPDF" target="_blank" rel="noopener" class="engine-chip">PyMuPDF</a>
+          </div>
+        </div>
+
+        <!-- Column 4: Legal & Policy Links -->
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul class="footer-links">
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
+          </ul>
+        </div>
       </div>
+
+      <div class="footer-bottom">
+        &copy; 2026 freeOCR.me &bull; Privacy-First Ephemeral OCR Platform. All rights reserved. Files processed in RAM disk.
+      </div>
+    </div>
+  </footer>
+"@
+
+$canonicalFooterCss = @'
+    /* Canonical Responsive AppFooter Styles (matching Flutter AppFooter widget) */
+    .app-footer {
+      background: var(--footer-bg, #f1f5f9);
+      border-top: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+      padding: 48px 32px;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin-top: auto;
+    }
+
+    [data-theme="dark"] .app-footer {
+      background: var(--footer-bg, rgba(15, 23, 42, 0.90));
+      border-top: 1px solid var(--border, rgba(255, 255, 255, 0.10));
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr 3fr 2fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .app-footer {
+        padding: 36px 20px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-brand-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--heading, #0f172a);
+    }
+
+    .footer-brand-title span {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--heading, #0f172a);
+    }
+
+    .footer-brand-title span .brand-accent {
+      color: var(--accent, #6366f1);
+    }
+
+    .footer-brand-icon {
+      border-radius: 8px;
+      display: block;
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+    }
+
+    .footer-brand-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-muted, #64748b);
+      margin: 0;
+    }
+
+    .footer-social-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .footer-social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--heading, #0f172a);
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    [data-theme="dark"] .footer-social-btn {
+      color: var(--text-main, #f8fafc);
+    }
+
+    .footer-social-btn:hover {
+      background: rgba(99, 102, 241, 0.10);
+      color: var(--accent, #6366f1);
+    }
+
+    .footer-col h3 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--heading, #0f172a);
+      margin: 0 0 14px 0;
+    }
+
+    [data-theme="dark"] .footer-col h3 {
+      color: var(--heading, #ffffff);
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted, #64748b);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      display: inline-block;
+      padding: 2px 0;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent, #6366f1);
+    }
+
+    .engine-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .engine-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 8px;
+      text-decoration: none;
+      background: var(--chip-bg, rgba(0, 0, 0, 0.04));
+      color: var(--heading, #0f172a);
+      border: 0.8px solid var(--chip-border, #cbd5e1);
+      transition: all 0.15s ease;
+    }
+
+    [data-theme="dark"] .engine-chip {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main, #f8fafc);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .engine-chip:hover {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--accent, #6366f1);
+      color: var(--accent, #6366f1);
+    }
+
+    .footer-bottom {
+      max-width: 1140px;
+      margin: 32px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+      font-size: 13px;
+      color: var(--text-muted, #64748b);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    [data-theme="dark"] .footer-bottom {
+      border-top-color: var(--border, rgba(255, 255, 255, 0.08));
+    }
 '@
 
-$brandReplacement2 = @'
-        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 0.5rem;">
-          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
-          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            freeOCR<span style="color: #6366f1;">.me</span>
-          </span>
-        </a>
-'@
-
-$githubLink = "          <li><a href=`"https://github.com/IHKodifier/freeOcr`" target=`"_blank`" rel=`"noopener`">Source Code (GitHub)</a></li>"
-
+$footerRegex = '(?s)<footer\b[^>]*>.*?</footer>'
+$nonCompliantCount = 0
 $updatedCount = 0
 
 foreach ($file in $files) {
     $content = [System.IO.File]::ReadAllText($file.FullName)
-    $modified = $false
+    if (-not [regex]::IsMatch($content, $footerRegex)) {
+        continue
+    }
 
-    if ($content.Contains("<footer")) {
-        # 1. Standardize Brand Column in KB technical guides
-        $brandPattern1 = '(?s)<div class="footer-col">\s*<h4>freeOCR\.me</h4>\s*<p[^>]*>.*?100% Free Online AI OCR utility platform.*?</p>\s*</div>'
-        if ($content -match $brandPattern1) {
-            $content = [regex]::Replace($content, $brandPattern1, $brandReplacement1)
-            $modified = $true
+    $isCompliant = ($content.Contains("app-footer") -and
+                    $content.Contains("engine-chip") -and
+                    $content.Contains("Baidu Unlimited OCR") -and
+                    $content.Contains("/kb/ai-vs-traditional-ocr") -and
+                    $content.Contains("<h3>Legal</h3>") -and
+                    ($content.Contains(".app-footer") -or $content.Contains(".engine-chip")))
+
+    if ($Check) {
+        if (-not $isCompliant) {
+            Write-Host "[NON-COMPLIANT] $($file.FullName)" -ForegroundColor Red
+            $nonCompliantCount++
         }
+        continue
+    }
 
-        # 2. Standardize Brand Column in utility pages (h3 freeOCR.me)
-        $brandPattern2 = '<h3>freeOCR\.me</h3>'
-        if ($content -match $brandPattern2) {
-            $content = [regex]::Replace($content, $brandPattern2, $brandReplacement2)
-            $modified = $true
-        }
+    # Replace footer
+    $newContent = [regex]::Replace($content, $footerRegex, $canonicalFooterFreeOcr, 1)
 
-        # 3. Add GitHub Repo Link to footer if not already present in footer
-        $footerIdx = $content.IndexOf("<footer")
-        $footerPart = $content.Substring($footerIdx)
-        if (-not $footerPart.Contains("github.com/IHKodifier/freeOcr")) {
-            if ($footerPart -match '<li><a href="/terms">Terms of Service</a></li>') {
-                $content = $content.Substring(0, $footerIdx) + [regex]::Replace($footerPart, '(<li><a href="/terms">Terms of Service</a></li>)', "`$1`r`n$githubLink", 1)
-                $modified = $true
-            } elseif ($footerPart -match '<li><a href="/terms">Terms</a></li>') {
-                $content = $content.Substring(0, $footerIdx) + [regex]::Replace($footerPart, '(<li><a href="/terms">Terms</a></li>)', "`$1`r`n$githubLink", 1)
-                $modified = $true
-            } elseif ($footerPart -match '<a href="/terms"[^>]*>Terms</a>') {
-                $editorialGithub = '        <a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener" style="color: var(--link-color);">Source Code (GitHub)</a>'
-                $content = $content.Substring(0, $footerIdx) + [regex]::Replace($footerPart, '(<a href="/terms"[^>]*>Terms</a>)', "`$1`r`n$editorialGithub", 1)
-                $modified = $true
-            }
+    # Inject CSS if not present
+    if (-not ($newContent.Contains(".app-footer") -or $newContent.Contains(".engine-chip"))) {
+        if ($newContent.Contains("</style>")) {
+            $idx = $newContent.IndexOf("</style>")
+            $newContent = $newContent.Substring(0, $idx) + "`r`n" + $canonicalFooterCss + "`r`n" + $newContent.Substring($idx)
         }
     }
 
-    if ($modified) {
-        [System.IO.File]::WriteAllText($file.FullName, $content, $utf8NoBom)
+    if ($newContent -ne $content) {
+        [System.IO.File]::WriteAllText($file.FullName, $newContent, $utf8NoBom)
         $updatedCount++
     }
 }
 
-Write-Host "Standardized footers in $updatedCount files." -ForegroundColor Green
+if ($Check) {
+    if ($nonCompliantCount -gt 0) {
+        Write-Host "`n[FAIL] $nonCompliantCount HTML files deviate from canonical footer standard." -ForegroundColor Red
+        return $false
+    } else {
+        Write-Host "`n[PASS] All HTML files comply 100% with the canonical footer standard." -ForegroundColor Green
+        return $true
+    }
+} else {
+    Write-Host "Standardized footers in $updatedCount files across src/frontend/web." -ForegroundColor Green
+}

@@ -11,6 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from kb_articles_data import PILLARS, ARTICLES
+from common_html_components import get_canonical_footer_css, get_canonical_footer_html
 
 # ==============================================================================
 # Google AdSense Approval Configuration
@@ -83,7 +84,6 @@ else:
 
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
 BUILD_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web"))
-BUILD_PDFTOOLZ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "freepdftoolz_web"))
 
 
 def get_hub_output_paths():
@@ -93,14 +93,13 @@ def get_hub_output_paths():
         os.path.join(BASE_WEB_DIR, "kb.html"),
         os.path.join(BASE_WEB_DIR, "knowledge-base.html"),
     ]
-    for b_dir in [BUILD_WEB_DIR, BUILD_PDFTOOLZ_DIR]:
-        if os.path.exists(b_dir):
-            paths.extend([
-                os.path.join(b_dir, "kb", "index.html"),
-                os.path.join(b_dir, "knowledge-base", "index.html"),
-                os.path.join(b_dir, "kb.html"),
-                os.path.join(b_dir, "knowledge-base.html"),
-            ])
+    if os.path.exists(BUILD_WEB_DIR):
+        paths.extend([
+            os.path.join(BUILD_WEB_DIR, "kb", "index.html"),
+            os.path.join(BUILD_WEB_DIR, "knowledge-base", "index.html"),
+            os.path.join(BUILD_WEB_DIR, "kb.html"),
+            os.path.join(BUILD_WEB_DIR, "knowledge-base.html"),
+        ])
     return paths
 
 
@@ -551,66 +550,7 @@ COMMON_CSS = """
       margin-bottom: 1.25rem;
     }
 
-    footer {
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border);
-      padding: 3rem 2rem 2rem;
-      margin-top: auto;
-    }
-
-    .footer-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .footer-col h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--heading);
-      margin-bottom: 1rem;
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-col a {
-      color: var(--text-muted);
-      transition: color 0.2s;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .footer-col a:hover {
-      color: var(--accent);
-    }
-
-    .footer-brand p {
-      color: var(--text-muted);
-      font-size: 0.875rem;
-      line-height: 1.6;
-      margin-top: 0.5rem;
-    }
-
-    .footer-bottom {
-      max-width: 1140px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+""" + get_canonical_footer_css() + """
 
     @media (max-width: 768px) {
       h1 {
@@ -657,51 +597,7 @@ HEADER_HTML = """
   </header>
 """
 
-FOOTER_HTML = """
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
-          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            freeOCR<span style="color: #6366f1;">.me</span>
-          </span>
-        </a>
-        <p>Private, high-performance optical character recognition running on volatile Linux RAM disk architecture with zero persistent disk storage.</p>
-      </div>
-      <div class="footer-col">
-        <h3>Content Pillars</h3>
-        <ul>
-          <li><a href="/kb/workflows">Tool Guides &amp; Workflows</a></li>
-          <li><a href="/kb/comparisons">Format Comparisons</a></li>
-          <li><a href="/kb/solutions">Use-Case Solutions</a></li>
-          <li><a href="/kb/troubleshooting">Troubleshooting &amp; FAQs</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Popular Guides</h3>
-        <ul>
-          <li><a href="/kb/ocr-guide">Understanding OCR</a></li>
-          <li><a href="/kb/pdf-standards">PDF Standards &amp; PDF/A</a></li>
-          <li><a href="/kb/privacy-security">Zero-Disk Privacy</a></li>
-          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Legal &amp; Policy</h3>
-        <ul>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/contact">Contact</a></li>
-          <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/terms">Terms of Service</a></li>
-          <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2026 freeOCR.me. All rights reserved. Zero-Disk Retention Architecture.
-    </div>
-  </footer>
+FOOTER_HTML = get_canonical_footer_html("freeocr.me") + """
 
   <script>
     (function () {

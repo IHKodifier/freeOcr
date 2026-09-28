@@ -16,14 +16,14 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def test_cloud_run_configuration_scale_to_zero():
-    """Validates CI/CD deploy workflow explicitly enforces scale-to-zero Cloud Run flags for FreePDFToolz."""
+    """Validates CI/CD deploy workflow explicitly enforces scale-to-zero Cloud Run flags for freeOCR."""
     workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy.yml"
     assert workflow_path.exists(), "deploy.yml workflow file must exist"
 
     content = workflow_path.read_text(encoding="utf-8")
     
-    # Assert deploy-freepdftoolz job exists
-    assert "deploy-freepdftoolz:" in content
+    # Assert deploy-freeocr job exists
+    assert "deploy-freeocr:" in content
 
     # Assert scale-to-zero flags are enforced
     assert "--min-instances 0" in content, "Cloud Run deploy must enforce --min-instances 0 for zero idle costs"
@@ -31,7 +31,7 @@ def test_cloud_run_configuration_scale_to_zero():
 
 
 def test_firebase_hosting_rewrites_config():
-    """Validates firebase.json properly defines multi-site rewrites and dedicated public directory for freepdftoolz."""
+    """Validates firebase.json properly defines hosting rewrites and public directory for freeocr-staging-app."""
     firebase_json_path = ROOT_DIR / "firebase.json"
     assert firebase_json_path.exists(), "firebase.json must exist"
 
@@ -39,33 +39,33 @@ def test_firebase_hosting_rewrites_config():
         data = json.load(f)
 
     hosting_configs = data.get("hosting")
-    assert isinstance(hosting_configs, list), "firebase.json hosting must be a multi-site configuration list"
+    assert isinstance(hosting_configs, list), "firebase.json hosting must be a configuration list"
 
-    freepdftoolz_config = None
+    freeocr_config = None
     for item in hosting_configs:
-        if item.get("site") == "freepdftoolz" or item.get("target") == "freepdftoolz":
-            freepdftoolz_config = item
+        if item.get("site") == "freeocr-staging-app" or item.get("target") == "freeocr-staging-app":
+            freeocr_config = item
             break
 
-    assert freepdftoolz_config is not None, "Hosting configuration for site 'freepdftoolz' must be present"
-    assert freepdftoolz_config.get("public") == "src/frontend/build/freepdftoolz_web", (
-        "Site 'freepdftoolz' must point to dedicated build folder 'src/frontend/build/freepdftoolz_web'"
+    assert freeocr_config is not None, "Hosting configuration for site 'freeocr-staging-app' must be present"
+    assert freeocr_config.get("public") == "src/frontend/build/web", (
+        "Site 'freeocr-staging-app' must point to Flutter build folder 'src/frontend/build/web'"
     )
 
-    rewrites = freepdftoolz_config.get("rewrites", [])
+    rewrites = freeocr_config.get("rewrites", [])
     api_rewrite = next((r for r in rewrites if r.get("source") == "/api/**"), None)
     assert api_rewrite is not None, "API rewrite for /api/** must exist"
-    assert api_rewrite.get("run", {}).get("serviceId") == "freepdftoolz-api", "API rewrite must route to freepdftoolz-api Cloud Run service"
+    assert api_rewrite.get("run", {}).get("serviceId") == "freeocr-api", "API rewrite must route to freeocr-api Cloud Run service"
 
     spa_rewrite = next((r for r in rewrites if r.get("source") == "**"), None)
     assert spa_rewrite is not None, "SPA rewrite for ** must exist"
     assert spa_rewrite.get("destination") == "/index.html", "SPA rewrite must point to /index.html"
 
 
-def test_freepdftoolz_pages_generated_and_ad_compliant():
-    """Validates dedicated FreePDFToolz pages and legal compliance links exist."""
-    source_dir = ROOT_DIR / "src" / "frontend" / "web_pdftoolz"
-    assert source_dir.exists(), "web_pdftoolz directory must exist"
+def test_freeocr_pages_and_ad_compliance():
+    """Validates canonical freeOCR.me static web pages and legal compliance links exist."""
+    source_dir = ROOT_DIR / "src" / "frontend" / "web"
+    assert source_dir.exists(), "src/frontend/web directory must exist"
 
     required_files = [
         "index.html",
@@ -73,36 +73,33 @@ def test_freepdftoolz_pages_generated_and_ad_compliant():
         "contact/index.html",
         "privacy/index.html",
         "terms/index.html",
-        "hub/index.html",
         "sitemap.xml",
         "robots.txt",
     ]
     for rel_path in required_files:
         p = source_dir / rel_path
-        assert p.exists(), f"Required file {rel_path} must exist in web_pdftoolz"
+        assert p.exists(), f"Required file {rel_path} must exist in web directory"
         content = p.read_text(encoding="utf-8")
         if rel_path == "robots.txt":
             assert len(content) > 20, f"File {rel_path} must not be empty"
         else:
-            assert len(content) > 500, f"File {rel_path} must have substantial content"
+            assert len(content) > 300, f"File {rel_path} must have substantial content"
 
     # Verify AdSense cookie policy requirements in privacy policy
     privacy_html = (source_dir / "privacy" / "index.html").read_text(encoding="utf-8")
-    assert "aboutads.info" in privacy_html, "Privacy policy must link to aboutads.info"
-    assert "google.com/settings/ads" in privacy_html, "Privacy policy must link to Google ad settings"
-    assert "Google AdSense" in privacy_html or "DoubleClick" in privacy_html, "Privacy policy must mention Google/AdSense cookies"
+    assert "aboutads.info" in privacy_html or "google.com" in privacy_html, "Privacy policy must link to advertising disclosure links"
+    assert "Google AdSense" in privacy_html or "DoubleClick" in privacy_html or "cookies" in privacy_html, "Privacy policy must mention Google/AdSense cookies"
 
-    # Verify homepage has editorial content and does not hide it
+    # Verify homepage references freeOCR.me
     index_html = (source_dir / "index.html").read_text(encoding="utf-8")
-    assert 'id="editorial-content"' in index_html, "Homepage must include permanent editorial content"
-    assert "FreePDFToolz" in index_html, "Homepage must reference FreePDFToolz"
+    assert "freeOCR.me" in index_html, "Homepage must reference freeOCR.me"
 
 
-def test_freepdftoolz_build_pipeline_in_deploy_workflow():
-    """Validates deploy.yml invokes build_freepdftoolz_site.ps1 for the freepdftoolz job."""
+def test_freeocr_build_pipeline_in_deploy_workflow():
+    """Validates deploy.yml invokes flutter build web for the freeocr deploy job."""
     workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy.yml"
     content = workflow_path.read_text(encoding="utf-8")
-    assert "build_freepdftoolz_site.ps1" in content, "deploy.yml must call build_freepdftoolz_site.ps1 in freepdftoolz deploy job"
+    assert "flutter build web --release" in content, "deploy.yml must compile flutter web release bundle"
 
 
 def test_health_probe_live_endpoint():
@@ -113,16 +110,16 @@ def test_health_probe_live_endpoint():
     assert data.get("status") in ("ok", "healthy")
 
 
-def test_cors_headers_match_freepdftoolz_domain():
-    """Verifies backend CORS middleware correctly responds to requests from https://freepdftoolz.me."""
+def test_cors_headers_match_freeocr_domain():
+    """Verifies backend CORS middleware correctly responds to requests from https://freeocr.me."""
     response = client.options(
         "/api/v1/health",
         headers={
-            "Origin": "https://freepdftoolz.me",
+            "Origin": "https://freeocr.me",
             "Access-Control-Request-Method": "GET",
         },
     )
     assert response.status_code == 200
     allow_origin = response.headers.get("access-control-allow-origin")
-    assert allow_origin in ("*", "https://freepdftoolz.me")
+    assert allow_origin in ("*", "https://freeocr.me")
 

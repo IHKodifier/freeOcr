@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/telemetry_service.dart';
-import '../services/host_resolver.dart';
 import '../widgets/adsense_banner.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_header.dart';
@@ -18,7 +17,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
   @override
   void initState() {
     super.initState();
-    final brandTitle = HostResolver.getBrandTitle();
+    const brandTitle = 'freeOCR.me';
     TelemetryService.trackPageView('/privacy', pageTitle: '$brandTitle — Privacy Policy');
   }
 
@@ -27,7 +26,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
-    final brandTitle = HostResolver.getBrandTitle();
+    const brandTitle = 'freeOCR.me';
 
     return SelectionArea(
       child: Scaffold(

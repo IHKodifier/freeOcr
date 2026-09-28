@@ -13,6 +13,9 @@ import sys
 import glob
 import re
 
+sys.path.insert(0, os.path.dirname(__file__))
+from common_html_components import get_canonical_footer_css, get_canonical_footer_html
+
 def markdown_to_simple_html(md_text: str, title: str, domain: str = "freeocr.me") -> str:
     """Converts basic markdown formatting into clean semantic HTML structure with domain-aware GA4 telemetry."""
     lines = md_text.splitlines()
@@ -111,7 +114,7 @@ def markdown_to_simple_html(md_text: str, title: str, domain: str = "freeocr.me"
     a {{ color: #2563eb; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
     .nav {{ margin-bottom: 2rem; font-size: 0.95rem; }}
-    footer {{ margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; font-size: 0.85rem; color: #6b7280; }}
+    {get_canonical_footer_css()}
   </style>
 </head>
 <body>
@@ -119,9 +122,7 @@ def markdown_to_simple_html(md_text: str, title: str, domain: str = "freeocr.me"
   <article>
     {content_body}
   </article>
-  <footer>
-    <p>{footer_text}</p>
-  </footer>
+{get_canonical_footer_html(domain)}
 </body>
 </html>
 """
