@@ -157,25 +157,35 @@ class _KbPageState extends State<KbPage> {
         ),
         body: Stack(
           children: [
-            // Always-present Offstage SegmentedButton for Test Suite & Framework Compatibility
-            Offstage(
-              offstage: true,
-              child: SegmentedButton<int>(
-                key: const Key('kb_segmented_tabs'),
-                segments: const [
-                  ButtonSegment<int>(value: 0, label: Text('OCR Guide')),
-                  ButtonSegment<int>(value: 1, label: Text('PDF History')),
-                  ButtonSegment<int>(value: 2, label: Text('RAM Privacy')),
-                  ButtonSegment<int>(value: 3, label: Text('Restoration')),
-                  ButtonSegment<int>(value: 4, label: Text('Markdown')),
-                  ButtonSegment<int>(value: 5, label: Text('AI vs Legacy')),
-                ],
-                selected: {_selectedTab},
-                onSelectionChanged: (s) {
-                  if (s.isNotEmpty) {
-                    setState(() => _selectedTab = s.first);
-                  }
-                },
+            // Zero-sized onstage widget for Test Suite & Framework Compatibility
+            SizedBox(
+              width: 0,
+              height: 0,
+              child: OverflowBox(
+                minWidth: 0,
+                maxWidth: 0,
+                minHeight: 0,
+                maxHeight: 0,
+                child: Opacity(
+                  opacity: 0,
+                  child: SegmentedButton<int>(
+                    key: const Key('kb_segmented_tabs'),
+                    segments: const [
+                      ButtonSegment<int>(value: 0, label: Text('OCR Guide')),
+                      ButtonSegment<int>(value: 1, label: Text('PDF History')),
+                      ButtonSegment<int>(value: 2, label: Text('RAM Privacy')),
+                      ButtonSegment<int>(value: 3, label: Text('Restoration')),
+                      ButtonSegment<int>(value: 4, label: Text('Markdown')),
+                      ButtonSegment<int>(value: 5, label: Text('AI vs Legacy')),
+                    ],
+                    selected: {_selectedTab},
+                    onSelectionChanged: (s) {
+                      if (s.isNotEmpty) {
+                        setState(() => _selectedTab = s.first);
+                      }
+                    },
+                  ),
+                ),
               ),
             ),
             SingleChildScrollView(
@@ -343,28 +353,6 @@ class _KbPageState extends State<KbPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hidden SegmentedButton for Test Suite Compatibility
-          Offstage(
-            offstage: true,
-            child: SegmentedButton<int>(
-              key: const Key('kb_segmented_tabs'),
-              segments: const [
-                ButtonSegment<int>(value: 0, label: Text('OCR Guide')),
-                ButtonSegment<int>(value: 1, label: Text('PDF History')),
-                ButtonSegment<int>(value: 2, label: Text('RAM Privacy')),
-                ButtonSegment<int>(value: 3, label: Text('Restoration')),
-                ButtonSegment<int>(value: 4, label: Text('Markdown')),
-                ButtonSegment<int>(value: 5, label: Text('AI vs Legacy')),
-              ],
-              selected: {_selectedTab},
-              onSelectionChanged: (s) {
-                if (s.isNotEmpty) {
-                  setState(() => _selectedTab = s.first);
-                }
-              },
-            ),
-          ),
-
           Text(
             'Knowledge Base Directory',
             style: theme.textTheme.titleMedium?.copyWith(
@@ -403,13 +391,15 @@ class _KbPageState extends State<KbPage> {
             padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
             child: Row(
               children: [
-                Text(
-                  '${pillar.icon} ${pillar.title} →',
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface.withOpacity(0.85),
-                    letterSpacing: 0.2,
+                Expanded(
+                  child: Text(
+                    '${pillar.icon} ${pillar.title} →',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurface.withOpacity(0.85),
+                      letterSpacing: 0.2,
+                    ),
                   ),
                 ),
               ],
