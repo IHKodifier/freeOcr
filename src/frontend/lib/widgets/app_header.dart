@@ -163,7 +163,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                           PopupMenuButton<String>(
                             icon: Icon(Icons.menu_rounded, color: theme.colorScheme.onSurface),
                             onSelected: (route) {
-                              if (kIsWeb && route != '/' && route != homeRoute) {
+                              if (!kDebugMode && kIsWeb && route != '/' && route != homeRoute) {
                                 UrlHelper.navigateToPath(route);
                                 return;
                               }
@@ -443,14 +443,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
 
     return SafeArea(
       bottom: false,
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 16.0, right: 16.0, bottom: 6.0),
-            child: pillContainer,
-          ),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 6.0),
+        child: pillContainer,
       ),
     );
   }
@@ -486,7 +481,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       onPressed: () {
-        if (kIsWeb) {
+        if (!kDebugMode && kIsWeb) {
           UrlHelper.navigateToPath(path);
         } else if (currentRoute != path) {
           Navigator.of(context).pushNamed(path);

@@ -29,7 +29,7 @@
     (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = saved || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) { }
     })();
@@ -136,6 +136,7 @@
       --badge-text: #4f46e5;
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
+      --toggle-border: rgba(99, 102, 241, 0.2);
     }
 
     [data-theme="dark"] {
@@ -155,6 +156,7 @@
       --badge-text: #a5b4fc;
       --toggle-bg: rgba(255, 255, 255, 0.1);
       --toggle-color: #f3f4f6;
+      --toggle-border: rgba(255, 255, 255, 0.15);
     }
 
     * {
@@ -177,10 +179,11 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      max-width: 1200px;
-      margin: 10px auto 6px;
-      padding: 0 16px;
+      z-index: 50;
+      width: 100%;
+      max-width: 100%;
+      margin: 10px 0 6px;
+      padding: 0 20px;
       box-sizing: border-box;
     }
 
@@ -212,51 +215,62 @@
     .nav-wrapper {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 0.5rem;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 4px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 500;
-      padding: 0.2rem 0.35rem;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.15s ease;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--accent);
+    }
+
     nav a.active {
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .nav-sep {
-      color: var(--border);
+      color: var(--toggle-border, rgba(148, 163, 184, 0.3));
       opacity: 0.6;
-      font-size: 0.85rem;
+      font-size: 12px;
       user-select: none;
-      padding: 0 0.15rem;
+      padding: 0 2px;
     }
 
     .theme-toggle-btn {
       background: var(--toggle-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--toggle-border, rgba(99, 102, 241, 0.2));
       border-radius: 50%;
       width: 34px;
       height: 34px;
+      margin-left: 4px;
       padding: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: var(--toggle-color);
+      outline: none;
       transition: background-color 0.2s ease, transform 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.05);
     }
 
     .container {
@@ -546,11 +560,11 @@
     }
 
     .footer-grid {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
+      gap: 2rem;
       margin-bottom: 2.5rem;
     }
 
@@ -590,7 +604,7 @@
     }
 
     .footer-bottom {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       border-top: 1px solid var(--border);
       padding-top: 1.5rem;
@@ -617,8 +631,8 @@
 
 <body>
 
-  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
-    <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
+  <header style="width: 100%; max-width: 100%; margin: 10px 0 6px; padding: 0 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+    <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg, #f8fafc); border: 1px solid var(--card-border, #e2e8f0); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
       <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
         <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
         <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -670,40 +684,7 @@
       </div>
     </div>
 
-    <!-- Editorial Category Overview & Technical Deep-Dive -->
-    <section class="category-overview" style="margin-bottom: 2.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);">
-      <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--heading); margin-top: 0; margin-bottom: 1rem; letter-spacing: -0.3px;">
-        Document Diagnostics &amp; Image Restoration Engineering
-      </h2>
-      <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.25rem;">
-        Real-world scanned documents rarely exhibit pristine contrast, orthogonal alignment, or clean vector glyphs. Physical paper degrades over time, smartphone captures introduce keystone distortion, fax transmissions compress high frequencies, and low-contrast receipts fade. Overcoming these real-world artifacts requires a multi-stage computer vision preprocessing pipeline before invoking neural recognition.
-      </p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 1.5rem;">
-        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
-          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">📐 Radon Transform Deskewing</h3>
-          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Crooked scans cause character baseline drift and reading order failures. Radon transform projections detect text orientation within [-15°, +15°] at sub-degree precision, rotating pages horizontally to ensure accurate horizontal line segmentation.
-          </p>
-        </div>
-        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
-          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🌓 Adaptive Otsu Binarization</h3>
-          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Global thresholding fails on unevenly lit phone captures or dark paper creases. Local adaptive Otsu binarization calculates variance histograms across localized pixel windows, isolating faint ink from coffee stains and shadows.
-          </p>
-        </div>
-        <div style="background: var(--code-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
-          <h3 style="font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: 0; margin-bottom: 6px;">🔍 Lanczos-4 Sinc Upscaling</h3>
-          <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Low-resolution 72–150 DPI faxes lack sufficient pixel density to resolve fine font serifs, causing character confusion (e.g. 'rn' vs 'm'). Lanczos-4 sinc interpolation resamples bitmaps to 300 DPI, reconstructing stroke continuity.
-          </p>
-        </div>
-      </div>
-      
-      <p style="font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0;">
-        Consult our comprehensive troubleshooting tutorials below to resolve common scanning errors, ligature recognition issues, and layout distortions.
-      </p>
-    </section>
+
 
     <div class="cards-grid">
       
@@ -838,11 +819,11 @@
     (function () {
       var btn = document.getElementById('themeToggleBtn');
       var icon = document.getElementById('themeIcon');
+      var moonSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg>';
+      var sunSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B" style="display: block;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/></svg>';
       function updateIcon(theme) {
-        var moonSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg>';
-        var sunSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B" style="display: block;"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>';
         if (icon) {
-          icon.innerHTML = (theme === 'dark') ? sunSvg : moonSvg;
+          icon.innerHTML = theme === 'dark' ? sunSvg : moonSvg;
         }
       }
       var initial = document.documentElement.getAttribute('data-theme') || 'light';

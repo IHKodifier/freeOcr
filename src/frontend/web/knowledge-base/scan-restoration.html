@@ -34,7 +34,7 @@
     (function () {
       try {
         var saved = localStorage.getItem('freeocr_theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = saved || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) { }
     })();
@@ -101,6 +101,7 @@
       --sec-text: #881337;
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
+      --toggle-border: rgba(99, 102, 241, 0.2);
     }
 
     [data-theme="dark"] {
@@ -124,6 +125,7 @@
       --sec-text: #fecdd3;
       --toggle-bg: rgba(255, 255, 255, 0.1);
       --toggle-color: #f3f4f6;
+      --toggle-border: rgba(255, 255, 255, 0.15);
     }
 
     * {
@@ -147,9 +149,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      max-width: 1200px;
-      margin: 10px auto 6px;
-      padding: 0 16px;
+      width: 100%;
+      max-width: 100%;
+      margin: 10px 0 6px;
+      padding: 0 20px;
       box-sizing: border-box;
     }
 
@@ -184,50 +187,57 @@
     .nav-wrapper {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 0.5rem;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 4px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 500;
-      padding: 0.2rem 0.35rem;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.15s ease;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--accent);
+    }
+
     nav a.active {
-      color: var(--accent-light, var(--accent));
-      font-weight: 600;
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .nav-sep {
-      color: var(--border);
+      color: var(--toggle-border, rgba(148, 163, 184, 0.3));
       opacity: 0.6;
-      font-size: 0.85rem;
+      font-size: 12px;
       user-select: none;
-      padding: 0 0.15rem;
+      padding: 0 2px;
     }
 
     .theme-toggle-btn {
       background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border, rgba(99, 102, 241, 0.2));
       color: var(--toggle-color);
-      border: 1px solid var(--border);
-      border-radius: 50%;
       width: 34px;
       height: 34px;
-      padding: 0;
+      border-radius: 50%;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      margin-left: 4px;
+      padding: 0;
+      outline: none;
       transition: background-color 0.2s ease, transform 0.2s;
     }
 
@@ -236,14 +246,32 @@
     }
 
     .main-layout {
-      max-width: 1240px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+      width: calc(100% - 40px);
+      max-width: 1600px;
+      margin: 1.5rem 0 2rem 20px;
+      padding: 0;
       display: grid;
-      grid-template-columns: 290px 1fr;
-      gap: 2.5rem;
+      grid-template-columns: 280px minmax(0, 920px) minmax(280px, 340px);
+      gap: 2rem;
       flex: 1;
-      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ads-rail {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .ads-card {
+      position: sticky;
+      top: 80px;
+      background: transparent;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 250px;
     }
 
     .sidebar {
@@ -522,11 +550,11 @@
     }
 
     .footer-grid {
-      max-width: 1200px;
+      max-width: 1140px;
       margin: 0 auto 2.5rem;
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
     }
 
     .footer-col h4 {
@@ -559,7 +587,7 @@
     }
 
     .footer-bottom {
-      max-width: 1200px;
+      max-width: 1140px;
       margin: 0 auto;
       border-top: 1px solid var(--border);
       padding-top: 1.5rem;
@@ -568,10 +596,24 @@
       color: var(--text-muted);
     }
 
+    @media (max-width: 1280px) {
+      .main-layout {
+        grid-template-columns: 280px 1fr;
+        width: calc(100% - 32px);
+        margin: 1.5rem 0 2rem 16px;
+      }
+      .ads-rail {
+        display: none;
+      }
+    }
+
     @media (max-width: 900px) {
       .main-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
+        width: 100%;
+        margin: 1.5rem auto 2rem;
+        padding: 0 1rem;
       }
       .sidebar {
         order: 2;
@@ -593,7 +635,7 @@
 </head>
 
 <body>
-  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+  <header style="width: 100%; max-width: 100%; margin: 10px 0 6px; padding: 0 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
     <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
       <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
         <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
@@ -839,6 +881,12 @@ def bridge_broken_characters(binary_image):
         </div>
       </article>
     </main>
+
+    <aside class="ads-rail" aria-label="Sponsor and Ad Content">
+      <div class="ads-card">
+        <!-- Reserved for high-relevance vertical display units post-approval -->
+      </div>
+    </aside>
   </div>
 
   <footer>

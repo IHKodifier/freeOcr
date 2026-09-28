@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'glass_card.dart';
 import '../utils/url_helper.dart';
@@ -162,7 +163,13 @@ class FeaturedGuidesSection extends StatelessWidget {
                   );
 
                   final viewAllButton = OutlinedButton.icon(
-                    onPressed: () => UrlHelper.navigateToPath('/kb'),
+                    onPressed: () {
+                      if (kDebugMode) {
+                        Navigator.of(context).pushNamed('/kb');
+                      } else {
+                        UrlHelper.navigateToPath('/kb');
+                      }
+                    },
                     icon: const Icon(Icons.menu_book_outlined, size: 16),
                     label: const Text('View All 23 Guides →'),
                     style: OutlinedButton.styleFrom(
@@ -275,7 +282,13 @@ class FeaturedGuidesSection extends StatelessWidget {
     return GlassCard(
       padding: const EdgeInsets.all(20.0),
       borderRadius: 16.0,
-      onTap: () => UrlHelper.navigateToPath(guide.path),
+      onTap: () {
+        if (kDebugMode) {
+          Navigator.of(context).pushNamed(guide.path);
+        } else {
+          UrlHelper.navigateToPath(guide.path);
+        }
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

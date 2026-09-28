@@ -140,6 +140,7 @@ COMMON_CSS = """
       --badge-text: #4f46e5;
       --toggle-bg: rgba(99, 102, 241, 0.08);
       --toggle-color: #6366f1;
+      --toggle-border: rgba(99, 102, 241, 0.2);
     }
 
     [data-theme="dark"] {
@@ -159,6 +160,7 @@ COMMON_CSS = """
       --badge-text: #a5b4fc;
       --toggle-bg: rgba(255, 255, 255, 0.1);
       --toggle-color: #f3f4f6;
+      --toggle-border: rgba(255, 255, 255, 0.15);
     }
 
     * {
@@ -182,9 +184,10 @@ COMMON_CSS = """
       position: sticky;
       top: 0;
       z-index: 50;
-      max-width: 1200px;
-      margin: 10px auto 6px;
-      padding: 0 16px;
+      width: 100%;
+      max-width: 100%;
+      margin: 10px 0 6px;
+      padding: 0 20px;
       box-sizing: border-box;
     }
 
@@ -216,51 +219,62 @@ COMMON_CSS = """
     .nav-wrapper {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 0.5rem;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 4px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 500;
-      padding: 0.2rem 0.35rem;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.15s ease;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--accent);
+    }
+
     nav a.active {
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .nav-sep {
-      color: var(--border);
+      color: var(--toggle-border, rgba(148, 163, 184, 0.3));
       opacity: 0.6;
-      font-size: 0.85rem;
+      font-size: 12px;
       user-select: none;
-      padding: 0 0.15rem;
+      padding: 0 2px;
     }
 
     .theme-toggle-btn {
       background: var(--toggle-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--toggle-border, rgba(99, 102, 241, 0.2));
       border-radius: 50%;
       width: 34px;
       height: 34px;
+      margin-left: 4px;
       padding: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: var(--toggle-color);
+      outline: none;
       transition: background-color 0.2s ease, transform 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.05);
     }
 
     .container {
@@ -545,11 +559,11 @@ COMMON_CSS = """
     }
 
     .footer-grid {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
+      gap: 2rem;
       margin-bottom: 2.5rem;
     }
 
@@ -589,7 +603,7 @@ COMMON_CSS = """
     }
 
     .footer-bottom {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       border-top: 1px solid var(--border);
       padding-top: 1.5rem;
@@ -613,7 +627,7 @@ COMMON_CSS = """
 """
 
 HEADER_HTML = """
-  <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+  <header style="width: 100%; max-width: 100%; margin: 10px 0 6px; padding: 0 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
     <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg, #f8fafc); border: 1px solid var(--card-border, #e2e8f0); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
       <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
         <img src="/icons/Icon-48.png" width="32" height="32" alt="freeOCR.me Logo" style="border-radius: 8px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
@@ -828,7 +842,7 @@ def build_hub_html():
     (function () {{
       try {{
         var saved = localStorage.getItem('freeocr_theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = saved || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       }} catch (e) {{ }}
     }})();
@@ -986,7 +1000,7 @@ def build_category_hub_html(pillar):
     (function () {{
       try {{
         var saved = localStorage.getItem('freeocr_theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = saved || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       }} catch (e) {{ }}
     }})();

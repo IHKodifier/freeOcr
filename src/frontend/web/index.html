@@ -89,6 +89,7 @@
       --format-pill-bg: #f1f5f9;
       --format-pill-border: #cbd5e1;
       --format-pill-text: #64748b;
+      --footer-bg: #f1f5f9;
     }
 
     [data-theme="dark"] {
@@ -131,6 +132,7 @@
       --format-pill-bg: rgba(255, 255, 255, 0.06);
       --format-pill-border: rgba(255, 255, 255, 0.1);
       --format-pill-text: #94a3b8;
+      --footer-bg: rgba(15, 23, 42, 0.95);
     }
 
     html, body {
@@ -226,6 +228,77 @@
         display: none !important;
       }
     }
+    .footer-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-col h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--editorial-heading);
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--link-color);
+    }
+    .footer-bottom {
+      max-width: 1140px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--editorial-border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .social-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--editorial-heading, #0f172a);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .social-btn:hover {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366f1;
+    }
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
     #editorial-content {
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -289,7 +362,7 @@
         document.addEventListener('DOMContentLoaded', function() {
           var shell = document.getElementById('app-loading-shell');
           if (shell) {
-            shell.innerHTML = '<header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box;"><div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: rgba(15,23,42,0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);"><div style="display: flex; align-items: center; gap: 10px;"><div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35); display: flex; align-items: center; justify-content: center; color: #818cf8; font-weight: 800; font-size: 15px; font-family: sans-serif;">🛠️</div><span style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">FreePDF<span style="color: #6366f1;">Toolz.me</span></span></div><nav style="display: flex; align-items: center; gap: 18px; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; font-size: 0.95rem;"><a href="/hub" style="color: #94a3b8; text-decoration: none; font-weight: 500;">All Tools</a><a href="/about" style="color: #94a3b8; text-decoration: none; font-weight: 500;">About</a><a href="/contact" style="color: #94a3b8; text-decoration: none; font-weight: 500;">Contact</a></nav></div></header><div style="max-width: 860px; margin: 36px auto 32px; padding: 0 20px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;"><div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); color: #818cf8; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 18px;">✨ 100% FREE ONLINE PDF TOOLS &amp; AI CONVERSIONS</div><h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: #ffffff; margin: 0 0 14px; letter-spacing: -0.8px; line-height: 1.2;">All-in-One Local-First PDF Suite</h2><p style="font-size: 1.05rem; color: #94a3b8; max-width: 640px; margin: 0 auto 32px; line-height: 1.55;">Merge, split, rotate, compress, redact, sign, and convert PDFs directly in ephemeral RAM storage.</p><div style="display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 12px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #c7d2fe; font-size: 0.95rem; font-weight: 600;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6366f1; animation: pulseDot 1.4s infinite ease-in-out;"></span>Loading FreePDFToolz Workspace...</div></div>';
+            shell.innerHTML = '<header style="width: 100%; max-width: 100%; margin: 10px 0 6px; padding: 0 20px; box-sizing: border-box;"><div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: rgba(15,23,42,0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);"><div style="display: flex; align-items: center; gap: 10px;"><div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35); display: flex; align-items: center; justify-content: center; color: #818cf8; font-weight: 800; font-size: 15px; font-family: sans-serif;">🛠️</div><span style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;">FreePDF<span style="color: #6366f1;">Toolz.me</span></span></div><nav style="display: flex; align-items: center; gap: 18px; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; font-size: 0.95rem;"><a href="/hub" style="color: #94a3b8; text-decoration: none; font-weight: 500;">All Tools</a><a href="/about" style="color: #94a3b8; text-decoration: none; font-weight: 500;">About</a><a href="/contact" style="color: #94a3b8; text-decoration: none; font-weight: 500;">Contact</a></nav></div></header><div style="max-width: 860px; margin: 36px auto 32px; padding: 0 20px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;"><div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); color: #818cf8; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 18px;">✨ 100% FREE ONLINE PDF TOOLS &amp; AI CONVERSIONS</div><h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: #ffffff; margin: 0 0 14px; letter-spacing: -0.8px; line-height: 1.2;">All-in-One Local-First PDF Suite</h2><p style="font-size: 1.05rem; color: #94a3b8; max-width: 640px; margin: 0 auto 32px; line-height: 1.55;">Merge, split, rotate, compress, redact, sign, and convert PDFs directly in ephemeral RAM storage.</p><div style="display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 12px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #c7d2fe; font-size: 0.95rem; font-weight: 600;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6366f1; animation: pulseDot 1.4s infinite ease-in-out;"></span>Loading FreePDFToolz Workspace...</div></div>';
           }
           var editorial = document.getElementById('editorial-content');
           if (editorial) {
@@ -459,7 +532,7 @@
     Smoothly fades out and dissolves when Flutter's interactive canvas mounts into the DOM.
   -->
   <div id="app-loading-shell">
-    <header style="max-width: 1200px; margin: 10px auto 6px; padding: 0 16px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
+    <header style="width: 100%; max-width: 100%; margin: 10px 0 6px; padding: 0 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;">
       <div style="width: 100%; height: 56px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.2s ease, border-color 0.2s ease;">
         <!-- Brand Logo & Name -->
         <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
@@ -471,19 +544,19 @@
         <!-- Synchronized Navigation Links & Theme Switcher Button -->
         <nav style="display: flex; align-items: center; gap: 4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
           <div class="shell-desktop-nav" style="display: flex; align-items: center; gap: 4px; font-size: 13px;">
-            <a href="/" class="shell-nav-link" style="color: #6366f1; font-weight: 700; text-decoration: none; padding: 2px 4px;">Home</a>
-            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
-            <a href="/about" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">About</a>
-            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
-            <a href="/kb" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Knowledge Base</a>
-            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
-            <a href="/privacy" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Privacy</a>
-            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
-            <a href="/terms" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Terms</a>
-            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none;">|</span>
-            <a href="/contact" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 2px 4px;">Contact</a>
+            <a href="/" class="shell-nav-link" style="color: #6366f1; font-weight: 700; text-decoration: none; padding: 4px 8px; border-radius: 6px;">Home</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none; padding: 0 2px;">|</span>
+            <a href="/about" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 4px 8px; border-radius: 6px;">About</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none; padding: 0 2px;">|</span>
+            <a href="/kb" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 4px 8px; border-radius: 6px;">Knowledge Base</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none; padding: 0 2px;">|</span>
+            <a href="/privacy" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 4px 8px; border-radius: 6px;">Privacy</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none; padding: 0 2px;">|</span>
+            <a href="/terms" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 4px 8px; border-radius: 6px;">Terms</a>
+            <span style="color: var(--toggle-border, rgba(148,163,184,0.3)); opacity: 0.6; font-size: 12px; user-select: none; padding: 0 2px;">|</span>
+            <a href="/contact" class="shell-nav-link" style="color: var(--text-muted, #94a3b8); text-decoration: none; padding: 4px 8px; border-radius: 6px;">Contact</a>
           </div>
-          <div style="margin-left: 6px; display: flex; align-items: center;">
+          <div style="margin-left: 8px; display: flex; align-items: center;">
             <button id="shell-theme-toggle" type="button" aria-label="Toggle Theme" style="background: var(--toggle-bg); border: 1px solid var(--toggle-border); border-radius: 50%; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; outline: none; transition: background-color 0.2s ease;">
               <span id="shell-theme-icon" style="display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#6366F1" style="display: block;"><path d="M12.3 2a10 10 0 0 0-.19 20 10.04 10.04 0 0 0 9.89-7.57 1 1 0 0 0-1.25-1.18A8.04 8.04 0 0 1 10.75 4.75a8 8 0 0 1 2.73-1.6 1 1 0 0 0-.68-1.92A10.22 10.22 0 0 0 12.3 2z"/></svg></span>
             </button>
@@ -628,6 +701,64 @@
           </div>
         </div>
       </div>
+
+      <!-- Standard Shell 4-Column Footer -->
+      <footer style="background: var(--footer-bg); border-top: 1px solid var(--editorial-border); padding: 3rem 2rem 2rem; margin-top: 4rem;">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 0.5rem;">
+              <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+              <span style="font-size: 18px; font-weight: 800; color: var(--editorial-heading); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                freeOCR<span style="color: #6366f1;">.me</span>
+              </span>
+            </a>
+            <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-top: 4px;">
+              Privacy-First Ephemeral OCR Platform.<br>
+              Files processed in volatile Linux RAM disk.
+            </p>
+            <div class="social-row">
+              <a href="https://x.com/freeocrme" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="https://facebook.com/freeOCRme" class="social-btn" title="Facebook" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Navigation</h3>
+            <ul class="footer-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/kb">Knowledge Base</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Engines</h3>
+            <ul class="footer-links">
+              <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">Baidu OCR</a></li>
+              <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener">Tesseract</a></li>
+              <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener">OCRmyPDF</a></li>
+              <li><a href="https://github.com/pymupdf/PyMuPDF" target="_blank" rel="noopener">PyMuPDF</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Legal &amp; Support</h3>
+            <ul class="footer-links">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
+              <li><a href="/contact">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          &copy; 2026 freeOCR.me &bull; All files processed exclusively in Linux RAM disk (tmpfs).
+        </div>
+      </footer>
     </div>
 
     <!-- Synchronous Shell Theme Controller -->
@@ -853,19 +984,61 @@
       </div>
     </section>
 
-    <footer style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--editorial-border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.9rem;">
-      <div style="display: inline-flex; align-items: center; gap: 8px;">
-        <img src="/icons/Icon-48.png" width="24" height="24" alt="freeOCR.me Logo" style="border-radius: 4px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
-        <span>&copy; 2026 freeOCR.me &bull; Ephemeral Linux RAM-Disk Optical Character Recognition</span>
+    <footer style="background: var(--footer-bg); border-top: 1px solid var(--editorial-border); padding: 3rem 2rem 2rem; margin-top: 4rem; border-radius: 16px;">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 0.5rem;">
+            <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
+            <span style="font-size: 18px; font-weight: 800; color: var(--editorial-heading); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              freeOCR<span style="color: #6366f1;">.me</span>
+            </span>
+          </a>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-top: 4px;">
+            Privacy-First Ephemeral OCR Platform.<br>
+            Files processed in volatile Linux RAM disk.
+          </p>
+          <div class="social-row">
+            <a href="https://x.com/freeocrme" class="social-btn" title="Twitter / X" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://instagram.com/freeocrme" class="social-btn" title="Instagram" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://facebook.com/freeOCRme" class="social-btn" title="Facebook" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/kb">Knowledge Base</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Engines</h3>
+          <ul class="footer-links">
+            <li><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">Baidu OCR</a></li>
+            <li><a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener">Tesseract</a></li>
+            <li><a href="https://github.com/ocrmypdf/OCRmyPDF" target="_blank" rel="noopener">OCRmyPDF</a></li>
+            <li><a href="https://github.com/pymupdf/PyMuPDF" target="_blank" rel="noopener">PyMuPDF</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--editorial-heading); margin-bottom: 1rem;">Legal &amp; Support</h3>
+          <ul class="footer-links">
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
+        </div>
       </div>
-      <nav style="display: flex; gap: 1.25rem;">
-        <a href="/knowledge-base" style="color: var(--link-color);">Knowledge Base</a>
-        <a href="/about" style="color: var(--link-color);">About Us</a>
-        <a href="/contact" style="color: var(--link-color);">Contact</a>
-        <a href="/privacy" style="color: var(--link-color);">Privacy Policy</a>
-        <a href="/terms" style="color: var(--link-color);">Terms</a>
-        <a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener" style="color: var(--link-color);">Source Code (GitHub)</a>
-      </nav>
+      <div class="footer-bottom">
+        &copy; 2026 freeOCR.me &bull; All files processed exclusively in Linux RAM disk (tmpfs).
+      </div>
     </footer>
   </article>
 

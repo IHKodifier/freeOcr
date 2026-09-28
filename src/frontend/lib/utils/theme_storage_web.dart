@@ -9,6 +9,7 @@ class ThemeStoragePlatform {
     try {
       final value = mode == ThemeMode.dark ? 'dark' : 'light';
       html.window.localStorage[_storageKey] = value;
+      html.document.documentElement?.setAttribute('data-theme', value);
     } catch (_) {}
   }
 
