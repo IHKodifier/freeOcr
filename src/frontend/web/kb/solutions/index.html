@@ -558,81 +558,7 @@
       margin-bottom: 1.25rem;
     }
 
-    footer {
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border);
-      padding: 3rem 2rem 2rem;
-      margin-top: auto;
-    }
 
-    .footer-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .footer-col h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--heading);
-      margin-bottom: 1rem;
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-col a {
-      color: var(--text-muted);
-      transition: color 0.2s;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .footer-col a:hover {
-      color: var(--accent);
-    }
-
-    .footer-brand p {
-      color: var(--text-muted);
-      font-size: 0.875rem;
-      line-height: 1.6;
-      margin-top: 0.5rem;
-    }
-
-    .footer-bottom {
-      max-width: 1140px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-      }
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-    }
-
-  
     /* Canonical Responsive AppFooter Styles (matching Flutter AppFooter widget) */
     .app-footer {
       background: var(--footer-bg, #f1f5f9);
@@ -703,19 +629,6 @@
       width: 30px;
       height: 30px;
       object-fit: cover;
-    }
-
-    .pdf-brand-icon-box {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: rgba(239, 68, 68, 0.12);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #ef4444;
-      font-weight: 800;
-      font-size: 14px;
     }
 
     .footer-brand-desc {
@@ -839,7 +752,22 @@
     [data-theme="dark"] .footer-bottom {
       border-top-color: var(--border, rgba(255, 255, 255, 0.08));
     }
-</style>
+
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
@@ -996,20 +924,19 @@
     </div>
   </main>
 
-
     <footer class="app-footer">
     <div class="footer-inner">
       <div class="footer-grid">
         <!-- Column 1: Brand & Social Channels -->
         <div class="footer-col footer-brand">
-          <a href="/" class="footer-brand-title">
-            <img src="/icons/Icon-48.png" width="30" height="30" alt="freeOCR.me Logo" class="footer-brand-icon" onerror="this.onerror=null;this.src='/favicon.png';" />
-            <span>freeOCR<span class="brand-accent">.me</span></span>
-          </a>
-          <p class="footer-brand-desc">
-            &copy; 2026 freeOCR.me &bull; Privacy-First Ephemeral OCR Platform.<br>
-            All rights reserved. Files processed in RAM disk.
-          </p>
+        <a href="/" class="footer-brand-title">
+          <img src="/icons/Icon-48.png" width="30" height="30" alt="freeOCR.me Logo" class="footer-brand-icon" onerror="this.onerror=null;this.src='/favicon.png';" />
+          <span>freeOCR<span class="brand-accent">.me</span></span>
+        </a>
+        <p class="footer-brand-desc">
+          &copy; 2026 freeOCR.me &bull; Privacy-First Ephemeral OCR Platform.<br>
+          All rights reserved. Files processed in RAM disk.
+        </p>
           <div class="footer-social-row">
             <a href="https://x.com/freeocrme" class="footer-social-btn" title="Twitter / X" target="_blank" rel="noopener" aria-label="Twitter / X">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -1027,10 +954,10 @@
         <div class="footer-col">
           <h3>Navigation</h3>
           <ul class="footer-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/kb">Knowledge Base</a></li>
-            <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/kb">Knowledge Base</a></li>
+          <li><a href="/kb/ai-vs-traditional-ocr">AI vs Traditional OCR</a></li>
           </ul>
         </div>
 

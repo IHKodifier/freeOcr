@@ -110,14 +110,13 @@ def get_category_output_paths(pillar_id):
         os.path.join(BASE_WEB_DIR, "knowledge-base", pillar_id, "index.html"),
         os.path.join(BASE_WEB_DIR, "knowledge-base", f"{pillar_id}.html"),
     ]
-    for b_dir in [BUILD_WEB_DIR, BUILD_PDFTOOLZ_DIR]:
-        if os.path.exists(b_dir):
-            paths.extend([
-                os.path.join(b_dir, "kb", pillar_id, "index.html"),
-                os.path.join(b_dir, "kb", f"{pillar_id}.html"),
-                os.path.join(b_dir, "knowledge-base", pillar_id, "index.html"),
-                os.path.join(b_dir, "knowledge-base", f"{pillar_id}.html"),
-            ])
+    if os.path.exists(BUILD_WEB_DIR):
+        paths.extend([
+            os.path.join(BUILD_WEB_DIR, "kb", pillar_id, "index.html"),
+            os.path.join(BUILD_WEB_DIR, "kb", f"{pillar_id}.html"),
+            os.path.join(BUILD_WEB_DIR, "knowledge-base", pillar_id, "index.html"),
+            os.path.join(BUILD_WEB_DIR, "knowledge-base", f"{pillar_id}.html"),
+        ])
     return paths
 
 
