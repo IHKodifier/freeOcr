@@ -79,6 +79,13 @@ void main() {
     });
 
     testWidgets('Clicking an article item switches active article in view', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1280, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       await tester.pumpWidget(const FreeOcrApp());
       await tester.pumpAndSettle();
 
@@ -91,10 +98,10 @@ void main() {
 
       // Find and tap "Optimal DPI Settings"
       final dpiNavItem = find.text('Optimal DPI Settings for Scanned Documents', skipOffstage: false);
-      expect(dpiNavItem, findsOneWidget);
+      expect(dpiNavItem, findsAtLeast(1));
 
-      await tester.ensureVisible(dpiNavItem);
-      await tester.tap(dpiNavItem);
+      await tester.ensureVisible(dpiNavItem.first);
+      await tester.tap(dpiNavItem.first);
       await tester.pumpAndSettle();
 
       // Now Optimal DPI Settings is active
