@@ -1,11 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../services/host_resolver.dart';
 import '../utils/url_helper.dart';
 
-/// Reusable Apple-inspired AppHeader with Navigation, Tools Switcher & Theme Toggle
-/// Governed by docs/DESIGN.md & HostResolver (freeOCR.me vs FreePDFToolz)
+/// Reusable Apple-inspired AppHeader with Navigation & Theme Toggle
+/// Governed by docs/DESIGN.md
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String currentRoute;
   final VoidCallback? onThemeToggle;
@@ -26,11 +25,10 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final isPdfTools = HostResolver.isFreePdfToolsDomain();
-    final showToolsDropdown = showTools ?? isPdfTools;
-    final brandPrimary = isPdfTools ? 'FreePDF' : 'freeOCR';
-    final brandSuffix = isPdfTools ? 'Toolz' : '.me';
-    final homeRoute = HostResolver.getDefaultHomeRoute();
+    final showToolsDropdown = showTools ?? false;
+    const brandPrimary = 'freeOCR';
+    const brandSuffix = '.me';
+    const homeRoute = '/';
 
     final navTextStyle = TextStyle(
       fontSize: 13,
@@ -67,43 +65,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (isPdfTools)
-                    Container(
-                      key: const Key('header_brand_logo'),
+                  ClipRRect(
+                    key: const Key('header_brand_logo'),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/brand_logo_icon.png',
                       width: 32,
                       height: 32,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF6366F1).withValues(alpha: 0.35),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.picture_as_pdf_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    )
-                  else
-                    ClipRRect(
-                      key: const Key('header_brand_logo'),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        'assets/images/brand_logo_icon.png',
-                        width: 32,
-                        height: 32,
-                        fit: BoxFit.cover,
+                      fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
                             padding: const EdgeInsets.all(6),

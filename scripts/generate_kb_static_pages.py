@@ -14,16 +14,15 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from kb_articles_data import PILLARS, ARTICLES
+from common_html_components import get_canonical_footer_css, get_canonical_footer_html
 
 BASE_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "web"))
 BUILD_WEB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "web"))
-BUILD_PDFTOOLZ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "frontend", "build", "freepdftoolz_web"))
 
 def get_target_web_dirs():
     dirs = [BASE_WEB_DIR]
-    for b_dir in [BUILD_WEB_DIR, BUILD_PDFTOOLZ_DIR]:
-        if os.path.exists(b_dir):
-            dirs.append(b_dir)
+    if os.path.exists(BUILD_WEB_DIR):
+        dirs.append(BUILD_WEB_DIR)
     return dirs
 
 HTML_TEMPLATE = """<!DOCTYPE html>
@@ -570,59 +569,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
     }}
 
-    footer {{
-      border-top: 1px solid var(--border);
-      background: var(--footer-bg);
-      padding: 3rem 2rem 2rem;
-      margin-top: auto;
-    }}
-
-    .footer-grid {{
-      max-width: 1140px;
-      margin: 0 auto 2.5rem;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2rem;
-    }}
-
-    .footer-col h4 {{
-      color: var(--heading);
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-    }}
-
-    .footer-col ul {{
-      list-style: none;
-      margin: 0;
-    }}
-
-    .footer-col li {{
-      margin-bottom: 0.6rem;
-    }}
-
-    .footer-col a {{
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      font-size: 0.9rem;
-    }}
-
-    .footer-col a:hover {{
-      color: var(--accent-light);
-    }}
-
-    .footer-bottom {{
-      max-width: 1140px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }}
+{canonical_footer_css}
 
     @media (max-width: 1280px) {{
       .main-layout {{
@@ -741,53 +688,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </aside>
   </div>
 
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-          <img src="/icons/Icon-48.png" width="28" height="28" alt="freeOCR.me Logo" style="border-radius: 6px; display: block;" onerror="this.onerror=null;this.src='/favicon.png';" />
-          <span style="font-size: 18px; font-weight: 800; color: var(--heading, #0f172a); letter-spacing: -0.5px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            freeOCR<span style="color: #6366f1;">.me</span>
-          </span>
-        </a>
-        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-top: 0.75rem;">
-          100% Free Online AI OCR utility platform. Converts scanned documents and images into searchable PDFs and structured text with zero persistent cloud storage.
-        </p>
-      </div>
-      <div class="footer-col">
-        <h4>Content Pillars</h4>
-        <ul>
-          <li><a href="/kb/workflows">Tool Guides &amp; Workflows</a></li>
-          <li><a href="/kb/comparisons">Format Comparisons</a></li>
-          <li><a href="/kb/solutions">Use-Case Solutions</a></li>
-          <li><a href="/kb/troubleshooting">Troubleshooting &amp; FAQs</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Features</h4>
-        <ul>
-          <li><a href="/">Scanned PDF to Searchable PDF</a></li>
-          <li><a href="/">Extract PDF to Markdown</a></li>
-          <li><a href="/">Multi-Column Layout OCR</a></li>
-          <li><a href="/">Radon Deskewing Pipeline</a></li>
-          <li><a href="/">Adaptive Otsu Binarization</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Governance &amp; Trust</h4>
-        <ul>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/contact">Contact</a></li>
-          <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/terms">Terms of Service</a></li>
-          <li><a href="https://github.com/IHKodifier/freeOcr" target="_blank" rel="noopener">Source Code (GitHub)</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2026 freeOCR.me &bull; Ephemeral Linux RAM-Disk Optical Character Recognition. All rights reserved.
-    </div>
-  </footer>
+{canonical_footer_html}
 
   <script>
     (function () {{
@@ -854,7 +755,9 @@ def generate_all():
             content_html=content_html,
             slug=slug,
             sidebar_links=sidebar_links,
-            category_breadcrumb=category_breadcrumb
+            category_breadcrumb=category_breadcrumb,
+            canonical_footer_css=get_canonical_footer_css(),
+            canonical_footer_html=get_canonical_footer_html("freeocr.me")
         )
 
         # Output to all target web directories

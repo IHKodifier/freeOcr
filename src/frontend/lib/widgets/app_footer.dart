@@ -2,11 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../constants/social_links.dart';
 import '../utils/url_helper.dart';
-import '../services/host_resolver.dart';
 import 'brand_icons.dart';
 
-/// Global, responsive 4-column footer component for freeOCR.me & FreePDFToolz.me.
-/// Governed by docs/DESIGN.md, HostResolver, and brand route context.
+/// Global, responsive 4-column footer component for freeOCR.me.
+/// Governed by docs/DESIGN.md.
 class AppFooter extends StatelessWidget {
   final String? currentRoute;
 
@@ -136,24 +135,6 @@ class AppFooter extends StatelessWidget {
     );
   }
 
-  bool _isPdfTools(BuildContext context) {
-    if (HostResolver.isFreePdfToolsDomain()) return true;
-    final route = currentRoute ?? ModalRoute.of(context)?.settings.name;
-    if (route != null) {
-      if (route == '/hub' ||
-          route.startsWith('/merge') ||
-          route.startsWith('/split') ||
-          route.startsWith('/rotate') ||
-          route.startsWith('/delete-pages') ||
-          route.startsWith('/extract-pages') ||
-          route.startsWith('/number-pages') ||
-          route.startsWith('/tools')) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   // --- Column 1: Brand & Social Handles ---
   Widget _buildBrandColumn(
     BuildContext context,
@@ -161,17 +142,11 @@ class AppFooter extends StatelessWidget {
     ColorScheme colorScheme,
     TextStyle linkStyle,
   ) {
-    final isPdfTools = _isPdfTools(context);
-    final brandTitle = isPdfTools ? 'FreePDFToolz' : 'freeOCR.me';
-    final brandSubtitle = isPdfTools
-        ? '© 2026 FreePDFToolz.me • 100% Free & Local-First PDF Platform.\nAll rights reserved. Zero retention & RAM disk privacy.'
-        : '© 2026 freeOCR.me • Privacy-First Ephemeral OCR Platform.\nAll rights reserved. Files processed in RAM disk.';
-    final brandIcon = isPdfTools
-        ? Icons.picture_as_pdf_rounded
-        : Icons.document_scanner_rounded;
-    final brandColor = isPdfTools
-        ? const Color(0xFFEF4444)
-        : const Color(0xFF6366F1);
+    const brandTitle = 'freeOCR.me';
+    const brandSubtitle =
+        '© 2026 freeOCR.me • Privacy-First Ephemeral OCR Platform.\nAll rights reserved. Files processed in RAM disk.';
+    const brandIcon = Icons.document_scanner_rounded;
+    const brandColor = Color(0xFF6366F1);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,45 +157,30 @@ class AppFooter extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (!isPdfTools)
-                ClipRRect(
-                  key: const Key('footer_brand_logo'),
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/images/brand_logo_icon.png',
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: brandColor.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          brandIcon,
-                          color: brandColor,
-                          size: 20,
-                        ),
-                      );
-                    },
-                  ),
-                )
-              else
-                Container(
-                  key: const Key('footer_brand_logo'),
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: brandColor.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    brandIcon,
-                    color: brandColor,
-                    size: 20,
-                  ),
+              ClipRRect(
+                key: const Key('footer_brand_logo'),
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/brand_logo_icon.png',
+                  width: 30,
+                  height: 30,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: brandColor.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        brandIcon,
+                        color: brandColor,
+                        size: 20,
+                      ),
+                    );
+                  },
                 ),
+              ),
               const SizedBox(width: 10),
               Text(
                 brandTitle,
@@ -314,8 +274,6 @@ class AppFooter extends StatelessWidget {
     TextStyle titleStyle,
     TextStyle linkStyle,
   ) {
-    final isPdfTools = _isPdfTools(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -323,21 +281,12 @@ class AppFooter extends StatelessWidget {
         const SizedBox(height: 14),
         InkWell(
           key: const Key('footer_home_btn'),
-          onTap: () => _navigateTo(context, isPdfTools ? '/hub' : '/'),
+          onTap: () => _navigateTo(context, '/'),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Text(isPdfTools ? 'Tools Hub' : 'Home', style: linkStyle),
+            child: Text('Home', style: linkStyle),
           ),
         ),
-        if (isPdfTools)
-          InkWell(
-            key: const Key('footer_ocr_btn'),
-            onTap: () => _navigateTo(context, '/ocr'),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Text('OCR PDF', style: linkStyle),
-            ),
-          ),
         InkWell(
           key: const Key('footer_about_btn'),
           onTap: () => _navigateTo(context, '/about'),

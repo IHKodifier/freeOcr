@@ -94,28 +94,31 @@ void main() {
   );
 
   testWidgets(
-    'AppFooter renders FreePDFToolz brand title, copyright, and hub links when on PDF tools route',
+    'AppFooter renders canonical freeOCR.me branding, copyright, and navigation consistently on all routes (including /merge)',
     (WidgetTester tester) async {
       await tester.pumpWidget(
         buildTestWidget(const AppFooter(currentRoute: '/merge')),
       );
       await tester.pumpAndSettle();
 
-      // Verify FreePDFToolz Brand title & Privacy commitment text
-      expect(find.text('FreePDFToolz'), findsOneWidget);
-      expect(find.textContaining('FreePDFToolz.me • 100% Free & Local-First PDF Platform'), findsOneWidget);
-      expect(find.textContaining('Zero retention & RAM disk privacy'), findsOneWidget);
+      // Verify canonical freeOCR.me Brand title & Privacy commitment text
+      expect(find.text('freeOCR.me'), findsOneWidget);
+      expect(
+        find.textContaining('© 2026 freeOCR.me • Privacy-First Ephemeral OCR Platform'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Files processed in RAM disk'), findsOneWidget);
 
-      // Verify Navigation Buttons for PDF Tools
-      expect(find.text('Tools Hub'), findsOneWidget);
+      // Verify Navigation Buttons render canonical freeOCR.me destinations
+      expect(find.text('Home'), findsOneWidget);
       expect(find.byKey(const Key('footer_home_btn')), findsOneWidget);
-      expect(find.text('OCR PDF'), findsOneWidget);
-      expect(find.byKey(const Key('footer_ocr_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_about_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_kb_btn')), findsOneWidget);
       expect(find.byKey(const Key('footer_privacy_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_terms_btn')), findsOneWidget);
+      expect(find.byKey(const Key('footer_contact_btn')), findsOneWidget);
 
-      // Verify Engine Attribution Chips still present
+      // Verify Engine Attribution Chips remain present
       expect(find.byKey(const Key('chip_pymupdf')), findsOneWidget);
     },
   );
