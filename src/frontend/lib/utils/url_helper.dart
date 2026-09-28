@@ -10,4 +10,12 @@ class UrlHelper {
   static void navigateToPath(String path, {bool openNewTab = false}) {
     helper.navigateToPath(path, openNewTab: openNewTab);
   }
+
+  static void pushUrlState(String path, {String? title}) {
+    helper.pushUrlState(path, title: title);
+  }
+
+  static void Function() listenPopState(void Function(String path) onPop) {
+    return helper.listenPopState(onPop);
+  }
 }
