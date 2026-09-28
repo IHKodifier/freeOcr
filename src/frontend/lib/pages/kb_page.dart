@@ -476,11 +476,13 @@ class _KbPageState extends State<KbPage> {
             children: [
               const Icon(Icons.shield_outlined, size: 16, color: Color(0xFF10B981)),
               const SizedBox(width: 8),
-              Text(
-                'Security Assurance',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  'Security Assurance',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],
@@ -510,11 +512,13 @@ class _KbPageState extends State<KbPage> {
             children: [
               const Icon(Icons.menu_book_outlined, size: 16, color: Color(0xFF6366F1)),
               const SizedBox(width: 8),
-              Text(
-                'On this page',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  'On this page',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],
