@@ -18,6 +18,10 @@ class AdSenseBanner extends StatelessWidget {
   static void resetSessionCount() {}
   static void rotateAd() {}
 
+  /// When true, renders the visual fallback placeholder box. Set to false to collapse
+  /// until a live Adsterra or affiliate banner is injected.
+  static bool kShowDummyBannerPlaceholder = false;
+
   const AdSenseBanner({
     super.key,
     this.height = 54.0,
@@ -27,7 +31,7 @@ class AdSenseBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kAdSenseApproved) {
+    if (!kShowDummyBannerPlaceholder) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
