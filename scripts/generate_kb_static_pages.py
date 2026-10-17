@@ -67,6 +67,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }})();
   </script>
 
+  <!-- Monetag In-Page Push Clean Banner Zone -->
+  <script>(function(s){{s.dataset.zone='12057513',s.src='https://nap5k.com/tag.min.js'}})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
   <!-- Google AdSense Monetization Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6775900998665017" crossorigin="anonymous"></script>
 
