@@ -598,21 +598,27 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.bolt_rounded, color: Colors.amber, size: 22),
-                                const SizedBox(width: 8),
-                                Text(
-                                  _totalAdsRequired > 1
-                                      ? 'Sponsored Boost • Step ${_completedAds + 1} of $_totalAdsRequired'
-                                      : 'Sponsored Boost',
-                                  style: TextStyle(
-                                    color: isDark ? Colors.white70 : const Color(0xFF334155),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.bolt_rounded, color: Colors.amber, size: 22),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: Text(
+                                      _totalAdsRequired > 1
+                                          ? 'Sponsored Boost • Ad ${_completedAds + 1} of $_totalAdsRequired'
+                                          : 'Sponsored Boost',
+                                      style: TextStyle(
+                                        color: isDark ? Colors.white70 : const Color(0xFF334155),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             IconButton(
                               onPressed: _confirmEarlyCancel,
@@ -630,13 +636,14 @@ class _RewardedVideoAdModalState extends State<RewardedVideoAdModal> {
                         const SizedBox(height: 12),
                         Text(
                           _totalAdsRequired > 1
-                              ? 'Sponsored Limit Boost (Step ${_completedAds + 1} of $_totalAdsRequired)'
+                              ? 'Sponsored Limit Boost (Ad ${_completedAds + 1} of $_totalAdsRequired)'
                               : 'Sponsored Limit Boost',
                           style: TextStyle(
                             color: primaryText,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
                         Text(
