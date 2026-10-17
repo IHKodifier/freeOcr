@@ -12,7 +12,7 @@ class AdSenseBanner extends StatelessWidget {
   /// Set to true once Google AdSense account/site review has been approved.
   /// When false, collapses all ad placeholders across the entire domain to prevent
   /// "Low value content / Premature ad placement" policy flags.
-  static bool kAdSenseApproved = false;
+  static bool kAdSenseApproved = true;
 
   /// Retained as safe no-ops for API compatibility with existing callers.
   static void resetSessionCount() {}
