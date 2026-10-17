@@ -20,11 +20,10 @@ class RewardedVideoAdModal extends StatefulWidget {
   /// Override for testing ad playback flow explicitly.
   static bool? debugOverrideAdPlayback;
 
-  /// When true (e.g. once video ad network is live), displays the ad playback simulation.
-  /// When false (default during AdSense review), suppresses fake ad countdowns
-  /// and provides a clean, instant free quota boost.
+  /// When true (default for live Monetag rewarded ad flow), enforces full 15-second ad playback before unlocking limits.
+  /// When false (explicit test override), provides an instant quota boost.
   static bool get isAdPlaybackEnabled =>
-      debugOverrideAdPlayback ?? AdSenseBanner.kAdSenseApproved;
+      debugOverrideAdPlayback ?? true;
 
   const RewardedVideoAdModal({
     super.key,

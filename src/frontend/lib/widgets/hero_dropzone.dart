@@ -30,8 +30,8 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   bool _isDragging = false;
   bool _isHovered = false;
   bool _isUploading = false;
-  double _activeLimitMb = 50.0;
-  DateTime? _boostExpiresAt;
+  double _activeLimitMb = AppLimitsConfig.activeLimitMb;
+  DateTime? _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
   Timer? _boostTicker;
 
 
@@ -49,23 +49,54 @@ class _HeroDropzoneState extends State<HeroDropzone> {
   @override
   void initState() {
     super.initState();
+    _activeLimitMb = AppLimitsConfig.activeLimitMb;
+    _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
     _startBoostTicker();
   }
 
   void _startBoostTicker() {
+    _boostTicker?.cancel();
     _boostTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_boostExpiresAt != null) {
-        if (DateTime.now().isAfter(_boostExpiresAt!)) {
+      if (AppLimitsConfig.isBoostActive) {
+        if (mounted) {
           setState(() {
-            _activeLimitMb = 50.0;
+            _activeLimitMb = AppLimitsConfig.activeLimitMb;
+            _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
+          });
+        }
+      } else if (_boostExpiresAt != null) {
+        if (mounted) {
+          setState(() {
+            _activeLimitMb = AppLimitsConfig.baseMaxFileMb;
             _boostExpiresAt = null;
           });
           _showToast('Session limit boost expired. Reverted to standard limit.', isError: true);
-        } else {
-          setState(() {}); // Rebuild for countdown ticker display
         }
       }
     });
+  }
+
+  void _openBoostModal() {
+    final double nextTargetMb = (_activeLimitMb + 50.0).clamp(50.0, 1024.0);
+    RewardedVideoAdModal.show(
+      context: context,
+      filename: 'Session Capacity Boost (+50 MB)',
+      fileSizeInBytes: (nextTargetMb * 1024 * 1024).toInt(),
+      currentLimitMb: _activeLimitMb,
+      boostPerAdMb: 50.0,
+      maxStackMb: 1024.0,
+      adDurationSeconds: 15,
+      onWatchAd: (boostedLimit) {
+        AppLimitsConfig.recordBoost(boostedLimit);
+        if (mounted) {
+          setState(() {
+            _activeLimitMb = AppLimitsConfig.activeLimitMb;
+            _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
+          });
+          _showToast('⚡ Session limit boosted to ${_activeLimitMb.toInt()} MB for the next 60 minutes!');
+        }
+      },
+    );
   }
 
   @override
@@ -176,8 +207,8 @@ class _HeroDropzoneState extends State<HeroDropzone> {
               if (mounted) {
                 AppLimitsConfig.recordBoost(boostedLimit);
                 setState(() {
-                  _activeLimitMb = boostedLimit > maxStackMb ? maxStackMb : boostedLimit;
-                  _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
+                  _activeLimitMb = AppLimitsConfig.activeLimitMb;
+                  _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
                 });
               }
             },
@@ -194,8 +225,8 @@ class _HeroDropzoneState extends State<HeroDropzone> {
 
         if (boostedLimitFromModal != null && mounted) {
           setState(() {
-            _activeLimitMb = boostedLimitFromModal! > maxStackMb ? maxStackMb : boostedLimitFromModal!;
-            _boostExpiresAt = DateTime.now().add(const Duration(seconds: 3600));
+            _activeLimitMb = AppLimitsConfig.activeLimitMb;
+            _boostExpiresAt = AppLimitsConfig.boostExpiresAt;
           });
           if (boostedLimitFromModal! < (size / (1024 * 1024))) {
             _showToast(
@@ -783,77 +814,112 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: colorScheme.outlineVariant.withValues(alpha: 0.4),
-                      width: 1,
+                if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) ...[
+                  // Boosted Tier Active View
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: theme.brightness == Brightness.dark
+                          ? const Color(0xFF1E293B)
+                          : const Color(0xFFFEF3C7),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.amber.shade400.withValues(alpha: 0.5)
+                            : const Color(0xFFFCD34D),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.withValues(alpha: 0.12),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      children: [
+                        const Icon(Icons.bolt_rounded, size: 18, color: Colors.amber),
+                        Text(
+                          'Up to ${_activeLimitMb.toInt()} MB free per PDF (Boosted)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.amber.shade200
+                                : const Color(0xFF78350F),
+                          ),
+                        ),
+                        if (_activeLimitMb < 1024) ...[
+                          Tooltip(
+                            message: 'Watch short 15s sponsor ad to add +50 MB more to your active limit',
+                            child: InkWell(
+                              onTap: _openBoostModal,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                child: Text(
+                                  '• + Boost More (+50 MB)',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: theme.brightness == Brightness.dark
+                                        ? Colors.amber.shade400
+                                        : const Color(0xFFB45309),
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 6,
-                    children: [
-                      const Icon(
-                        Icons.check_circle_outline_rounded,
-                        size: 15,
-                        color: Color(0xFF10B981),
-                      ),
-                      Text(
-                        'Up to 100 MB free per PDF',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        AdSenseBanner.kAdSenseApproved
-                            ? '• Boost up to 1 GB with Ads'
-                            : '• Boost up to 1 GB Free',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF6366F1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 14),
-                if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) ...[
+                  const SizedBox(height: 10),
+                  // Countdown Timer Ticker Banner
                   Builder(
                     builder: (context) {
                       final remaining = _boostExpiresAt!.difference(DateTime.now());
+                      final hours = remaining.inHours;
                       final minutes = remaining.inMinutes.remainder(60).toString().padLeft(2, '0');
                       final seconds = remaining.inSeconds.remainder(60).toString().padLeft(2, '0');
+                      final timeStr = hours > 0 ? '$hours:$minutes:$seconds' : '$minutes:$seconds';
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.amber.shade900.withValues(alpha: 0.4),
-                              Colors.purple.shade900.withValues(alpha: 0.3),
-                            ],
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.black.withValues(alpha: 0.45)
+                              : const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.white12
+                                : const Color(0xFFCBD5E1),
                           ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.amber.shade400.withValues(alpha: 0.6), width: 1.5),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.bolt_rounded, color: Colors.amber, size: 20),
+                            Icon(
+                              Icons.timer_outlined,
+                              size: 15,
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.cyanAccent
+                                  : const Color(0xFF0284C7),
+                            ),
                             const SizedBox(width: 6),
                             Text(
-                              '⚡ Boost Active: Up to ${_activeLimitMb.toInt()}MB each (Expires in $minutes:$seconds)',
+                              'Session Boost Active: $timeStr remaining',
                               style: TextStyle(
-                                color: Colors.amber.shade200,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: theme.brightness == Brightness.dark
+                                    ? const Color(0xFFCBD5E1)
+                                    : const Color(0xFF334155),
                               ),
                             ),
                           ],
@@ -861,7 +927,60 @@ class _HeroDropzoneState extends State<HeroDropzone> {
                       );
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 14),
+                ] else ...[
+                  // Base Free Tier View
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: colorScheme.outlineVariant.withValues(alpha: 0.4),
+                        width: 1,
+                      ),
+                    ),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 6,
+                      children: [
+                        const Icon(
+                          Icons.check_circle_outline_rounded,
+                          size: 15,
+                          color: Color(0xFF10B981),
+                        ),
+                        Text(
+                          'Up to 100 MB free per PDF',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        Tooltip(
+                          message: 'Watch short 15s sponsor ad to boost limit by +50 MB',
+                          child: InkWell(
+                            onTap: _openBoostModal,
+                            borderRadius: BorderRadius.circular(8),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              child: Text(
+                                '• ⚡ Boost up to 1 GB with Ads',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF6366F1),
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
                 ],
                 // Format Badges Row matching Stitch Screen 01
                 Wrap(

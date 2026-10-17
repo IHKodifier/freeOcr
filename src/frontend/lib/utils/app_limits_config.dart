@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../services/api_service.dart';
 import 'limit_evaluator.dart';
+import 'boost_storage_helper.dart';
 
 /// Canonical Single Source of Truth for Application Limits & Monetization Rules.
 /// Sourced dynamically from `src/backend/app/app_limits_config.json` via:
@@ -38,6 +39,7 @@ class AppLimitsConfig {
       displayAdsEnabled = monetization['display_ads_enabled'] as bool? ?? true;
       rewardedAdsEnabled = monetization['rewarded_ads_enabled'] as bool? ?? true;
 
+      _checkPersistedBoost();
       if (_activeLimitMb < baseMaxFileMb) {
         _activeLimitMb = baseMaxFileMb;
       }
@@ -50,8 +52,42 @@ class AppLimitsConfig {
   /// Whether config has already been loaded.
   static bool get isLoaded => _isLoaded;
 
+  /// Checks and restores any active boost from browser localStorage if not expired.
+  static void _checkPersistedBoost() {
+    if (_boostExpiresAt == null) {
+      final saved = BoostStorageHelper.loadBoost();
+      if (saved != null) {
+        _activeLimitMb = (saved['limitMb'] as double?) ?? baseMaxFileMb;
+        _boostExpiresAt = saved['expiresAt'] as DateTime?;
+      }
+    } else if (DateTime.now().isAfter(_boostExpiresAt!)) {
+      resetBoost();
+    }
+  }
+
+  /// Expiry timestamp of current active limit boost, or null if no boost active.
+  static DateTime? get boostExpiresAt {
+    _checkPersistedBoost();
+    return _boostExpiresAt;
+  }
+
+  /// Whether a boosted limit is currently active within its TTL window.
+  static bool get isBoostActive {
+    _checkPersistedBoost();
+    return _boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!);
+  }
+
+  /// Remaining seconds on the active limit boost window (0 if expired/inactive).
+  static int get boostRemainingSeconds {
+    _checkPersistedBoost();
+    if (_boostExpiresAt == null) return 0;
+    final diff = _boostExpiresAt!.difference(DateTime.now()).inSeconds;
+    return diff > 0 ? diff : 0;
+  }
+
   /// Returns currently active limit in MB, accounting for session boost TTL.
   static double get activeLimitMb {
+    _checkPersistedBoost();
     if (_boostExpiresAt != null && DateTime.now().isBefore(_boostExpiresAt!)) {
       return _activeLimitMb.clamp(baseMaxFileMb, maxStackFileMb);
     }
@@ -62,6 +98,7 @@ class AppLimitsConfig {
   static void recordBoost(double newLimitMb) {
     _activeLimitMb = newLimitMb > maxStackFileMb ? maxStackFileMb : newLimitMb;
     _boostExpiresAt = DateTime.now().add(Duration(seconds: adBoostTtlSeconds));
+    BoostStorageHelper.saveBoost(limitMb: _activeLimitMb, expiresAt: _boostExpiresAt!);
     ApiService.notifyRewardedAdWatched();
   }
 
@@ -69,6 +106,7 @@ class AppLimitsConfig {
   static void resetBoost() {
     _activeLimitMb = baseMaxFileMb;
     _boostExpiresAt = null;
+    BoostStorageHelper.clearBoost();
   }
 
   /// Evaluates whether a file size in bytes exceeds the current active limit.
