@@ -12,15 +12,11 @@ class AdSenseBanner extends StatelessWidget {
   /// Set to true once Google AdSense account/site review has been approved.
   /// When false, collapses all ad placeholders across the entire domain to prevent
   /// "Low value content / Premature ad placement" policy flags.
-  static bool kAdSenseApproved = true;
+  static bool kAdSenseApproved = false;
 
   /// Retained as safe no-ops for API compatibility with existing callers.
   static void resetSessionCount() {}
   static void rotateAd() {}
-
-  /// When true, renders the visual fallback placeholder box. Set to false to collapse
-  /// until a live Adsterra or affiliate banner is injected.
-  static bool kShowDummyBannerPlaceholder = false;
 
   const AdSenseBanner({
     super.key,
@@ -31,7 +27,7 @@ class AdSenseBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kShowDummyBannerPlaceholder) {
+    if (!kAdSenseApproved) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
