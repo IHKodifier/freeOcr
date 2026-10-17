@@ -108,7 +108,7 @@ void main() {
       // Tap Watch Ad
       await tester.tap(watchAdButton);
       await tester.pump();
-      expect(find.textContaining('Rewarded Video Sponsor Ad'), findsOneWidget);
+      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
       await tester.pump(const Duration(seconds: 16));
       // Verify Green Success Card & Tap Continue
       final continueButton = find.text('Continue Processing File');
@@ -177,7 +177,7 @@ void main() {
       // Tap Watch Ad 1
       await tester.tap(watchAd1Button);
       await tester.pump();
-      expect(find.textContaining('Rewarded Video Sponsor Ad'), findsOneWidget);
+      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
       expect(find.textContaining('Ad 1 of 2'), findsWidgets);
 
       // Advance 16 seconds to complete Ad 1
@@ -196,7 +196,7 @@ void main() {
       await tester.pump();
 
       // Verify Ad 2 is playing
-      expect(find.textContaining('Rewarded Video Sponsor Ad'), findsOneWidget);
+      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
       expect(find.textContaining('Ad 2 of 2'), findsWidgets);
 
       // Advance 16 seconds to complete Ad 2
@@ -249,7 +249,7 @@ void main() {
       await tester.pump();
 
       // Verify no 15-second timer or fake ad video view appeared
-      expect(find.textContaining('Rewarded Video Sponsor Ad'), findsNothing);
+      expect(find.textContaining('Sponsored Limit Boost'), findsNothing);
 
       // Verify immediate success state
       expect(find.textContaining('All Quotas Unlocked'), findsOneWidget);

@@ -58,9 +58,14 @@ Target Goal:        Live Multi-Display Revenue + Payouts Verified to HBL Pakista
 
 ---
 
-### 🎫 TICKET-03: Monetag Clean Native/Display Tag Integration
+### 🎫 TICKET-03: Monetag Clean Native/Display Tag Integration & Rewarded Ad Limits
 * **File:** [`TICKET-03-MONETAG-DISPLAY-BANNER-INTEGRATION.md`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/adsense-remediation/adsense%20alternate-implementation-roadmap-tickets/TICKET-03-MONETAG-DISPLAY-BANNER-INTEGRATION.md)
-* **Status:** 🟢 **COMPLETED**
-- [x] Script tag generated for Zone `12057513` (`https://nap5k.com/tag.min.js`).
+* **Status:** 🟢 **COMPLETED & VERIFIED**
+- [x] Script tag generated for In-Page Push clean banner Zone `12057513` (`https://nap5k.com/tag.min.js`).
 - [x] Embedded inside `<head>` in [`src/frontend/web/index.html`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/src/frontend/web/index.html).
 - [x] Embedded inside `HTML_TEMPLATE` in [`scripts/generate_kb_static_pages.py`](file:///e:/Non_Office/Dev_Space/vibe_skool/freeOcr/scripts/generate_kb_static_pages.py).
+- [x] Script tag generated for Rewarded Vignette Zone `12057981` (`https://n6wxm.com/vignette.min.js`).
+- [x] Fixed Rewarded Ad playback logic: Decoupled `isAdPlaybackEnabled` from `kAdSenseApproved` to enforce the full 15-second sponsor video playback before unlocking quota.
+- [x] Responsive Dropzone Limit Display: Dynamically displays active limit badge (`Up to 100 MB` vs `Up to 150 MB (Boosted)`) and live session countdown timer (`Session Boost Active: MM:SS remaining`).
+- [x] Direct on-demand dropzone trigger: User can tap `• ⚡ Boost up to 1 GB with Ads` or `• + Boost More (+50 MB)` anytime directly on the hero dropzone to open the rewarded video modal.
+- [x] Cross-platform Session Persistence: Implemented `BoostStorageHelper` storing active boost and expiry in `localStorage` across page reloads.
