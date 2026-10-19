@@ -52,7 +52,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                     children: [
                       Text('Privacy Policy (GDPR & CCPA Compliant)', style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
-                      Text('Last Updated: September 2026', style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
+                      Text('Last Updated: October 2026', style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
                       const SizedBox(height: 16),
                       const AdSenseBanner(),
                       const SizedBox(height: 20),
@@ -79,13 +79,23 @@ class _PrivacyPageState extends State<PrivacyPage> {
                       ),
                       _buildSection(
                         context,
-                        title: '5. Google AdSense & Third-Party Advertising Cookies',
-                        body: 'We use Google AdSense to display non-intrusive advertisements. Google and its partners use cookies (such as the DoubleClick cookie) to serve ads based on user visits to this or other websites. You can manage or opt out of personalized advertising by visiting Google Ads Settings (https://adssettings.google.com).',
+                        title: '5. Third-Party Advertising Networks & Programmatic Partners',
+                        body: 'To keep $brandTitle 100% free and universally accessible without account barriers, we partner with verified digital advertising networks including Google AdSense, Monetag (PropellerAds), Adsterra, and Infolinks to serve non-intrusive display banners, native cards, and sponsored limit-boost units. These networks may use transient cookies or web beacons to prevent ad fraud, evaluate viewability, and enforce frequency capping. You may opt out of personalized ad cookies via Google Ads Settings (https://adssettings.google.com), the Digital Advertising Alliance (https://optout.aboutads.info), or the Network Advertising Initiative (https://optout.networkadvertising.org).',
                       ),
                       _buildSection(
                         context,
-                        title: '6. Anonymized Telemetry & Local Browser Storage',
-                        body: 'We collect anonymized interaction events (such as page views and conversion success indicators) via Google Analytics 4 (GA4) to maintain infrastructure reliability. We use local browser storage exclusively for preserving your Light/Dark Mode theme preference and active session limit boost passes.',
+                        title: '6. Anonymized Telemetry, Local Browser Storage & Session Boosts',
+                        body: 'We collect minimal, anonymized interaction events via Google Analytics 4 (GA4) to ensure uptime and conversion reliability. We use local browser storage (localStorage) strictly for client-side state: preserving your Light/Dark Mode preference (freeocr_theme) and temporarily recording active sponsored quota boost passes (freeocr_boost_*). These entries contain zero personal identification and clear automatically upon expiration.',
+                      ),
+                      _buildSection(
+                        context,
+                        title: '7. Affiliate Partner Recommendations & Commercial Transparency (FTC Disclosure)',
+                        body: 'In accordance with FTC guidelines, we transparently disclose that certain educational guides and post-conversion screens may feature partner recommendations for specialized desktop utilities (e.g. EaseUS PDF Editor or CloudConvert) with rel="sponsored nofollow" attribution. If you choose to purchase commercial desktop software through these links, $brandTitle may receive a referral commission at zero additional cost to you, directly subsidizing our cloud OCR infrastructure.',
+                      ),
+                      _buildSection(
+                        context,
+                        title: '8. Complete Data Isolation: Zero Third-Party Document Access Guarantee',
+                        body: 'We enforce absolute technical separation between client dropzones, document processing pipelines, and third-party advertising scripts. Ad tags and partner scripts operate exclusively in sandboxed browser DOM or iframe contexts and have zero access to uploaded PDF files, images, OCR output text, or volatile RAM-disk (tmpfs) conversion memory.',
                       ),
                     ],
                   ),

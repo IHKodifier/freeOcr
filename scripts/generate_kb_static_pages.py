@@ -688,8 +688,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </main>
 
     <aside class="ads-rail" aria-label="Sponsor and Ad Content">
-      <div class="ads-card">
-        <!-- Reserved for high-relevance vertical display units post-approval -->
+      <div class="ads-card" id="monetag-ad-slot" style="min-width: 300px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; box-sizing: border-box;">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; display: block; width: 100%; text-align: center;">Sponsored</span>
+        
+        <!-- Monetag Clean Native / Display Tag (Zone 12057513) -->
+        <div id="monetag-zone-12057513" style="width: 100%; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+          <script>(function(s,u,z,p){{s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);}})(document.createElement('script'),'https://nap5k.com/tag.min.js',12057513,document.getElementById('monetag-zone-12057513'))</script>
+        </div>
       </div>
     </aside>
   </div>

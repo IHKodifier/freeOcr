@@ -25,6 +25,19 @@
       ],
       "headers": [
         {
+          "source": "ads.txt",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain; charset=utf-8"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "max-age=3600, public"
+            }
+          ]
+        },
+        {
           "source": "**",
           "headers": [
             {

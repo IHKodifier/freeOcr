@@ -1,1 +1,31 @@
+# ==============================================================================
+# freeOCR.me — Authorized Digital Sellers (ads.txt)
+# Specification: IAB Tech Lab ads.txt v1.1
+# Canonical Host: https://freeocr.me/ads.txt
+# Last Updated: October 2026
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Google AdSense / Google Ad Manager
+# Client ID: ca-pub-6775900998665017
+# TAG ID: f08c47fec0942fa0
+# ------------------------------------------------------------------------------
 google.com, pub-6775900998665017, DIRECT, f08c47fec0942fa0
+
+# ------------------------------------------------------------------------------
+# Monetag / PropellerAds Network
+# Active Zones: 12057513 (Clean In-Page Push), 12057981 (Rewarded Vignette)
+# ------------------------------------------------------------------------------
+propellerads.com, 12057513, DIRECT
+
+# ------------------------------------------------------------------------------
+# Adsterra Advertising Network
+# Clean Display Banners (300x250 / 728x90)
+# ------------------------------------------------------------------------------
+adsterra.com, 258849, DIRECT
+
+# ------------------------------------------------------------------------------
+# Infolinks Contextual Advertising Network
+# Secondary InFold / InTag Display Layer
+# ------------------------------------------------------------------------------
+infolinks.com, 3421890, DIRECT

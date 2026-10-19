@@ -55,7 +55,7 @@ void main() {
 
     // Verify Rewarded Video modal opens
     expect(find.byType(RewardedVideoAdModal), findsOneWidget);
-    expect(find.textContaining('Watch 15s Ad to Stack Boost'), findsOneWidget);
+    expect(find.textContaining('Load Sponsor Ad'), findsOneWidget);
   });
 
   testWidgets('When boost is active, dropzone renders boosted limit badge and countdown timer',

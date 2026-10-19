@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_ocr_frontend/widgets/rewarded_video_ad_modal.dart';
 import 'package:free_ocr_frontend/utils/limit_evaluator.dart';
 
-
 void main() {
   group('LimitEvaluator Unit Tests', () {
     test('Correctly identifies file size under limit', () {
@@ -51,14 +50,6 @@ void main() {
   });
 
   group('RewardedVideoAdModal Widget Tests', () {
-    setUp(() {
-      RewardedVideoAdModal.debugOverrideAdPlayback = true;
-    });
-
-    tearDown(() {
-      RewardedVideoAdModal.debugOverrideAdPlayback = null;
-    });
-
     testWidgets('Renders frosted glass modal with file size and boost options', (WidgetTester tester) async {
       bool watchAdClicked = false;
       bool cancelClicked = false;
@@ -72,7 +63,6 @@ void main() {
               currentLimitMb: 50.0,
               boostPerAdMb: 50.0,
               maxStackMb: 1024.0,
-              adDurationSeconds: 15,
               onWatchAd: (boostedLimit) {
                 watchAdClicked = true;
               },
@@ -100,16 +90,14 @@ void main() {
       expect(find.textContaining('+50 MB'), findsWidgets);
       expect(find.textContaining('1024 MB'), findsOneWidget);
 
+      // Verify Load Sponsor Ad button
+      final loadSponsorAdButton = find.textContaining('Load Sponsor Ad');
+      expect(loadSponsorAdButton, findsOneWidget);
 
-      // Verify Watch Ad button
-      final watchAdButton = find.textContaining('Watch 15s Ad to Stack Boost');
-      expect(watchAdButton, findsOneWidget);
-
-      // Tap Watch Ad
-      await tester.tap(watchAdButton);
+      // Tap Load Sponsor Ad
+      await tester.tap(loadSponsorAdButton);
       await tester.pump();
-      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
-      await tester.pump(const Duration(seconds: 16));
+
       // Verify Green Success Card & Tap Continue
       final continueButton = find.text('Continue Processing File');
       expect(continueButton, findsOneWidget);
@@ -157,7 +145,6 @@ void main() {
               currentLimitMb: 100.0,
               boostPerAdMb: 50.0,
               maxStackMb: 1024.0,
-              adDurationSeconds: 15,
               onWatchAd: (boostedLimit) {
                 finalBoostedLimit = boostedLimit;
               },
@@ -170,18 +157,13 @@ void main() {
       expect(find.textContaining('2 Short Ads Required'), findsOneWidget);
       expect(find.textContaining('Ad 1 of 2'), findsWidgets);
 
-      // Verify Watch Ad 1 button
-      final watchAd1Button = find.textContaining('Watch Ad 1 of 2');
-      expect(watchAd1Button, findsOneWidget);
+      // Verify Load Sponsor Ad 1 button
+      final loadAd1Button = find.textContaining('Load Sponsor Ad 1 of 2');
+      expect(loadAd1Button, findsOneWidget);
 
-      // Tap Watch Ad 1
-      await tester.tap(watchAd1Button);
+      // Tap Load Sponsor Ad 1
+      await tester.tap(loadAd1Button);
       await tester.pump();
-      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
-      expect(find.textContaining('Ad 1 of 2'), findsWidgets);
-
-      // Advance 16 seconds to complete Ad 1
-      await tester.pump(const Duration(seconds: 16));
 
       // Verify Intermediate Milestone is rendered (NOT premature "Continue Processing File")
       expect(find.text('Continue Processing File'), findsNothing);
@@ -189,24 +171,17 @@ void main() {
       expect(find.textContaining('150 MB'), findsWidgets);
       expect(find.textContaining('1 more ad needed'), findsOneWidget);
 
-      // Tap Watch Final Ad (Ad 2 of 2)
-      final watchAd2Button = find.textContaining('Watch Final Ad (Ad 2 of 2)');
-      expect(watchAd2Button, findsOneWidget);
-      await tester.tap(watchAd2Button);
+      // Tap Load Final Sponsor Ad (Ad 2 of 2)
+      final loadAd2Button = find.textContaining('Load Final Sponsor Ad (Ad 2 of 2)');
+      expect(loadAd2Button, findsOneWidget);
+      await tester.tap(loadAd2Button);
       await tester.pump();
-
-      // Verify Ad 2 is playing
-      expect(find.textContaining('Sponsored Limit Boost'), findsOneWidget);
-      expect(find.textContaining('Ad 2 of 2'), findsWidgets);
-
-      // Advance 16 seconds to complete Ad 2
-      await tester.pump(const Duration(seconds: 16));
 
       // Verify Final Success Card is rendered
       expect(find.textContaining('All Quotas Unlocked'), findsOneWidget);
       expect(find.textContaining('200 MB'), findsWidgets);
 
-      // Tap Start/Continue Processing File Now
+      // Tap Continue Processing File
       final continueButton = find.text('Continue Processing File');
       expect(continueButton, findsOneWidget);
       await tester.ensureVisible(continueButton);
@@ -217,8 +192,7 @@ void main() {
       expect(finalBoostedLimit, equals(200.0));
     });
 
-    testWidgets('When isAdPlaybackEnabled is false (AdSense review mode), unlocks boost instantly without ad countdown', (WidgetTester tester) async {
-      RewardedVideoAdModal.debugOverrideAdPlayback = false;
+    testWidgets('On-demand boost unlocks immediately without timer countdown', (WidgetTester tester) async {
       double boostedResult = 0.0;
 
       await tester.pumpWidget(
@@ -238,23 +212,17 @@ void main() {
         ),
       );
 
-      // Verify clean instant boost UI (no fake sponsor ad labels)
+      // Verify clean on-demand boost UI
       expect(find.text('File Size Limit Exceeded'), findsOneWidget);
-      expect(find.textContaining('Unlock Ephemeral RAM-Disk Boost'), findsOneWidget);
-      expect(find.textContaining('Unlock Instant Free Boost'), findsOneWidget);
+      expect(find.textContaining('Unlock Stackable Limit Boost'), findsOneWidget);
 
-      // Tap instant boost
-      final instantButton = find.textContaining('Unlock Instant Free Boost');
-      await tester.tap(instantButton);
+      // Tap on-demand sponsor ad button
+      final loadButton = find.textContaining('Load Sponsor Ad');
+      await tester.tap(loadButton);
       await tester.pump();
-
-      // Verify no 15-second timer or fake ad video view appeared
-      expect(find.textContaining('Sponsored Limit Boost'), findsNothing);
 
       // Verify immediate success state
       expect(find.textContaining('All Quotas Unlocked'), findsOneWidget);
-      expect(find.textContaining('Each ad watch adds'), findsNothing);
-      expect(find.textContaining('Each session boost adds'), findsOneWidget);
 
       final continueButton = find.text('Continue Processing File');
       expect(continueButton, findsOneWidget);
@@ -262,7 +230,7 @@ void main() {
       await tester.tap(continueButton);
       await tester.pump();
 
-      expect(boostedResult, equals(150.0));
+      expect(boostedResult, equals(100.0));
     });
   });
 }

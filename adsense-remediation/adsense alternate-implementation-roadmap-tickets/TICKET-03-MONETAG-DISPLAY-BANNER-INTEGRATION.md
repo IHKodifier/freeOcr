@@ -86,7 +86,7 @@ To guarantee that Google's Core Web Vitals remain pristine:
 ---
 
 ## 4. Acceptance Criteria
-- [ ] `scripts/generate_kb_static_pages.py` contains the Monetag tag with correct zone ID.
-- [ ] All 23 static KB pages are regenerated and contain the ad tag.
-- [ ] Opening `src/frontend/web/kb/ocr-guide/index.html` in Chrome displays the "Sponsored" label and loads the programmatic ad creative.
-- [ ] Zero popups, zero popunders, and zero intrusive push prompts appear when interacting with the page.
+- [x] `scripts/generate_kb_static_pages.py` contains the Monetag tag with correct zone ID.
+- [x] All 23 static KB pages are regenerated and contain the ad tag.
+- [x] Opening `src/frontend/web/kb/ocr-guide/index.html` in Chrome displays the "Sponsored" label and loads the programmatic ad creative.
+- [x] Zero popups, zero popunders, and zero intrusive push prompts appear when interacting with the page.

@@ -606,7 +606,7 @@
   <main class="container">
     <article>
       <h1>Privacy Policy (GDPR &amp; CCPA Compliant)</h1>
-      <div class="meta">Last Updated: August 30, 2026 • freeOCR.me Trust &amp; Ephemeral Architecture</div>
+      <div class="meta">Last Updated: October 2026 • freeOCR.me Trust &amp; Ephemeral Architecture</div>
 
       <!-- Native Google AdSense Display Unit (Uncomment post-approval)
       <div class="ad-banner-slot">
@@ -644,33 +644,56 @@
       </section>
 
       <section class="policy-section">
-        <h2>3. Google AdSense &amp; Advertising Cookies</h2>
-        <p>freeOCR.me is monetized through Google AdSense. Third-party vendors, including Google, use cookies to serve
-          ads based on prior visits to this or other websites.</p>
-        <p>Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to
-          freeOCR.me and other sites on the Internet. You may opt out of personalized advertising by visiting <a
-            href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a> or <a
-            href="https://www.aboutads.info" target="_blank" rel="noopener">aboutads.info</a>.</p>
+        <h2>3. Third-Party Advertising Networks, Programmatic Display &amp; Cookies</h2>
+        <p>To keep freeOCR.me 100% free and open to everyone without mandatory account registration or paywalls, we partner with verified digital advertising networks to display non-intrusive banner advertisements, native recommendation cards, and sponsored limit-boost units.</p>
+        <p>Our advertising partners include:</p>
+        <ul>
+          <li><strong>Google AdSense / Google Ad Manager:</strong> Serves contextual and programmatic display units. Google uses cookies (including the DoubleClick cookie) to serve ads based on user visits to this or other websites. You may manage your ad preferences via <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>.</li>
+          <li><strong>Monetag (PropellerAds Network):</strong> Delivers clean in-page push units and optional rewarded sponsorship vignettes (Zone 12057513, Zone 12057981). Monetag utilizes ephemeral session tokens for frequency capping and viewability audit.</li>
+          <li><strong>Adsterra Advertising Network:</strong> Provides standard clean display banners (300x250 and 728x90) filtered strictly to exclude mature, gambling, or deceptive creative feeds.</li>
+          <li><strong>Infolinks:</strong> Provides secondary contextual in-frame and bottom-docked display units.</li>
+        </ul>
+        <p>Third-party ad networks may place standard HTTP cookies, web beacons, or client-side identifiers to measure ad performance, prevent bot fraud, and enforce frequency capping (preventing repetitive ad exposure). You can opt out of third-party vendor cookies for personalized advertising by visiting the <a href="https://optout.aboutads.info" target="_blank" rel="noopener">Digital Advertising Alliance (DAA)</a>, the <a href="https://optout.networkadvertising.org" target="_blank" rel="noopener">Network Advertising Initiative (NAI)</a>, or the <a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener">European Interactive Digital Advertising Alliance (EDAA)</a>.</p>
       </section>
 
       <section class="policy-section">
-        <h2>4. Your GDPR &amp; CCPA Rights</h2>
-        <p>Under the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), users enjoy
-          comprehensive data privacy rights:</p>
+        <h2>4. Session Limit Boosts &amp; Local Browser Storage (localStorage)</h2>
+        <p>freeOCR.me uses your browser's local storage (<code>localStorage</code>) strictly for essential client-side state preservation. We never use local storage for cross-site behavioral tracking or fingerprinting:</p>
         <ul>
-          <li><strong>Right to Erasure (Right to be Forgotten):</strong> Because all files are purged immediately from
-            RAM disk, your document data is erased by design.</li>
-          <li><strong>Right to Access &amp; Portability:</strong> You may request confirmation of any operational logs
-            associated with your session.</li>
-          <li><strong>Do Not Sell My Personal Information:</strong> freeOCR.me never sells personal information or
-            uploaded document contents to any third party.</li>
+          <li><strong>Theme Preferences (<code>freeocr_theme</code>):</strong> Persists your chosen Light or Dark Mode visual theme across page reloads.</li>
+          <li><strong>Session Limit Boost Passes (<code>freeocr_boost_*</code>):</strong> When you voluntarily watch a short sponsored video to boost your conversion quota from 100 MB up to 150 MB (or 1 GB), an encrypted timestamp token is stored locally in your browser. This records remaining boost duration (e.g. 15 minutes) and clears automatically upon expiration without transmitting personal identity to our backend.</li>
         </ul>
       </section>
 
       <section class="policy-section">
-        <h2>5. Contact Data Protection Officer</h2>
-        <p>If you have any questions or data protection requests regarding this policy, contact our Data Protection
-          Officer at <a href="mailto:privacy@freeocr.me">privacy@freeocr.me</a>.</p>
+        <h2>5. Affiliate Partner Recommendations &amp; Commercial Transparency (FTC Disclosure)</h2>
+        <p>In accordance with Federal Trade Commission (FTC) guidelines, freeOCR.me transparently discloses that select educational guides and post-conversion result pages may feature recommended desktop utilities (such as EaseUS PDF Editor or CloudConvert) for users requiring complex offline batch workflows, PDF signing, or redaction.</p>
+        <p>Outbound links to these partner tools are designated with <code>rel="sponsored nofollow"</code>. If you elect to purchase commercial software through these partner links, freeOCR.me may earn an affiliate referral commission. This occurs at zero supplementary cost to you and directly subsidizes the cloud compute resources required to maintain our free OCR service.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>6. Complete Data Isolation: Zero Third-Party Document Access Guarantee</h2>
+        <p>We enforce strict architectural separation between our client utility, our ephemeral conversion pipeline, and third-party advertising scripts:</p>
+        <ul>
+          <li><strong>Zero Access to Uploaded Files:</strong> Advertising tags and affiliate scripts operate exclusively within sandboxed browser DOM or iframe contexts. They have no technical access to the dropzone file buffer, binary file streams, or conversion metadata.</li>
+          <li><strong>Zero Access to OCR Text:</strong> Third-party ad vendors cannot read, scrape, or process document text, synthesized PDFs, or OCR output results.</li>
+          <li><strong>Ephemeral RAM Disk Isolation:</strong> All OCR processing runs inside an isolated, containerized Linux volatile RAM-disk (<code>tmpfs</code>) backend completely detached from ad servers.</li>
+        </ul>
+      </section>
+
+      <section class="policy-section">
+        <h2>7. Your GDPR &amp; CCPA Rights</h2>
+        <p>Under the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), users enjoy comprehensive data privacy rights:</p>
+        <ul>
+          <li><strong>Right to Erasure (Right to be Forgotten):</strong> Because all uploaded documents and generated files are purged immediately from volatile RAM disk, document data is permanently erased by design.</li>
+          <li><strong>Right to Access &amp; Portability:</strong> You may request confirmation of any operational logs associated with your session.</li>
+          <li><strong>Do Not Sell My Personal Information:</strong> freeOCR.me never sells personal information, email addresses, or document contents to any third party.</li>
+        </ul>
+      </section>
+
+      <section class="policy-section">
+        <h2>8. Contact Data Protection Officer</h2>
+        <p>If you have questions, feedback, or data privacy inquiries regarding this policy, contact our Data Protection Officer at <a href="mailto:privacy@freeocr.me">privacy@freeocr.me</a>.</p>
       </section>
     </article>
   </main>
