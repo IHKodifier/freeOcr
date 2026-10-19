@@ -361,8 +361,7 @@ class ApiService {
       debugPrint('[ApiService] notifyRewardedAdWatched exception: $e');
     }
     return {
-      'status': 'SUCCESS',
-      'boosted_max_file_mb': 150.0,
+      'status': 'OFFLINE',
       'ttl_seconds': 3600,
     };
   }
